@@ -3,35 +3,41 @@
     class="text-2xl bg-[#D5E1EF] h-full min-h-screen grid place-items-center"
   >
     <div
-      class="shadow-xl hover:shadow-2xl transition-shadow w-full max-w-[320px] bg-white px-4 pt-4 pb-10 rounded-[20px]"
+      class="h-full xs:h-auto grid place-items-center shadow-xl hover:shadow-2xl transition-shadow w-full max-w-[320px] bg-white px-4 pt-4 pb-10 xs:rounded-[20px]"
     >
-      <div
-        class="qrcode-container bg-[#2C7DFA] h-[288px] w-full rounded-[10px] grid place-items-center overflow-hidden relative"
-      >
-        <div class="decoration-oval --top-left"></div>
-        <div class="decoration-oval --bottom-right"></div>
-        <qrcode-vue
-          class="relative z-10"
-          :value="'dimarhanung.dev'"
-          background="transparent"
-          foreground="#ffffff"
-          render-as="svg"
-          :size="160"
-        ></qrcode-vue>
+      <div>
+        <div
+          class="qrcode-container bg-[#2C7DFA] h-[288px] w-full rounded-[10px] grid place-items-center overflow-hidden relative"
+        >
+          <div class="decoration-oval --top-left"></div>
+          <div class="decoration-oval --bottom-right"></div>
+          <qrcode-vue
+            class="relative z-10"
+            :value="'dimarhanung.dev'"
+            background="transparent"
+            foreground="#ffffff"
+            render-as="svg"
+            :size="160"
+          ></qrcode-vue>
+        </div>
+        <h3 class="title mt-6">
+          Improve your front-end skills by building projects
+        </h3>
+        <p class="desc mt-4 px-4">
+          Scan the QR code to visit Frontend Mentor and take your coding skills
+          to the next level
+        </p>
       </div>
-      <h3 class="title mt-6">
-        Improve your front-end skills by building projects
-      </h3>
-      <p class="desc mt-4 px-4">
-        Scan the QR code to visit Frontend Mentor and take your coding skills to
-        the next level
-      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import QrcodeVue from "qrcode.vue";
+useSeoMeta({
+  title: "FrontEnd Mentor - Qrcode Challenge",
+  description: "FrontEnd Mentor - Qrcode Challenge with tailwind css",
+});
 </script>
 
 <style scoped>

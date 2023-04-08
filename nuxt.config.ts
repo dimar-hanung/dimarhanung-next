@@ -2,6 +2,18 @@ export default defineNuxtConfig({
   nitro: {
     preset: "vercel-edge",
   },
+  app: {
+    head: {
+      title: "Dimar Hanung Portfolio",
+      link: [
+        {
+          rel: "icon",
+          type: "image/png",
+          href: "/favicon.png",
+        },
+      ],
+    },
+  },
   modules: ["@nuxtjs/tailwindcss", "@nuxtjs/i18n"],
   tailwindcss: {
     configPath: "tailwind.config",

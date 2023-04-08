@@ -15,4 +15,8 @@
 definePageMeta({
   key: (route) => route.fullPath,
 });
+
+useSeoMeta({
+  title: "FrontEnd Mentor (●'◡'●)",
+});
 </script>
