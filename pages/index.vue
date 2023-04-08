@@ -233,6 +233,13 @@
                   <div><font-awesome-icon :icon="['fa', 'arrow-right']" /></div>
                 </div>
               </t-card>
+              <t-card class="w-1/3 cursor-pointer dark:hover:bg-slate-700">
+                <div>Front-End Mentor</div>
+                <div class="flex w-full justify-between place-items-end">
+                  <div class="text-2xl font-bold">90+</div>
+                  <div><font-awesome-icon :icon="['fa', 'arrow-right']" /></div>
+                </div>
+              </t-card>
             </div>
             <h3 class="text-xl font-bold mt-8">Find Me</h3>
             <hr class="my-4" />
@@ -290,7 +297,7 @@
                 target="_blank"
               >
                 <t-card class="dark:hover:bg-slate-700 cursor-pointer">
-                  <div>Be my friend</div>
+                  <div>Be my friend / Collab</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
                       <font-awesome-icon
