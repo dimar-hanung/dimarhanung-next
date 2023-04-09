@@ -15,9 +15,9 @@
             any device anywhere you like!
           </div>
           <div
-            class="flex flex-wrap justify-between mt-5 p-6 bg-[#F7F9FF] rounded-xl"
+            class="flex flex-wrap place-items-center justify-between mt-5 p-6 bg-[#F7F9FF] rounded-xl"
           >
-            <div class="flex flex-wrap place-items-center">
+            <div class="flex flex-wrap place-items-center flex-grow">
               <div
                 class="w-12 h-12 bg-[#DFE6FB] rounded-full grid place-items-center mr-5"
               >
@@ -25,10 +25,14 @@
               </div>
               <div>
                 <div class="font-black text-[#1F2E55]">Annual Plan</div>
-                <div>59.99 Year</div>
+                <div class="text-[#717FA6]">$59.99 Year</div>
               </div>
             </div>
-            <div class="text-[#382AE1] font-bold underline">Change</div>
+            <div
+              class="text-[#382AE1] font-bold underline mx-auto cursor-pointer"
+            >
+              Change
+            </div>
           </div>
 
           <button class="button-primary">Proceed to Payment</button>
