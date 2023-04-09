@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="order-summary min-h-screen w-full bg-indigo-50 grid place-items-center"
-  >
+  <div class="order-summary min-h-screen bg-indigo-50 grid place-items-center">
     <div
       class="w-full max-w-[1440px] mx-auto bg-[#E0E8FF] h-screen max-h-[900px] shadow relative grid place-items-center p-1"
     >
