@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-indigo-50 dark:bg-slate-800 pb-4 min-h-screen transition-all dark:text-white"
+    class="portofolio-container bg-indigo-50 dark:bg-slate-800 pb-4 min-h-screen transition-all dark:text-white"
   >
     <t-nav></t-nav>
 
@@ -96,7 +96,11 @@
                     alt=""
                   /> -->
                 </div>
-                <div class="flex justify-between w-full">
+                <div class="flex justify-between w-full px-2">
+                  <p>
+                    Solo Learn is an online platform to learn to code for free.
+                    and challenge your friends.
+                  </p>
                   <div>
                     <div>
                       <!-- 🏆 Level {{ api.data.value?.["userDetails"]?.["level"] }} -->
@@ -122,8 +126,11 @@
                     target="_blank"
                   >
                     <t-button class="h-10"
-                      ><font-awesome-icon :icon="['fa', 'arrow-right']"
-                    /></t-button>
+                      ><ClientOnly>
+                        <font-awesome-icon
+                          :icon="['fa', 'arrow-right']"
+                        /> </ClientOnly
+                    ></t-button>
                   </a>
                 </div>
               </t-card>
@@ -141,27 +148,31 @@
               </div>
               <t-card class="flex gap-x-2">
                 <div>
-                  <img
+                  <!-- <img
                     class="rounded-full w-20"
                     :src="'https://avatars.githubusercontent.com/u/42312636?s=100'"
                     alt=""
-                  />
+                  /> -->
                 </div>
-                <div class="flex justify-between w-full">
+                <div class="flex justify-between w-full px-2">
+                  <p>
+                    Code Wars is a community where developers can improve their
+                    skills by training with others on real code challenges.
+                  </p>
                   <div>
                     <!-- <div>@{{ codewars.data.value?.["username"] }}</div> -->
                     <div>
-                      🏆
+                      <!-- 🏆 -->
                       <!-- {{
                         codewars.data.value?.["ranks"]?.["overall"]?.["name"]
                       }} -->
                     </div>
                     <div class="mb-2">
-                      ⭐
+                      <!-- ⭐ -->
                       <!-- {{
                         codewars.data.value?.["ranks"]?.["overall"]?.["score"]
                       }} -->
-                      Score
+                      <!-- Score -->
                     </div>
                   </div>
                   <a
@@ -170,8 +181,11 @@
                     target="_blank"
                   >
                     <t-button class="h-10"
-                      ><font-awesome-icon :icon="['fa', 'arrow-right']"
-                    /></t-button>
+                      ><ClientOnly>
+                        <font-awesome-icon
+                          :icon="['fa', 'arrow-right']"
+                        /> </ClientOnly
+                    ></t-button>
                   </a>
                 </div>
               </t-card>
@@ -190,22 +204,30 @@
             </div>
             <t-card class="flex gap-x-2">
               <div>
-                <img
+                <!-- <img
                   class="rounded-full w-20"
                   :src="'https://avatars.githubusercontent.com/u/42312636?s=400&u=81348ae939bf84bfcdc150a0c382a39d50888c12&v=4'"
                   alt=""
-                />
+                /> -->
               </div>
-              <div class="flex justify-between w-full">
-                <div>@dimar-hanung</div>
+              <div class="flex justify-between w-full px-2">
+                <!-- <div>@dimar-hanung</div> -->
+                <p>
+                  GitHub is where people build software. More than 56 million
+                  people use GitHub to discover, fork, and contribute to over
+                  200 million projects.
+                </p>
                 <a
                   class="place-self-end"
                   href="https://www.codewars.com/users/dimar-hanung"
                   target="_blank"
                 >
                   <t-button class="h-10"
-                    ><font-awesome-icon :icon="['fa', 'arrow-right']"
-                  /></t-button>
+                    ><ClientOnly>
+                      <font-awesome-icon
+                        :icon="['fa', 'arrow-right']"
+                      /> </ClientOnly
+                  ></t-button>
                 </a>
               </div>
             </t-card>
@@ -214,30 +236,46 @@
           <section class="w-1/2 flex-grow p-2 min-w-[230px]">
             <h3 class="text-xl font-bold">Portofolio</h3>
             <hr class="my-4" />
-            <div class="flex gap-4">
-              <t-card class="w-1/3 cursor-pointer dark:hover:bg-slate-700">
+            <div class="flex flex-wrap gap-4">
+              <t-card
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+              >
                 <NuxtLink to="/certificates">
                   <div>Certificate</div>
                   <div class="flex w-full justify-between place-items-end">
                     <div class="text-2xl font-bold">30+</div>
                     <div>
-                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                      <ClientOnly>
+                        <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                      </ClientOnly>
                     </div>
                   </div>
                 </NuxtLink>
               </t-card>
-              <t-card class="w-1/3 cursor-pointer dark:hover:bg-slate-700">
+              <t-card
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+              >
                 <div>Project</div>
                 <div class="flex w-full justify-between place-items-end">
                   <div class="text-2xl font-bold">7+</div>
-                  <div><font-awesome-icon :icon="['fa', 'arrow-right']" /></div>
+                  <div>
+                    <ClientOnly>
+                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    </ClientOnly>
+                  </div>
                 </div>
               </t-card>
-              <t-card class="w-1/3 cursor-pointer dark:hover:bg-slate-700">
+              <t-card
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+              >
                 <div>Front-End Mentor</div>
                 <div class="flex w-full justify-between place-items-end">
                   <div class="text-2xl font-bold">90+</div>
-                  <div><font-awesome-icon :icon="['fa', 'arrow-right']" /></div>
+                  <div>
+                    <ClientOnly>
+                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    </ClientOnly>
+                  </div>
                 </div>
               </t-card>
             </div>
@@ -252,13 +290,17 @@
                   <div>Become my relation</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <font-awesome-icon
-                        :icon="['fab', 'linkedin']"
-                        class="text-4xl text-blue-600"
-                      />
+                      <ClientOnly>
+                        <font-awesome-icon
+                          :icon="['fab', 'linkedin']"
+                          class="text-4xl text-blue-600"
+                        />
+                      </ClientOnly>
                       Linekdin
                     </div>
-                    <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    <ClientOnly>
+                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    </ClientOnly>
                   </div>
                 </t-card>
               </a>
@@ -267,13 +309,17 @@
                   <div>Stalking me 😣</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <font-awesome-icon
-                        :icon="['fab', 'instagram']"
-                        class="text-4xl text-red-400"
-                      />
+                      <ClientOnly>
+                        <font-awesome-icon
+                          :icon="['fab', 'instagram']"
+                          class="text-4xl text-red-400"
+                        />
+                      </ClientOnly>
                       Instagram
                     </div>
-                    <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    <ClientOnly>
+                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    </ClientOnly>
                   </div>
                 </t-card>
               </a>
@@ -282,13 +328,17 @@
                   <div>Just my daily note</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <font-awesome-icon
-                        :icon="['fab', 'twitter']"
-                        class="text-4xl text-blue-400"
-                      />
+                      <ClientOnly>
+                        <font-awesome-icon
+                          :icon="['fab', 'twitter']"
+                          class="text-4xl text-blue-400"
+                        />
+                      </ClientOnly>
                       Twitter
                     </div>
-                    <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    <ClientOnly>
+                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    </ClientOnly>
                   </div>
                 </t-card>
               </a>
@@ -300,13 +350,17 @@
                   <div>Be my friend / Collab</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <font-awesome-icon
-                        :icon="['fab', 'whatsapp']"
-                        class="text-4xl text-green-400"
-                      />
+                      <ClientOnly>
+                        <font-awesome-icon
+                          :icon="['fab', 'whatsapp']"
+                          class="text-4xl text-green-400"
+                        />
+                      </ClientOnly>
                       WhatsApp
                     </div>
-                    <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    <ClientOnly>
+                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                    </ClientOnly>
                   </div>
                 </t-card>
               </a>
@@ -331,6 +385,10 @@ const darkMode = useDarkMode();
 // console.log(api.data.value["userDetails"]);
 </script>
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
+.portofolio-container {
+  font-family: "Outfit", sans-serif;
+}
 .registration-form_input__rWOsZ {
   border: 0;
   border-radius: 100px;

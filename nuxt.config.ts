@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "Dimar Hanung Portfolio",
+      htmlAttrs: {
+        lang: "en",
+      },
       link: [
         {
           rel: "icon",

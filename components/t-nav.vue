@@ -10,13 +10,13 @@
           ><div><button>Blog</button></div></NuxtLink
         >
         <!-- <div><button>Contact me</button></div> -->
-        <no-ssr>
+        <ClientOnly>
           <font-awesome-icon
             class="text-xl text-yellow-500 cursor-pointer"
             :icon="['fa', 'moon']"
             @click="toggleDarkMode"
-          /> </no-ssr
-        >x
+          />
+        </ClientOnly>
         <div
           class="flex gap-x-2 place-items-center p-1 dark:hover:bg-slate-700 cursor-pointer rounded transition-all relative"
           @mouseover="isDropdownLang = true"
@@ -35,7 +35,9 @@
             alt=""
             class="w-5 inline-block"
           />
-          <font-awesome-icon :icon="['fa', 'angle-down']" />
+          <ClientOnly>
+            <font-awesome-icon :icon="['fa', 'angle-down']" />
+          </ClientOnly>
           <div
             v-if="isDropdownLang"
             class="absolute w-full bg-slate-700 bottom-0 translate-y-full left-0"
