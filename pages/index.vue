@@ -123,6 +123,7 @@
                   <a
                     class="place-self-end"
                     href="https://www.sololearn.com/profile/12709774"
+                    aria-label="Visit Dimar Hanung's Solo Learn profile"
                     target="_blank"
                   >
                     <t-button class="h-10"
@@ -179,6 +180,7 @@
                     class="place-self-end"
                     href="https://www.codewars.com/users/dimar-hanung"
                     target="_blank"
+                    aria-label="Visit Dimar Hanung's Code Wars profile"
                   >
                     <t-button class="h-10"
                       ><ClientOnly>
@@ -221,6 +223,7 @@
                   class="place-self-end"
                   href="https://www.codewars.com/users/dimar-hanung"
                   target="_blank"
+                  aria-label="Visit Dimar Hanung's GitHub profile"
                 >
                   <t-button class="h-10"
                     ><ClientOnly>
@@ -369,7 +372,6 @@
         </main>
       </div>
     </div>
-    <input type="text" class="registration-form_input__rWOsZ" />
   </div>
 </template>
 
