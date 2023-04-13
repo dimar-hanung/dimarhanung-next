@@ -8,6 +8,12 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "en",
       },
+      meta: [
+        {
+          name: "description",
+          content: "Dimar Hanung Portfolio and Bio",
+        },
+      ],
       link: [
         {
           rel: "icon",
