@@ -385,6 +385,14 @@ const darkMode = useDarkMode();
 // const codewars = useFetch("https://www.codewars.com/api/v1/users/dimar-hanung");
 
 // console.log(api.data.value["userDetails"]);
+
+useSeoMeta({
+  title: "Dimar Hanung",
+  description: "Dimar Hanung - Front-End Developer",
+  ogDescription: "Dimar Hanung - Front-End Developer",
+  // image: "https://i.ibb.co/0nZ6Z3r/Dimar-Hanung.png",
+  // url: "https://dimar-hanung.vercel.app/",
+});
 </script>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");

@@ -58,6 +58,10 @@ const chellanges = [
     title: "3 - Single Page Developer Portofolio",
     path: "/chellanges/frontend-mentor/3-single-page-developer-portofolio",
   },
+  {
+    title: "4 - Result Summary Component",
+    path: "/chellanges/frontend-mentor/4-result-summary-component",
+  },
 ];
 
 // event listener when press "f" key
