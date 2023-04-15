@@ -5,24 +5,29 @@
       class="bg-slate-800 text-white justify-between w-full max-w-[280px] hidden xl:flex"
     >
       <div class="w-full min-h-screen">
-        <div class="flex justify-between p-4 bg-slate-700 w-full">
-          <ClientOnly>
-            <NuxtLink to="/"
-              ><font-awesome-icon
-                class="text-xl text-yellow-500 cursor-pointer"
-                :icon="['fa', 'home']"
-            /></NuxtLink>
-            <NuxtLink :to="{ query: { preview: 'full' } }">
-              <font-awesome-icon :icon="['fa', 'times']" />
-            </NuxtLink>
-          </ClientOnly>
+        <div class="p-2">
+          <div class="flex justify-between p-4 bg-slate-700 w-full rounded-lg">
+            <ClientOnly>
+              <NuxtLink to="/"
+                ><font-awesome-icon
+                  class="text-xl cursor-pointer"
+                  :icon="['fa', 'home']"
+              /></NuxtLink>
+              <NuxtLink :to="{ query: { preview: 'full' } }">
+                <font-awesome-icon class="text-xl" :icon="['fa', 'times']" />
+              </NuxtLink>
+            </ClientOnly>
+          </div>
         </div>
-        <div class="mt-8">
+        <div class="mt-8 px-2">
           <NuxtLink
-            v-for="chellange in chellanges"
-            class="sidebar--link px-3 block hover:text-yellow-500 p-4"
+            v-for="(chellange, i) in chellanges"
+            class="sidebar--link px-3 block hover:text-white hover:bg-white hover:bg-opacity-25 p-4 text-slate-300 rounded-lg transition-all"
             :to="chellange.path"
-            ><div>{{ chellange.title }}</div></NuxtLink
+            ><div class="flex">
+              <div class="mr-2">{{ i + 1 }}.</div>
+              <div>{{ chellange.title }}</div>
+            </div></NuxtLink
           >
         </div>
       </div>
@@ -47,23 +52,23 @@ const router = useRouter();
 
 const chellanges = [
   {
-    title: "1 - QR Code",
+    title: "QR Code",
     path: "/chellanges/frontend-mentor/qrcode",
   },
   {
-    title: "2 - Order Summary",
+    title: "Order Summary",
     path: "/chellanges/frontend-mentor/order-summary",
   },
   {
-    title: "3 - Single Page Developer Portofolio",
+    title: "Single Page Developer Portofolio",
     path: "/chellanges/frontend-mentor/3-single-page-developer-portofolio",
   },
   {
-    title: "4 - Result Summary Component",
+    title: "Result Summary Component",
     path: "/chellanges/frontend-mentor/4-result-summary-component",
   },
   {
-    title: "5 - Password Generator App",
+    title: "Password Generator App",
     path: "/chellanges/frontend-mentor/5-password-generator-app",
   },
 ];
