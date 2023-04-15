@@ -263,7 +263,7 @@
                   <div class="text-2xl font-bold">7+</div>
                   <div>
                     <ClientOnly>
-                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                      <!-- <font-awesome-icon :icon="['fa', 'arrow-right']" /> -->
                     </ClientOnly>
                   </div>
                 </div>
@@ -271,12 +271,27 @@
               <t-card
                 class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
               >
-                <div>Front-End Mentor</div>
+                <NuxtLink to="/chellanges/frontend-mentor">
+                  <div>Front-End Mentor</div>
+                  <div class="flex w-full justify-between place-items-end">
+                    <div class="text-2xl font-bold">90+</div>
+                    <div>
+                      <ClientOnly>
+                        <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                      </ClientOnly>
+                    </div>
+                  </div>
+                </NuxtLink>
+              </t-card>
+              <t-card
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+              >
+                <div>Fun Stuff & Experiment</div>
                 <div class="flex w-full justify-between place-items-end">
-                  <div class="text-2xl font-bold">90+</div>
+                  <div class="text-2xl font-bold">32+</div>
                   <div>
                     <ClientOnly>
-                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
+                      <!-- <font-awesome-icon :icon="['fa', 'arrow-right']" /> -->
                     </ClientOnly>
                   </div>
                 </div>
