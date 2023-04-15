@@ -13,7 +13,9 @@
       <section
         class="card__result text-center w-full sm:w-1/2 pt-[24px] sm:pt-[38px] pb-[40px] sm:pb-[55px] rounded-b-[32px] sm:rounded-r-[32px]"
       >
-        <h3 class="text-[#CAC9FF] text-lg sm:text-2xl">Your Result</h3>
+        <h3 class="text-[#CAC9FF] text-lg sm:text-2xl font-bold">
+          Your Result
+        </h3>
         <div
           class="card__score w-[140px] sm:w-[200px] h-[140px] sm:h-[200px] rounded-full overflow-hidden grid place-items-center mx-auto mt-[24px] sm:mt-[35px]"
         >
@@ -36,7 +38,7 @@
         <p
           class="mt-[8px] sm:mt-[14px] text-[#CAC9FF] font-medium sm:text-lg leading-[21px] sm:leading-[23px] max-w-[260px] mx-auto"
         >
-          Your performance exceed 65% of the people conducting the test here!
+          Your scored higher than 65% of the people who have taken these tests.
         </p>
       </section>
       <section
@@ -49,42 +51,42 @@
         <ul>
           <li class="summary__item --red mt-[24px] sm:mt-[28px]">
             <div class="flex place-items-center">
-              <icon-reaction class="mr-2" />
+              <icon-reaction class="mr-3" />
               <p class="font-medium text-lg">Reaction</p>
             </div>
             <p class="text-lg font-bold text-[#303B59]">
-              <span>80</span>
-              <span class="opacity-50"> / 100</span>
+              <span class="mr-2">80</span>
+              <span class="opacity-50">/ 100</span>
             </p>
           </li>
           <li class="summary__item --yellow mt-4">
             <div class="flex place-items-center">
-              <icon-memory class="mr-2" />
+              <icon-memory class="mr-3" />
               <p class="font-medium text-lg">Memory</p>
             </div>
             <p class="text-lg font-bold text-[#303B59]">
-              <span>92</span>
-              <span class="opacity-50"> / 100</span>
+              <span class="mr-2">92</span>
+              <span class="opacity-50">/ 100</span>
             </p>
           </li>
           <li class="summary__item --green mt-4">
             <div class="flex place-items-center">
-              <icon-verbal class="mr-2" />
+              <icon-verbal class="mr-3" />
               <p class="font-medium text-lg">Verbal</p>
             </div>
             <p class="text-lg font-bold text-[#303B59]">
-              <span>61</span>
-              <span class="opacity-50"> / 100</span>
+              <span class="mr-2">61</span>
+              <span class="opacity-50">/ 100</span>
             </p>
           </li>
           <li class="summary__item --blue mt-4">
             <div class="flex place-items-center">
-              <icon-visual class="mr-2" />
+              <icon-visual class="mr-3" />
               <p class="font-medium text-lg">Visual</p>
             </div>
             <p class="text-lg font-bold text-[#303B59]">
-              <span>73</span>
-              <span class="opacity-50"> / 100</span>
+              <span class="mr-2">73</span>
+              <span class="opacity-50">/ 100</span>
             </p>
           </li>
         </ul>
@@ -169,7 +171,7 @@ import iconVisual from "./components/icon-visual.vue";
 }
 
 .button__primary {
-  @apply bg-[#303B59] rounded-[128px] h-[56px] w-full;
+  @apply bg-[#303B59] rounded-[128px] h-[56px] w-full text-lg font-bold;
 }
 .button__primary:hover {
   background: linear-gradient(180deg, #7755ff 0%, #6943ff 0.01%, #2f2ce9 100%);
