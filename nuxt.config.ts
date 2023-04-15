@@ -2,6 +2,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: "vercel-edge",
   },
+
   app: {
     head: {
       title: "Dimar Hanung Portfolio",
