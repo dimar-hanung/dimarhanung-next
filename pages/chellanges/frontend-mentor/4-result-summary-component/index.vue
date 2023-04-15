@@ -1,5 +1,12 @@
 <template>
-  <div class="min-h-screen bg-[#ECF2FF] grid place-items-center">
+  <div
+    class="grid place-items-center"
+    :class="
+      [$route.query.type == 'solution']
+        ? 'bg-white min-h-[1080px]'
+        : 'min-h-screen bg-[#ECF2FF]'
+    "
+  >
     <main
       class="card sm:flex w-full sm:max-w-[736px] h-full sm:max-h-[512px] bg-white sm:rounded-[32px] overflow-hidden"
     >
