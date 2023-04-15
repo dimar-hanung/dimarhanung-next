@@ -71,6 +71,10 @@ const chellanges = [
     title: "Password Generator App",
     path: "/chellanges/frontend-mentor/5-password-generator-app",
   },
+  {
+    title: "Product Preview Card Component",
+    path: "/chellanges/frontend-mentor/6-product-preview-card-component",
+  },
 ];
 
 // event listener when press "f" key
