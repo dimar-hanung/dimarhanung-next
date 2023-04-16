@@ -5,6 +5,7 @@
       :value="sliderValue"
       @input="({ target }) => (sliderValue = parseFloat((target as HTMLInputElement).value))"
       type="range"
+      :id="inputId"
       :min="min"
       :max="max"
       :step="step"
@@ -16,7 +17,11 @@
 import { ref, watchEffect } from "vue";
 
 // define component props for the slider component
-const { min, max, step, modelValue } = defineProps({
+const { inputId, min, max, step, modelValue } = defineProps({
+  inputId: {
+    type: String,
+    default: "slider",
+  },
   min: {
     type: Number,
     default: 0,

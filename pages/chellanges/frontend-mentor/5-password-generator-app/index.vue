@@ -8,12 +8,12 @@
       <section
         class="bg-[#24232C] rounded h-20 flex justify-between px-2 sm:px-8 place-items-center mt-8"
       >
-        <p
+        <div
           class="text-[#E6E5EA] text-2xl overflow-hidden text-ellipsis whitespace-nowrap w-full"
           :class="[!password ? 'opacity-25 select-none' : '']"
         >
           {{ password || "P4$5W0rD!" }}
-        </p>
+        </div>
         <div class="relative">
           <Transition name="fade" :duration="200" mode="in-out">
             <div
@@ -35,11 +35,17 @@
 
       <section class="mt-6 rounded bg-[#24232C] py-6 px-2 sm:px-8">
         <div class="flex justify-between">
-          <h2 class="text-lg text-[#E6E5EA]">Character Length</h2>
+          <label for="characterLength">
+            <h2 class="text-lg text-[#E6E5EA]">Character Length</h2>
+          </label>
           <p class="text-[#A4FFAF] text-2xl">{{ value }}</p>
         </div>
 
-        <input-range class="mt-4" v-model="value" />
+        <input-range
+          :input-id="'characterLength'"
+          class="mt-4"
+          v-model="value"
+        />
 
         <input-check class="mt-8" v-model:value="options.inludeUpperCase"
           >Include Uppercase Letters</input-check
@@ -118,6 +124,10 @@ import iconCopy from "./components/icon-copy.vue";
 import inputRange from "./components/input-range.vue";
 import inputCheck from "./components/input-check.vue";
 import iconArrowRight from "./components/icon-arrow-right.vue";
+
+useSeoMeta({
+  title: "Password Generator APP",
+});
 
 const value = ref(10);
 const options = reactive({
