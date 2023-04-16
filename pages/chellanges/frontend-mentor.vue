@@ -75,6 +75,10 @@ const chellanges = [
     title: "Product Preview Card Component",
     path: "/chellanges/frontend-mentor/6-product-preview-card-component",
   },
+  {
+    title: "NFT Preview Card Component",
+    path: "/chellanges/frontend-mentor/7-nft-preview-card-component",
+  },
 ];
 
 // event listener when press "f" key
