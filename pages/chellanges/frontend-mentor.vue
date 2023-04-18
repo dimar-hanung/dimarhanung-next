@@ -79,6 +79,10 @@ const chellanges = [
     title: "NFT Preview Card Component",
     path: "/chellanges/frontend-mentor/7-nft-preview-card-component",
   },
+  {
+    title: "Tic Tac Toe Game",
+    path: "/chellanges/frontend-mentor/8-tic-tac-toe-game",
+  },
 ];
 
 // event listener when press "f" key
