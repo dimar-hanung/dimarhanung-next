@@ -83,6 +83,10 @@ const chellanges = [
     title: "Tic Tac Toe Game",
     path: "/chellanges/frontend-mentor/8-tic-tac-toe-game",
   },
+  {
+    title: "Stats Preview Card Component",
+    path: "/chellanges/frontend-mentor/9-stats-preview-card-component",
+  },
 ];
 
 // event listener when press "f" key
