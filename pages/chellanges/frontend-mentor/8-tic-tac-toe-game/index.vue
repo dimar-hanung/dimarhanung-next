@@ -59,7 +59,7 @@
 
     <main v-if="!started" class="p-3 w-full max-w-[375px] sm:max-w-[460px]">
       <div>
-        <div class="flex justify-center">
+        <div class="flex gap-x-4 justify-center">
           <icon-x :width="32" :height="32" />
           <icon-o :width="32" :height="32" />
         </div>
