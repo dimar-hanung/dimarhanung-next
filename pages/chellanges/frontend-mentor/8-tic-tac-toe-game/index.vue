@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <main v-if="!started" class="w-full max-w-[460px]">
+    <main v-if="!started" class="p-3 w-full max-w-[375px] sm:max-w-[460px]">
       <div>
         <div class="flex justify-center">
           <icon-x :width="32" :height="32" />
@@ -112,8 +112,8 @@
       >
     </main>
 
-    <div v-else class="p-8">
-      <div class="flex justify-between">
+    <div v-else class="w-full max-w-[460px]">
+      <div class="flex justify-between w-full">
         <div class="flex gap-x-2">
           <icon-x :width="32" :height="32" />
           <icon-o :width="32" :height="32" />
@@ -139,11 +139,11 @@
           ><icon-restart class="mx-auto block"
         /></v-button>
       </div>
-      <div class="grid grid-cols-3 gap-5 mt-5">
+      <div class="grid grid-cols-3 gap-2 sm:gap-5 mt-5 aspect-square">
         <button
           v-for="(cell, index) in board"
           :key="index"
-          class="tic-tac-shadow bg-[#1F3641] outline-none border-none rounded-2xl relative"
+          class="tic-tac-shadow bg-[#1F3641] outline-none border-none rounded-2xl relative sm:w-[8.75rem] sm:h-[8.75rem] flex items-center justify-center"
           :class="[
             getCellClass(cell),
             winBoard.includes(index)
@@ -155,35 +155,38 @@
           @click="makeMove(index)"
         >
           <div
+            class="absolute left-0 top-0 grid place-items-center w-full h-full"
+          >
+            <icon-x
+              v-if="cell === 'X'"
+              class="scale-in w-10 sm:w-auto"
+              :fill="winBoard.includes(index) ? '#1F3641' : '#31C3BD'"
+            />
+            <icon-o
+              v-else-if="cell === 'O'"
+              class="scale-in w-10 sm:w-auto"
+              :fill="winBoard.includes(index) ? '#1F3641' : '#F2B137'"
+            />
+          </div>
+          <div
             v-if="!cell"
             class="opacity-0 hover:opacity-100 absolute left-0 top-0 grid place-items-center w-full h-full transition-all"
           >
-            <icon-x-outline v-if="p1 == 'X'" />
+            <icon-x-outline v-if="turn == 'X'" />
             <icon-o-outline v-else />
           </div>
-
-          <icon-x
-            v-if="cell === 'X'"
-            class="scale-in"
-            :fill="winBoard.includes(index) ? '#1F3641' : '#31C3BD'"
-          />
-          <icon-o
-            v-else-if="cell === 'O'"
-            class="scale-in"
-            :fill="winBoard.includes(index) ? '#1F3641' : '#F2B137'"
-          />
         </button>
       </div>
       <div class="flex gap-x-5 mt-5">
-        <div class="bg-[#31C3BD] rounded-lg flex-grow text-center py-2">
+        <div class="bg-[#31C3BD] rounded-lg w-1/3 text-center py-2">
           <div class="text-sm font-medium">X ({{ getXPlayer }})</div>
           <div class="text-[#1A2A33] text-2xl">{{ score.X }}</div>
         </div>
-        <div class="bg-[#A8BFC9] rounded-lg flex-grow text-center py-2">
+        <div class="bg-[#A8BFC9] rounded-lg w-1/3 text-center py-2">
           <div class="text-sm font-medium">TIES</div>
           <div class="text-[#1A2A33] text-2xl">{{ score.T }}</div>
         </div>
-        <div class="bg-[#F2B137] rounded-lg flex-grow text-center py-2">
+        <div class="bg-[#F2B137] rounded-lg w-1/3 text-center py-2">
           <div class="text-sm font-medium">O ({{ getOPlayer }})</div>
           <div class="text-[#1A2A33] text-2xl">{{ score.O }}</div>
         </div>
@@ -301,8 +304,6 @@ const quit = () => {
 };
 
 const getCellClass = (cell: string) => ({
-  "w-36 h-36  flex items-center justify-center": true,
-  "text-xl font-bold": true,
   "text-red-500": cell === "X",
   "text-blue-500": cell === "O",
 });
