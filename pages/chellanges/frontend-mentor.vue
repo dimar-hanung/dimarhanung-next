@@ -87,6 +87,10 @@ const chellanges = [
     title: "Stats Preview Card Component",
     path: "/chellanges/frontend-mentor/9-stats-preview-card-component",
   },
+  {
+    title: "FAQ Accordion Card",
+    path: "/chellanges/frontend-mentor/10-faq-accordion-card",
+  },
 ];
 
 // event listener when press "f" key
