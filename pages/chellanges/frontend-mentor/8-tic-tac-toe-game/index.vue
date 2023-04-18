@@ -22,7 +22,10 @@
           <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'P2'">
             PLAYER 2 WINS!
           </div>
-          <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'TIE'">
+          <div
+            class="text-[#A8BFC9] text-4xl"
+            v-else-if="playerWinner == 'TIE'"
+          >
             ROUND TIED!
           </div>
 
