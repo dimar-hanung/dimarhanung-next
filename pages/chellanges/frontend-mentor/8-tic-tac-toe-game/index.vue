@@ -2,63 +2,65 @@
   <div
     class="tic-tac-container bg-[#1A2A33] grid place-items-center min-h-screen"
   >
-    <div
-      v-if="modal"
-      class="z-10 fixed w-screen h-screen bg-[#000000] bg-opacity-50 grid place-items-center"
-    >
+    <Transition name="fade" mode="in-out">
       <div
-        class="bg-[#1F3641] w-full h-1/2 max-h-[280px] flex place-items-center"
+        v-if="modal"
+        class="fade-in z-10 fixed w-screen h-screen bg-[#000000] bg-opacity-50 grid place-items-center left-0"
       >
-        <div class="mx-auto text-xs sm:text-base text-center">
-          <div class="text-[#A8BFC9]" v-if="playerWinner == 'CPU'">
-            OH NO, YOU LOST...
-          </div>
-          <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'YOU'">
-            CONGRATULATIONS, YOU WON!
-          </div>
-          <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'P1'">
-            PLAYER 1 WINS!
-          </div>
-          <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'P2'">
-            PLAYER 2 WINS!
-          </div>
+        <div
+          class="bg-[#1F3641] w-full h-1/2 max-h-[280px] flex place-items-center"
+        >
           <div
-            class="text-[#A8BFC9] text-4xl"
-            v-else-if="playerWinner == 'TIE'"
+            class="scale-in delay-500 mx-auto text-xs sm:text-base text-center"
           >
-            ROUND TIED!
-          </div>
-
-          <div>
-            <div
-              v-if="winner == 'X'"
-              class="flex place-items-center gap-x-4 justify-center mt-2 sm:mt-4 text-base sm:text-4xl text-[#31C3BD]"
-            >
-              <icon-x class="w-9 sm:w-auto" /> TAKES THE ROUND
+            <div class="text-[#A8BFC9]" v-if="playerWinner == 'CPU'">
+              OH NO, YOU LOST...
+            </div>
+            <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'YOU'">
+              CONGRATULATIONS, YOU WON!
+            </div>
+            <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'P1'">
+              PLAYER 1 WINS!
+            </div>
+            <div class="text-[#A8BFC9]" v-else-if="playerWinner == 'P2'">
+              PLAYER 2 WINS!
             </div>
             <div
-              v-else-if="winner == 'O'"
-              class="flex place-items-center gap-x-4 justify-center mt-2 sm:mt-4 text-base sm:text-4xl text-[#F2B137]"
+              class="text-[#A8BFC9] text-4xl"
+              v-else-if="playerWinner == 'TIE'"
             >
-              <icon-o class="w-9 sm:w-auto" /> TAKES THE ROUND
+              ROUND TIED!
             </div>
-          </div>
-
-          <div class="flex gap-x-4 mt-7">
-            <v-button class="w-full" variant="grey" size="small" @click="quit"
-              >QUIT</v-button
-            >
-            <v-button
-              class="w-full whitespace-nowrap px-3"
-              variant="yellow"
-              size="small"
-              @click="nextRound"
-              >NEXT ROUND</v-button
-            >
+            <div>
+              <div
+                v-if="winner == 'X'"
+                class="flex place-items-center gap-x-4 justify-center mt-2 sm:mt-4 text-base sm:text-4xl text-[#31C3BD]"
+              >
+                <icon-x class="w-9 sm:w-auto" /> TAKES THE ROUND
+              </div>
+              <div
+                v-else-if="winner == 'O'"
+                class="flex place-items-center gap-x-4 justify-center mt-2 sm:mt-4 text-base sm:text-4xl text-[#F2B137]"
+              >
+                <icon-o class="w-9 sm:w-auto" /> TAKES THE ROUND
+              </div>
+            </div>
+            <div class="flex gap-x-4 mt-7">
+              <v-button class="w-full" variant="grey" size="small" @click="quit"
+                >QUIT</v-button
+              >
+              <v-button
+                class="w-full whitespace-nowrap px-3"
+                variant="yellow"
+                size="small"
+                @click="nextRound"
+                >NEXT ROUND</v-button
+              >
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Transition>
 
     <main v-if="!started" class="p-3 w-full max-w-[375px] sm:max-w-[460px]">
       <div>
@@ -438,6 +440,20 @@ function checkWin() {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+.fade-in {
+  /* bounce animation scale 0.5s */
+  animation: fade-in 0.5s ease;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 </style>
