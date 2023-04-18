@@ -35,7 +35,6 @@ const getHeight = () => {
 
 <style scoped>
 .t-button {
-  @apply px-2;
   border-radius: 15px;
   height: 68px;
   display: block;

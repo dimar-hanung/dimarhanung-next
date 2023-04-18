@@ -2,7 +2,53 @@
   <div
     class="tic-tac-container bg-[#1A2A33] grid place-items-center min-h-screen"
   >
-    <!-- <main class="w-full max-w-[460px]">
+    <div
+      v-if="modal"
+      class="z-10 fixed w-screen h-screen bg-[#000000] bg-opacity-50 grid place-items-center"
+    >
+      <div
+        class="bg-[#1F3641] w-full h-1/2 max-h-[280px] flex place-items-center"
+      >
+        <div class="mx-auto">
+          <div class="text-[#A8BFC9] text-4xl" v-if="playerWinner == 'CPU'">
+            OH NO, YOU LOST...
+          </div>
+          <div
+            class="text-[#A8BFC9] text-4xl"
+            v-else-if="playerWinner == 'YOU'"
+          >
+            CONGRATULATIONS, YOU WON!
+          </div>
+          <div class="text-[#A8BFC9] text-4xl" v-else-if="playerWinner == 'P1'">
+            PLAYER 1 WINS!
+          </div>
+          <div class="text-[#A8BFC9] text-4xl" v-else-if="playerWinner == 'P2'">
+            PLAYER 2 WINS!
+          </div>
+          <div
+            class="text-[#A8BFC9] text-4xl"
+            v-else-if="playerWinner == 'TIE'"
+          >
+            ROUND TIED!
+          </div>
+
+          <div class="flex gap-x-4 mt-7">
+            <v-button class="w-full" variant="grey" size="small" @click="quit"
+              >QUIT</v-button
+            >
+            <v-button
+              class="w-full whitespace-nowrap px-3"
+              variant="yellow"
+              size="small"
+              @click="nextRound"
+              >NEXT ROUND</v-button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main v-if="!started" class="w-full max-w-[460px]">
       <div>
         <div class="flex justify-center">
           <icon-x :width="32" :height="32" />
@@ -11,7 +57,7 @@
       </div>
       <div class="tic-tac-shadow bg-[#1F3641] p-6 pb-7 w-full mt-10 rounded-xl">
         <h1 class="text-center text-[#A8BFC9] font-bold">
-          PICK PLAYER 1'S MARK {{ p1 }}
+          PICK PLAYER 1'S MARK
         </h1>
         <div
           class="p-2 h-[4.5rem] flex place-items-center bg-[#1A2A33] rounded-lg mt-6 relative"
@@ -52,17 +98,21 @@
           REMEMBER: X GOES FIRST
         </div>
       </div>
-      <v-button class="w-full mt-10" :variant="'blue'"
+      <v-button
+        class="w-full mt-10"
+        :variant="'blue'"
+        @click="start({ mode: 'cpu' })"
         >NEW GAME (VS CPU)</v-button
       >
-      <v-button class="w-full mt-5" :variant="'yellow'"
+      <v-button
+        class="w-full mt-5"
+        :variant="'yellow'"
+        @click="start({ mode: 'player' })"
         >NEW GAME (VS Player)</v-button
       >
-    </main> -->
+    </main>
 
-    <!-- <v-button :variant="'grey'">NEW GAME (VS CPU)</v-button> -->
-
-    <div class="p-8">
+    <div v-else class="p-8">
       <div class="flex justify-between">
         <div class="flex gap-x-2">
           <icon-x :width="32" :height="32" />
@@ -89,34 +139,53 @@
           ><icon-restart class="mx-auto block"
         /></v-button>
       </div>
-      <div class="grid grid-cols-3 gap-2 mt-5">
+      <div class="grid grid-cols-3 gap-5 mt-5">
         <button
           v-for="(cell, index) in board"
           :key="index"
-          class="tic-tac-shadow bg-[#1F3641] outline-none border-none rounded-2xl"
-          :class="[getCellClass(cell)]"
+          class="tic-tac-shadow bg-[#1F3641] outline-none border-none rounded-2xl relative"
+          :class="[
+            getCellClass(cell),
+            winBoard.includes(index)
+              ? cell == 'O'
+                ? 'bg-[#F2B137]'
+                : 'bg-[#31C3BD]'
+              : '',
+          ]"
           @click="makeMove(index)"
         >
-          <template v-if="cell === 'X'">
-            <icon-x class="scale-in" />
-          </template>
-          <template v-else-if="cell === 'O'">
-            <icon-o class="scale-in" />
-          </template>
+          <div
+            v-if="!cell"
+            class="opacity-0 hover:opacity-100 absolute left-0 top-0 grid place-items-center w-full h-full transition-all"
+          >
+            <icon-x-outline v-if="p1 == 'X'" />
+            <icon-o-outline v-else />
+          </div>
+
+          <icon-x
+            v-if="cell === 'X'"
+            class="scale-in"
+            :fill="winBoard.includes(index) ? '#1F3641' : '#31C3BD'"
+          />
+          <icon-o
+            v-else-if="cell === 'O'"
+            class="scale-in"
+            :fill="winBoard.includes(index) ? '#1F3641' : '#F2B137'"
+          />
         </button>
       </div>
       <div class="flex gap-x-5 mt-5">
         <div class="bg-[#31C3BD] rounded-lg flex-grow text-center py-2">
-          <div class="text-sm font-medium">X (P2)</div>
-          <div class="text-[#1A2A33] text-2xl">0</div>
+          <div class="text-sm font-medium">X ({{ getXPlayer }})</div>
+          <div class="text-[#1A2A33] text-2xl">{{ score.X }}</div>
         </div>
         <div class="bg-[#A8BFC9] rounded-lg flex-grow text-center py-2">
-          <div class="text-sm font-medium">X (P2)</div>
-          <div class="text-[#1A2A33] text-2xl">0</div>
+          <div class="text-sm font-medium">TIES</div>
+          <div class="text-[#1A2A33] text-2xl">{{ score.T }}</div>
         </div>
         <div class="bg-[#F2B137] rounded-lg flex-grow text-center py-2">
-          <div class="text-sm font-medium">X (P2)</div>
-          <div class="text-[#1A2A33] text-2xl">0</div>
+          <div class="text-sm font-medium">O ({{ getOPlayer }})</div>
+          <div class="text-[#1A2A33] text-2xl">{{ score.O }}</div>
         </div>
       </div>
     </div>
@@ -137,20 +206,98 @@ export type Mode = "cpu" | "player";
 const board = ref(Array(9).fill(null));
 const p1 = ref("O");
 const gameOver = ref(false);
+const started = ref(false);
 
-const mode = ref<Mode>("player");
-const turn = ref("X");
+const mode = ref<Mode>("cpu");
+const turn = ref<"X" | "O">("X");
 
-onMounted(() => {
-  start();
+const modal = ref(false);
+const winner = ref<"X" | "O" | "T" | null>(null);
+const winBoard = ref<Array<number | null>>([]);
+const isCpuTurn = ref(false);
+const playerWinner = computed(() => {
+  if (mode.value == "cpu") {
+    if (p1.value == "X" && winner.value == "X") {
+      return "YOU";
+    }
+    if (p1.value == "O" && winner.value == "O") {
+      return "YOU";
+    }
+    if (winner.value == "T") {
+      return "TIE";
+    }
+    return "CPU";
+  }
+
+  if (p1.value == "X" && winner.value == "X") {
+    return "P1";
+  }
+  if (p1.value == "O" && winner.value == "O") {
+    return "P1";
+  }
+
+  if (winner.value == "T") {
+    return "TIE";
+  }
+
+  return "P2";
+});
+const score = reactive({
+  X: 0,
+  O: 0,
+  T: 0,
 });
 
-const start = () => {
-  if (mode.value === "cpu" && p1.value === "O") {
-    setTimeout(() => {
-      makeCpuMove();
-    }, 500);
+// onMounted(() => {
+//   start();
+// });
+
+const start = (options: { mode?: Mode }) => {
+  turn.value = "X";
+  modal.value = false;
+  started.value = true;
+  winBoard.value = [];
+  if (options.mode) {
+    mode.value = options.mode;
   }
+  if (mode.value === "cpu" && p1.value === "O") {
+    makeCpuMove();
+  }
+};
+
+const nextRound = () => {
+  board.value = Array(9).fill(null);
+  gameOver.value = false;
+  modal.value = false;
+  start({});
+};
+
+const getOPlayer = computed(() => {
+  // check if x p1 or p2 or cpu
+  if (mode.value === "cpu") {
+    return p1.value === "X" ? "CPU" : "YOU";
+  } else {
+    return p1.value === "X" ? "P2" : "P1";
+  }
+});
+
+const getXPlayer = computed(() => {
+  // check if x p1 or p2 or cpu
+  if (mode.value === "cpu") {
+    return p1.value === "O" ? "CPU" : "YOU";
+  } else {
+    return p1.value === "O" ? "P2" : "P1";
+  }
+});
+
+const quit = () => {
+  modal.value = false;
+  started.value = false;
+  board.value = Array(9).fill(null);
+  gameOver.value = false;
+  score.X = 0;
+  score.O = 0;
+  score.T = 0;
 };
 
 const getCellClass = (cell: string) => ({
@@ -161,93 +308,74 @@ const getCellClass = (cell: string) => ({
 });
 
 function makeMove(index: number) {
-  if (board.value[index] || gameOver.value) return;
+  if (board.value[index] || gameOver.value || isCpuTurn.value) return;
 
   board.value[index] = turn.value;
   if (checkWin()) {
-    alert(`${turn.value} wins!`);
+    // alert(`${turn.value} wins!`);
+    score[turn.value] += 1;
+    winner.value = turn.value;
     gameOver.value = true;
+    setTimeout(() => {
+      modal.value = true;
+    }, 500);
     return;
   } else if (board.value.every((cell) => cell)) {
-    alert("It's a draw!");
+    winner.value = "T";
+    score.T += 1;
     gameOver.value = true;
+    setTimeout(() => {
+      modal.value = true;
+    }, 500);
     return;
   }
   turn.value = turn.value === "X" ? "O" : "X";
   if (turn.value != p1.value && mode.value === "cpu") {
-    setTimeout(() => {
-      makeCpuMove();
-    }, 500);
-  }
-}
-
-function minimax(
-  board: Array<string | null>,
-  depth: number,
-  isMaximizing: boolean
-) {
-  const result = checkWin();
-
-  if (result) {
-    if (turn.value === "X") {
-      return 1;
-    } else if (turn.value === "O") {
-      return -1;
-    } else if (turn.value === "draw") {
-      return 0;
-    }
-  }
-
-  if (isMaximizing) {
-    let bestScore = -Infinity;
-    for (let i = 0; i < board.length; i++) {
-      if (board[i] == null) {
-        board[i] = "X";
-        const score = minimax(board, depth + 1, false);
-        board[i] = null;
-        bestScore = Math.max(score, bestScore);
-      }
-    }
-    return bestScore;
-  } else {
-    let bestScore = Infinity;
-    for (let i = 0; i < board.length; i++) {
-      if (board[i] == null) {
-        board[i] = "O";
-        const score = minimax(board, depth + 1, true);
-        board[i] = null;
-        bestScore = Math.min(score, bestScore);
-      }
-    }
-    return bestScore;
+    makeCpuMove();
   }
 }
 
 function makeCpuMove(difficulty = "easy") {
   console.log("makeCpuMove");
 
-  let index;
+  isCpuTurn.value = true;
+  setTimeout(() => {
+    let index;
 
-  do {
-    index = Math.floor(Math.random() * 9);
-  } while (board.value[index]);
+    do {
+      index = Math.floor(Math.random() * 9);
+    } while (board.value[index]);
 
-  board.value[index] = turn.value;
-  if (checkWin()) {
-    alert(`${turn.value} wins!`);
-    gameOver.value = true;
-    return;
-  }
+    board.value[index] = turn.value;
+    isCpuTurn.value = false;
+    if (checkWin()) {
+      score[turn.value] += 1;
+      winner.value = turn.value;
+      gameOver.value = true;
+      setTimeout(() => {
+        modal.value = true;
+      }, 500);
+      return;
+    } else if (board.value.every((cell) => cell)) {
+      winner.value = "T";
+      score.T += 1;
+      gameOver.value = true;
+      setTimeout(() => {
+        modal.value = true;
+      }, 500);
+      return;
+    }
 
-  turn.value = turn.value === "X" ? "O" : "X";
-  console.log("turn.value", turn.value);
+    turn.value = turn.value === "X" ? "O" : "X";
+    console.log("turn.value", turn.value);
+  }, 500);
 }
 
 function resetGame() {
   board.value = Array(9).fill(null);
-  turn.value = p1.value === "X" ? "O" : "X";
+  turn.value = "X";
   gameOver.value = false;
-  start();
+  start({});
 }
 
 function checkWin() {
@@ -262,9 +390,15 @@ function checkWin() {
     [2, 4, 6],
   ];
 
-  return winCombinations.some((combination) =>
+  const win = winCombinations.find((combination) =>
     combination.every((index) => board.value[index] === turn.value)
   );
+
+  if (win) {
+    winBoard.value = win;
+  }
+
+  return win;
 }
 </script>
 

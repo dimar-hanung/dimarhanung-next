@@ -17,7 +17,7 @@
 export interface Props {
   width: number;
   height: number;
-  fill: string;
+  fill?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
