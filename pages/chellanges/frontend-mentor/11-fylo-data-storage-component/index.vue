@@ -14,9 +14,11 @@
         <bg-mobile class="bottom-0 left-0 h-full" />
       </div>
 
-      <main class="block md:flex gap-x-4 w-full max-w-[920px] relative">
+      <main
+        class="block md:flex md:place-items-end gap-x-4 w-full max-w-[920px] relative"
+      >
         <section
-          class="bg-[#1E2D69] p-10 rounded-tr-[100px] rounded-[10px] w-full md:max-w-[350px]"
+          class="bg-[#1E2D69] shadow-primary p-10 rounded-tr-[100px] rounded-[10px] w-full md:max-w-[350px]"
         >
           <div>
             <logo />
@@ -40,7 +42,7 @@
           </div>
         </section>
         <section
-          class="bg-[#1E2D69] text-[#DBD9FF] p-10 rounded-[10px] w-full relative mt-8 md:mt-0"
+          class="bg-[#1E2D69] text-[#DBD9FF] shadow-primary p-10 rounded-[10px] w-full relative mt-8 md:mt-0 md:max-h-[155px]"
         >
           <p>You’ve used 815 GB of your storage</p>
           <div class="mt-4">
@@ -105,5 +107,9 @@ const storage = reactive({
 }
 .slider-gradient {
   background: linear-gradient(90deg, #ffa197 0%, #ff4a95 100%);
+}
+
+.shadow-primary {
+  box-shadow: 0px 75px 100px -30px rgba(0, 0, 0, 0.24776);
 }
 </style>
