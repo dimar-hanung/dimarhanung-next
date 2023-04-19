@@ -91,6 +91,10 @@ const chellanges = [
     title: "FAQ Accordion Card",
     path: "/chellanges/frontend-mentor/10-faq-accordion-card",
   },
+  {
+    title: "Fylo Data Storage Component",
+    path: "/chellanges/frontend-mentor/11-fylo-data-storage-component",
+  },
 ];
 
 // event listener when press "f" key
