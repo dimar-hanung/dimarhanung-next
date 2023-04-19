@@ -95,6 +95,10 @@ const chellanges = [
     title: "Fylo Data Storage Component",
     path: "/chellanges/frontend-mentor/11-fylo-data-storage-component",
   },
+  {
+    title: "3 Column Preview Card Component",
+    path: "/chellanges/frontend-mentor/12-3-column-preview-card-component",
+  },
 ];
 
 // event listener when press "f" key
