@@ -73,7 +73,7 @@
               </ul>
             </section>
             <section class="mt-8">
-              <h3 class="text-xl font-bold">Chellange Me</h3>
+              <h3 class="text-xl font-bold">Challenge Me</h3>
               <hr class="my-4" />
               <!-- {{ api.data.value?.["userDetails"] }}/ -->
               <div
@@ -271,7 +271,7 @@
               <t-card
                 class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
               >
-                <NuxtLink to="/chellanges/frontend-mentor">
+                <NuxtLink to="/challenges/frontend-mentor">
                   <div>Front-End Mentor</div>
                   <div class="flex w-full justify-between place-items-end">
                     <div class="text-2xl font-bold">90+</div>
@@ -391,7 +391,7 @@
 </template>
 
 <script setup lang="ts">
-// import { getName } from "@/js-chellange/sample";
+// import { getName } from "@/js-challenge/sample";
 const darkMode = useDarkMode();
 // const api = useFetch("https://api.sololearn.repl.co/profile/12709774", {
 //   // initialCache: true,

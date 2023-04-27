@@ -6,7 +6,7 @@
       <div class="w-full relative rounded-lg overflow-hidden cursor-pointer">
         <img
           class="w-full"
-          src="/chellanges/7-nft-preview-card-component/images/image-equilibrium.jpg"
+          src="/challenges/7-nft-preview-card-component/images/image-equilibrium.jpg"
           alt=""
         />
 
@@ -40,7 +40,7 @@
       <div class="flex place-items-center mt-4">
         <img
           class="w-8 h-8 rounded-full border border-white mr-4"
-          src="/chellanges/7-nft-preview-card-component/images/image-avatar.png"
+          src="/challenges/7-nft-preview-card-component/images/image-avatar.png"
           alt="creator avatar"
         />
 

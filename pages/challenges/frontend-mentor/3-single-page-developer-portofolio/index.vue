@@ -49,7 +49,7 @@
           class="w-full relative lg:absolute max-w-[445px] max-h-[242px] lg:max-h-none top-0 lg:right-40 mx-auto mt-12 lg:mt-0"
         >
           <img
-            src="/chellanges/3-single-page-developer-portofolio/images/profile.png"
+            src="/challenges/3-single-page-developer-portofolio/images/profile.png"
             alt=""
             class="h-full mx-auto lg:mx-0 max-h-[342px] lg:max-h-none z-10 relative lg:z-0"
           />
@@ -312,42 +312,42 @@ const isEmailValid = computed(() => {
 
 const projects = [
   {
-    image: "/chellanges/3-single-page-developer-portofolio/images/Bitmap-1.jpg",
+    image: "/challenges/3-single-page-developer-portofolio/images/Bitmap-1.jpg",
     title: "DESIGN PORTFOLIO",
     tags: ["HTML", "CSS"],
     liveLink: "https://dimarhanung.dev",
     githubLink: "https://github.com/dimar-hanung",
   },
   {
-    image: "/chellanges/3-single-page-developer-portofolio/images/Bitmap-1.png",
+    image: "/challenges/3-single-page-developer-portofolio/images/Bitmap-1.png",
     title: "E-LEARNING LANDING PAGE",
     tags: ["HTML", "CSS"],
     liveLink: "https://dimarhanung.dev",
     githubLink: "https://github.com/dimar-hanung",
   },
   {
-    image: "/chellanges/3-single-page-developer-portofolio/images/Bitmap-2.png",
+    image: "/challenges/3-single-page-developer-portofolio/images/Bitmap-2.png",
     title: "TODO WEB APP",
     tags: ["HTML", "CSS", "JAVASCRIPT"],
     liveLink: "https://dimarhanung.dev",
     githubLink: "https://github.com/dimar-hanung",
   },
   {
-    image: "/chellanges/3-single-page-developer-portofolio/images/Bitmap-3.png",
+    image: "/challenges/3-single-page-developer-portofolio/images/Bitmap-3.png",
     title: "ENTERTAINMENT WEB APP",
     tags: ["HTML", "CSS", "JAVASCRIPT"],
     liveLink: "https://dimarhanung.dev",
     githubLink: "https://github.com/dimar-hanung",
   },
   {
-    image: "/chellanges/3-single-page-developer-portofolio/images/Bitmap-4.png",
+    image: "/challenges/3-single-page-developer-portofolio/images/Bitmap-4.png",
     title: "MEMORY GAME",
     tags: ["HTML", "CSS", "JAVASCRIPT"],
     liveLink: "https://dimarhanung.dev",
     githubLink: "https://github.com/dimar-hanung",
   },
   {
-    image: "/chellanges/3-single-page-developer-portofolio/images/Bitmap-5.png",
+    image: "/challenges/3-single-page-developer-portofolio/images/Bitmap-5.png",
     title: "ART GALLERY SHOWCASE",
     tags: ["HTML", "CSS", "JAVASCRIPT"],
     liveLink: "https://dimarhanung.dev",

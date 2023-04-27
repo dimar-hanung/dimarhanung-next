@@ -10,7 +10,7 @@
         <div class="absolute w-full h-full bg-[#AB5CDB] bg-opacity-60"></div>
         <img
           class="w-full rounded"
-          src="/chellanges/9-stats-preview-card-component/image-header-mobile.jpg"
+          src="/challenges/9-stats-preview-card-component/image-header-mobile.jpg"
           alt=""
         />
       </section>
@@ -68,7 +68,7 @@
         <div class="absolute w-full h-full bg-[#AB5CDB] bg-opacity-60"></div>
         <img
           class="w-full block"
-          src="/chellanges/9-stats-preview-card-component/image-header-desktop.jpg"
+          src="/challenges/9-stats-preview-card-component/image-header-desktop.jpg"
           alt=""
         />
       </section>

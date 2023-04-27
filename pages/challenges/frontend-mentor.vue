@@ -4,7 +4,7 @@
       v-if="$route.query.preview !== 'full'"
       class="bg-slate-800 text-white justify-between w-full max-w-[280px] hidden xl:flex"
     >
-      <div class="w-full min-h-screen">
+      <div class="w-full min-h-screen h-screen top-0 sticky overflow-auto">
         <div class="p-2">
           <div class="flex justify-between p-4 bg-slate-700 w-full rounded-lg">
             <ClientOnly>
@@ -19,14 +19,18 @@
             </ClientOnly>
           </div>
         </div>
-        <div class="mt-8 px-2">
+        <div class="mt-4 px-2">
+          <h3 class="px-3 block p-4 text-slate-300 mt-4 font-bold text-lg">
+            <font-awesome-icon class="mr-1" :icon="['fa', 'cloud']" />
+            Challenges
+          </h3>
           <NuxtLink
-            v-for="(chellange, i) in chellanges"
+            v-for="(challenge, i) in challenges"
             class="sidebar--link px-3 block hover:text-white hover:bg-white hover:bg-opacity-25 p-4 text-slate-300 rounded-lg transition-all"
-            :to="chellange.path"
-            ><div class="flex">
-              <div class="mr-2">{{ i + 1 }}.</div>
-              <div>{{ chellange.title }}</div>
+            :to="challenge.path"
+            ><div class="flex place-items-center border-l border-l-slate-500">
+              <div class="mr-2"></div>
+              <div>{{ challenge.title }}</div>
             </div></NuxtLink
           >
         </div>
@@ -50,54 +54,58 @@ useSeoMeta({
 const route = useRoute();
 const router = useRouter();
 
-const chellanges = [
+const challenges = [
   {
     title: "QR Code",
-    path: "/chellanges/frontend-mentor/qrcode",
+    path: "/challenges/frontend-mentor/qrcode",
+    icon: ["fa", "qrcode"],
   },
   {
     title: "Order Summary",
-    path: "/chellanges/frontend-mentor/order-summary",
+    path: "/challenges/frontend-mentor/order-summary",
+    icon: ["fa", "credit-card"],
   },
   {
     title: "Single Page Developer Portofolio",
-    path: "/chellanges/frontend-mentor/3-single-page-developer-portofolio",
+    path: "/challenges/frontend-mentor/3-single-page-developer-portofolio",
+    icon: ["fa", "photo-video"],
   },
   {
     title: "Result Summary Component",
-    path: "/chellanges/frontend-mentor/4-result-summary-component",
+    path: "/challenges/frontend-mentor/4-result-summary-component",
+    icon: ["fa", "pencil-square"],
   },
   {
     title: "Password Generator App",
-    path: "/chellanges/frontend-mentor/5-password-generator-app",
+    path: "/challenges/frontend-mentor/5-password-generator-app",
   },
   {
     title: "Product Preview Card Component",
-    path: "/chellanges/frontend-mentor/6-product-preview-card-component",
+    path: "/challenges/frontend-mentor/6-product-preview-card-component",
   },
   {
     title: "NFT Preview Card Component",
-    path: "/chellanges/frontend-mentor/7-nft-preview-card-component",
+    path: "/challenges/frontend-mentor/7-nft-preview-card-component",
   },
   {
     title: "Tic Tac Toe Game",
-    path: "/chellanges/frontend-mentor/8-tic-tac-toe-game",
+    path: "/challenges/frontend-mentor/8-tic-tac-toe-game",
   },
   {
     title: "Stats Preview Card Component",
-    path: "/chellanges/frontend-mentor/9-stats-preview-card-component",
+    path: "/challenges/frontend-mentor/9-stats-preview-card-component",
   },
   {
     title: "FAQ Accordion Card",
-    path: "/chellanges/frontend-mentor/10-faq-accordion-card",
+    path: "/challenges/frontend-mentor/10-faq-accordion-card",
   },
   {
     title: "Fylo Data Storage Component",
-    path: "/chellanges/frontend-mentor/11-fylo-data-storage-component",
+    path: "/challenges/frontend-mentor/11-fylo-data-storage-component",
   },
   {
     title: "3 Column Preview Card Component",
-    path: "/chellanges/frontend-mentor/12-3-column-preview-card-component",
+    path: "/challenges/frontend-mentor/12-3-column-preview-card-component",
   },
 ];
 
@@ -114,23 +122,23 @@ const handleKeyDown = (e: KeyboardEvent) => {
   }
 
   if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "arrowup") {
-    const index = chellanges.findIndex((chellange) => {
-      return chellange.path === route.path;
+    const index = challenges.findIndex((challenge) => {
+      return challenge.path === route.path;
     });
     if (index > 0) {
       router.push({
-        path: chellanges[index - 1].path,
+        path: challenges[index - 1].path,
         query: { ...route.query },
       });
     }
   }
   if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "arrowdown") {
-    const index = chellanges.findIndex((chellange) => {
-      return chellange.path === route.path;
+    const index = challenges.findIndex((challenge) => {
+      return challenge.path === route.path;
     });
-    if (index < chellanges.length - 1) {
+    if (index < challenges.length - 1) {
       router.push({
-        path: chellanges[index + 1].path,
+        path: challenges[index + 1].path,
         query: { ...route.query },
       });
     }
@@ -140,8 +148,8 @@ const handleKeyDown = (e: KeyboardEvent) => {
 onMounted(() => {
   window.addEventListener("keydown", handleKeyDown);
   // find index of current route
-  const index = chellanges.findIndex((chellange) => {
-    return chellange.path === route.path;
+  const index = challenges.findIndex((challenge) => {
+    return challenge.path === route.path;
   });
 });
 

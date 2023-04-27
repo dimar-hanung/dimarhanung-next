@@ -6,12 +6,12 @@
       <section class="w-full sm:w-1/2">
         <img
           class="hidden sm:block w-full"
-          src="/chellanges/6-product-preview-card-component/images/image-product-desktop.jpg"
+          src="/challenges/6-product-preview-card-component/images/image-product-desktop.jpg"
           alt=""
         />
         <img
           class="block sm:hidden w-full"
-          src="/chellanges/6-product-preview-card-component/images/image-product-mobile.jpg"
+          src="/challenges/6-product-preview-card-component/images/image-product-mobile.jpg"
           alt=""
         />
       </section>
