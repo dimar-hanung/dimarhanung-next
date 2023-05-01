@@ -6,22 +6,27 @@
 
     <div class="container mx-auto">
       <div class="mt-4">
-        <h3 class="text-2xl font-bold px-2">
-          {{ $t("hello", { name: "Dimar Hanung" }) }}
-
-          <img
-            class="w-8 inline-block"
-            src="https://camo.githubusercontent.com/e8e7b06ecf583bc040eb60e44eb5b8e0ecc5421320a92929ce21522dbc34c891/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"
-            alt=""
-          />
-        </h3>
-        <div class="px-2 mt-2">
-          <div
-            class="px-2 rounded dark:bg-indigo-800 bg-indigo-200 shadow max-w-max"
-          >
-            {{ $t("collab") }}
+        <header>
+          <h3 class="text-2xl font-bold px-2">
+            {{ $t("hello", { name: "Dimar Hanung" }) }}
+            <img
+              class="w-8 inline-block"
+              src="https://camo.githubusercontent.com/e8e7b06ecf583bc040eb60e44eb5b8e0ecc5421320a92929ce21522dbc34c891/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"
+              alt=""
+            />
+          </h3>
+          <div class="px-2 mt-2">
+            <p>
+              <!-- short description about me -->
+              Professional Front-End Developer with 2 years of experience.
+            </p>
+            <p
+              class="px-2 rounded dark:bg-indigo-800 bg-indigo-200 shadow max-w-max mt-2"
+            >
+              {{ $t("collab") }}
+            </p>
           </div>
-        </div>
+        </header>
         <hr class="my-4 border-0" />
         <main class="flex flex-wrap">
           <section class="w-1/2 flex-grow p-2 min-w-[230px]">
@@ -391,7 +396,6 @@
 </template>
 
 <script setup lang="ts">
-// import { getName } from "@/js-challenge/sample";
 const darkMode = useDarkMode();
 // const api = useFetch("https://api.sololearn.repl.co/profile/12709774", {
 //   // initialCache: true,
@@ -403,10 +407,16 @@ const darkMode = useDarkMode();
 
 useSeoMeta({
   title: "Dimar Hanung",
-  description: "Dimar Hanung - Front-End Developer",
-  ogDescription: "Dimar Hanung - Front-End Developer",
-  // image: "https://i.ibb.co/0nZ6Z3r/Dimar-Hanung.png",
-  // url: "https://dimar-hanung.vercel.app/",
+
+  description:
+    "Dimar Hanung is a Frontend Developer with 2 years of experience. He is a self-taught developer who loves to learn new things and share his knowledge with others.",
+  ogDescription:
+    "Dimar Hanung is a Frontend Developer with 2 years of experience. He is a self-taught developer who loves to learn new things and share his knowledge with others.",
+  author: "Dimar Hanung",
+  ogImage: "https://i.ibb.co/SfVpQCz/IMG20211117182339.jpg",
+  ogImageAlt: "Dimar Hanung",
+  twitterImage: "https://i.ibb.co/SfVpQCz/IMG20211117182339.jpg",
+  twitterImageAlt: "Dimar Hanung",
 });
 </script>
 <style>
