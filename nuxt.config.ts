@@ -25,15 +25,8 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: [
-    "@nuxtjs/tailwindcss",
-    "@nuxtjs/i18n",
-    "@nuxt/image-edge",
-    "nuxt-simple-sitemap",
-  ],
-  sitemap: {
-    enabled: true,
-  },
+  modules: ["@nuxtjs/tailwindcss", "@nuxtjs/i18n", "@nuxt/image-edge"],
+
   tailwindcss: {
     configPath: "tailwind.config",
   },
