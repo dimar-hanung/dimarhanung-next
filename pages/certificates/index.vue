@@ -79,6 +79,7 @@
 </template>
 
 <script setup>
+import certificatesData from "./certificates.json";
 const scale = ref(1);
 const index = ref(0);
 const timer = ref(0);
@@ -103,83 +104,7 @@ const data = Array(1000)
     };
   });
 
-const certificates = reactive([
-  {
-    imageUrl: "/certificates/placeholder.png",
-    title: "Placeholder",
-    desc: "Placeholder",
-    date: "2800-01-01",
-  },
-  {
-    imageUrl: "/certificates/placeholder.png",
-    title: "Placeholder",
-    desc: "Placeholder",
-    date: "2800-01-01",
-  },
-
-  {
-    imageUrl: "/certificates/test-dome-js.jpg",
-    title: "JAVASCRIPT",
-    desc: "Tentang Javascript, seperti variabel, tipe data, operator, dan lain-lain",
-    date: "2022-01-01",
-    cradential:
-      "https://www.testdome.com/certificates/8349aaff75a04dd6a72294ce302bcc22",
-  },
-  {
-    imageUrl: "/certificates/hackerrank-sql-basic.png",
-    title: "SQL Basic",
-    desc: "Tentang SQL Basic, seperti select, where, order by, limit, join, dan lain-lain",
-    date: "2022-01-06",
-    cradential: "https://www.hackerrank.com/certificates/c391b01fdfb2",
-  },
-  {
-    imageUrl: "/certificates/hackerrank-sql-intermediate.png",
-    title: "SQL Intermediate",
-    desc: "Tentang SQL Intermediate, seperti subquery, group by, having dan lain-lain",
-    date: "2022-01-10",
-    cradential: "https://www.hackerrank.com/certificates/5a7a70238ccf",
-  },
-  {
-    imageUrl: "/certificates/progamming-hub-vuejs.png",
-    title: "VueJS",
-    desc: "Tentang VueJS, seperti Vue CLI, Vue Router, Vuex, Composition API, dan lain-lain",
-    date: "2022-01-10",
-    cradential:
-      "https://storage.googleapis.com/programminghub/certificate%2F1641754032683.pdf",
-  },
-  {
-    imageUrl: "/certificates/test-dome-vuejs.png",
-    title: "VueJS",
-    desc: "Tentang VueJS, seperti Vue CLI, Vue Router, Vuex, Composition API, dan lain-lain",
-    date: "2022-01-01",
-    cradential:
-      "https://www.testdome.com/certificates/0cae5afb5dc246168540e52c5edf0c8f",
-  },
-  {
-    imageUrl: "/certificates/codecademy-js.png",
-    title: "Javascript",
-    desc: "Tentang Javascript, seperti variabel, tipe data, operator, dan lain-lain",
-    date: "2020-10-21",
-    cradential:
-      "https://www.codecademy.com/profiles/dimarHanung7622206430/certificates/705dcb15de0da4dd9d9fc4f3274b430e",
-  },
-  {
-    imageUrl: "/certificates/codecademy-html.png",
-    title: "HTML",
-    desc: "Tentang HTML, seperti tag, atribut, dan lain-lain",
-    date: "2020-10-19",
-    cradential:
-      "https://www.codecademy.com/profiles/dimarHanung7622206430/certificates/9eb0741e5ebef1f9f58a53bfac67d3a7",
-  },
-  {
-    imageUrl: "/certificates/codecademy-sass.png",
-    title: "SASS",
-    desc: "Tentang SASS, seperti variabel, mixin, dan lain-lain",
-    date: "2020-10-15",
-    cradential:
-      "https://www.codecademy.com/profiles/dimarHanung7622206430/certificates/eb1ffda40f347629dcef6de33d3f9741",
-  },
-])
+const certificates = reactive(certificatesData)
   .map((item, i) => ({ ...item, id: i }))
   .concat(
     // dummy data certificates 5
