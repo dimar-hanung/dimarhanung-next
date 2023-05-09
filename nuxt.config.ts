@@ -3,6 +3,9 @@ export default defineNuxtConfig({
     // preset: "vercel-edge",
     preset: "vercel-edge",
   },
+  sitemap: {
+    siteUrl: "https://dimarhanung.dev",
+  },
 
   app: {
     head: {
