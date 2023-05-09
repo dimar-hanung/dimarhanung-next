@@ -17,7 +17,7 @@
             @click="toggleDarkMode"
           />
         </ClientOnly>
-        <div
+        <!-- <div
           class="flex gap-x-2 place-items-center p-1 dark:hover:bg-slate-700 cursor-pointer rounded transition-all relative"
           @mouseover="isDropdownLang = true"
           @mouseleave="isDropdownLang = false"
@@ -55,7 +55,7 @@
               EN
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

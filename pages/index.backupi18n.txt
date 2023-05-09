@@ -8,7 +8,7 @@
       <div class="mt-4">
         <header>
           <h3 class="text-2xl font-bold px-2">
-            Hello, I'm Dimar Hanung!
+            {{ $t("hello", { name: "Dimar Hanung" }) }}
             <img
               class="w-8 inline-block"
               src="https://camo.githubusercontent.com/e8e7b06ecf583bc040eb60e44eb5b8e0ecc5421320a92929ce21522dbc34c891/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"
@@ -23,7 +23,7 @@
             <p
               class="px-2 rounded dark:bg-indigo-800 bg-indigo-200 shadow max-w-max mt-2"
             >
-              Open to collaborate
+              {{ $t("collab") }}
             </p>
           </div>
         </header>
@@ -31,18 +31,39 @@
         <main class="flex flex-wrap">
           <section class="w-1/2 flex-grow p-2 min-w-[230px]">
             <section>
-              <h3 class="text-xl font-bold">About Dimar</h3>
+              <h3 class="text-xl font-bold">{{ $t("about.title") }}</h3>
               <hr class="my-4" />
               <ul class="text-lg">
-                <t-list>🎂 {{ new Date().getFullYear() - 2002 }} yo </t-list>
-
-                <t-list>🏢 Front-End Developer at Universitas Terbuka</t-list>
-                <t-list>🎓 Studies for TKJ at SMK Telkom Purwokerto</t-list>
                 <t-list
-                  >🎓 Studies for Information System at Universitas Terbuka
+                  >🎂
+                  {{
+                    $t("about.year", { year: new Date().getFullYear() - 2002 })
+                  }}
                 </t-list>
+
                 <t-list
-                  >🏡 Lives in Tangerang Selatan
+                  >🏢
+                  {{
+                    $t("about.job", {
+                      job: "Front-End Developer",
+                      at: "Universitas Terbuka",
+                    })
+                  }}</t-list
+                >
+                <t-list
+                  >🎓
+                  {{
+                    $t("about.study1", { at: "SMK Telkom Purwokerto" })
+                  }}</t-list
+                >
+                <t-list
+                  >🎓
+                  {{
+                    $t("about.study2", { at: "Universitas Terbuka" })
+                  }}</t-list
+                >
+                <t-list
+                  >🏡{{ $t("about.address") }}
                   <img
                     src="https://flagpedia.net/data/flags/emoji/twitter/256x256/id.png"
                     alt=""
@@ -51,7 +72,7 @@
                   Indonesia</t-list
                 >
                 <t-list>
-                  ⚡ I like to
+                  ⚡ {{ $t("about.iLike") }}
                   <t-kbd>> code .</t-kbd>
                 </t-list>
               </ul>
@@ -75,10 +96,10 @@
               <t-card class="flex gap-x-2">
                 <div>
                   <!-- <img
-                    class="rounded-full w-20"
-                    :src="api.data.value?.['userDetails']?.['avatarUrl']"
-                    alt=""
-                  /> -->
+                      class="rounded-full w-20"
+                      :src="api.data.value?.['userDetails']?.['avatarUrl']"
+                      alt=""
+                    /> -->
                 </div>
                 <div class="flex justify-between w-full px-2">
                   <p>
@@ -94,14 +115,14 @@
                     </div>
                     <div class="flex gap-2">
                       <!-- <div
-                        class="py-1 px-3 border border-indigo-400 uppercase rounded-full text-xs"
-                        v-for="(badge, i) in api.data.value?.['userDetails']?.[
-                          'badges'
-                        ]"
-                        :key="i + 'badge'"
-                      >
-                        {{ badge?.name }}
-                      </div> -->
+                          class="py-1 px-3 border border-indigo-400 uppercase rounded-full text-xs"
+                          v-for="(badge, i) in api.data.value?.['userDetails']?.[
+                            'badges'
+                          ]"
+                          :key="i + 'badge'"
+                        >
+                          {{ badge?.name }}
+                        </div> -->
                     </div>
                   </div>
                   <a
@@ -134,10 +155,10 @@
               <t-card class="flex gap-x-2">
                 <div>
                   <!-- <img
-                    class="rounded-full w-20"
-                    :src="'https://avatars.githubusercontent.com/u/42312636?s=100'"
-                    alt=""
-                  /> -->
+                      class="rounded-full w-20"
+                      :src="'https://avatars.githubusercontent.com/u/42312636?s=100'"
+                      alt=""
+                    /> -->
                 </div>
                 <div class="flex justify-between w-full px-2">
                   <p>
@@ -149,14 +170,14 @@
                     <div>
                       <!-- 🏆 -->
                       <!-- {{
-                        codewars.data.value?.["ranks"]?.["overall"]?.["name"]
-                      }} -->
+                          codewars.data.value?.["ranks"]?.["overall"]?.["name"]
+                        }} -->
                     </div>
                     <div class="mb-2">
                       <!-- ⭐ -->
                       <!-- {{
-                        codewars.data.value?.["ranks"]?.["overall"]?.["score"]
-                      }} -->
+                          codewars.data.value?.["ranks"]?.["overall"]?.["score"]
+                        }} -->
                       <!-- Score -->
                     </div>
                   </div>
@@ -191,10 +212,10 @@
             <t-card class="flex gap-x-2">
               <div>
                 <!-- <img
-                  class="rounded-full w-20"
-                  :src="'https://avatars.githubusercontent.com/u/42312636?s=400&u=81348ae939bf84bfcdc150a0c382a39d50888c12&v=4'"
-                  alt=""
-                /> -->
+                    class="rounded-full w-20"
+                    :src="'https://avatars.githubusercontent.com/u/42312636?s=400&u=81348ae939bf84bfcdc150a0c382a39d50888c12&v=4'"
+                    alt=""
+                  /> -->
               </div>
               <div class="flex justify-between w-full px-2">
                 <!-- <div>@dimar-hanung</div> -->
