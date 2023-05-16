@@ -93,6 +93,12 @@ import storageArrow from "./components/storage-arrow.vue";
 import bgDesktop from "./components/bg-desktop.vue";
 import bgMobile from "./components/bg-mobile.vue";
 
+useSeoMeta({
+  title: "Front-End Mentor - Fylo Data Storage Component",
+  description:
+    "Front-End Mentor - Fylo Data Storage Component with tailwind css",
+});
+
 const storage = reactive({
   used: 815,
   total: 1000,

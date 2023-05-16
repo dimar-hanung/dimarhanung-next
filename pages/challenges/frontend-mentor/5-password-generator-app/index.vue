@@ -126,7 +126,8 @@ import inputCheck from "./components/input-check.vue";
 import iconArrowRight from "./components/icon-arrow-right.vue";
 
 useSeoMeta({
-  title: "Password Generator APP",
+  title: "Front-End Mentor - Password Generator App",
+  description: "Front-End Mentor - Password Generator App with tailwind css",
 });
 
 const value = ref(10);

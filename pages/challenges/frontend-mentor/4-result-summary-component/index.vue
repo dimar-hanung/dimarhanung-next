@@ -102,6 +102,11 @@ import iconMemory from "./components/icon-memory.vue";
 import iconReaction from "./components/icon-reaction.vue";
 import iconVerbal from "./components/icon-verbal.vue";
 import iconVisual from "./components/icon-visual.vue";
+
+useSeoMeta({
+  title: "Front-End Mentor - Summary Component",
+  description: "Front-End Mentor - Summary Component with tailwind css",
+});
 </script>
 
 <style scoped>

@@ -220,6 +220,11 @@ import vButton from "./components/v-button.vue";
 
 export type Mode = "cpu" | "player";
 
+useSeoMeta({
+  title: "Front-End Mentor - Tic Tac Toe Game",
+  description: "Front-End Mentor - Tic Tac Toe Game with tailwind css",
+});
+
 const board = ref(Array(9).fill(null));
 const p1 = ref("O");
 const gameOver = ref(false);

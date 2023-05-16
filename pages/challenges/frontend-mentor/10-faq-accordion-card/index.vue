@@ -66,6 +66,10 @@ import vDetails from "./components/v-details.vue";
 import illustrationBoxDesktop from "./components/illustration-box-desktop.vue";
 import illustrationWomanOnlineDesktop from "./components/illustration-woman-online-desktop.vue";
 import illustrationWomanOnlineMobile from "./components/illustration-woman-online-mobile.vue";
+useSeoMeta({
+  title: "Front-End Mentor FAQ Accordion card",
+  description: "Front-End Mentor - FAQ Accordion card tailwind css",
+});
 </script>
 
 <style scoped>

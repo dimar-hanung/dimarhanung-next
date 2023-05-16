@@ -62,6 +62,11 @@
 import iconEthereum from "./components/icon-ethereum.vue";
 import iconClock from "./components/icon-clock.vue";
 import iconView from "./components/icon-view.vue";
+
+useSeoMeta({
+  title: "Front-End Mentor - Preview Card Component",
+  description: "Front-End Mentor - Preview Card Component with tailwind css",
+});
 </script>
 
 <style scoped>

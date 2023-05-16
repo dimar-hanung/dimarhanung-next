@@ -62,6 +62,12 @@
 import iconLuxury from "./components/icon-luxury.vue";
 import iconSedans from "./components/icon-sedans.vue";
 import iconSuvs from "./components/icon-suvs.vue";
+
+useSeoMeta({
+  title: "Front-End Mentor - Column Preview Card Component",
+  description:
+    "Front-End Mentor - Column Preview Card Component with tailwind css",
+});
 </script>
 
 <style scoped>

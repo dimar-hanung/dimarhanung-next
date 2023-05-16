@@ -297,6 +297,12 @@ import iconOval from "./components/icon-oval.vue";
 import IconOvalWide from "./components/icon-oval-wide.vue";
 import projectCard from "./components/project-card.vue";
 
+useSeoMeta({
+  title: "Front-End Mentor - Single Page Developer Portofolio",
+  description:
+    "Front-End Mentor - Single Page Developer Portofolio with tailwind css",
+});
+
 const form = reactive({
   name: null,
   email: null,

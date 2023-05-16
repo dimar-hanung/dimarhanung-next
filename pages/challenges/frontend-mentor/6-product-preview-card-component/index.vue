@@ -55,6 +55,11 @@
 
 <script setup lang="ts">
 import iconCart from "./components/icon-cart.vue";
+useSeoMeta({
+  title: "Front-End Mentor - Product Preview Card Component",
+  description:
+    "Front-End Mentor - Product Preview Card Component with tailwind css",
+});
 </script>
 
 <style scoped>

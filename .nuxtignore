@@ -1,6 +1,5 @@
 # igonre all vue files inside components folder in pages folder
-pages/**/components/*.vue
-
+# pages/**/components/*.vue
 
 
 

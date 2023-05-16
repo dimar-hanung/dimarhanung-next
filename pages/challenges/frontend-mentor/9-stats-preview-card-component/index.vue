@@ -75,7 +75,13 @@
     </main>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+useSeoMeta({
+  title: "Front-End Mentor - Stat Preview Card Component",
+  description:
+    "Front-End Mentor - Stat Preview Card Component with tailwind css",
+});
+</script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lexend+Deca&display=swap");
