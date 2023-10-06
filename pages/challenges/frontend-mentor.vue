@@ -107,6 +107,10 @@ const challenges = [
     title: "3 Column Preview Card Component",
     path: "/challenges/frontend-mentor/12-3-column-preview-card-component",
   },
+  {
+    title: "Interactive card details form",
+    path: "/challenges/frontend-mentor/13-interactive-card-details-form",
+  },
 ];
 
 // event listener when press "f" key
