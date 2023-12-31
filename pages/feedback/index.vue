@@ -48,7 +48,7 @@
 
       <div
         v-if="isSubmitting"
-        class="bg-green-100 text-green-700 rounded-lg p-4 mt-4"
+        class="bg-white text-slate-700 rounded-lg p-4 mt-4"
       >
         <p class="font-bold">Asisten Dimar</p>
         <p class="mt-2">
@@ -172,8 +172,4 @@ const submitFeedback = async () => {
 };
 </script>
 
-<style scoped>
-.feedback {
-  /* background: linear-gradient(101deg, #000 4.89%, #006759 100.78%); */
-}
-</style>
+<style scoped></style>
