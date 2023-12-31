@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   nitro: {
     // preset: "vercel-edge",
-    preset: "vercel-edge",
+    // preset: "vercel-edge",
   },
   sitemap: {
     siteUrl: "https://dimarhanung.dev",
