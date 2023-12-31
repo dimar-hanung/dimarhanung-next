@@ -44,7 +44,10 @@
               label="Card Number"
               :placeholder="'e.g. 1234 5678 9123 0000'"
               v-model="form.cardNumber"
-              :formatter="(str) => formatCardNumber(str)"
+              :is-valid="isValidCardNumber"
+              :formatter="
+                (str, target, start) => formatCardNumber(str, target, start)
+              "
             />
             <div class="flex gap-2 mt-8">
               <div>
@@ -54,22 +57,29 @@
                     class="w-20"
                     :id="'cardMonth'"
                     :placeholder="'MM'"
-                    v-model="form.name"
+                    v-model="form.mm"
+                    @update:model-value="changeMmFocus"
+                    :max-length="2"
                   />
                   <input-text
                     class="w-20"
+                    ref="cardYear"
                     :id="'cardYear'"
                     :placeholder="'YY'"
-                    v-model="form.name"
+                    v-model="form.yy"
+                    @update:model-value="changeYyFocus"
+                    :max-length="2"
                   />
                 </div>
               </div>
               <input-text
+                ref="cvc"
                 class="flex-grow"
                 :id="'cvc'"
                 label="CVC"
                 :placeholder="'e.g. 123'"
-                v-model="form.name"
+                v-model="form.cvc"
+                :max-length="3"
               />
             </div>
 
@@ -99,9 +109,35 @@ useSeoMeta({
 const form = reactive({
   name: "",
   cardNumber: "9591648963891011",
+  mm: "",
+  yy: "",
+  cvc: "",
 });
 
-const formatCardNumber = (value: string) => {
+const cardYear = ref<null | HTMLInputElement>(null);
+const cvc = ref<null | HTMLInputElement>(null);
+const isValidCardNumber = computed(() => {
+  console.log("cardNUmber", form.cardNumber);
+  return /^\d+$/.test(form.cardNumber?.split(" ")?.join(""));
+});
+const changeMmFocus = (v) => {
+  console.log(cardYear.value);
+  if (v.length >= 2) {
+    cardYear.value?.focus();
+  }
+};
+
+const changeYyFocus = (v: string) => {
+  if (v.length >= 2) {
+    cvc.value?.focus();
+  }
+};
+
+const formatCardNumber = (
+  value: string,
+  target?: HTMLInputElement,
+  start?: number
+) => {
   let cleanedInput = value.replace(/\s/g, ""); // hapus semua spasi
   let output = "";
 
@@ -113,7 +149,13 @@ const formatCardNumber = (value: string) => {
     }
   }
 
-  return output;
+  return {
+    value: output,
+    selectionRange:
+      (start || 0) % 5 == 0
+        ? (start || 0) + (value.length % 5 == 0 ? 1 : 0)
+        : start,
+  };
 };
 
 const formattedCardNumber = computed(() => {
