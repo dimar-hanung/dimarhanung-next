@@ -8,10 +8,11 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/image-edge": "^1.0.0-28050764.aaee7ac",
+    "@nuxt/image-edge": "<1.0.0-testing",
     "@nuxtjs/tailwindcss": "^6.6.5",
-    "nuxt": "^3.7.4",
-    "nuxt-simple-sitemap": "^2.4.23"
+    "nuxt": "^3.9.0",
+    "nuxt-simple-sitemap": "^2.4.23",
+    "sharp": "^0.33.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",

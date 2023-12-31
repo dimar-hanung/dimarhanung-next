@@ -141,11 +141,14 @@ const submitFeedback = async () => {
   if (isLoadingSubmit.value || !feedback.value) return;
 
   isLoadingSubmit.value = true;
-  const data = await $fetch<Record<string, any>>(
+  const data = await useFetch<Record<string, any>>(
     "https://api-gpt.dev.ut.web.id/general-gpt/feedback",
     {
       method: "POST",
-      body: { user: feedback.value }, // 'feedback' diisi dengan data dari form
+
+      body: {
+        feedback: feedback.value,
+      },
     }
   );
 

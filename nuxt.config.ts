@@ -6,7 +6,6 @@ export default defineNuxtConfig({
   sitemap: {
     siteUrl: "https://dimarhanung.dev",
   },
-
   app: {
     head: {
       title: "Dimar Hanung Portfolio",

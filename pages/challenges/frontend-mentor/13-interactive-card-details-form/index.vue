@@ -118,7 +118,7 @@ const cardYear = ref<null | HTMLInputElement>(null);
 const cvc = ref<null | HTMLInputElement>(null);
 const isValidCardNumber = computed(() => {
   console.log("cardNUmber", form.cardNumber);
-  return /^\d+$/.test(form.cardNumber?.split(" ")?.join(""));
+  return false;
 });
 const changeMmFocus = (v) => {
   console.log(cardYear.value);
