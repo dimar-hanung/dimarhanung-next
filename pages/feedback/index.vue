@@ -122,7 +122,7 @@ const isSubmitting = ref(false);
 const aiReply = ref("");
 
 const feedbacks = useFetch<{ data?: Array<Record<string, any>> }>(
-  "https://api-gpt.dev.ut.web.id/general-gpt/feedbacks",
+  "http://localhost:3001/general-gpt/feedbacks",
   {
     immediate: true,
     method: "GET",
@@ -142,17 +142,18 @@ const submitFeedback = async () => {
 
   isLoadingSubmit.value = true;
   const data = await useFetch<Record<string, any>>(
-    "https://api-gpt.dev.ut.web.id/general-gpt/feedback",
+    "http://localhost:3001/general-gpt/feedback",
     {
       method: "POST",
 
       body: {
-        feedback: feedback.value,
+        user: feedback.value,
       },
     }
   );
 
-  aiReply.value = data?.data?.replyToUser ?? "Maaf, ada kesalahan";
+  aiReply.value =
+    data?.data.value?.["data"]?.["replyToUser"] ?? "Maaf, ada kesalahan";
   isLoadingSubmit.value = false;
   feedbacks.execute();
   isSubmitting.value = true;
