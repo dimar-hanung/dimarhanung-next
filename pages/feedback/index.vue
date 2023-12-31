@@ -122,7 +122,7 @@ const isSubmitting = ref(false);
 const aiReply = ref("");
 
 const feedbacks = useFetch<{ data?: Array<Record<string, any>> }>(
-  "https://api-dimar-ops6me6ly-dimar-hanung.vercel.app/general-gpt/feedbacks",
+  "https://api-dimar-r7o8xadpq-dimar-hanung.vercel.app//general-gpt/feedbacks",
   {
     immediate: true,
     method: "GET",
@@ -142,7 +142,7 @@ const submitFeedback = async () => {
 
   isLoadingSubmit.value = true;
   const data = await useFetch<Record<string, any>>(
-    "https://api-dimar-ops6me6ly-dimar-hanung.vercel.app/general-gpt/feedback",
+    "https://api-dimar-r7o8xadpq-dimar-hanung.vercel.app//general-gpt/feedback",
     {
       method: "POST",
 
