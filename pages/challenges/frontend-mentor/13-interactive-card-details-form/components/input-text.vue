@@ -11,6 +11,7 @@
         :value="modelValue"
         @input="onInput"
         ref="input"
+        :required="required"
       />
     </div>
   </div>
@@ -28,8 +29,9 @@ export interface Props {
     selectionStart?: number
   ) => string | FormatterReturn;
   maxLength?: number;
-  type: "text" | "number";
+  type?: "text" | "number";
   isValid?: boolean;
+  required?: boolean;
 }
 
 export interface FormatterReturn {
@@ -44,6 +46,8 @@ const props = withDefaults(defineProps<Props>(), {
     selectionStart?: number
   ) => str,
   isValid: true,
+  type: "text",
+  required: false,
 });
 
 const input = ref<null | HTMLInputElement>(null);

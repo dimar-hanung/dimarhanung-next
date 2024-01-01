@@ -1,10 +1,9 @@
 <template>
   <svg
-    width="483"
-    height="900"
     viewBox="0 0 483 900"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid slice"
   >
     <rect width="483" height="900" fill="#21092F" />
     <mask
