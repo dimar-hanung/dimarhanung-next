@@ -58,7 +58,26 @@
 
       <hr class="my-12 border-slate-600" />
 
-      <div class="mt-12 flex flex-wrap md:flex-nowrap gap-4">
+      <div v-if="feedbacks.pending.value">
+        <div class="text-center font-bold">
+          Memuat feedback yang sudah diberikan sebelumnya...
+        </div>
+        <div class="animate-pulse flex flex-wrap md:flex-nowrap gap-4">
+          <section class="w-full md:w-1/2">
+            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+          </section>
+
+          <section class="w-full md:w-1/2">
+            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+          </section>
+        </div>
+      </div>
+
+      <div class="mt-12 flex flex-wrap md:flex-nowrap gap-4" v-else>
         <section class="w-full md:w-1/2">
           <h3 class="font-bold text-2xl">Feedback Negatif 😭😭</h3>
 
@@ -130,6 +149,7 @@ const feedbacks = useFetch<{ data?: Array<Record<string, any>> }>(
   "https://api-gpt.dev.ut.web.id/general-gpt/feedbacks",
   {
     immediate: true,
+    server: false,
     method: "GET",
 
     headers: {
