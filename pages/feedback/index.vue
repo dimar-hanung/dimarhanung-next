@@ -121,6 +121,11 @@ const isLoadingSubmit = ref(false);
 const isSubmitting = ref(false);
 const aiReply = ref("");
 
+useSeoMeta({
+  title: "Feedback untuk Dimar Hanung",
+  description: "Beri feedback kepada Dimar Hanung",
+});
+
 const feedbacks = useFetch<{ data?: Array<Record<string, any>> }>(
   "https://api-gpt.dev.ut.web.id/general-gpt/feedbacks",
   {
