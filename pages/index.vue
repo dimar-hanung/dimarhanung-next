@@ -18,7 +18,8 @@
           <div class="px-2 mt-2">
             <p>
               <!-- short description about me -->
-              Professional Front-End Developer with 2 years of experience.
+              Front-End Developer with 3 years of experience. ( still can't
+              center a div )
             </p>
             <p
               class="px-2 rounded dark:bg-indigo-800 bg-indigo-200 shadow max-w-max mt-2"
@@ -34,8 +35,6 @@
               <h3 class="text-xl font-bold">About Dimar</h3>
               <hr class="my-4" />
               <ul class="text-lg">
-                <t-list>🎂 {{ new Date().getFullYear() - 2002 }} yo </t-list>
-
                 <t-list>🏢 Front-End Developer at Universitas Terbuka</t-list>
                 <t-list>🎓 Studies for TKJ at SMK Telkom Purwokerto</t-list>
                 <t-list
