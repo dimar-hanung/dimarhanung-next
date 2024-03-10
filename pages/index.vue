@@ -18,8 +18,7 @@
           <div class="px-2 mt-2">
             <p>
               <!-- short description about me -->
-              Front-End Developer with 3 years of experience. ( still can't
-              center a div )
+              Front-End Developer with 3 years of experience.
             </p>
             <p
               class="px-2 rounded dark:bg-indigo-800 bg-indigo-200 shadow max-w-max mt-2"
