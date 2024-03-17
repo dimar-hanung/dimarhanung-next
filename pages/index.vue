@@ -373,7 +373,6 @@
 </template>
 
 <script setup lang="ts">
-const darkMode = useDarkMode();
 // const api = useFetch("https://api.sololearn.repl.co/profile/12709774", {
 //   // initialCache: true,
 // });

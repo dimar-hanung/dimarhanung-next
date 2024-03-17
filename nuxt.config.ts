@@ -1,4 +1,6 @@
 export default defineNuxtConfig({
+  devtools: { enabled: true },
+
   nitro: {
     // preset: "vercel-edge",
     // preset: "vercel-edge",
@@ -25,7 +27,18 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxt/image", "floating-vue/nuxt"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@nuxt/image",
+    "floating-vue/nuxt",
+    "@nuxtjs/color-mode",
+    "nuxt-icon",
+  ],
+  colorMode: {
+    // preference: "system",
+    // fallback: "light",
+    classSuffix: "",
+  },
 
   tailwindcss: {
     configPath: "tailwind.config",
