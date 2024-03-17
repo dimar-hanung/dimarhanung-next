@@ -3,9 +3,7 @@ export default defineNuxtConfig({
     // preset: "vercel-edge",
     // preset: "vercel-edge",
   },
-  sitemap: {
-    siteUrl: "https://dimarhanung.dev",
-  },
+
   app: {
     head: {
       title: "Dimar Hanung Portfolio",
@@ -27,7 +25,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "nuxt-simple-sitemap", "@nuxt/image"],
+  modules: ["@nuxtjs/tailwindcss", "@nuxt/image", "floating-vue/nuxt"],
 
   tailwindcss: {
     configPath: "tailwind.config",
