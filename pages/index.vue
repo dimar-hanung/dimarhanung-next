@@ -1,30 +1,34 @@
 <template>
   <div
-    class="portofolio-container bg-muted-50 dark:bg-muted-800 pb-4 min-h-screen transition-all dark:text-white"
+    class="portofolio-container bg-muted-300 dark:bg-muted-900 pb-4 min-h-screen transition-all dark:text-white"
   >
     <t-nav></t-nav>
 
     <div class="container mx-auto">
       <div class="mt-4">
         <header>
-          <h3 class="text-2xl font-bold px-2">
+          <h3 class="text-2xl font-bold px-2 flex place-items-center gap-2">
             Hello, I'm Dimar Hanung!
-            <img
-              class="w-8 inline-block"
-              src="https://camo.githubusercontent.com/e8e7b06ecf583bc040eb60e44eb5b8e0ecc5421320a92929ce21522dbc34c891/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f6876524a434c467a6361737252346961377a2f67697068792e676966"
-              alt=""
-            />
+
+            <Icon class="text-4xl" name="fluent-emoji-flat:waving-hand" />
           </h3>
           <div class="px-2 mt-2">
             <p>
               <!-- short description about me -->
               Front-End Developer with 3 years of experience.
             </p>
-            <p
+            <!-- <p
               class="px-2 rounded dark:bg-primary-800 bg-primary-200 shadow max-w-max mt-2"
             >
               Open to collaborate
-            </p>
+            </p> -->
+            <a
+              href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
+              target="_blank"
+              class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
+            >
+              Open to Collaborate
+            </a>
           </div>
         </header>
         <hr class="my-4 border-0" />
@@ -306,7 +310,7 @@
               </a>
               <a href="https://www.instagram.com/dmr_hanung/" target="_blank">
                 <t-card class="dark:hover:bg-muted-700 cursor-pointer">
-                  <div>Stalking me 😣</div>
+                  <div>Stalking me</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
                       <ClientOnly>

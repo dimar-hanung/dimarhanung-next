@@ -1,10 +1,18 @@
 <template>
   <div
-    class="text-2xl text-yellow-500 cursor-pointer h-9 w-9 rounded grid place-items-center hover:bg-muted-200 dark:hover:bg-muted-700 hover:bg-opacity-50 transition-all"
+    class="text-2xl cursor-pointer h-9 w-9 rounded grid place-items-center hover:bg-muted-200 dark:hover:bg-muted-700 hover:bg-opacity-50 transition-all"
     @click="toggleDarkMode"
   >
-    <Icon name="uil:sun" v-if="color.value == 'light'"></Icon>
-    <Icon v-else="color.value == 'dark'" name="uil:moon"></Icon>
+    <Icon
+      class="text-yellow-900"
+      name="uil:sun"
+      v-if="color.value == 'light'"
+    ></Icon>
+    <Icon
+      class="text-yellow-500"
+      v-else="color.value == 'dark'"
+      name="uil:moon"
+    ></Icon>
   </div>
 </template>
 

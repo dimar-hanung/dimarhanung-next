@@ -1,9 +1,10 @@
 <template>
   <button
+    v-wave
     :aria-label="ariaLabel"
     :type="type"
     :disabled="disabled"
-    class="px-6 py-2 text-sm text-primary-500 dark:text-slate-50 transition-colors duration-300 border-2 border-primary-400 rounded-full shadow-xl shadow-primary-300/30 hover:bg-primary-500 hover:text-primary-100"
+    class="px-6 py-2 text-sm text-primary-500 dark:text-slate-50 transition-colors duration-300 border-2 border-primary-600 rounded-lg shadow-xl hover:bg-muted-100 hover:dark:bg-muted-800 hover:bg-opacity-60"
   >
     <slot></slot>
   </button>
