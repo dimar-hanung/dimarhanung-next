@@ -1,6 +1,6 @@
 <template>
   <div
-    class="portofolio-container bg-indigo-50 dark:bg-slate-800 pb-4 min-h-screen transition-all dark:text-white"
+    class="portofolio-container bg-muted-50 dark:bg-muted-800 pb-4 min-h-screen transition-all dark:text-white"
   >
     <t-nav></t-nav>
 
@@ -21,7 +21,7 @@
               Front-End Developer with 3 years of experience.
             </p>
             <p
-              class="px-2 rounded dark:bg-indigo-800 bg-indigo-200 shadow max-w-max mt-2"
+              class="px-2 rounded dark:bg-primary-800 bg-primary-200 shadow max-w-max mt-2"
             >
               Open to collaborate
             </p>
@@ -59,7 +59,7 @@
               <hr class="my-4" />
               <!-- {{ api.data.value?.["userDetails"] }}/ -->
               <div
-                class="flex gap-x-2 p-1 rounded place-items-center bg-indigo-100 dark:bg-slate-900"
+                class="flex gap-x-2 p-1 rounded place-items-center bg-muted-100 dark:bg-muted-900"
               >
                 <div>
                   <img
@@ -92,7 +92,7 @@
                     </div>
                     <div class="flex gap-2">
                       <!-- <div
-                        class="py-1 px-3 border border-indigo-400 uppercase rounded-full text-xs"
+                        class="py-1 px-3 border border-muted-400 uppercase rounded-full text-xs"
                         v-for="(badge, i) in api.data.value?.['userDetails']?.[
                           'badges'
                         ]"
@@ -118,7 +118,7 @@
                 </div>
               </t-card>
               <div
-                class="flex gap-x-2 p-1 rounded place-items-center bg-indigo-100 dark:bg-slate-900 mt-4"
+                class="flex gap-x-2 p-1 rounded place-items-center bg-muted-100 dark:bg-muted-900 mt-4"
               >
                 <div>
                   <img
@@ -175,7 +175,7 @@
               </t-card>
             </section>
             <div
-              class="flex gap-x-2 p-1 rounded place-items-center bg-indigo-100 dark:bg-slate-900 mt-4"
+              class="flex gap-x-2 p-1 rounded place-items-center bg-muted-100 dark:bg-muted-900 mt-4"
             >
               <div>
                 <img
@@ -223,7 +223,7 @@
             <hr class="my-4" />
             <div class="flex flex-wrap gap-4">
               <t-card
-                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
               >
                 <NuxtLink to="/certificates">
                   <div>Certificate</div>
@@ -238,7 +238,7 @@
                 </NuxtLink>
               </t-card>
               <t-card
-                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
               >
                 <div>Project</div>
                 <div class="flex w-full justify-between place-items-end">
@@ -251,7 +251,7 @@
                 </div>
               </t-card>
               <t-card
-                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
               >
                 <NuxtLink to="/challenges/frontend-mentor">
                   <div>Front-End Mentor</div>
@@ -266,7 +266,7 @@
                 </NuxtLink>
               </t-card>
               <t-card
-                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-slate-700"
+                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
               >
                 <div>Fun Stuff & Experiment</div>
                 <div class="flex w-full justify-between place-items-end">
@@ -286,7 +286,7 @@
                 href="https://www.linkedin.com/in/dimar-hanung/"
                 target="_blank"
               >
-                <t-card class="dark:hover:bg-slate-700 cursor-pointer">
+                <t-card class="dark:hover:bg-muted-700 cursor-pointer">
                   <div>Become my relation</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
@@ -305,7 +305,7 @@
                 </t-card>
               </a>
               <a href="https://www.instagram.com/dmr_hanung/" target="_blank">
-                <t-card class="dark:hover:bg-slate-700 cursor-pointer">
+                <t-card class="dark:hover:bg-muted-700 cursor-pointer">
                   <div>Stalking me 😣</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
@@ -324,7 +324,7 @@
                 </t-card>
               </a>
               <a href="https://twitter.com/dimarhanung" target="_blank">
-                <t-card class="dark:hover:bg-slate-700 cursor-pointer">
+                <t-card class="dark:hover:bg-muted-700 cursor-pointer">
                   <div>Just my daily note</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
@@ -346,7 +346,7 @@
                 href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
                 target="_blank"
               >
-                <t-card class="dark:hover:bg-slate-700 cursor-pointer">
+                <t-card class="dark:hover:bg-muted-700 cursor-pointer">
                   <div>Be my friend / Collab</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
