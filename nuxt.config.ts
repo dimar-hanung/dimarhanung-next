@@ -33,6 +33,7 @@ export default defineNuxtConfig({
     "floating-vue/nuxt",
     "@nuxtjs/color-mode",
     "nuxt-icon",
+    "v-wave/nuxt",
   ],
   colorMode: {
     // preference: "system",
