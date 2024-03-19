@@ -232,26 +232,19 @@
                 <NuxtLink to="/certificates">
                   <div>Certificate</div>
                   <div class="flex w-full justify-between place-items-end">
-                    <div class="text-2xl font-bold">30+</div>
+                    <div class="text-2xl font-bold">12+</div>
                     <div>
-                      <ClientOnly>
-                        <font-awesome-icon :icon="['fa', 'arrow-right']" />
-                      </ClientOnly>
+                      <Icon class="text-4xl" name="uil:arrow-right" />
                     </div>
                   </div>
                 </NuxtLink>
               </t-card>
               <t-card
-                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
+                class="w-1/3 flex-grow min-w-[230px] dark:hover:bg-muted-700"
               >
                 <div>Project</div>
                 <div class="flex w-full justify-between place-items-end">
-                  <div class="text-2xl font-bold">7+</div>
-                  <div>
-                    <ClientOnly>
-                      <!-- <font-awesome-icon :icon="['fa', 'arrow-right']" /> -->
-                    </ClientOnly>
-                  </div>
+                  <div class="text-2xl font-bold">15+</div>
                 </div>
               </t-card>
               <t-card
@@ -260,26 +253,19 @@
                 <NuxtLink to="/challenges/frontend-mentor">
                   <div>Front-End Mentor</div>
                   <div class="flex w-full justify-between place-items-end">
-                    <div class="text-2xl font-bold">90+</div>
+                    <div class="text-2xl font-bold">10+</div>
                     <div>
-                      <ClientOnly>
-                        <font-awesome-icon :icon="['fa', 'arrow-right']" />
-                      </ClientOnly>
+                      <Icon class="text-4xl" name="uil:arrow-right" />
                     </div>
                   </div>
                 </NuxtLink>
               </t-card>
               <t-card
-                class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
+                class="w-1/3 flex-grow min-w-[230px] dark:hover:bg-muted-700"
               >
                 <div>Fun Stuff & Experiment</div>
                 <div class="flex w-full justify-between place-items-end">
-                  <div class="text-2xl font-bold">32+</div>
-                  <div>
-                    <ClientOnly>
-                      <!-- <font-awesome-icon :icon="['fa', 'arrow-right']" /> -->
-                    </ClientOnly>
-                  </div>
+                  <div class="text-2xl font-bold">10+</div>
                 </div>
               </t-card>
             </div>
@@ -294,17 +280,14 @@
                   <div>Become my relation</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <ClientOnly>
-                        <font-awesome-icon
-                          :icon="['fab', 'linkedin']"
-                          class="text-4xl text-blue-600"
-                        />
-                      </ClientOnly>
+                      <Icon
+                        name="uil:linkedin"
+                        class="text-4xl text-blue-600"
+                      />
+
                       Linekdin
                     </div>
-                    <ClientOnly>
-                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
-                    </ClientOnly>
+                    <Icon class="text-4xl" name="uil:arrow-right" />
                   </div>
                 </t-card>
               </a>
@@ -313,17 +296,14 @@
                   <div>Stalking me</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <ClientOnly>
-                        <font-awesome-icon
-                          :icon="['fab', 'instagram']"
-                          class="text-4xl text-red-400"
-                        />
-                      </ClientOnly>
+                      <Icon
+                        name="uil:instagram"
+                        class="text-4xl text-red-400"
+                      />
+
                       Instagram
                     </div>
-                    <ClientOnly>
-                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
-                    </ClientOnly>
+                    <Icon class="text-4xl" name="uil:arrow-right" />
                   </div>
                 </t-card>
               </a>
@@ -332,17 +312,11 @@
                   <div>Just my daily note</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <ClientOnly>
-                        <font-awesome-icon
-                          :icon="['fab', 'twitter']"
-                          class="text-4xl text-blue-400"
-                        />
-                      </ClientOnly>
+                      <Icon name="uil:twitter" class="text-4xl text-blue-400" />
+
                       Twitter
                     </div>
-                    <ClientOnly>
-                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
-                    </ClientOnly>
+                    <Icon class="text-4xl" name="uil:arrow-right" />
                   </div>
                 </t-card>
               </a>
@@ -354,17 +328,15 @@
                   <div>Be my friend / Collab</div>
                   <div class="flex w-full justify-between place-items-center">
                     <div class="flex gap-2 place-items-center">
-                      <ClientOnly>
-                        <font-awesome-icon
-                          :icon="['fab', 'whatsapp']"
-                          class="text-4xl text-green-400"
-                        />
-                      </ClientOnly>
+                      <Icon
+                        name="uil:whatsapp"
+                        class="text-4xl text-green-400"
+                      />
+
                       WhatsApp
                     </div>
-                    <ClientOnly>
-                      <font-awesome-icon :icon="['fa', 'arrow-right']" />
-                    </ClientOnly>
+
+                    <Icon class="text-4xl" name="uil:arrow-right" />
                   </div>
                 </t-card>
               </a>
