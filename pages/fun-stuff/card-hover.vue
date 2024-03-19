@@ -2,11 +2,11 @@
   <div class="bg-slate-900 relative p-4 text-white">
     <main class="container mx-auto h-full">
       <h3 class="text-center font-bold text-4xl">Nuxt Card Cool Hover</h3>
-      <section class="grid grid-cols-2 gap-4 mt-4">
+      <section class="grid grid-cols-2 gap-8 mt-4">
         <div
           v-for="i in Array.from({ length: 10 })"
           ref="wrapper"
-          class="wrapper relative z-10 rounded-xl overflow-hidden p-[2px] w-full h-44"
+          class="wrapper relative z-10 rounded-xl overflow-hidden p-[2px] hover:bg-[#40c371] transition-colors duration-300 w-full h-44"
           style="--x: -350px; --y: -350px"
         >
           <div class="inner bg-slate-700 rounded-xl p-3 h-full">
