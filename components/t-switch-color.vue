@@ -1,51 +1,51 @@
 <template>
-  <div>
-    <t-modal v-model:show="isOpen">
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 bg-muted-300 dark:bg-muted-900 p-4"
-      >
-        <div v-for="color in primaryPresets" :key="color.name">
+  <t-modal v-model:show="isOpen">
+    <div
+      class="relative z-50 grid grid-cols-1 sm:grid-cols-2 gap-x-4 bg-muted-300 dark:bg-muted-900 p-4"
+    >
+      <div v-for="color in primaryPresets" :key="color.name">
+        <button
+          type="button"
+          class="group w-full flex items-center gap-3 p-2 rounded-lg hover:bg-muted-100 dark:hover:bg-muted-700/70 transition-colors duration-200"
+          @click="() => switchPrimary(color)"
+          :class="[
+            currentPrimary === color.name
+              ? 'ring-1 ring-primary-500 z-10 relative'
+              : 'ring-0',
+          ]"
+        >
+          <span
+            class="block h-6 w-6 rounded-lg shrink-0"
+            :class="color.class"
+          ></span>
+          <p>{{ color.label }}</p>
+        </button>
+      </div>
+    </div>
+    <hr class="border-muted-200 dark:border-muted-700" />
+    <div>
+      <div class="flex items-center p-4 bg-muted-200 dark:bg-muted-800">
+        <div class="ml-auto flex items-center justify-end gap-2">
           <button
+            v-for="color in mutedPresets"
+            :key="color.name"
             type="button"
-            class="group w-full flex items-center gap-3 p-2 rounded-lg hover:bg-muted-100 dark:hover:bg-muted-700/70 transition-colors duration-200"
-            @click="() => switchPrimary(color)"
+            class="block h-6 w-6 rounded-full"
             :class="[
-              currentPrimary === color.name
-                ? 'ring-1 ring-primary-500 z-10 relative'
+              color.class,
+              currentMuted === color.name
+                ? 'ring-1 ring-primary-500'
                 : 'ring-0',
             ]"
-          >
-            <span
-              class="block h-6 w-6 rounded-lg shrink-0"
-              :class="color.class"
-            ></span>
-            <p>{{ color.label }}</p>
-          </button>
+            :data-nui-tooltip="color.label"
+            @click="() => switchMuted(color)"
+          ></button>
+          <t-switch-dark-mode></t-switch-dark-mode>
         </div>
       </div>
-      <hr class="border-muted-200 dark:border-muted-700" />
-      <div>
-        <div class="flex items-center p-4 bg-muted-200 dark:bg-muted-800">
-          <div class="ml-auto flex items-center justify-end gap-2">
-            <button
-              v-for="color in mutedPresets"
-              :key="color.name"
-              type="button"
-              class="block h-6 w-6 rounded-full"
-              :class="[
-                color.class,
-                currentMuted === color.name
-                  ? 'ring-1 ring-primary-500'
-                  : 'ring-0',
-              ]"
-              :data-nui-tooltip="color.label"
-              @click="() => switchMuted(color)"
-            ></button>
-            <t-switch-dark-mode></t-switch-dark-mode>>
-          </div>
-        </div>
-      </div>
-    </t-modal>
+    </div>
+  </t-modal>
+  <div class="relative z-20">
     <div
       @click="isOpen = !isOpen"
       v-wave
@@ -129,24 +129,24 @@ const primaryPresets = [
     shades: colors.orange,
     class: "bg-orange-500",
   },
-  {
-    name: "mauve",
-    label: "Custom",
-    shades: {
-      50: "#EEECF9",
-      100: "#DCD8F3",
-      200: "#B6AEE5",
-      300: "#9488D8",
-      400: "#6E5DCB",
-      500: "#4E3CB9",
-      600: "#3E2F92",
-      700: "#302470",
-      800: "#1F1849",
-      900: "#100C27",
-      950: "#080613",
-    },
-    class: "bg-indigo-400",
-  },
+  // {
+  //   name: "mauve",
+  //   label: "Custom",
+  //   shades: {
+  //     50: "#EEECF9",
+  //     100: "#DCD8F3",
+  //     200: "#B6AEE5",
+  //     300: "#9488D8",
+  //     400: "#6E5DCB",
+  //     500: "#4E3CB9",
+  //     600: "#3E2F92",
+  //     700: "#302470",
+  //     800: "#1F1849",
+  //     900: "#100C27",
+  //     950: "#080613",
+  //   },
+  //   class: "bg-indigo-400",
+  // },
 ] as const;
 
 const mutedPresets = [
@@ -174,12 +174,12 @@ const mutedPresets = [
     shades: colors.zinc,
     class: "bg-zinc-300 dark:bg-zinc-900",
   },
-  {
-    name: "neutral",
-    label: "Neutral",
-    shades: colors.neutral,
-    class: "bg-neutral-300 dark:bg-neutral-900",
-  },
+  // {
+  //   name: "neutral",
+  //   label: "Neutral",
+  //   shades: colors.violet,
+  //   class: "bg-lime-300 dark:bg-lime-900",
+  // },
   {
     name: "oled",
     label: "Oled",
@@ -217,7 +217,7 @@ onBeforeMount(() => {
     currentPrimary.value = primary;
     switchColorShades(
       "primary",
-      primaryPresets.find((c) => c.name === primary)!.shades
+      primaryPresets.find((c) => c.name === primary)?.shades || colors.sky
     );
   }
   const muted = localStorage.getItem("mutedColor");
@@ -225,7 +225,7 @@ onBeforeMount(() => {
     currentMuted.value = muted;
     switchColorShades(
       "muted",
-      mutedPresets.find((c) => c.name === muted)!.shades
+      mutedPresets.find((c) => c.name === muted)?.shades || colors.slate
     );
   }
 });

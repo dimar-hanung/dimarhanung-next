@@ -1,35 +1,40 @@
 <template>
   <div
-    class="portofolio-container bg-muted-300 dark:bg-muted-900 pb-4 min-h-screen transition-all dark:text-white"
+    class="portofolio-container bg-muted-200 dark:bg-muted-900 pb-4 min-h-screen transition-all dark:text-white"
   >
-    <t-nav></t-nav>
+    <t-nav class="relative z-50"></t-nav>
 
-    <div class="container mx-auto">
+    <div class="container mx-auto pb-8">
       <div class="mt-4">
         <header>
-          <h3 class="text-2xl font-bold px-2 flex place-items-center gap-2">
-            Hello, I'm Dimar Hanung!
-
-            <Icon class="text-4xl" name="fluent-emoji-flat:waving-hand" />
-          </h3>
-          <div class="px-2 mt-2">
-            <p>
-              <!-- short description about me -->
-              Front-End Developer with 3 years of experience.
-            </p>
-            <!-- <p
-              class="px-2 rounded dark:bg-primary-800 bg-primary-200 shadow max-w-max mt-2"
-            >
-              Open to collaborate
-            </p> -->
-            <a
-              href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
-              target="_blank"
-              class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
-            >
-              Open to Collaborate
-            </a>
+          <div
+            class="p-4 rounded-lg border border-primary-500 max-w-max flex shadow-lg place-items-center gap-4 bg-white dark:bg-transparent"
+          >
+            <!-- avatar -->
+            <div class="w-24 h-24 rounded-full overflow-hidden">
+              <img
+                src="/public/profile/profile.jpeg"
+                alt="Dimar Hanung"
+                class="w-full object-center mx-auto"
+              />
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold px-2 flex place-items-center gap-2">
+                Hello, I'm Dimar Hanung!
+                <Icon class="text-4xl" name="fluent-emoji-flat:waving-hand" />
+              </h3>
+              <div class="px-2 mt-2">
+                <p>Front-End Developer with 3 years of experience.</p>
+              </div>
+            </div>
           </div>
+          <a
+            href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
+            target="_blank"
+            class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
+          >
+            Open to Collaboration
+          </a>
         </header>
         <hr class="my-4 border-0" />
         <main class="flex flex-wrap">
@@ -112,12 +117,13 @@
                     aria-label="Visit Dimar Hanung's Solo Learn profile"
                     target="_blank"
                   >
-                    <t-button class="h-10"
-                      ><ClientOnly>
-                        <font-awesome-icon
-                          :icon="['fa', 'arrow-right']"
-                        /> </ClientOnly
-                    ></t-button>
+                    <t-button
+                      :ui="{
+                        padding: 'py-1 px-4',
+                      }"
+                    >
+                      <Icon class="text-3xl" name="uil:arrow-right" />
+                    </t-button>
                   </a>
                 </div>
               </t-card>
@@ -168,12 +174,13 @@
                     target="_blank"
                     aria-label="Visit Dimar Hanung's Code Wars profile"
                   >
-                    <t-button class="h-10"
-                      ><ClientOnly>
-                        <font-awesome-icon
-                          :icon="['fa', 'arrow-right']"
-                        /> </ClientOnly
-                    ></t-button>
+                    <t-button
+                      :ui="{
+                        padding: 'py-1 px-4',
+                      }"
+                    >
+                      <Icon class="text-3xl" name="uil:arrow-right" />
+                    </t-button>
                   </a>
                 </div>
               </t-card>
@@ -211,12 +218,13 @@
                   target="_blank"
                   aria-label="Visit Dimar Hanung's GitHub profile"
                 >
-                  <t-button class="h-10"
-                    ><ClientOnly>
-                      <font-awesome-icon
-                        :icon="['fa', 'arrow-right']"
-                      /> </ClientOnly
-                  ></t-button>
+                  <t-button
+                    :ui="{
+                      padding: 'py-1 px-4',
+                    }"
+                  >
+                    <Icon class="text-3xl" name="uil:arrow-right" />
+                  </t-button>
                 </a>
               </div>
             </t-card>
@@ -343,6 +351,9 @@
             </div>
           </section>
         </main>
+        <!-- <hr class="my-8" /> -->
+        <home-s-stack />
+        <!-- <home-t-card-hover /> -->
       </div>
     </div>
   </div>

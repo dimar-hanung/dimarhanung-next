@@ -1,5 +1,22 @@
 <template>
-  <canvas class="bg-black" ref="canvas" @mousemove="updateWind"></canvas>
+  <div
+    @mousemove="updateWind"
+    class="grid place-items-center bg-white min-h-screen w-full"
+  >
+    <div
+      class="box-snow w-[1300px] h-[900px] rounded-3xl relative overflow-hidden"
+    >
+      <canvas
+        width="1300"
+        height="900"
+        class="bg-sky-900 block shadow-inner z-10"
+        ref="canvas"
+      ></canvas>
+      <div
+        class="w-full inner-shadow h-full absolute left-0 top-0 bg-gradient-to-br from-[#00eeff70] to-[#ffd00085]"
+      ></div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -9,24 +26,14 @@ const canvas = ref<HTMLCanvasElement | null>(null);
 let ctx: CanvasRenderingContext2D | null = null;
 let animationFrameId: number;
 
-const numSnowflakes = 100;
-const numClouds = 5;
+const numSnowflakes = 200;
 const snowflakes: Snowflake[] = [];
-const clouds: Cloud[] = [];
 let wind = { x: 0, y: 0 };
 
 interface Snowflake {
   x: number;
   y: number;
   radius: number;
-  speed: number;
-}
-
-interface Cloud {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
   speed: number;
 }
 
@@ -37,7 +44,9 @@ function createSnowflake(): Snowflake {
     ? Math.random() * window.innerWidth * -0.2
     : Math.random() * window.innerWidth * 1.2;
 
-  const y = Math.random() * window.innerHeight;
+  const y = spawnFromLeft
+    ? Math.random() * window.innerHeight
+    : Math.random() * -window.innerHeight;
 
   return {
     x,
@@ -47,43 +56,9 @@ function createSnowflake(): Snowflake {
   };
 }
 
-function createCloud(): Cloud {
-  return {
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight * 0.5,
-    width: Math.random() * 200 + 100,
-    height: Math.random() * 50 + 30,
-    speed: Math.random() * 0.5 + 0.2,
-  };
-}
-
 function updateSnowflakes() {
   ctx!.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  // Draw clouds
-  clouds.forEach((cloud) => {
-    ctx!.beginPath();
-    ctx!.ellipse(
-      cloud.x,
-      cloud.y,
-      cloud.width,
-      cloud.height,
-      0,
-      0,
-      Math.PI * 2
-    );
-    ctx!.fillStyle = "rgba(255, 255, 255, 0.6)";
-    ctx!.fill();
-    ctx!.closePath();
-
-    cloud.x += cloud.speed;
-
-    if (cloud.x > window.innerWidth) {
-      cloud.x = -cloud.width;
-    }
-  });
-
-  // Draw snowflakes
   snowflakes.forEach((snowflake) => {
     ctx!.beginPath();
     ctx!.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
@@ -114,22 +89,18 @@ function updateWind(event: MouseEvent) {
   const mouseY = event.clientY - rect.top;
 
   wind.x = (mouseX - window.innerWidth / 2) / 100;
-  wind.y = (mouseY - window.innerHeight / 2) / 100;
+  wind.y = mouseY / 100;
 }
 
 onMounted(() => {
   ctx = canvas.value?.getContext("2d") || null;
 
   if (ctx) {
-    canvas.value!.width = window.innerWidth;
-    canvas.value!.height = window.innerHeight;
+    // canvas.value!.width = window.innerWidth;
+    // canvas.value!.height = window.innerHeight;
 
     for (let i = 0; i < numSnowflakes; i++) {
       snowflakes.push(createSnowflake());
-    }
-
-    for (let i = 0; i < numClouds; i++) {
-      clouds.push(createCloud());
     }
 
     animationFrameId = requestAnimationFrame(updateSnowflakes);
@@ -142,12 +113,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
+.inner-shadow {
+  /* inner shadow */
+  box-shadow: inset 0px 0px 66px -14px rgba(0, 0, 0, 1);
 }
 </style>

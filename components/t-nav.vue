@@ -1,7 +1,7 @@
 <template>
   <nav class="p-4 sticky top-0 dark:text-white">
     <div
-      class="container mx-auto bg-white dark:bg-muted-800 dark:shadow-2xl shadow-xl p-3 rounded-2xl flex justify-between max-w-max"
+      class="container mx-auto bg-white dark:bg-muted-950 dark:shadow-2xl shadow-xl p-3 rounded-2xl flex justify-between max-w-max"
     >
       <div></div>
 
