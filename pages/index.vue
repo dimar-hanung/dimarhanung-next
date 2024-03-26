@@ -353,20 +353,10 @@
         </main>
         <!-- <hr class="my-8" /> -->
         <home-s-stack />
-
-        <div
-          class="text-5xl text-center text-muted-800 dark:text-muted-300 mt-24"
-        >
-          <p
-            class="py-24 border-t border-b border-muted-800 dark:border-muted-300"
-          >
-            Sekecil apapun sebuah progress, itu adalah sebuah progress.
-          </p>
-        </div>
-
-        <!-- <home-t-card-hover /> -->
       </div>
     </div>
+    <home-s-motive />
+    <!-- <home-t-card-hover class="pb-32" /> -->
   </div>
 </template>
 

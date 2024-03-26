@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "nuxt-icon",
     "v-wave/nuxt",
+    "@vueuse/nuxt",
   ],
   colorMode: {
     // preference: "system",

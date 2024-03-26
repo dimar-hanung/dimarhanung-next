@@ -1,5 +1,6 @@
 <template>
   <section
+    ref="wrapper"
     @mousemove="updateWind"
     class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-black to-primary-800 dark:to-primary-950 rounded-[2rem] relative z-[1] shadow-2xl overflow-hidden"
   >
@@ -208,8 +209,8 @@ function updateWind(event: MouseEvent) {
   const mouseX = event.clientX - rect.left;
   const mouseY = event.clientY - rect.top;
 
-  wind.x = (mouseX - window.innerWidth / 2) / 100;
-  wind.y = mouseY / 100;
+  wind.x = (mouseX - window.innerWidth / 2) / 300;
+  wind.y = mouseY / 400;
 }
 
 onMounted(() => {
@@ -223,7 +224,28 @@ onMounted(() => {
       snowflakes.push(createSnowflake());
     }
 
-    animationFrameId = requestAnimationFrame(updateSnowflakes);
+    // animationFrameId = requestAnimationFrame(updateSnowflakes);
+  }
+});
+
+function startAnimation() {
+  if (animationFrameId) return;
+  animationFrameId = requestAnimationFrame(updateSnowflakes);
+}
+
+const wrapper = ref<HTMLElement | null>(null);
+
+useEventListener("scroll", () => {
+  const percentage =
+    ((window.innerHeight - (wrapper.value?.getBoundingClientRect().top ?? 0)) /
+      window.innerHeight) *
+    100;
+
+  if (percentage > 0 && percentage < 150) {
+    startAnimation();
+  } else {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = 0;
   }
 });
 
