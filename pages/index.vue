@@ -353,9 +353,9 @@
         </main>
         <!-- <hr class="my-8" /> -->
         <home-s-stack />
+        <home-s-motive />
       </div>
     </div>
-    <home-s-motive />
     <!-- <home-t-card-hover class="pb-32" /> -->
   </div>
 </template>

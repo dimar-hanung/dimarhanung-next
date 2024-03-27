@@ -1,12 +1,16 @@
 <template>
   <div
     ref="quoteWrapper"
-    class="text-5xl text-center text-muted-800 mt-24 h-screen grid place-items-center relative"
+    class="text-5xl text-center text-muted-800 mt-24 h-screen grid place-items-center relative rounded-3xl"
   >
-    <canvas
-      ref="canvasRef"
-      class="absolute top-0 left-0 w-full h-full"
-    ></canvas>
+    <div
+      class="absolute top-0 left-0 w-full h-full overflow-hidden rounded-3xl py-8"
+    >
+      <canvas
+        ref="canvasRef"
+        class="w-full h-full bg-white dark:bg-black rounded-3xl"
+      ></canvas>
+    </div>
 
     <p
       ref="quoteContent"
@@ -106,8 +110,8 @@ const circles: Circle[] = [];
 const createCircle = (): Circle => {
   const x = Math.random() * window.innerWidth;
   const y = Math.random() * window.innerHeight;
-  const radius = Math.random() * 5;
-  const color = `hsla(${Math.random() * 360}, 100%, 50%,1)`;
+  const radius = Math.random() * 1 + 1;
+  const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
   const blurRadius = Math.random() * 50 + 10;
   const speed = Math.random() * 2;
   return { x, y, radius, color, blurRadius, speed };
@@ -119,21 +123,21 @@ const animate = () => {
   const ctx = canvasRef.value.getContext("2d");
   if (!ctx) return;
 
-  // ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height);
-
   circles.forEach((circle) => {
     ctx.beginPath();
     ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
 
     ctx.fillStyle = circle.color;
+
+    // ctx.fillStyle = "#00000017";
     ctx.shadowColor = circle.color;
     ctx.shadowBlur = circle.blurRadius;
     ctx.strokeStyle = "black";
 
     ctx.fill();
-    circle.radius += circle.speed;
+    circle.radius += circle.blurRadius / 10000;
     circle.blurRadius += circle.speed * 2;
-    if (circle.radius > 10) {
+    if (circle.blurRadius > Math.floor(Math.random() * 1000) + 500) {
       const index = circles.indexOf(circle);
       circles.splice(index, 1);
     }
