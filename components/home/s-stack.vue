@@ -2,18 +2,18 @@
   <section
     ref="wrapper"
     @mousemove="updateWind"
-    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-black to-primary-800 dark:to-primary-950 rounded-[2rem] relative z-[1] shadow-2xl overflow-hidden"
+    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-white dark:from-black to-primary-800 dark:to-primary-950 rounded-[2rem] relative z-[1] shadow-2xl overflow-hidden"
   >
     <div
       class="block shadow-inner absolute w-full h-full left-0 top-0 overflow-hidden"
     >
       <canvas class="w-full h-full" ref="canvas"></canvas>
       <div
-        class="w-full h-full inner-shadow absolute left-0 top-0 bg-gradient-to-br from-black z-0"
+        class="w-full h-full inner-shadow absolute left-0 top-0 bg-gradient-to-br from-white dark:from-black z-0"
       ></div>
     </div>
     <div
-      class="tech-stack-group text-gray-500 hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
+      class="tech-stack-group text-gray-500 hover:text-primary-600 dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
     >
       <h3 class="text-4xl text-center z-10 relative">Main Tech Stack</h3>
       <div class="flex flex-wrap justify-center gap-4">
@@ -72,7 +72,7 @@
       </div>
     </div>
     <div
-      class="tech-stack-group text-gray-500 hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
+      class="tech-stack-group text-gray-500 hover:text-black dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
     >
       <h3 class="text-4xl text-center mt-20">Secondary Tech Stack</h3>
       <div class="flex flex-wrap justify-center gap-4">
@@ -99,7 +99,7 @@
       </div>
     </div>
     <div
-      class="tech-stack-group text-gray-500 hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
+      class="tech-stack-group text-gray-500 hover:text-white dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
     >
       <h3 class="text-4xl text-center mt-20">Exploring</h3>
       <div class="flex flex-wrap justify-center gap-4">
@@ -255,7 +255,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.inner-shadow {
+.dark .inner-shadow {
   /* inner shadow */
   box-shadow: inset 0px 0px 66px -14px rgba(0, 0, 0, 1);
 }
