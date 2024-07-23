@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative min-h-screen bg-gray-900 flex items-center justify-center p-5 overflow-hidden perspective-1000"
-  >
+  <div class="relative flex items-center justify-center p-5 perspective-1000">
     <!-- 3D rotating container -->
     <div
       class="relative w-full max-w-xl transition-transform duration-200 ease-out"
@@ -12,7 +10,7 @@
     >
       <!-- Glass card -->
       <div
-        class="bg-white bg-opacity-10 rounded-2xl shadow-xl backdrop-blur-md p-8 text-white transition-all duration-300 ease-out overflow-hidden"
+        class="bg-white bg-opacity-50 rounded-2xl shadow-xl backdrop-blur-md p-8 text-slate-900 dark:text-white transition-all duration-300 ease-out overflow-hidden"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
         :style="{
@@ -35,7 +33,7 @@
         <div class="relative z-10">
           <h1 class="text-4xl font-bold mb-4">Dimar Hanung</h1>
           <p class="mb-6">
-            Experience true 3D depth. Move your cursor to rotate the interface!
+            3 years of professional experience as a full stack developer.
           </p>
           <div class="mb-6">
             <input
@@ -47,7 +45,7 @@
           <button
             class="bg-blue-500 hover:bg-blue-600 transition-all duration-300 px-6 py-2 rounded-md text-white font-semibold"
           >
-            Dive into 3D
+            Contact Me
           </button>
         </div>
       </div>

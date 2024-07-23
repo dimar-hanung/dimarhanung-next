@@ -7,10 +7,10 @@
     <div class="container mx-auto pb-8">
       <div class="mt-4">
         <header>
-          <div
+          <home-t-card-parallax></home-t-card-parallax>
+          <!-- <div
             class="p-4 rounded-lg border border-primary-500 max-w-max flex shadow-lg place-items-center gap-4 bg-white dark:bg-transparent"
           >
-            <!-- avatar -->
             <div class="w-24 h-24 rounded-full overflow-hidden">
               <img
                 src="/public/profile/profile.jpeg"
@@ -18,6 +18,7 @@
                 class="w-full object-center mx-auto"
               />
             </div>
+
             <div>
               <h3 class="text-2xl font-bold px-2 flex place-items-center gap-2">
                 Hello, I'm Dimar Hanung!
@@ -27,7 +28,7 @@
                 <p>Front-End Developer with 3 years of experience.</p>
               </div>
             </div>
-          </div>
+          </div> -->
           <a
             href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
             target="_blank"
