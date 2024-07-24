@@ -35,6 +35,7 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "v-wave/nuxt",
     "@vueuse/nuxt",
+    "@vueuse/motion/nuxt",
   ],
   colorMode: {
     // preference: "system",

@@ -6,39 +6,7 @@
 
     <div class="container mx-auto pb-8">
       <div class="mt-4">
-        <header>
-          <home-t-card-parallax></home-t-card-parallax>
-          <!-- <div
-            class="p-4 rounded-lg border border-primary-500 max-w-max flex shadow-lg place-items-center gap-4 bg-white dark:bg-transparent"
-          >
-            <div class="w-24 h-24 rounded-full overflow-hidden">
-              <img
-                src="/public/profile/profile.jpeg"
-                alt="Dimar Hanung"
-                class="w-full object-center mx-auto"
-              />
-            </div>
-
-            <div>
-              <h3 class="text-2xl font-bold px-2 flex place-items-center gap-2">
-                Hello, I'm Dimar Hanung!
-                <Icon class="text-3xl" name="fluent-emoji-flat:waving-hand" />
-              </h3>
-              <div class="px-2 mt-2">
-                <p>Front-End Developer with 3 years of experience.</p>
-              </div>
-            </div>
-          </div> -->
-          <a
-            href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
-            target="_blank"
-            class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
-          >
-            Open to Collaboration
-          </a>
-        </header>
-        <hr class="my-4 border-0" />
-        <main class="flex flex-wrap">
+        <header class="flex flex-wrap">
           <div class="w-1/2 flex-grow p-2 min-w-[230px]">
             <section>
               <h3 class="text-xl font-bold mb-4">About Dimar</h3>
@@ -92,7 +60,13 @@
               />
             </section>
           </div>
+          <home-t-card-parallax
+            class="w-1/2 flex-grow p-2 min-w-[230px]"
+          ></home-t-card-parallax>
+        </header>
 
+        <hr class="my-4 border-0" />
+        <main class="flex flex-wrap">
           <section class="w-1/2 flex-grow p-2 min-w-[230px]">
             <h3 class="text-xl font-bold mb-4">Portofolio</h3>
 
