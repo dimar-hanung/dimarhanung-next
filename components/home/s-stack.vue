@@ -172,7 +172,7 @@ function createSnowflake(): Snowflake {
   return {
     x,
     y,
-    radius: Math.random() * 3 + 1,
+    radius: Math.random() * 1 + 0.1,
     speed: Math.random() * 1 + 0.5,
   };
 }

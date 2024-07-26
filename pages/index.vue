@@ -5,59 +5,21 @@
     <t-nav class="relative z-50"></t-nav>
 
     <div class="container mx-auto pb-8">
-      <div class="mt-4">
+      <div class="mt-36">
         <header class="flex flex-wrap">
           <div class="w-1/2 flex-grow p-2 min-w-[230px]">
             <section>
               <h3 class="text-xl font-bold mb-4">About Dimar</h3>
 
               <ul class="text-lg">
-                <t-list>🏢 Front-End Developer at Universitas Terbuka</t-list>
-                <t-list>🎓 Studies for TKJ at SMK Telkom Purwokerto</t-list>
-                <t-list
-                  >🎓 Studies for Information System at Universitas Terbuka
-                </t-list>
-                <t-list
-                  >🏡 Lives in Tangerang Selatan
-                  <img
-                    src="https://flagpedia.net/data/flags/emoji/twitter/256x256/id.png"
-                    alt=""
-                    class="w-5 inline-block"
-                  />
-                  Indonesia</t-list
-                >
+                <t-list>🏢 Front-End Engineer at Universitas Terbuka</t-list>
+
+                <t-list>🏡 Lives in Tangerang Selatan, Indonesia</t-list>
                 <t-list>
                   ⚡ I like to
                   <t-kbd>> code .</t-kbd>
                 </t-list>
               </ul>
-            </section>
-            <section class="mt-6">
-              <h3 class="text-xl font-bold mb-4">Challenge Me</h3>
-
-              <home-t-card-challenge
-                logo="/home/icon/sololearn.png"
-                title="Solo Learn"
-                description="Solo Learn is an online platform to learn to code and challenge your friends."
-                :badges="['🏆 Level 11']"
-                url="https://www.sololearn.com/profile/12709774"
-              />
-
-              <home-t-card-challenge
-                logo="/home/icon/codewars.svg"
-                title="Code Wars"
-                description="Code Wars is a community where developers can improve their skills by training with others on real code challenges."
-                :badges="['🏆 3 Kyu', '⭐ 1400+ Honor']"
-                url="https://www.codewars.com/users/dimar-hanung"
-              />
-
-              <home-t-card-challenge
-                logo="/home/icon/github.png"
-                title="Github"
-                description="GitHub is where people build software. More than 56 million people use GitHub to discover, fork, and contribute to over 200 million projects."
-                :badges="['🏆 30+ Repository']"
-                url="https://github.com/dimar-hanung"
-              />
             </section>
           </div>
           <home-t-card-parallax
@@ -67,6 +29,33 @@
 
         <hr class="my-4 border-0" />
         <main class="flex flex-wrap">
+          <section class="w-1/2 flex-grow p-2 min-w-[230px]">
+            <h3 class="text-xl font-bold mb-4">Challenge Me</h3>
+
+            <home-t-card-challenge
+              logo="/home/icon/sololearn.png"
+              title="Solo Learn"
+              description="Solo Learn is an online platform to learn to code and challenge your friends."
+              :badges="['🏆 Level 11']"
+              url="https://www.sololearn.com/profile/12709774"
+            />
+
+            <home-t-card-challenge
+              logo="/home/icon/codewars.svg"
+              title="Code Wars"
+              description="Code Wars is a community where developers can improve their skills by training with others on real code challenges."
+              :badges="['🏆 3 Kyu', '⭐ 1400+ Honor']"
+              url="https://www.codewars.com/users/dimar-hanung"
+            />
+
+            <home-t-card-challenge
+              logo="/home/icon/github.png"
+              title="Github"
+              description="GitHub is where people build software. More than 56 million people use GitHub to discover, fork, and contribute to over 200 million projects."
+              :badges="['🏆 30+ Repository']"
+              url="https://github.com/dimar-hanung"
+            />
+          </section>
           <section class="w-1/2 flex-grow p-2 min-w-[230px]">
             <h3 class="text-xl font-bold mb-4">Portofolio</h3>
 
