@@ -38,6 +38,7 @@
                 height="100"
                 class="rounded-full"
                 src="/profile/profile.jpeg"
+                alt="Profile Image"
               ></NuxtImg>
             </div>
             <div>

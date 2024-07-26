@@ -9,11 +9,11 @@
         <header class="flex flex-wrap">
           <div class="w-1/2 flex-grow p-2 min-w-[230px]">
             <section>
-              <h3
+              <h1
                 class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
               >
                 About Dimar
-              </h3>
+              </h1>
 
               <ul class="text-lg mt-4">
                 <t-list>🏢 Front-End Engineer at Universitas Terbuka</t-list>
@@ -33,7 +33,7 @@
 
         <main class="mt-28">
           <section class="p-2">
-            <h3 class="text-xl font-bold mb-4">Challenge Me</h3>
+            <h2 class="text-xl font-bold mb-4">Challenge Me</h2>
 
             <div class="gap-2 grid grid-cols-1 lg:grid-cols-3">
               <home-t-card-challenge
@@ -63,7 +63,7 @@
             class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-12 p-2 min-w-[230px]"
           >
             <div>
-              <h3 class="text-xl font-bold mb-4">Portofolio</h3>
+              <h2 class="text-xl font-bold mb-4">Portofolio</h2>
               <div class="flex flex-wrap gap-2">
                 <t-card
                   class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
@@ -110,7 +110,7 @@
               </div>
             </div>
             <div>
-              <h3 class="text-xl font-bold mb-4">Find Me</h3>
+              <h2 class="text-xl font-bold mb-4">Find Me</h2>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                 <a
                   href="https://www.linkedin.com/in/dimar-hanung/"
