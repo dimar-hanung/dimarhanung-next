@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative min-h-screen bg-gray-900 flex items-center justify-center p-5 overflow-hidden perspective-1000"
-  >
+  <div class="relative flex items-center justify-center p-5 perspective-1000">
     <!-- 3D rotating container -->
     <div
       class="relative w-full max-w-xl transition-transform duration-200 ease-out"
@@ -12,7 +10,7 @@
     >
       <!-- Glass card -->
       <div
-        class="bg-white bg-opacity-10 rounded-2xl shadow-xl backdrop-blur-md p-8 text-white transition-all duration-300 ease-out overflow-hidden"
+        class="bg-white bg-opacity-50 dark:bg-opacity-10 rounded-2xl shadow-xl backdrop-blur-md p-8 text-slate-900 dark:text-white transition-all duration-300 ease-out"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
         :style="{
@@ -33,22 +31,30 @@
 
         <!-- Content -->
         <div class="relative z-10">
-          <h1 class="text-4xl font-bold mb-4">Dimar Hanung</h1>
-          <p class="mb-6">
-            Experience true 3D depth. Move your cursor to rotate the interface!
-          </p>
-          <div class="mb-6">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              class="w-full px-4 py-2 rounded-md bg-white bg-opacity-10 placeholder-gray-300 text-white outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-            />
+          <div class="flex place-items-center gap-4">
+            <div>
+              <NuxtImg
+                width="100"
+                height="100"
+                class="rounded-full"
+                src="/profile/profile.jpeg"
+              ></NuxtImg>
+            </div>
+            <div>
+              <h1 class="text-4xl font-bold mb-4">Dimar Hanung</h1>
+              <p class="mb-6">
+                3 years of professional experience as a full stack engineer.
+              </p>
+            </div>
           </div>
-          <button
+          <div class="py-6"></div>
+          <a
+            href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
+            target="_blank"
             class="bg-blue-500 hover:bg-blue-600 transition-all duration-300 px-6 py-2 rounded-md text-white font-semibold"
           >
-            Dive into 3D
-          </button>
+            Contact Me
+          </a>
         </div>
       </div>
 
@@ -69,7 +75,7 @@
 
     <!-- Static background light effect -->
     <div
-      class="absolute inset-0 opacity-50"
+      class="absolute opacity-50"
       :style="{
         background: `radial-gradient(600px circle at ${lightPosition}, rgba(29, 78, 216, 0.15), transparent 80%)`,
       }"
@@ -77,11 +83,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 
 export default {
-  name: "DarkModeGlassmorphismLandingPage",
   setup() {
     const rotation = ref({ x: 0, y: 0 });
     const isHovering = ref(false);

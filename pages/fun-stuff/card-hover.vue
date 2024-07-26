@@ -1,8 +1,10 @@
 <template>
-  <div class="bg-slate-900 relative p-4 text-white">
+  <div class="bg-slate-900 relative p-4 text-white min-h-screen">
     <main class="container mx-auto h-full">
-      <h3 class="text-center font-bold text-4xl">Nuxt Card Cool Hover</h3>
-      <section class="grid grid-cols-2 gap-8 mt-4">
+      <h3 class="text-center font-bold text-4xl mt-12">
+        Nuxt Card Cool Hovers
+      </h3>
+      <section class="grid grid-cols-4 gap-4">
         <div
           v-for="i in Array.from({ length: 10 })"
           ref="wrapper"

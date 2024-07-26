@@ -103,7 +103,7 @@
     >
       <h3 class="text-4xl text-center mt-20">Exploring</h3>
       <div class="flex flex-wrap justify-center gap-4">
-        <div>
+        <div v-motion-roll-visible-right>
           <Icon
             class="bg-white p-2 rounded-full tech-stack-item"
             name="logos:openai-icon"
@@ -111,7 +111,7 @@
           ></Icon>
           <p class="text-center mt-2">OpenAI</p>
         </div>
-        <div>
+        <div v-motion-roll-visible-right>
           <Icon
             name="logos:anthropic"
             class="bg-white rounded-full p-2 tech-stack-item"
@@ -119,7 +119,7 @@
           ></Icon>
           <p class="text-center mt-2">Anthropic</p>
         </div>
-        <div>
+        <div v-motion-roll-visible-right>
           <Icon
             name="logos:hugging-face-icon"
             class="tech-stack-item"
@@ -127,11 +127,11 @@
           ></Icon>
           <p class="text-center mt-2">Hugging Face</p>
         </div>
-        <div>
+        <div v-motion-roll-visible-right>
           <Icon name="logos:bun" class="tech-stack-item" size="100"></Icon>
           <p class="text-center mt-2">Bun</p>
         </div>
-        <div>
+        <div v-motion-roll-visible-right>
           <Icon name="logos:firebase" class="tech-stack-item" size="100"></Icon>
           <p class="text-center mt-2">Firebase</p>
         </div>
@@ -172,7 +172,7 @@ function createSnowflake(): Snowflake {
   return {
     x,
     y,
-    radius: Math.random() * 3 + 1,
+    radius: Math.random() * 1 + 0.1,
     speed: Math.random() * 1 + 0.5,
   };
 }
