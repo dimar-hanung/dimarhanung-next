@@ -48,21 +48,14 @@
             </div>
           </div>
           <div class="py-6"></div>
-          <button
+          <a
+            href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
+            target="_blank"
             class="bg-blue-500 hover:bg-blue-600 transition-all duration-300 px-6 py-2 rounded-md text-white font-semibold"
           >
             Contact Me
-          </button>
+          </a>
         </div>
-      </div>
-      <div class="w-full flex justify-end">
-        <a
-          href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
-          target="_blank"
-          class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
-        >
-          Open to Collaboration
-        </a>
       </div>
 
       <!-- 3D floating orbs -->
