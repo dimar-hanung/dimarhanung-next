@@ -1,7 +1,5 @@
 <template>
-  <div>
-    a
-
+  <div class="p-8">
     <div class="flex flex-wrap gap-4 justify-center">
       <t-item
         v-for="(item, i) in items"
