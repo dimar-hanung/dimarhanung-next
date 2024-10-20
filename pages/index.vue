@@ -182,10 +182,10 @@
             </div>
           </section>
         </main>
-        <home-s-stack />
-        <home-s-motive />
       </div>
     </div>
+    <home-s-stack />
+    <home-s-motive />
   </div>
 </template>
 

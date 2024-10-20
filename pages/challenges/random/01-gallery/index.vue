@@ -15,18 +15,20 @@
     <div class="p-3 mt-8">
       <div class="font-bold">Terpilih</div>
       <table class="mt-8 w-full border border-collapse">
-        <tr>
-          <th>Judul</th>
-          <th>Deskripsi</th>
-          <th>Thumbnail</th>
-        </tr>
-        <tr>
-          <td class="border p-2">
-            {{ selected.title || "-" }}
-          </td>
-          <td class="border p-2">{{ selected.description || "-" }}</td>
-          <td class="border p-2">{{ selected.thumbUrl || "-" }}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <th>Judul</th>
+            <th>Deskripsi</th>
+            <th>Thumbnail</th>
+          </tr>
+          <tr>
+            <td class="border p-2">
+              {{ selected.title || "-" }}
+            </td>
+            <td class="border p-2">{{ selected.description || "-" }}</td>
+            <td class="border p-2">{{ selected.thumbUrl || "-" }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

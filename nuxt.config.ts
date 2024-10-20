@@ -27,6 +27,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxt/image",
@@ -37,6 +38,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@vueuse/motion/nuxt",
   ],
+
   colorMode: {
     // preference: "system",
     // fallback: "light",
@@ -46,5 +48,7 @@ export default defineNuxtConfig({
   tailwindcss: {
     configPath: "tailwind.config",
   },
+
   css: ["~/assets/css/colors.css"],
+  compatibilityDate: "2024-10-20",
 });

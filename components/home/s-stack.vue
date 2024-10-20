@@ -2,15 +2,12 @@
   <section
     ref="wrapper"
     @mousemove="updateWind"
-    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-white dark:from-black to-primary-800 dark:to-primary-950 rounded-[2rem] relative z-[1] shadow-2xl overflow-hidden"
+    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-indigo-800 dark:from-black to-primary-800 dark:to-primary-950 relative z-[1] shadow-2xl overflow-hidden"
   >
     <div
       class="block shadow-inner absolute w-full h-full left-0 top-0 overflow-hidden"
     >
       <canvas class="w-full h-full" ref="canvas"></canvas>
-      <div
-        class="w-full h-full inner-shadow absolute left-0 top-0 bg-gradient-to-br from-white dark:from-black z-0"
-      ></div>
     </div>
     <div
       class="tech-stack-group text-gray-500 hover:text-primary-600 dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
@@ -18,34 +15,30 @@
       <h3 class="text-4xl text-center z-10 relative">Main Tech Stack</h3>
       <div class="flex flex-wrap justify-center gap-4">
         <div>
-          <Icon class="tech-stack-item" name="logos:vue" size="100"></Icon>
+          <Icon class="tech-stack-item" name="logos:vue" size="50"></Icon>
           <p class="text-center mt-2">VueJs</p>
         </div>
         <div>
-          <Icon
-            class="tech-stack-item"
-            name="logos:nuxt-icon"
-            size="100"
-          ></Icon>
+          <Icon class="tech-stack-item" name="logos:nuxt-icon" size="50"></Icon>
           <p class="text-center mt-2">NuxtJs</p>
         </div>
         <div>
           <Icon
             class="tech-stack-item"
             name="logos:tailwindcss-icon"
-            size="100"
+            size="50"
           ></Icon>
           <p class="text-center mt-2">TailwindCss</p>
         </div>
         <div>
-          <Icon class="tech-stack-item" name="logos:nestjs" size="100"></Icon>
+          <Icon class="tech-stack-item" name="logos:nestjs" size="50"></Icon>
           <p class="text-center mt-2">NestJs</p>
         </div>
         <div>
           <Icon
             class="tech-stack-item"
             name="logos:postgresql"
-            size="100"
+            size="50"
           ></Icon>
           <p class="text-center mt-2">PostgreSQL</p>
         </div>
@@ -53,19 +46,19 @@
           <Icon
             class="tech-stack-item"
             name="logos:typescript-icon"
-            size="100"
+            size="50"
           ></Icon>
           <p class="text-center mt-2">TypeScript</p>
         </div>
         <div>
-          <Icon class="tech-stack-item" name="logos:git-icon" size="100"></Icon>
+          <Icon class="tech-stack-item" name="logos:git-icon" size="50"></Icon>
           <p class="text-center mt-2">Git</p>
         </div>
         <div>
           <Icon
             class="tech-stack-item grayscale hover:grayscale-0 transition-all"
             name="logos:azure-icon"
-            size="100"
+            size="50"
           ></Icon>
           <p class="text-center mt-2">Azure</p>
         </div>
@@ -77,23 +70,23 @@
       <h3 class="text-4xl text-center mt-20">Secondary Tech Stack</h3>
       <div class="flex flex-wrap justify-center gap-4">
         <div>
-          <Icon name="logos:react" class="tech-stack-item" size="100"></Icon>
+          <Icon name="logos:react" class="tech-stack-item" size="50"></Icon>
           <p class="text-center mt-2">ReactJS</p>
         </div>
         <div>
           <Icon
             name="logos:mongodb"
             class="bg-white rounded-full p-2 tech-stack-item"
-            size="100"
+            size="50"
           ></Icon>
           <p class="text-center mt-2">MongoDB</p>
         </div>
         <div>
-          <Icon name="logos:flutter" class="tech-stack-item" size="100"></Icon>
+          <Icon name="logos:flutter" class="tech-stack-item" size="50"></Icon>
           <p class="text-center mt-2">Flutter</p>
         </div>
         <div>
-          <Icon name="logos:python" class="tech-stack-item" size="100"></Icon>
+          <Icon name="logos:python" class="tech-stack-item" size="50"></Icon>
           <p class="text-center mt-2">Python</p>
         </div>
       </div>
@@ -101,38 +94,40 @@
     <div
       class="tech-stack-group text-gray-500 hover:text-white dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
     >
-      <h3 class="text-4xl text-center mt-20">Exploring</h3>
+      <h3 class="text-4xl text-center mt-20" v-motion-pop-visible>Exploring</h3>
       <div class="flex flex-wrap justify-center gap-4">
         <div v-motion-roll-visible-right>
           <Icon
             class="bg-white p-2 rounded-full tech-stack-item"
             name="logos:openai-icon"
-            size="100"
+            size="50"
           ></Icon>
           <p class="text-center mt-2">OpenAI</p>
         </div>
-        <div v-motion-roll-visible-right>
+        <div v-motion-roll-visible-right :delay="100">
           <Icon
             name="logos:anthropic"
             class="bg-white rounded-full p-2 tech-stack-item"
-            size="100"
+            size="50"
           ></Icon>
           <p class="text-center mt-2">Anthropic</p>
         </div>
-        <div v-motion-roll-visible-right>
-          <Icon
-            name="logos:hugging-face-icon"
-            class="tech-stack-item"
-            size="100"
-          ></Icon>
+        <div v-motion-roll-visible-right :delay="200">
+          <div class="mx-auto max-w-max">
+            <Icon
+              name="logos:hugging-face-icon"
+              class="tech-stack-item block"
+              size="50"
+            ></Icon>
+          </div>
           <p class="text-center mt-2">Hugging Face</p>
         </div>
-        <div v-motion-roll-visible-right>
-          <Icon name="logos:bun" class="tech-stack-item" size="100"></Icon>
+        <div v-motion-roll-visible-right :delay="300">
+          <Icon name="logos:bun" class="tech-stack-item" size="50"></Icon>
           <p class="text-center mt-2">Bun</p>
         </div>
-        <div v-motion-roll-visible-right>
-          <Icon name="logos:firebase" class="tech-stack-item" size="100"></Icon>
+        <div v-motion-roll-visible-right :delay="400" v-tooltip="'tes'">
+          <Icon name="logos:firebase" class="tech-stack-item" size="50"></Icon>
           <p class="text-center mt-2">Firebase</p>
         </div>
       </div>
