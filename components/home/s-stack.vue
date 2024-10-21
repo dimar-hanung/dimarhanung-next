@@ -2,7 +2,7 @@
   <section
     ref="wrapper"
     @mousemove="updateWind"
-    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-indigo-800 dark:from-black to-primary-800 dark:to-primary-950 relative z-[1] shadow-2xl overflow-hidden"
+    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-black to-primary-800 dark:to-primary-950 relative z-[1] shadow-2xl overflow-hidden border-y-4 border-primary-500"
   >
     <div
       class="block shadow-inner absolute w-full h-full left-0 top-0 overflow-hidden"
@@ -10,126 +10,224 @@
       <canvas class="w-full h-full" ref="canvas"></canvas>
     </div>
     <div
-      class="tech-stack-group text-gray-500 hover:text-primary-600 dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
+      class="tech-stack-group text-slate-300 hover:text-white dark:hover:text-gray-50 gap-4 z-10 relative transition-all"
     >
-      <h3 class="text-4xl text-center z-10 relative">Main Tech Stack</h3>
+      <h3 class="text-3xl text-center z-10 relative" v-motion-pop-visible>
+        Main Tech Stack
+      </h3>
       <div class="flex flex-wrap justify-center gap-4">
-        <div>
-          <Icon class="tech-stack-item" name="logos:vue" size="50"></Icon>
-          <p class="text-center mt-2">VueJs</p>
-        </div>
-        <div>
-          <Icon class="tech-stack-item" name="logos:nuxt-icon" size="50"></Icon>
-          <p class="text-center mt-2">NuxtJs</p>
-        </div>
-        <div>
-          <Icon
-            class="tech-stack-item"
-            name="logos:tailwindcss-icon"
-            size="50"
-          ></Icon>
-          <p class="text-center mt-2">TailwindCss</p>
-        </div>
-        <div>
-          <Icon class="tech-stack-item" name="logos:nestjs" size="50"></Icon>
-          <p class="text-center mt-2">NestJs</p>
-        </div>
-        <div>
-          <Icon
-            class="tech-stack-item"
-            name="logos:postgresql"
-            size="50"
-          ></Icon>
-          <p class="text-center mt-2">PostgreSQL</p>
-        </div>
-        <div>
-          <Icon
-            class="tech-stack-item"
-            name="logos:typescript-icon"
-            size="50"
-          ></Icon>
-          <p class="text-center mt-2">TypeScript</p>
-        </div>
-        <div>
-          <Icon class="tech-stack-item" name="logos:git-icon" size="50"></Icon>
-          <p class="text-center mt-2">Git</p>
-        </div>
-        <div>
-          <Icon
-            class="tech-stack-item grayscale hover:grayscale-0 transition-all"
-            name="logos:azure-icon"
-            size="50"
-          ></Icon>
-          <p class="text-center mt-2">Azure</p>
-        </div>
-      </div>
-    </div>
-    <div
-      class="tech-stack-group text-gray-500 hover:text-black dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
-    >
-      <h3 class="text-4xl text-center mt-20">Secondary Tech Stack</h3>
-      <div class="flex flex-wrap justify-center gap-4">
-        <div>
-          <Icon name="logos:react" class="tech-stack-item" size="50"></Icon>
-          <p class="text-center mt-2">ReactJS</p>
-        </div>
-        <div>
-          <Icon
-            name="logos:mongodb"
-            class="bg-white rounded-full p-2 tech-stack-item"
-            size="50"
-          ></Icon>
-          <p class="text-center mt-2">MongoDB</p>
-        </div>
-        <div>
-          <Icon name="logos:flutter" class="tech-stack-item" size="50"></Icon>
-          <p class="text-center mt-2">Flutter</p>
-        </div>
-        <div>
-          <Icon name="logos:python" class="tech-stack-item" size="50"></Icon>
-          <p class="text-center mt-2">Python</p>
-        </div>
-      </div>
-    </div>
-    <div
-      class="tech-stack-group text-gray-500 hover:text-white dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
-    >
-      <h3 class="text-4xl text-center mt-20" v-motion-pop-visible>Exploring</h3>
-      <div class="flex flex-wrap justify-center gap-4">
-        <div v-motion-roll-visible-right>
-          <Icon
-            class="bg-white p-2 rounded-full tech-stack-item"
-            name="logos:openai-icon"
-            size="50"
-          ></Icon>
-          <p class="text-center mt-2">OpenAI</p>
-        </div>
-        <div v-motion-roll-visible-right :delay="100">
-          <Icon
-            name="logos:anthropic"
-            class="bg-white rounded-full p-2 tech-stack-item"
-            size="50"
-          ></Icon>
-          <p class="text-center mt-2">Anthropic</p>
-        </div>
-        <div v-motion-roll-visible-right :delay="200">
-          <div class="mx-auto max-w-max">
+        <Tooltip>
+          <div v-motion-roll-visible-right>
             <Icon
-              name="logos:hugging-face-icon"
-              class="tech-stack-item block"
+              name="logos:vue"
+              class="tech-stack-item transform hover:scale-125"
               size="50"
             ></Icon>
           </div>
-          <p class="text-center mt-2">Hugging Face</p>
-        </div>
-        <div v-motion-roll-visible-right :delay="300">
-          <Icon name="logos:bun" class="tech-stack-item" size="50"></Icon>
-          <p class="text-center mt-2">Bun</p>
-        </div>
-        <div v-motion-roll-visible-right :delay="400" v-tooltip="'tes'">
-          <Icon name="logos:firebase" class="tech-stack-item" size="50"></Icon>
-          <p class="text-center mt-2">Firebase</p>
-        </div>
+          <template #tooltip>VueJs</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="50">
+            <Icon
+              name="logos:nuxt-icon"
+              class="tech-stack-item transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>NuxtJs</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div
+            class="transform hover:scale-150"
+            v-motion-roll-visible-right
+            :delay="100"
+          >
+            <Icon
+              name="logos:tailwindcss-icon"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>TailwindCss</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="150">
+            <Icon
+              name="logos:nestjs"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>NestJs</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="200">
+            <Icon
+              name="logos:postgresql"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>PostgreSQL</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="250">
+            <Icon
+              name="logos:typescript-icon"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>TypeScript</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="300">
+            <Icon
+              name="logos:git-icon"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>Git</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="350">
+            <Icon
+              name="logos:azure-icon"
+              class="tech-stack-item grayscale hover:grayscale-0 transition-all transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>Azure</template>
+        </Tooltip>
+      </div>
+    </div>
+    <div
+      class="tech-stack-group text-slate-300 hover:text-white gap-4 mt-8 z-10 relative transition-all"
+    >
+      <h3 class="text-3xl text-center mt-14" v-motion-pop-visible>
+        Secondary Tech Stack
+      </h3>
+      <div class="flex flex-wrap justify-center gap-4">
+        <Tooltip>
+          <div v-motion-roll-visible-right>
+            <Icon
+              name="logos:react"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>ReactJS</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div v-motion-roll-visible-right :delay="50">
+            <Icon
+              name="logos:mongodb"
+              class="bg-white rounded-full p-2 tech-stack-item transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>MongoDB</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div
+            class="transform hover:scale-150"
+            v-motion-roll-visible-right
+            :delay="100"
+          >
+            <Icon
+              name="logos:flutter"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>Flutter</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div v-motion-roll-visible-right :delay="150">
+            <Icon
+              name="logos:python"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>Python</template>
+        </Tooltip>
+      </div>
+    </div>
+    <div
+      class="tech-stack-group text-slate-300 hover:text-white dark:hover:text-gray-50 gap-4 mt-8 z-10 relative transition-all"
+    >
+      <h3 class="text-3xl text-center mt-14" v-motion-pop-visible>Exploring</h3>
+      <div class="flex flex-wrap justify-center gap-4">
+        <Tooltip>
+          <div v-motion-roll-visible-right>
+            <Icon
+              name="logos:openai-icon"
+              class="bg-white p-2 rounded-full tech-stack-item transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>OpenAI</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="50">
+            <Icon
+              name="logos:anthropic"
+              class="bg-white rounded-full p-2 tech-stack-item transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>Anthropic</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div
+            class="transform hover:scale-150"
+            v-motion-roll-visible-right
+            :delay="100"
+          >
+            <Icon
+              name="logos:hugging-face-icon"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>Hugging Face</template>
+        </Tooltip>
+
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="150">
+            <Icon
+              name="logos:bun"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+          <template #tooltip>Bun</template>
+        </Tooltip>
+        <Tooltip>
+          <div class="hover:scale-105" v-motion-roll-visible-right :delay="200">
+            <Icon
+              name="logos:firebase"
+              class="tech-stack-item block transform hover:scale-125"
+              size="50"
+            ></Icon>
+          </div>
+
+          <template #tooltip> Firebase</template>
+        </Tooltip>
       </div>
     </div>
   </section>

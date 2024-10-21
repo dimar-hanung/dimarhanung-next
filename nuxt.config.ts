@@ -27,6 +27,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+  components: ["~/components", "~/components/ui"],
 
   modules: [
     "@nuxtjs/tailwindcss",
