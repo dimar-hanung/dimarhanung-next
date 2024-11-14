@@ -8,18 +8,23 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@inspira-ui/plugins": "^0.0.1",
     "@nuxt/image": "^1.1.0",
     "@nuxtjs/color-mode": "^3.3.2",
     "@nuxtjs/tailwindcss": "^6.6.5",
+    "clsx": "^2.1.1",
     "nuxt": "^3.13.2",
-    "nuxt-icon": "^0.6.9"
+    "nuxt-icon": "^0.6.9",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
-    "@vueuse/motion": "^2.2.3",
+    "@vueuse/core": "^11.1.0",
+    "@vueuse/motion": "^2.2.6",
     "@vueuse/nuxt": "^10.9.0",
     "floating-vue": "^5.2.2",
     "qrcode.vue": "^3.3.4",

@@ -9,23 +9,28 @@
         <header class="flex flex-wrap">
           <div class="w-1/2 flex-grow p-2 min-w-[230px]">
             <section>
-              <h1
-                class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
-              >
-                About Dimar
-              </h1>
-
-              <ul class="text-lg mt-4">
-                <t-list>🏢 Front-End Engineer at Universitas Terbuka</t-list>
-
-                <t-list>🏡 Lives in Tangerang Selatan, Indonesia</t-list>
-                <t-list>
-                  ⚡ I like to
-                  <t-kbd>> code .</t-kbd>
-                </t-list>
-              </ul>
+              <grid-background class="h-96 py-12">
+                <div>
+                  <h1
+                    class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
+                  >
+                    About Dimar
+                  </h1>
+                  <ul class="text-lg mt-4">
+                    <t-list
+                      >🏢 Front-End Engineer at Universitas Terbuka</t-list
+                    >
+                    <t-list>🏡 Lives in Tangerang Selatan, Indonesia</t-list>
+                    <t-list>
+                      ⚡ I like to
+                      <t-kbd>> code .</t-kbd>
+                    </t-list>
+                  </ul>
+                </div>
+              </grid-background>
             </section>
           </div>
+
           <home-t-card-parallax
             class="w-1/2 flex-grow p-2 min-w-[230px]"
           ></home-t-card-parallax>

@@ -36,7 +36,6 @@ export const colorToRgb = (color: string): string => {
     return EMPTY_COLOR;
   }
 
-  // Hapus tanda # jika ada
   color = color.replace("#", "");
 
   // Konversi singkat hex (misal, #FFF) menjadi bentuk panjang (#FFFFFF)

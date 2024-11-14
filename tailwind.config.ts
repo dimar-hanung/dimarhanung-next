@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
+import { setupInspiraUI } from "@inspira-ui/plugins";
 
 export default <Partial<Config>>{
   darkMode: "class", // or 'media' or 'class
@@ -8,14 +10,6 @@ export default <Partial<Config>>{
         xs: "320px",
       },
       colors: {
-        // primary: "var(--color-primary)",
-        secondary: "var(--color-secondary)",
-        accent: "var(--color-accent)",
-        neutral: "var(--color-neutral)",
-        success: "var(--color-success)",
-        warning: "var(--color-warning)",
-        error: "var(--color-error)",
-        info: "var(--color-info)",
         primary: {
           50: "rgb(var(--color-primary-50) / <alpha-value>)",
           100: "rgb(var(--color-primary-100) / <alpha-value>)",
@@ -28,6 +22,8 @@ export default <Partial<Config>>{
           800: "rgb(var(--color-primary-800) / <alpha-value>)",
           900: "rgb(var(--color-primary-900) / <alpha-value>)",
           950: "rgb(var(--color-primary-950) / <alpha-value>)",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         muted: {
           50: "rgb(var(--color-muted-50) / <alpha-value>)",
@@ -41,8 +37,44 @@ export default <Partial<Config>>{
           800: "rgb(var(--color-muted-800) / <alpha-value>)",
           900: "rgb(var(--color-muted-900) / <alpha-value>)",
           950: "rgb(var(--color-muted-950) / <alpha-value>)",
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+
+        borderRadius: {
+          xl: "calc(var(--radius) + 4px)",
+          lg: "var(--radius)",
+          md: "calc(var(--radius) - 2px)",
+          sm: "calc(var(--radius) - 4px)",
         },
       },
     },
   },
+  plugins: [animate, setupInspiraUI],
 };
