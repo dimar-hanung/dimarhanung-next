@@ -10,7 +10,7 @@
     >
       <!-- Glass card -->
       <div
-        class="bg-white bg-opacity-50 dark:bg-opacity-10 rounded-2xl shadow-xl backdrop-blur-md p-8 text-slate-900 dark:text-white transition-all duration-300 ease-out"
+        class="bg-slate-200 dark:bg-black bg-opacity-50 dark:bg-opacity-20 rounded-2xl shadow-xl p-8 text-slate-900 dark:text-white transition-all duration-300 ease-out"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
         :style="{

@@ -4,33 +4,40 @@
   >
     <t-nav class="relative z-50"></t-nav>
 
+    <div class="py-28 border-y bg-white relative">
+      <div
+        class="absolute inset-0 h-full w-full bg-white dark:bg-muted-900 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]"
+      ></div>
+      <header class="flex flex-wrap container mx-auto">
+        <div class="w-1/2 flex-grow p-2 min-w-[230px]">
+          <section>
+            <grid-background class="h-96 py-12">
+              <div>
+                <h1
+                  class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
+                >
+                  About Dimar
+                </h1>
+                <ul class="text-lg mt-4">
+                  <t-list>🏢 Front-End Engineer at Universitas Terbuka</t-list>
+                  <t-list>🏡 Lives in Tangerang Selatan, Indonesia</t-list>
+                  <t-list>
+                    ⚡ I like to
+                    <t-kbd>> code .</t-kbd>
+                  </t-list>
+                </ul>
+              </div>
+            </grid-background>
+          </section>
+        </div>
+        <home-t-card-parallax
+          class="w-1/2 flex-grow p-2 min-w-[230px]"
+        ></home-t-card-parallax>
+      </header>
+    </div>
+
     <div class="container mx-auto pb-8">
-      <div class="mt-36">
-        <header class="flex flex-wrap">
-          <div class="w-1/2 flex-grow p-2 min-w-[230px]">
-            <section>
-              <h1
-                class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
-              >
-                About Dimar
-              </h1>
-
-              <ul class="text-lg mt-4">
-                <t-list>🏢 Front-End Engineer at Universitas Terbuka</t-list>
-
-                <t-list>🏡 Lives in Tangerang Selatan, Indonesia</t-list>
-                <t-list>
-                  ⚡ I like to
-                  <t-kbd>> code .</t-kbd>
-                </t-list>
-              </ul>
-            </section>
-          </div>
-          <home-t-card-parallax
-            class="w-1/2 flex-grow p-2 min-w-[230px]"
-          ></home-t-card-parallax>
-        </header>
-
+      <div>
         <main class="mt-28">
           <section class="p-2">
             <h2 class="text-xl font-bold mb-4">Challenge Me</h2>
