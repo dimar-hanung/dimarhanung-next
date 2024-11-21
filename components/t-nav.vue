@@ -1,16 +1,20 @@
 <template>
-  <nav class="p-4 sticky top-0 dark:text-white">
+  <nav
+    :class="[
+      'sticky top-0 dark:text-white transition-all',
+      isTop ? 'p-0' : 'p-4',
+    ]"
+  >
     <div
-      class="container mx-auto bg-white dark:bg-muted-950 dark:shadow-2xl shadow-xl p-3 rounded-2xl flex justify-between max-w-max"
+      :class="[
+        'bg-white p-3 flex justify-between border-b dark:border-transparent transition-all mx-auto',
+        'dark:bg-muted-950 ',
+        isTop ? 'w-full' : 'shadow-xl dark:shadow-2xl rounded-2xl',
+      ]"
     >
       <div></div>
 
-      <div class="flex place-items-center">
-        <!-- <NuxtLink to="https://dimar-hanung.netlify.app/"
-          ><div><button>Blog</button></div></NuxtLink
-        > -->
-
-        <!-- <div><button>Contact me</button></div> -->
+      <div class="flex place-items-center justify-center">
         <t-switch-color></t-switch-color>
         <t-switch-dark-mode></t-switch-dark-mode>
       </div>
@@ -19,4 +23,19 @@
 </template>
 <script setup>
 const color = useColorMode();
+
+// listen scroll on top or not
+const isTop = ref(true);
+
+const onScroll = () => {
+  isTop.value = window.scrollY < 10;
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", onScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", onScroll);
+});
 </script>
