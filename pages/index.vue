@@ -192,6 +192,7 @@
       </div>
     </div>
     <home-s-stack />
+    <lazy-home-s-marquee />
     <home-s-motive />
   </div>
 </template>

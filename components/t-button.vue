@@ -4,8 +4,13 @@
     :aria-label="ariaLabel"
     :type="type"
     :disabled="disabled"
-    class="text-sm text-primary-500 dark:text-slate-50 transition-colors duration-300 border-2 border-primary-600 rounded-lg shadow-xl hover:bg-muted-100 hover:dark:bg-muted-800 hover:bg-opacity-60"
-    :class="[ui.padding]"
+    :class="
+      cn(
+        'text-sm text-primary-500 dark:text-slate-50 transition-colors duration-300 border-2 border-primary-600 rounded-lg shadow-xl hover:bg-muted-100 hover:dark:bg-muted-800 hover:bg-opacity-60',
+        ui.padding,
+        $props.class
+      )
+    "
   >
     <slot></slot>
   </button>
@@ -20,7 +25,8 @@ export interface Props {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   ariaLabel?: string;
-  ui: UI;
+  ui?: UI;
+  class?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {

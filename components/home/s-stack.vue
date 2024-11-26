@@ -1,7 +1,6 @@
 <template>
   <section
     ref="wrapper"
-    @mousemove="updateWind"
     class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-black to-primary-800 dark:to-primary-950 relative z-[1] shadow-2xl overflow-hidden border-y-4 border-primary-500"
   >
     <div
@@ -341,6 +340,9 @@ useEventListener("scroll", () => {
     animationFrameId = 0;
   }
 });
+
+// updateWind use document event listener
+useEventListener("mousemove", updateWind);
 
 onUnmounted(() => {
   cancelAnimationFrame(animationFrameId);
