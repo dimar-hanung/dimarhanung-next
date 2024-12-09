@@ -67,7 +67,7 @@
             </div>
           </section>
           <section
-            class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-12 p-2 min-w-[230px]"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-4 py-12 px-2 min-w-[230px]"
           >
             <div>
               <h2 class="text-xl font-bold mb-4">Portofolio</h2>
@@ -194,6 +194,7 @@
     <home-s-stack />
     <lazy-home-s-marquee />
     <home-s-motive />
+    <lazy-home-s-project />
   </div>
 </template>
 

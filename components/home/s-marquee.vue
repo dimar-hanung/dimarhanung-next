@@ -17,11 +17,7 @@
           :title="review.title"
         />
       </Marquee>
-      <Marquee
-        reverse
-        pause-on-hover
-        class="[--duration:20s] -rotate-2 border-b-2 border-muted-400"
-      >
+      <Marquee reverse pause-on-hover class="[--duration:20s] -rotate-2">
         <ReviewCard
           v-for="review in secondRow"
           :img="review.img"
@@ -31,7 +27,7 @@
           :title="review.title"
         />
       </Marquee>
-      <Marquee pause-on-hover class="[--duration:30s] -rotate-2">
+      <!-- <Marquee pause-on-hover class="[--duration:30s] -rotate-2">
         <ReviewCard
           v-for="review in firstRow"
           :img="review.img"
@@ -39,8 +35,9 @@
           :username="review.username"
           :body="review.body"
           :title="review.title"
+          :date="'30/11/2024'"
         />
-      </Marquee>
+      </Marquee> -->
       <!-- Left Gradient -->
       <div
         class="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-muted-200 dark:from-muted-900"
@@ -73,10 +70,10 @@ const reviews = [
     img: "https://avatar.vercel.sh/jack",
   },
   {
-    name: null,
-    username: null,
-    body: null,
-    img: "https://avatar.vercel.sh/jack",
+    name: "Zaidan Rizaki",
+    title: "Security Engineer at GoJek",
+    body: "Hanung is a passionate, highly skilled, full-stack engineer with deep understanding of various technologies and frameworks.  He often digs deep into  internal workings and underlying mechanics of these technologies, which allows him to tackle problems directly on its root, with most efficient and obviously effective manner. He also does not hesitate to go extra mile to accomplish his goals. Highly recommend!",
+    img: "https://avatar.vercel.sh/z",
   },
   {
     name: null,

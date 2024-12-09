@@ -3,7 +3,9 @@
     class="relative max-w-xl py-10 px-8 cursor-pointer overflow-hidden border-x border-gray-950/[.1] bg-gray-950/[.01] p-4 hover:bg-gray-950/[.05] dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]"
     :class="name ? '' : ''"
   >
-    <p class="absolute top-3 right-4 text-xs text-muted-400">23/11/2024</p>
+    <p class="absolute top-3 right-4 text-xs text-muted-400">
+      {{ date || "Coming Soon" }}
+    </p>
 
     <div class="flex flex-row items-center gap-2">
       <NuxtImg :src="img" class="rounded-full" width="32" height="32" alt="" />
@@ -50,6 +52,7 @@ interface Props {
   name?: string | null;
   title?: string | null;
   body?: string | null;
+  date?: string | null;
 }
 
 defineProps<Props>();
