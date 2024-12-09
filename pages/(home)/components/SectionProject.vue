@@ -98,7 +98,7 @@
     </div>
     <!-- Lihat Lainnya -->
     <div class="w-full mt-24">
-      <NuxtLink to="/projects">
+      <NuxtLink to="/project">
         <gradient-button class="block mx-auto"
           >Lihat 30 Lainnya</gradient-button
         >
