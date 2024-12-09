@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 interface Props {
-  img?: string | null;
+  img?: string;
   name?: string | null;
   title?: string | null;
   body?: string | null;
