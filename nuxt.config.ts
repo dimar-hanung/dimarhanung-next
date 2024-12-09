@@ -29,6 +29,7 @@ export default defineNuxtConfig({
   },
   components: ["~/components", "~/components/ui"],
 
+  ignore: ["/pages/**/components/**"],
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxt/image",
@@ -39,10 +40,17 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@vueuse/motion/nuxt",
   ],
+  vite: {
+    server: {
+      watch: {
+        ignored: [
+          "!**/pages/**/components/**", // Jangan abaikan file dalam folder ini
+        ],
+      },
+    },
+  },
 
   colorMode: {
-    // preference: "system",
-    // fallback: "light",
     classSuffix: "",
   },
 
