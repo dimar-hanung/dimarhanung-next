@@ -30,12 +30,22 @@ function mouseMoveGradient(e: MouseEvent) {
   }
 }
 
+const observer = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    document.addEventListener("mousemove", mouseMoveGradient, false);
+  } else {
+    document.removeEventListener("mousemove", mouseMoveGradient, false);
+  }
+});
+
 onMounted(() => {
-  document.addEventListener("mousemove", mouseMoveGradient, false);
+  if (wrapper.value) {
+    observer.observe(wrapper.value);
+  }
 });
 
 onUnmounted(() => {
-  document.removeEventListener("mousemove", mouseMoveGradient, false);
+  observer.disconnect();
 });
 </script>
 
