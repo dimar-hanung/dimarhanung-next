@@ -1,10 +1,9 @@
 <template>
-  <div class="dark:bg-muted-900 dark:text-slate-100">
-    <t-nav class="z-10" />
-
+  <t-nav class="z-10" />
+  <div class="dark:bg-muted-900 dark:text-slate-100 pb-32 pt-24 min-h-screen">
     <h1 class="text-3xl text-center font-bold uppercase mt-8">Projects</h1>
 
-    <HomeSProject></HomeSProject>
+    <HomeProject :showFilter="true" :showAll="true" class="mt-8"></HomeProject>
   </div>
 </template>
 
