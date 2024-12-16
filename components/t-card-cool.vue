@@ -5,7 +5,7 @@
     :style="{ '--x': x + 'px', '--y': y + 'px' }"
   >
     <div
-      class="inner rounded-xl p-3 h-full w-full bg-slate-100 dark:bg-muted-800"
+      class="inner rounded-xl p-3 h-full w-full bg-muted-50 dark:bg-muted-800"
     >
       <slot> </slot>
     </div>
