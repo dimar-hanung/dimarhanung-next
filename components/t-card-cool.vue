@@ -30,22 +30,26 @@ function mouseMoveGradient(e: MouseEvent) {
   }
 }
 
-const observer = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    document.addEventListener("mousemove", mouseMoveGradient, false);
-  } else {
-    document.removeEventListener("mousemove", mouseMoveGradient, false);
-  }
-});
+const observer = ref();
 
 onMounted(() => {
+  observer.value = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      document.addEventListener("mousemove", mouseMoveGradient, false);
+    } else {
+      document.removeEventListener("mousemove", mouseMoveGradient, false);
+    }
+  });
+
   if (wrapper.value) {
-    observer.observe(wrapper.value);
+    observer.value.observe(wrapper.value);
   }
 });
 
 onUnmounted(() => {
-  observer.disconnect();
+  if (wrapper.value && observer.value) {
+    observer.value.unobserve(wrapper.value);
+  }
 });
 </script>
 

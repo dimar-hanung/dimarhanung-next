@@ -1,5 +1,8 @@
 <template>
-  <div class="relative flex items-center justify-center p-5 perspective-1000">
+  <div
+    class="relative flex items-center justify-center p-5 perspective-1000"
+    ref="wrapper"
+  >
     <!-- 3D rotating container -->
     <div
       class="relative w-full max-w-xl transition-transform duration-200 ease-out"
@@ -84,45 +87,51 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 
-export default {
-  setup() {
-    const rotation = ref({ x: 0, y: 0 });
-    const isHovering = ref(false);
+const rotation = ref({ x: 0, y: 0 });
+const isHovering = ref(false);
+const wrapper = ref<HTMLElement | null>(null);
 
-    const handleMouseMove = (event) => {
-      const { clientX, clientY } = event;
-      const { innerWidth, innerHeight } = window;
+const handleMouseMove = (event) => {
+  const { clientX, clientY } = event;
+  const { innerWidth, innerHeight } = window;
 
-      const x = (clientY - innerHeight / 2) / 20;
-      const y = (innerWidth / 2 - clientX) / 20;
+  const x = (clientY - innerHeight / 2) / 20;
+  const y = (innerWidth / 2 - clientX) / 20;
 
-      rotation.value = { x, y };
-    };
-
-    onMounted(() => {
-      window.addEventListener("mousemove", handleMouseMove);
-    });
-
-    onUnmounted(() => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    });
-
-    const lightPosition = computed(() => {
-      const x = 50 + rotation.value.y * 2;
-      const y = 50 - rotation.value.x * 2;
-      return `${x}% ${y}%`;
-    });
-
-    return {
-      rotation,
-      isHovering,
-      lightPosition,
-    };
-  },
+  rotation.value = { x, y };
 };
+
+const lightPosition = computed(() => {
+  const x = 50 + rotation.value.y * 2;
+  const y = 50 - rotation.value.x * 2;
+  return `${x}% ${y}%`;
+});
+
+const observer = ref();
+
+onMounted(() => {
+  observer.value = new IntersectionObserver((entries) => {
+    console.log("entries[0].isIntersecting", entries);
+    if (entries[0].isIntersecting) {
+      document.addEventListener("mousemove", handleMouseMove, false);
+    } else {
+      document.removeEventListener("mousemove", handleMouseMove, false);
+    }
+  });
+
+  if (wrapper.value) {
+    observer.value.observe(wrapper.value);
+  }
+});
+
+onUnmounted(() => {
+  if (wrapper.value && observer.value) {
+    observer.value.unobserve(wrapper.value);
+  }
+});
 </script>
 
 <style scoped>
