@@ -94,7 +94,7 @@ const rotation = ref({ x: 0, y: 0 });
 const isHovering = ref(false);
 const wrapper = ref<HTMLElement | null>(null);
 
-const handleMouseMove = (event) => {
+const handleMouseMove = (event: MouseEvent) => {
   const { clientX, clientY } = event;
   const { innerWidth, innerHeight } = window;
 
