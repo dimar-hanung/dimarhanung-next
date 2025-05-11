@@ -8,12 +8,13 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@iconify-json/uil": "^1.2.3",
     "@inspira-ui/plugins": "^0.0.1",
     "@nuxt/image": "^1.1.0",
     "@nuxtjs/color-mode": "^3.3.2",
     "@nuxtjs/tailwindcss": "^6.6.5",
     "clsx": "^2.1.1",
-    "nuxt": "^3.13.2",
+    "nuxt": "^3.17.2",
     "nuxt-icon": "^0.6.9",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"

@@ -6,7 +6,7 @@
 
     <div class="py-28 border-y bg-white relative">
       <div
-        class="absolute inset-0 h-full w-full bg-white dark:bg-muted-900 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]"
+        class="absolute inset-0 h-full w-full bg-muted-100 dark:bg-muted-900 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]"
       ></div>
       <header class="flex flex-wrap container mx-auto">
         <div class="w-1/2 flex-grow p-2 min-w-[230px]">
@@ -30,9 +30,7 @@
             </grid-background>
           </section>
         </div>
-        <home-t-card-parallax
-          class="w-1/2 flex-grow p-2 min-w-[230px]"
-        ></home-t-card-parallax>
+        <CardParallax class="w-1/2 flex-grow p-2 min-w-[230px]"></CardParallax>
       </header>
     </div>
 
@@ -43,21 +41,21 @@
             <h2 class="text-xl font-bold mb-4">Challenge Me</h2>
 
             <div class="gap-2 grid grid-cols-1 lg:grid-cols-3">
-              <home-t-card-challenge
+              <CardChallenge
                 logo="/home/icon/sololearn.png"
                 title="Solo Learn"
                 description="Solo Learn is an online platform to learn to code and challenge your friends."
                 :badges="['🏆 Level 11']"
                 url="https://www.sololearn.com/profile/12709774"
               />
-              <home-t-card-challenge
+              <CardChallenge
                 logo="/home/icon/codewars.svg"
                 title="Code Wars"
                 description="Code Wars is a community where developers can improve their skills by training with others on real code challenges."
                 :badges="['🏆 3 Kyu', '⭐ 1400+ Honor']"
                 url="https://www.codewars.com/users/dimar-hanung"
               />
-              <home-t-card-challenge
+              <CardChallenge
                 logo="/home/icon/github.png"
                 title="Github"
                 description="GitHub is where people build software. More than 56 million people use GitHub to discover, fork, and contribute to over 200 million projects."
@@ -67,7 +65,7 @@
             </div>
           </section>
           <section
-            class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-12 p-2 min-w-[230px]"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-4 py-12 px-2 min-w-[230px]"
           >
             <div>
               <h2 class="text-xl font-bold mb-4">Portofolio</h2>
@@ -191,12 +189,41 @@
         </main>
       </div>
     </div>
-    <home-s-stack />
-    <home-s-motive />
+    <SectionStack />
+    <!-- <SectionApaKataOrang /> -->
+
+    <div class="mt-28">
+      <SectionProject />
+    </div>
+    <SectionMotivasi />
   </div>
 </template>
 
 <script setup lang="ts">
+const CardChallenge = defineAsyncComponent(
+  () => import("./components/CardChallenge.vue")
+);
+const CardHover = defineAsyncComponent(
+  () => import("./components/CardHover.vue")
+);
+const CardParallax = defineAsyncComponent(
+  () => import("./components/CardParallax.vue")
+);
+const SectionStack = defineAsyncComponent(
+  () => import("./components/SectionStack.vue")
+);
+
+const SectionProject = defineAsyncComponent(
+  () => import("./components/SectionProject.vue")
+);
+
+const SectionMotivasi = defineAsyncComponent(
+  () => import("./components/SectionMotivasi.vue")
+);
+const SectionApaKataOrang = defineAsyncComponent(
+  () => import("./components/SectionApaKataOrang.vue")
+);
+
 useSeoMeta({
   title: "Dimar Hanung",
   description:

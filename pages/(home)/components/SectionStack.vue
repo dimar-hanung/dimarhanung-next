@@ -1,8 +1,7 @@
 <template>
   <section
     ref="wrapper"
-    @mousemove="updateWind"
-    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-black to-primary-800 dark:to-primary-950 relative z-[1] shadow-2xl overflow-hidden border-y-4 border-primary-500"
+    class="text-white mt-8 p-5 py-12 bg-gradient-to-br from-black to-primary-800 dark:to-primary-950 relative z-[1] overflow-hidden border-4 border-primary-500 max-w-7xl mx-auto rounded-lg"
   >
     <div
       class="block shadow-inner absolute w-full h-full left-0 top-0 overflow-hidden"
@@ -17,7 +16,7 @@
       </h3>
       <div class="flex flex-wrap justify-center gap-4">
         <Tooltip>
-          <div v-motion-roll-visible-right>
+          <div v-motion-pop-visible>
             <Icon
               name="logos:vue"
               class="tech-stack-item transform hover:scale-125"
@@ -28,7 +27,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="50">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="50">
             <Icon
               name="logos:nuxt-icon"
               class="tech-stack-item transform hover:scale-125"
@@ -41,7 +40,7 @@
         <Tooltip>
           <div
             class="transform hover:scale-150"
-            v-motion-roll-visible-right
+            v-motion-pop-visible
             :delay="100"
           >
             <Icon
@@ -54,7 +53,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="150">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="150">
             <Icon
               name="logos:nestjs"
               class="tech-stack-item block transform hover:scale-125"
@@ -65,7 +64,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="200">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="200">
             <Icon
               name="logos:postgresql"
               class="tech-stack-item block transform hover:scale-125"
@@ -76,7 +75,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="250">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="250">
             <Icon
               name="logos:typescript-icon"
               class="tech-stack-item block transform hover:scale-125"
@@ -87,7 +86,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="300">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="300">
             <Icon
               name="logos:git-icon"
               class="tech-stack-item block transform hover:scale-125"
@@ -98,7 +97,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="350">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="350">
             <Icon
               name="logos:azure-icon"
               class="tech-stack-item grayscale hover:grayscale-0 transition-all transform hover:scale-125"
@@ -117,7 +116,7 @@
       </h3>
       <div class="flex flex-wrap justify-center gap-4">
         <Tooltip>
-          <div v-motion-roll-visible-right>
+          <div v-motion-pop-visible>
             <Icon
               name="logos:react"
               class="tech-stack-item block transform hover:scale-125"
@@ -128,7 +127,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div v-motion-roll-visible-right :delay="50">
+          <div v-motion-pop-visible :delay="50">
             <Icon
               name="logos:mongodb"
               class="bg-white rounded-full p-2 tech-stack-item transform hover:scale-125"
@@ -141,7 +140,7 @@
         <Tooltip>
           <div
             class="transform hover:scale-150"
-            v-motion-roll-visible-right
+            v-motion-pop-visible
             :delay="100"
           >
             <Icon
@@ -154,7 +153,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div v-motion-roll-visible-right :delay="150">
+          <div v-motion-pop-visible :delay="150">
             <Icon
               name="logos:python"
               class="tech-stack-item block transform hover:scale-125"
@@ -171,7 +170,7 @@
       <h3 class="text-3xl text-center mt-14" v-motion-pop-visible>Exploring</h3>
       <div class="flex flex-wrap justify-center gap-4">
         <Tooltip>
-          <div v-motion-roll-visible-right>
+          <div v-motion-pop-visible>
             <Icon
               name="logos:openai-icon"
               class="bg-white p-2 rounded-full tech-stack-item transform hover:scale-125"
@@ -182,7 +181,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="50">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="50">
             <Icon
               name="logos:anthropic"
               class="bg-white rounded-full p-2 tech-stack-item transform hover:scale-125"
@@ -195,7 +194,7 @@
         <Tooltip>
           <div
             class="transform hover:scale-150"
-            v-motion-roll-visible-right
+            v-motion-pop-visible
             :delay="100"
           >
             <Icon
@@ -208,7 +207,7 @@
         </Tooltip>
 
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="150">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="150">
             <Icon
               name="logos:bun"
               class="tech-stack-item block transform hover:scale-125"
@@ -218,7 +217,7 @@
           <template #tooltip>Bun</template>
         </Tooltip>
         <Tooltip>
-          <div class="hover:scale-105" v-motion-roll-visible-right :delay="200">
+          <div class="hover:scale-105" v-motion-pop-visible :delay="200">
             <Icon
               name="logos:firebase"
               class="tech-stack-item block transform hover:scale-125"
@@ -341,6 +340,9 @@ useEventListener("scroll", () => {
     animationFrameId = 0;
   }
 });
+
+// updateWind use document event listener
+useEventListener("mousemove", updateWind);
 
 onUnmounted(() => {
   cancelAnimationFrame(animationFrameId);

@@ -5,7 +5,7 @@
     :style="{ '--x': x + 'px', '--y': y + 'px' }"
   >
     <div
-      class="inner rounded-xl p-3 h-full w-full bg-slate-100 dark:bg-muted-800"
+      class="inner rounded-xl p-3 h-full w-full bg-muted-50 dark:bg-muted-800"
     >
       <slot> </slot>
     </div>
@@ -30,12 +30,26 @@ function mouseMoveGradient(e: MouseEvent) {
   }
 }
 
+const observer = ref();
+
 onMounted(() => {
-  document.addEventListener("mousemove", mouseMoveGradient, false);
+  observer.value = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      document.addEventListener("mousemove", mouseMoveGradient, false);
+    } else {
+      document.removeEventListener("mousemove", mouseMoveGradient, false);
+    }
+  });
+
+  if (wrapper.value) {
+    observer.value.observe(wrapper.value);
+  }
 });
 
 onUnmounted(() => {
-  document.removeEventListener("mousemove", mouseMoveGradient, false);
+  if (wrapper.value && observer.value) {
+    observer.value.unobserve(wrapper.value);
+  }
 });
 </script>
 

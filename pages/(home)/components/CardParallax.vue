@@ -1,6 +1,7 @@
 <template>
   <div
-    class="relative min-h-screen bg-gray-900 flex items-center justify-center p-5 overflow-hidden perspective-1000"
+    class="relative flex items-center justify-center p-5 perspective-1000"
+    ref="wrapper"
   >
     <!-- 3D rotating container -->
     <div
@@ -12,7 +13,7 @@
     >
       <!-- Glass card -->
       <div
-        class="bg-white bg-opacity-10 rounded-2xl shadow-xl backdrop-blur-md p-8 text-white transition-all duration-300 ease-out overflow-hidden"
+        class="bg-slate-200 dark:bg-black bg-opacity-50 dark:bg-opacity-20 rounded-2xl shadow-xl p-8 text-slate-900 dark:text-white transition-all duration-300 ease-out"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
         :style="{
@@ -33,22 +34,31 @@
 
         <!-- Content -->
         <div class="relative z-10">
-          <h1 class="text-4xl font-bold mb-4">Dimar Hanung</h1>
-          <p class="mb-6">
-            Experience true 3D depth. Move your cursor to rotate the interface!
-          </p>
-          <div class="mb-6">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              class="w-full px-4 py-2 rounded-md bg-white bg-opacity-10 placeholder-gray-300 text-white outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-            />
+          <div class="flex place-items-center gap-4">
+            <div>
+              <NuxtImg
+                width="100"
+                height="100"
+                class="rounded-full"
+                src="/profile/profile.jpeg"
+                alt="Profile Image"
+              ></NuxtImg>
+            </div>
+            <div>
+              <h1 class="text-4xl font-bold mb-4">Dimar Hanung</h1>
+              <p class="mb-6">
+                3 years of professional experience as a full stack engineer.
+              </p>
+            </div>
           </div>
-          <button
+          <div class="py-6"></div>
+          <a
+            href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
+            target="_blank"
             class="bg-blue-500 hover:bg-blue-600 transition-all duration-300 px-6 py-2 rounded-md text-white font-semibold"
           >
-            Dive into 3D
-          </button>
+            Contact Me
+          </a>
         </div>
       </div>
 
@@ -69,7 +79,7 @@
 
     <!-- Static background light effect -->
     <div
-      class="absolute inset-0 opacity-50"
+      class="absolute opacity-50"
       :style="{
         background: `radial-gradient(600px circle at ${lightPosition}, rgba(29, 78, 216, 0.15), transparent 80%)`,
       }"
@@ -77,46 +87,51 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 
-export default {
-  name: "DarkModeGlassmorphismLandingPage",
-  setup() {
-    const rotation = ref({ x: 0, y: 0 });
-    const isHovering = ref(false);
+const rotation = ref({ x: 0, y: 0 });
+const isHovering = ref(false);
+const wrapper = ref<HTMLElement | null>(null);
 
-    const handleMouseMove = (event) => {
-      const { clientX, clientY } = event;
-      const { innerWidth, innerHeight } = window;
+const handleMouseMove = (event: MouseEvent) => {
+  const { clientX, clientY } = event;
+  const { innerWidth, innerHeight } = window;
 
-      const x = (clientY - innerHeight / 2) / 20;
-      const y = (innerWidth / 2 - clientX) / 20;
+  const x = (clientY - innerHeight / 2) / 20;
+  const y = (innerWidth / 2 - clientX) / 20;
 
-      rotation.value = { x, y };
-    };
-
-    onMounted(() => {
-      window.addEventListener("mousemove", handleMouseMove);
-    });
-
-    onUnmounted(() => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    });
-
-    const lightPosition = computed(() => {
-      const x = 50 + rotation.value.y * 2;
-      const y = 50 - rotation.value.x * 2;
-      return `${x}% ${y}%`;
-    });
-
-    return {
-      rotation,
-      isHovering,
-      lightPosition,
-    };
-  },
+  rotation.value = { x, y };
 };
+
+const lightPosition = computed(() => {
+  const x = 50 + rotation.value.y * 2;
+  const y = 50 - rotation.value.x * 2;
+  return `${x}% ${y}%`;
+});
+
+const observer = ref();
+
+onMounted(() => {
+  observer.value = new IntersectionObserver((entries) => {
+    console.log("entries[0].isIntersecting", entries);
+    if (entries[0].isIntersecting) {
+      document.addEventListener("mousemove", handleMouseMove, false);
+    } else {
+      document.removeEventListener("mousemove", handleMouseMove, false);
+    }
+  });
+
+  if (wrapper.value) {
+    observer.value.observe(wrapper.value);
+  }
+});
+
+onUnmounted(() => {
+  if (wrapper.value && observer.value) {
+    observer.value.unobserve(wrapper.value);
+  }
+});
 </script>
 
 <style scoped>

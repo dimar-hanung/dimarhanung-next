@@ -184,7 +184,7 @@ const mutedPresets = [
     name: "oled",
     label: "Oled",
     shades: {
-      ...colors.slate,
+      ...colors.zinc,
       900: "#000000",
     },
     class: "bg-black dark:bg-black",
