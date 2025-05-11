@@ -28,7 +28,7 @@
           </div>
           <a :href="certificates?.[realIndex]?.cradential" target="_blank">
             <t-button class="top-5 float-right relative"
-              >Show Certificates</t-button
+              >Lihat Sertifikat</t-button
             >
           </a>
         </div>
