@@ -15,6 +15,7 @@
           :username="review.username"
           :body="review.body"
           :title="review.title"
+          :date="review.date"
         />
       </Marquee>
       <Marquee reverse pause-on-hover class="[--duration:20s] -rotate-2">
@@ -25,6 +26,7 @@
           :username="review.username"
           :body="review.body"
           :title="review.title"
+          :date="review.date"
         />
       </Marquee>
       <!-- <Marquee pause-on-hover class="[--duration:30s] -rotate-2">
@@ -62,6 +64,7 @@ const reviews = [
     title: "Full-Stack Developer at PT. Vision Media Creative ",
     body: "Dimar hanung merupakan teman yang sudah lama saya kenal. Dia merupakan pribadi yang ulet, tekun, selalu penasaran dan mempunyai motivasi tinggi. Skill dan loyalitasnya ga main-main. Terlebih yang saya ketahui dia menggeluti bidang frontend dan karirnya cukup sukses sampai sekarang, maka dari itu saya sangat merekomendasikan Dimar sebagai Frontend Developer yang handal.",
     img: "https://avatar.vercel.sh/jack",
+    date: "26/11/2024",
   },
   {
     name: null,
@@ -72,8 +75,9 @@ const reviews = [
   {
     name: "Zaidan Rizaki",
     title: "Security Engineer at GoJek",
-    body: "Hanung is a passionate, highly skilled, full-stack engineer with deep understanding of various technologies and frameworks.  He often digs deep into  internal workings and underlying mechanics of these technologies, which allows him to tackle problems directly on its root, with most efficient and obviously effective manner. He also does not hesitate to go extra mile to accomplish his goals. Highly recommend!",
+    body: "Hanung is a passionate, highly skilled, full-stack engineer with deep understanding of various technologies and frameworks.  He often digs deep into  internal workings and underlying mechanics of these technologies, which allows him to tackle problems directly on its root, with most efficient and obviously effective manner. He also does not hesitate to go extra mile to accomplish his goals. Highly recommend!",
     img: "https://avatar.vercel.sh/z",
+    date: "09/12/2024",
   },
   {
     name: null,

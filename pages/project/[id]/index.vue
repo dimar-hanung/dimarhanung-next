@@ -355,21 +355,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-// import {
-//   Calendar,
-//   Clock,
-//   User,
-//   Mail,
-//   Send,
-//   ChevronDown,
-//   ChevronUp,
-//   Star,
-//   Download,
-//   ExternalLink,
-//   GitlabIcon as GitHub,
-//   Twitter,
-//   Linkedin,
-// } from "lucide-vue-next";
 
 const activeImage = ref(0);
 const progress = ref(0);

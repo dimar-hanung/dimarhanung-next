@@ -190,9 +190,12 @@
       </div>
     </div>
     <SectionStack />
-    <SectionApaKataOrang />
+    <!-- <SectionApaKataOrang /> -->
+
+    <div class="mt-28">
+      <SectionProject />
+    </div>
     <SectionMotivasi />
-    <SectionProject />
   </div>
 </template>
 
