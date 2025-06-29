@@ -1,9 +1,10 @@
 <template>
+  <TNav></TNav>
   <div
-    class="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 p-8 dark:text-white"
+    class="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 dark:from-primary-900 dark:to-black p-8 dark:text-white"
   >
     <main
-      class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
+      class="max-w-4xl mx-auto bg-white dark:bg-muted-900 rounded-xl shadow-2xl overflow-hidden"
     >
       <div class="relative h-96">
         <img
@@ -23,15 +24,15 @@
       <div class="p-8">
         <div class="flex flex-wrap gap-4 mb-8">
           <div class="flex items-center text-blue-600">
-            <Calendar class="mr-2" />
+            <Icon name="mdi:calendar" class="mr-2" />
             <span>Start Date: 2023-06-01</span>
           </div>
           <div class="flex items-center text-green-600">
-            <Clock class="mr-2" />
+            <Icon name="mdi:clock" class="mr-2" />
             <span>Duration: 3 months</span>
           </div>
           <div class="flex items-center text-purple-600">
-            <User class="mr-2" />
+            <Icon name="mdi:user" class="mr-2" />
             <span>Team: 5 members</span>
           </div>
         </div>
@@ -48,38 +49,34 @@
             tools, providing an intuitive and aesthetically pleasing interface
             for complex data analysis.
           </p>
-          <template v-if="!showFullDescription">
-            <TButton
-              @click="showFullDescription = true"
-              variant="outline"
-              class="mt-2"
-            >
-              Read More <ChevronDown class="ml-2" />
-            </TButton>
-          </template>
-          <template v-else>
-            <p class="text-gray-600 mb-4">
+          
+          <div v-if="showFullDescription" class="space-y-4">
+            <p class="text-gray-600 dark:text-gray-300">
               Our team has leveraged cutting-edge technologies to build a
               scalable and performant application that can handle large datasets
               with ease. The user interface is designed with accessibility in
               mind, ensuring that users of all abilities can navigate and
               utilize the tool effectively.
             </p>
-            <p class="text-gray-600 mb-4">
+            <p class="text-gray-600 dark:text-gray-300">
               Key features of the project include real-time data updates,
               customizable dashboards, advanced filtering options, and
               integration with popular data sources. We've also implemented
               machine learning algorithms to provide predictive insights, giving
               users a competitive edge in their decision-making processes.
             </p>
-            <TButton
-              @click="showFullDescription = false"
-              variant="outline"
-              class="mt-2"
-            >
-              Show Less <ChevronUp class="ml-2" />
-            </TButton>
-          </template>
+          </div>
+
+          <button
+            @click="showFullDescription = !showFullDescription"
+            class="mt-4 flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+          >
+            {{ showFullDescription ? 'Show Less' : 'Read More' }}
+            <Icon 
+              :name="showFullDescription ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+              class="ml-2" 
+            />
+          </button>
         </div>
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
@@ -108,22 +105,49 @@
           Project Progress
         </h2>
         <div class="mb-8">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            v-model="progress"
-            class="w-full"
-            @input="handleProgressChange"
-          />
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400"
+              >Progress</span
+            >
+            <span class="text-sm font-semibold text-gray-900 dark:text-white"
+              >{{ progress }}%</span
+            >
+          </div>
+
+          <!-- Progress bar with gradient -->
           <div
-            class="h-4 rounded-full mt-2 transition-all duration-300 ease-in-out"
-            :style="{
-              width: `${progress}%`,
-              backgroundColor: `hsl(${hue}, 100%, 50%)`,
-            }"
-          />
-          <p class="text-center mt-2">{{ progress }}% Complete</p>
+            class="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+          >
+            <div
+              class="h-full rounded-full transition-all duration-500 ease-out relative overflow-hidden"
+              :style="{
+                width: `${progress}%`,
+                background: `linear-gradient(90deg, ${getProgressColor(
+                  progress
+                )}, ${getProgressColorEnd(progress)})`,
+              }"
+            >
+              <!-- Shimmer effect -->
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Progress milestones -->
+          <div
+            class="flex justify-between mt-3 text-xs text-gray-500 dark:text-gray-400"
+          >
+            <span>Start</span>
+            <span class="text-center">{{
+              progress < 50
+                ? "In Progress"
+                : progress < 100
+                ? "Nearly Done"
+                : "Complete"
+            }}</span>
+            <span>Complete</span>
+          </div>
         </div>
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">Skills Used</h2>
@@ -163,19 +187,58 @@
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Project Milestones
         </h2>
-        <div class="mb-8">
+        <div class="mb-8 relative">
+          <!-- Timeline line -->
           <div
-            v-for="milestone in milestones"
+            class="absolute left-4 top-6 bottom-0 w-px bg-gray-200 dark:bg-gray-700"
+          ></div>
+
+          <div
+            v-for="(milestone, index) in milestones"
             :key="milestone.date"
-            class="flex items-center mb-4 dark:text-white"
+            class="relative flex items-start mb-4 last:mb-0"
           >
-            <div class="bg-blue-500 rounded-full w-4 h-4 mr-4"></div>
-            <div>
-              <h3 class="font-semibold">{{ milestone.title }}</h3>
-              <p class="text-sm text-gray-500 dark:text-white">
-                {{ milestone.date }}
+            <!-- Timeline dot -->
+            <div class="relative z-10 flex-shrink-0 mr-4">
+              <div
+                class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
+                :class="
+                  index < 4
+                    ? 'bg-green-500 text-white'
+                    : index === 4
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
+                "
+              >
+                <Icon
+                  :name="
+                    index < 4
+                      ? 'mdi:check'
+                      : index === 4
+                      ? 'mdi:play'
+                      : 'mdi:circle-outline'
+                  "
+                  class="w-4 h-4"
+                />
+              </div>
+            </div>
+
+            <!-- Milestone content -->
+            <div class="flex-1 min-h-[2rem] pb-2">
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="font-semibold text-sm dark:text-white">
+                  {{ milestone.title }}
+                </h3>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                  {{ milestone.date }}
+                </span>
+              </div>
+
+              <p
+                class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
+              >
+                {{ milestone.description }}
               </p>
-              <p class="text-sm">{{ milestone.description }}</p>
             </div>
           </div>
         </div>
@@ -254,44 +317,77 @@
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Frequently Asked Questions
         </h2>
-        <UAccordion type="single" collapsible class="mb-8">
-          <UAccordionItem
+        <TAccordion type="single" collapsible class="mb-8">
+          <TAccordionItem
             v-for="(faq, index) in faqs"
             :key="index"
             :value="'item-' + index"
           >
-            <UAccordionTrigger>{{ faq.question }}</UAccordionTrigger>
-            <UAccordionContent>{{ faq.answer }}</UAccordionContent>
-          </UAccordionItem>
-        </UAccordion>
+            <TAccordionTrigger>{{ faq.question }}</TAccordionTrigger>
+            <TAccordionContent>{{ faq.answer }}</TAccordionContent>
+          </TAccordionItem>
+        </TAccordion>
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Project Resources
         </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <TButton variant="outline" class="flex items-center justify-center">
-            <Download class="mr-2" />
-            Download Project Brief
-          </TButton>
-          <TButton variant="outline" class="flex items-center justify-center">
-            <ExternalLink class="mr-2" />
-            View Live Demo
-          </TButton>
-          <TButton variant="outline" class="flex items-center justify-center">
-            <GitHub class="mr-2" />
-            View Source Code
-          </TButton>
-          <TButton variant="outline" class="flex items-center justify-center">
-            <Mail class="mr-2" />
-            Contact Support
-          </TButton>
+        <div class="mb-8 border rounded-lg">
+          <button
+            class="flex items-center p-4 border-b w-full text-left transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:scale-105 hover:shadow-md group"
+          >
+            <Icon
+              name="mdi:download"
+              class="w-6 h-6 mr-3 text-blue-800 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+            />
+            <span
+              class="font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300"
+              >Download Project Brief</span
+            >
+          </button>
+          <button
+            class="flex items-center p-4 border-b w-full text-left transition-all duration-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:scale-105 hover:shadow-md group"
+          >
+            <Icon
+              name="mdi:eye"
+              class="w-6 h-6 mr-3 text-green-800 transition-transform duration-300 group-hover:scale-110 group-hover:pulse"
+            />
+            <span
+              class="font-medium group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-300"
+              >View Live Demo</span
+            >
+          </button>
+          <button
+            class="flex items-center p-4 border-b w-full text-left transition-all duration-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:scale-105 hover:shadow-md group"
+          >
+            <Icon
+              name="mdi:code-json"
+              class="w-6 h-6 mr-3 text-purple-800 transition-transform duration-300 group-hover:scale-110 group-hover:bounce"
+            />
+            <span
+              class="font-medium group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors duration-300"
+              >View Source Code</span
+            >
+          </button>
+          <button
+            class="flex items-center p-4 w-full text-left transition-all duration-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:scale-105 hover:shadow-md group"
+          >
+            <Icon
+              name="mdi:help-circle"
+              class="w-6 h-6 mr-3 text-red-800 transition-transform duration-300 group-hover:scale-110 group-hover:wiggle"
+            />
+            <span
+              class="font-medium group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors duration-300"
+              >Contact Support</span
+            >
+          </button>
         </div>
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Rate This Project
         </h2>
         <div class="flex items-center mb-8">
-          <Star
+          <Icon
+            name="mdi:star"
             v-for="star in 5"
             :key="star"
             class="w-8 h-8 cursor-pointer"
@@ -315,7 +411,7 @@
           <UInput type="email" placeholder="Your Email" />
           <UTextarea placeholder="Your Message" />
           <TButton type="submit" class="w-full">
-            <Send class="mr-2" />
+            <Icon name="mdi:send" class="mr-2" />
             Send Message
           </TButton>
         </form>
@@ -331,19 +427,19 @@
                 href="#"
                 class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >
-                <Twitter class="w-5 h-5" />
+                <Icon name="mdi:twitter" class="w-5 h-5" />
               </a>
               <a
                 href="#"
                 class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >
-                <Linkedin class="w-5 h-5" />
+                <Icon name="mdi:linkedin" class="w-5 h-5" />
               </a>
               <a
                 href="#"
                 class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >
-                <GitHub class="w-5 h-5" />
+                <Icon name="mdi:github" class="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -357,7 +453,7 @@
 import { ref } from "vue";
 
 const activeImage = ref(0);
-const progress = ref(0);
+const progress = ref(60);
 const hue = ref(0);
 const showFullDescription = ref(false);
 const rating = ref(0);
@@ -490,13 +586,21 @@ const faqs = [
   },
 ];
 
-const handleProgressChange = (event) => {
-  const value = parseInt(event.target.value);
-  progress.value = value;
-  hue.value = value * 3.6; // 0-360 hue range
+const getProgressColor = (value: number) => {
+  if (value < 25) return "#ef4444"; // red
+  if (value < 50) return "#f97316"; // orange
+  if (value < 75) return "#eab308"; // yellow
+  return "#22c55e"; // green
 };
 
-const handleRating = (value) => {
+const getProgressColorEnd = (value: number) => {
+  if (value < 25) return "#dc2626"; // darker red
+  if (value < 50) return "#ea580c"; // darker orange
+  if (value < 75) return "#ca8a04"; // darker yellow
+  return "#16a34a"; // darker green
+};
+
+const handleRating = (value: number) => {
   rating.value = value;
 };
 
@@ -505,3 +609,19 @@ const handleSubmit = () => {
   console.log("Form submitted");
 };
 </script>
+
+<style scoped>
+/* Shimmer animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-12deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+</style>
