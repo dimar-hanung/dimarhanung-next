@@ -174,15 +174,29 @@
 
               <div class="mt-20 flex items-center justify-between">
                 <TransformCardItem
+                  v-if="project.link"
                   :translate-z="20"
                   :translate-x="-40"
                   as="a"
-                  href="https://rahulv.dev"
+                  :href="project.link"
                   target="__blank"
                   class="rounded-xl px-4 py-2 font-normal dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black cursor-pointer"
                 >
                   Visit
                 </TransformCardItem>
+                <TransformCardItem
+                  v-else
+                  :translate-z="20"
+                  :translate-x="-40"
+                  as="a"
+                  :href="project.link"
+                  target="__blank"
+                >
+                  <span class="text-xs text-neutral-500 dark:text-neutral-300">
+                    Link not available
+                  </span>
+                </TransformCardItem>
+
                 <TransformCardItem
                   :translate-z="20"
                   :translate-x="40"
@@ -214,7 +228,7 @@ const projects = [
     description:
       "Adalah sebuah aplikasi berbasis web yang digunakan untuk mengelola data mahasiswa.",
     image: "/home/project/srs.png",
-    link: "https://example.com",
+    link: "https://srs5g.ut.ac.id",
     tags: ["Full-Stack", "Vue", "TailwindCSS"],
     contribution: 5,
     complexity: 5,
@@ -224,7 +238,7 @@ const projects = [
     description:
       "Adalah sebuah aplikasi berbasis web yang digunakan untuk mengelola data akademik.",
     image: "/home/project/sia.png",
-    link: "https://example.com",
+    link: "https://admisi-sia.ut.ac.id",
     tags: ["Full-Stack", "Vue", "Nest.js"],
     contribution: 5,
     complexity: 5,
@@ -234,7 +248,7 @@ const projects = [
     description:
       "Adalah sebuah aplikasi berbasis web yang digunakan untuk mengelola data akademik.",
     image: "/home/project/myut.png",
-    link: "https://example.com",
+    link: "https://myut.ut.ac.id",
     tags: ["Full-Stack", "Vue", "Nest.js"],
     contribution: 5,
     complexity: 5,
@@ -244,7 +258,7 @@ const projects = [
     description:
       "Adalah sebuah aplikasi berbasis mobile yang digunakan untuk mengelola data karyawan.",
     image: "/home/project/apput.png",
-    link: "https://example.com",
+    // link: "https://example.com",
     tags: ["Front-End", "Vue"],
     contribution: 5,
     complexity: 2,
@@ -254,7 +268,7 @@ const projects = [
     description:
       "Adalah sebuah aplikasi berbasis web yang digunakan untuk mengelola data survey pelanggan.",
     image: "/home/project/sisupel.png",
-    link: "https://example.com",
+    link: "https://sisupel.ut.ac.id",
     tags: ["Front-End", "Vue", "TailwindCSS"],
     contribution: 5,
     complexity: 4,
@@ -264,7 +278,7 @@ const projects = [
     description:
       "Adalah sebuah aplikasi berbasis mobile yang digunakan untuk mengelola data karyawan.",
     image: "/home/project/hris.png",
-    link: "https://example.com",
+    link: "https://hris.ut.ac.id",
     tags: ["Full-Stack", "Vue"],
     contribution: 3,
     complexity: 5,
@@ -274,7 +288,7 @@ const projects = [
     description:
       "Adalah sebuah aplikasi berbasis mobile yang digunakan untuk mengelola data karyawan.",
     image: "/home/project/aitutor.png",
-    link: "https://example.com",
+    link: "https://aitutor.dev.ut.web.id/",
     tags: ["Full-Stack", "Vue"],
     contribution: 5,
     complexity: 5,
