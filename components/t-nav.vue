@@ -117,7 +117,7 @@ const color = useColorMode();
 const isTop = ref(true);
 
 const onScroll = () => {
-  isTop.value = window.scrollY < 10;
+  isTop.value = window.scrollY <= 100;
 };
 
 onMounted(() => {
