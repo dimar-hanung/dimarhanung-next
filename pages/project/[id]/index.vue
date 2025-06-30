@@ -9,7 +9,7 @@
       <div class="relative h-96">
         <img
           src="/home/project/srs.png"
-          alt="Project Hero Image"
+          alt="Project Hero"
           class="object-cover w-full h-full"
         />
         <div
@@ -49,7 +49,7 @@
             tools, providing an intuitive and aesthetically pleasing interface
             for complex data analysis.
           </p>
-          
+
           <div v-if="showFullDescription" class="space-y-4">
             <p class="text-gray-600 dark:text-gray-300">
               Our team has leveraged cutting-edge technologies to build a
@@ -71,10 +71,12 @@
             @click="showFullDescription = !showFullDescription"
             class="mt-4 flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
           >
-            {{ showFullDescription ? 'Show Less' : 'Read More' }}
-            <Icon 
-              :name="showFullDescription ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-              class="ml-2" 
+            {{ showFullDescription ? "Show Less" : "Read More" }}
+            <Icon
+              :name="
+                showFullDescription ? 'mdi:chevron-up' : 'mdi:chevron-down'
+              "
+              class="ml-2"
             />
           </button>
         </div>
@@ -86,7 +88,7 @@
           <div class="relative h-80 mb-4">
             <img
               :src="'/home/project/srs.png'"
-              :alt="'Project Image ' + (activeImage + 1)"
+              :alt="'Project ' + (activeImage + 1)"
               class="object-cover w-full h-full rounded-lg"
             />
           </div>
@@ -101,54 +103,7 @@
           </div>
         </div>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Project Progress
-        </h2>
-        <div class="mb-8">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-sm font-medium text-gray-600 dark:text-gray-400"
-              >Progress</span
-            >
-            <span class="text-sm font-semibold text-gray-900 dark:text-white"
-              >{{ progress }}%</span
-            >
-          </div>
-
-          <!-- Progress bar with gradient -->
-          <div
-            class="relative h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
-          >
-            <div
-              class="h-full rounded-full transition-all duration-500 ease-out relative overflow-hidden"
-              :style="{
-                width: `${progress}%`,
-                background: `linear-gradient(90deg, ${getProgressColor(
-                  progress
-                )}, ${getProgressColorEnd(progress)})`,
-              }"
-            >
-              <!-- Shimmer effect -->
-              <div
-                class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer"
-              ></div>
-            </div>
-          </div>
-
-          <!-- Progress milestones -->
-          <div
-            class="flex justify-between mt-3 text-xs text-gray-500 dark:text-gray-400"
-          >
-            <span>Start</span>
-            <span class="text-center">{{
-              progress < 50
-                ? "In Progress"
-                : progress < 100
-                ? "Nearly Done"
-                : "Complete"
-            }}</span>
-            <span>Complete</span>
-          </div>
-        </div>
+        <ProjectProgress :progress="progress" />
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">Skills Used</h2>
         <div class="flex flex-wrap gap-2 mb-8">
@@ -161,87 +116,9 @@
           </div>
         </div>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Team Members
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-          <div
-            v-for="member in teamMembers"
-            :key="member.name"
-            class="bg-white dark:bg-gray-700 shadow-md rounded-lg p-4 flex items-center space-x-4"
-          >
-            <img
-              :src="'/home/project/srs.png'"
-              :alt="member.name"
-              class="w-12 h-12 rounded-full"
-            />
-            <div>
-              <h3 class="font-semibold dark:text-white">{{ member.name }}</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-300">
-                {{ member.role }}
-              </p>
-            </div>
-          </div>
-        </div>
+        <TeamMembers :team-members="teamMembers" />
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Project Milestones
-        </h2>
-        <div class="mb-8 relative">
-          <!-- Timeline line -->
-          <div
-            class="absolute left-4 top-6 bottom-0 w-px bg-gray-200 dark:bg-gray-700"
-          ></div>
-
-          <div
-            v-for="(milestone, index) in milestones"
-            :key="milestone.date"
-            class="relative flex items-start mb-4 last:mb-0"
-          >
-            <!-- Timeline dot -->
-            <div class="relative z-10 flex-shrink-0 mr-4">
-              <div
-                class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200"
-                :class="
-                  index < 4
-                    ? 'bg-green-500 text-white'
-                    : index === 4
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
-                "
-              >
-                <Icon
-                  :name="
-                    index < 4
-                      ? 'mdi:check'
-                      : index === 4
-                      ? 'mdi:play'
-                      : 'mdi:circle-outline'
-                  "
-                  class="w-4 h-4"
-                />
-              </div>
-            </div>
-
-            <!-- Milestone content -->
-            <div class="flex-1 min-h-[2rem] pb-2">
-              <div class="flex items-center justify-between mb-1">
-                <h3 class="font-semibold text-sm dark:text-white">
-                  {{ milestone.title }}
-                </h3>
-                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
-                  {{ milestone.date }}
-                </span>
-              </div>
-
-              <p
-                class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
-              >
-                {{ milestone.description }}
-              </p>
-            </div>
-          </div>
-        </div>
+        <ProjectTimeline :milestones="milestones" />
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Project Details
@@ -296,23 +173,7 @@
           </TTabsContent>
         </TTabs>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Client Testimonials
-        </h2>
-        <div class="mb-8 space-y-4">
-          <div
-            v-for="testimonial in testimonials"
-            :key="testimonial.name"
-            class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
-          >
-            <p class="italic mb-2 dark:text-white">
-              "{{ testimonial.content }}"
-            </p>
-            <p class="text-sm text-gray-600 dark:text-gray-300">
-              - {{ testimonial.name }}, {{ testimonial.company }}
-            </p>
-          </div>
-        </div>
+        <ClientTestimonials :testimonials="testimonials" />
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Frequently Asked Questions
@@ -328,122 +189,9 @@
           </TAccordionItem>
         </TAccordion>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Project Resources
-        </h2>
-        <div class="mb-8 border rounded-lg">
-          <button
-            class="flex items-center p-4 border-b w-full text-left transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:scale-105 hover:shadow-md group"
-          >
-            <Icon
-              name="mdi:download"
-              class="w-6 h-6 mr-3 text-blue-800 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
-            />
-            <span
-              class="font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300"
-              >Download Project Brief</span
-            >
-          </button>
-          <button
-            class="flex items-center p-4 border-b w-full text-left transition-all duration-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:scale-105 hover:shadow-md group"
-          >
-            <Icon
-              name="mdi:eye"
-              class="w-6 h-6 mr-3 text-green-800 transition-transform duration-300 group-hover:scale-110 group-hover:pulse"
-            />
-            <span
-              class="font-medium group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-300"
-              >View Live Demo</span
-            >
-          </button>
-          <button
-            class="flex items-center p-4 border-b w-full text-left transition-all duration-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:scale-105 hover:shadow-md group"
-          >
-            <Icon
-              name="mdi:code-json"
-              class="w-6 h-6 mr-3 text-purple-800 transition-transform duration-300 group-hover:scale-110 group-hover:bounce"
-            />
-            <span
-              class="font-medium group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors duration-300"
-              >View Source Code</span
-            >
-          </button>
-          <button
-            class="flex items-center p-4 w-full text-left transition-all duration-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:scale-105 hover:shadow-md group"
-          >
-            <Icon
-              name="mdi:help-circle"
-              class="w-6 h-6 mr-3 text-red-800 transition-transform duration-300 group-hover:scale-110 group-hover:wiggle"
-            />
-            <span
-              class="font-medium group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors duration-300"
-              >Contact Support</span
-            >
-          </button>
-        </div>
+        <ProjectResources @resource-click="handleResourceClick" />
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Rate This Project
-        </h2>
-        <div class="flex items-center mb-8">
-          <Icon
-            name="mdi:star"
-            v-for="star in 5"
-            :key="star"
-            class="w-8 h-8 cursor-pointer"
-            :class="
-              star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-            "
-            @click="handleRating(star)"
-          />
-          <span class="ml-2 text-gray-600 dark:text-gray-300">
-            {{
-              rating > 0
-                ? `You rated this project ${rating} stars`
-                : "Click to rate"
-            }}
-          </span>
-        </div>
-
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">Contact Us</h2>
-        <form class="space-y-4 mb-8" @submit.prevent="handleSubmit">
-          <UInput type="text" placeholder="Your Name" />
-          <UInput type="email" placeholder="Your Email" />
-          <UTextarea placeholder="Your Message" />
-          <TButton type="submit" class="w-full">
-            <Icon name="mdi:send" class="mr-2" />
-            Send Message
-          </TButton>
-        </form>
-
-        <footer class="border-t dark:border-gray-600 pt-8 mt-8">
-          <div class="flex justify-between items-center">
-            <p class="text-sm text-gray-600 dark:text-gray-300">
-              © {{ new Date().getFullYear() }} Colorful Interactive Project. All
-              rights reserved.
-            </p>
-            <div class="flex space-x-4">
-              <a
-                href="#"
-                class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                <Icon name="mdi:twitter" class="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                <Icon name="mdi:linkedin" class="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                <Icon name="mdi:github" class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </footer>
+        <ProjectFooter />
       </div>
     </main>
   </div>
@@ -451,6 +199,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import ProjectTimeline from "./components/ProjectTimeline.vue";
+import TeamMembers from "./components/TeamMembers.vue";
+import ProjectProgress from "./components/ProjectProgress.vue";
+import ClientTestimonials from "./components/ClientTestimonials.vue";
+import ProjectResources from "./components/ProjectResources.vue";
+import ProjectFooter from "./components/ProjectFooter.vue";
 
 const activeImage = ref(0);
 const progress = ref(60);
@@ -600,8 +354,12 @@ const getProgressColorEnd = (value: number) => {
   return "#16a34a"; // darker green
 };
 
-const handleRating = (value: number) => {
-  rating.value = value;
+const handleResourceClick = (resource: any) => {
+  console.log("Resource clicked:", resource);
+  // Handle different resource actions here
+  if (resource.action) {
+    // Implement specific actions based on resource type
+  }
 };
 
 const handleSubmit = () => {
@@ -609,19 +367,3 @@ const handleSubmit = () => {
   console.log("Form submitted");
 };
 </script>
-
-<style scoped>
-/* Shimmer animation */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) skewX(-12deg);
-  }
-  100% {
-    transform: translateX(200%) skewX(-12deg);
-  }
-}
-
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-}
-</style>
