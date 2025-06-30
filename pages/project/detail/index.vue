@@ -81,25 +81,69 @@
           </button>
         </div>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
+        <h2 class="text-2xl font-semibold mb-6 dark:text-white">
           Project Gallery
         </h2>
         <div class="mb-8">
-          <div class="relative h-80 mb-4">
+          <!-- Featured main image -->
+          <div
+            class="relative h-96 mb-6 group overflow-hidden rounded-xl cursor-pointer"
+            @click="
+              openModal('/home/project/srs.png', 'Main Project Screenshot')
+            "
+          >
             <img
-              :src="'/home/project/srs.png'"
-              :alt="'Project ' + (activeImage + 1)"
-              class="object-cover w-full h-full rounded-lg"
+              src="/home/project/srs.png"
+              alt="Main Project Screenshot"
+              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
             />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            ></div>
+            <!-- Click indicator -->
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <div class="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                <Icon name="mdi:magnify-plus" class="text-white text-2xl" />
+              </div>
+            </div>
           </div>
-          <div class="flex justify-center gap-2">
-            <button
-              v-for="(_, index) in projectImages"
+
+          <!-- Image grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              v-for="(image, index) in projectImages"
               :key="index"
-              class="w-3 h-3 rounded-full"
-              :class="index === activeImage ? 'bg-blue-600' : 'bg-gray-300'"
-              @click="activeImage = index"
-            />
+              class="group relative overflow-hidden rounded-lg aspect-video bg-gray-100 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              @click="openModal(image, 'Project Screenshot ' + (index + 1))"
+            >
+              <img
+                :src="image"
+                :alt="'Project Screenshot ' + (index + 1)"
+                class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-3 left-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <p class="text-sm font-medium">View {{ index + 1 }}</p>
+              </div>
+              <!-- Click indicator -->
+              <div
+                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <div class="bg-white/20 backdrop-blur-sm rounded-full p-2">
+                  <Icon name="mdi:magnify-plus" class="text-white text-xl" />
+                </div>
+              </div>
+              <!-- Hover overlay with subtle animation -->
+              <div
+                class="absolute inset-0 ring-2 ring-blue-500 ring-opacity-0 group-hover:ring-opacity-50 transition-all duration-300 rounded-lg"
+              ></div>
+            </div>
           </div>
         </div>
 
@@ -195,10 +239,44 @@
       </div>
     </main>
   </div>
+
+  <!-- Image Modal -->
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+    @click="closeModal"
+  >
+    <div class="relative max-w-7xl max-h-[90vh] mx-4">
+      <!-- Close button -->
+      <button
+        @click="closeModal"
+        class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+      >
+        <Icon name="mdi:close" class="text-3xl" />
+      </button>
+
+      <!-- Modal image -->
+      <div class="relative overflow-hidden rounded-lg shadow-2xl">
+        <img
+          :src="modalImage"
+          :alt="modalAlt"
+          class="max-w-full max-h-[90vh] object-contain"
+          @click.stop
+        />
+
+        <!-- Image title -->
+        <div
+          class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4"
+        >
+          <h3 class="text-white text-lg font-semibold">{{ modalAlt }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import ProjectTimeline from "./components/ProjectTimeline.vue";
 import TeamMembers from "./components/TeamMembers.vue";
 import ProjectProgress from "./components/ProjectProgress.vue";
@@ -206,11 +284,15 @@ import ClientTestimonials from "./components/ClientTestimonials.vue";
 import ProjectResources from "./components/ProjectResources.vue";
 import ProjectFooter from "./components/ProjectFooter.vue";
 
-const activeImage = ref(0);
 const progress = ref(60);
 const hue = ref(0);
 const showFullDescription = ref(false);
 const rating = ref(0);
+
+// Modal state
+const isModalOpen = ref(false);
+const modalImage = ref("");
+const modalAlt = ref("");
 
 const projectImages = [
   "/placeholder.svg?height=400&width=600&text=Main+Image",
@@ -366,4 +448,39 @@ const handleSubmit = () => {
   // Implement form submission logic here
   console.log("Form submitted");
 };
+
+// Modal functions
+const openModal = (imageSrc: string, imageAlt: string) => {
+  modalImage.value = imageSrc;
+  modalAlt.value = imageAlt;
+  isModalOpen.value = true;
+  // Prevent body scroll when modal is open
+  document.body.style.overflow = "hidden";
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  modalImage.value = "";
+  modalAlt.value = "";
+  // Restore body scroll
+  document.body.style.overflow = "auto";
+};
+
+// Handle keyboard events
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === "Escape" && isModalOpen.value) {
+    closeModal();
+  }
+};
+
+// Add and remove event listeners
+onMounted(() => {
+  document.addEventListener("keydown", handleKeydown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("keydown", handleKeydown);
+  // Ensure body scroll is restored if component unmounts while modal is open
+  document.body.style.overflow = "auto";
+});
 </script>
