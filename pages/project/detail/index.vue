@@ -1,10 +1,42 @@
 <template>
   <TNav></TNav>
   <div
-    class="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 dark:from-primary-900 dark:to-black p-8 dark:text-white"
+    class="min-h-screen bg-gradient-to-br from-white to-primary-100 dark:from-primary-900 dark:to-black p-8 dark:text-white relative overflow-hidden"
   >
+    <!-- Modern Grid Background -->
+    <div class="absolute inset-0 opacity-30 dark:opacity-20">
+      <!-- Primary grid -->
+      <div
+        class="absolute inset-0"
+        style="
+          background-image: linear-gradient(
+              rgba(99, 102, 241, 0.1) 1px,
+              transparent 1px
+            ),
+            linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+          background-size: 50px 50px;
+        "
+      ></div>
+      <!-- Secondary smaller grid -->
+      <div
+        class="absolute inset-0"
+        style="
+          background-image: linear-gradient(
+              rgba(139, 92, 246, 0.05) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(139, 92, 246, 0.05) 1px,
+              transparent 1px
+            );
+          background-size: 10px 10px;
+        "
+      ></div>
+    </div>
+
     <main
-      class="max-w-4xl mx-auto bg-white dark:bg-muted-900 rounded-xl shadow-2xl overflow-hidden"
+      class="max-w-4xl mx-auto bg-white/95 dark:bg-muted-900/95 backdrop-blur-sm rounded-xl shadow-2xl border border-white/20 dark:border-gray-800/50 overflow-hidden relative z-10"
     >
       <div class="relative h-96">
         <img
@@ -219,9 +251,7 @@
 
         <ClientTestimonials :testimonials="testimonials" />
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Frequently Asked Questions
-        </h2>
+        <h2 class="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
         <TAccordion type="single" collapsible class="mb-8">
           <TAccordionItem
             v-for="(faq, index) in faqs"
@@ -484,3 +514,72 @@ onUnmounted(() => {
   document.body.style.overflow = "auto";
 });
 </script>
+
+<style scoped>
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(-10px) rotate(240deg);
+  }
+}
+
+@keyframes float-delayed {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) rotate(-90deg);
+  }
+  66% {
+    transform: translateY(-25px) rotate(-180deg);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-30px) scale(1.1);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-float-slow {
+  animation: float-slow 10s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* Grid background enhancements for dark mode */
+.dark .grid-bg-primary {
+  background-image: linear-gradient(
+      rgba(139, 92, 246, 0.2) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.2) 1px, transparent 1px);
+}
+
+.dark .grid-bg-secondary {
+  background-image: linear-gradient(
+      rgba(168, 85, 247, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px);
+}
+</style>

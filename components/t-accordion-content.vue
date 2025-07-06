@@ -8,7 +8,10 @@
     leave-from-class="max-h-96 opacity-100"
     leave-to-class="max-h-0 opacity-0"
   >
-    <div v-show="isExpanded" class="overflow-hidden p-4 text-sm text-gray-600">
+    <div
+      v-show="isExpanded"
+      class="overflow-hidden p-4 text-sm text-gray-600 dark:text-gray-300"
+    >
       <slot></slot>
     </div>
   </transition>

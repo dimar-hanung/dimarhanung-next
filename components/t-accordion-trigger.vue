@@ -4,7 +4,7 @@
     type="button"
     :aria-expanded="isExpanded"
     :disabled="disabled"
-    class="flex w-full items-center justify-between p-4 text-left text-sm font-medium transition-all hover:underline focus:outline-none focus:bg-primary-50 disabled:opacity-50"
+    class="flex w-full items-center justify-between p-4 text-left text-sm font-medium text-gray-900 dark:text-gray-100 transition-all hover:underline focus:outline-none focus:bg-primary-50 dark:focus:bg-gray-700 disabled:opacity-50"
     @click="handleClick"
     @keydown="handleKeyDown"
   >

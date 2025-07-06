@@ -7,7 +7,7 @@
       <button
         v-for="(resource, index) in resources"
         :key="resource.label"
-        class="flex items-center p-4 w-full text-left transition-all duration-300 hover:scale-105 hover:shadow-md group"
+        class="flex items-center p-4 w-full text-left group"
         :class="[
           index < resources.length - 1 ? 'border-b' : '',
           resource.hoverColor,
@@ -63,12 +63,12 @@ const props = withDefaults(defineProps<Props>(), {
     },
     {
       label: "View Live Demo",
-      icon: "mdi:eye",
+      icon: "mdi:book",
       iconColor: "text-green-800",
       textHoverColor:
         "group-hover:text-green-700 dark:group-hover:text-green-300",
       hoverColor: "hover:bg-green-50 dark:hover:bg-green-900/20",
-      hoverAnimation: "group-hover:scale-110 group-hover:pulse",
+      hoverAnimation: "group-hover:scale-110 group-hover:-rotate-12",
     },
     {
       label: "View Source Code",
@@ -77,7 +77,7 @@ const props = withDefaults(defineProps<Props>(), {
       textHoverColor:
         "group-hover:text-purple-700 dark:group-hover:text-purple-300",
       hoverColor: "hover:bg-purple-50 dark:hover:bg-purple-900/20",
-      hoverAnimation: "group-hover:scale-110 group-hover:bounce",
+      hoverAnimation: "group-hover:scale-110 group-hover:rotate-12",
     },
     {
       label: "Contact Support",
@@ -85,7 +85,7 @@ const props = withDefaults(defineProps<Props>(), {
       iconColor: "text-red-800",
       textHoverColor: "group-hover:text-red-700 dark:group-hover:text-red-300",
       hoverColor: "hover:bg-red-50 dark:hover:bg-red-900/20",
-      hoverAnimation: "group-hover:scale-110 group-hover:wiggle",
+      hoverAnimation: "group-hover:scale-110 group-hover:-rotate-12",
     },
   ],
 });
