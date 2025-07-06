@@ -54,20 +54,11 @@
       </div>
 
       <div class="p-8">
-        <div class="flex flex-wrap gap-4 mb-8">
-          <div class="flex items-center text-blue-600">
-            <Icon name="mdi:calendar" class="mr-2" />
-            <span>Start Date: 2023-06-01</span>
-          </div>
-          <div class="flex items-center text-green-600">
-            <Icon name="mdi:clock" class="mr-2" />
-            <span>Duration: 3 months</span>
-          </div>
-          <div class="flex items-center text-purple-600">
-            <Icon name="mdi:user" class="mr-2" />
-            <span>Team: 5 members</span>
-          </div>
-        </div>
+        <ProjectMetadata
+          start-date="2023-06-01"
+          duration="3 months"
+          team-size="5 members"
+        />
 
         <div class="mb-8">
           <h2 class="text-2xl font-semibold mb-4 dark:text-white">
@@ -313,6 +304,7 @@ import ProjectProgress from "./components/ProjectProgress.vue";
 import ClientTestimonials from "./components/ClientTestimonials.vue";
 import ProjectResources from "./components/ProjectResources.vue";
 import ProjectFooter from "./components/ProjectFooter.vue";
+import ProjectMetadata from "./components/ProjectMetadata.vue";
 
 const progress = ref(60);
 const hue = ref(0);
