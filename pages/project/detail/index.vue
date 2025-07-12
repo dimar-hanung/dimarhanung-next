@@ -154,58 +154,9 @@
 
         <ProjectTimeline :milestones="milestones" />
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Project Details
-        </h2>
-        <TTabs default-value="features" class="mb-8">
-          <TTabsList>
-            <TTabsTrigger value="features">Features</TTabsTrigger>
-            <TTabsTrigger value="technical">Technical Details</TTabsTrigger>
-            <TTabsTrigger value="future">Future Plans</TTabsTrigger>
-          </TTabsList>
-          <TTabsContent value="features">
-            <ul class="list-disc pl-5 space-y-2">
-              <li>
-                Real-time data visualization with interactive charts and graphs
-              </li>
-              <li>Customizable dashboards for personalized data views</li>
-              <li>
-                Advanced filtering and sorting options for in-depth analysis
-              </li>
-              <li>Collaborative features for team-based data exploration</li>
-              <li>Export functionality for reports and presentations</li>
-            </ul>
-          </TTabsContent>
-          <TTabsContent value="technical">
-            <ul class="list-disc pl-5 space-y-2">
-              <li>Built with Vue 3 and Nuxt 3 for optimal performance</li>
-              <li>
-                Utilizes GraphQL for efficient data fetching and management
-              </li>
-              <li>Implements WebSocket for real-time updates</li>
-              <li>
-                Leverages serverless functions for scalable backend operations
-              </li>
-              <li>Integrates with various data sources through custom APIs</li>
-            </ul>
-          </TTabsContent>
-          <TTabsContent value="future">
-            <ul class="list-disc pl-5 space-y-2">
-              <li>
-                Integration with machine learning models for predictive
-                analytics
-              </li>
-              <li>Expansion of data source connectors</li>
-              <li>Development of mobile applications for on-the-go access</li>
-              <li>
-                Implementation of natural language processing for data querying
-              </li>
-              <li>
-                Enhanced collaboration features including real-time editing
-              </li>
-            </ul>
-          </TTabsContent>
-        </TTabs>
+        <ProjectFeatures :features="keyFeatures" />
+
+        <ProjectTechnicalHighlight :highlights="technicalHighlights" />
 
         <ClientTestimonials :testimonials="testimonials" />
 
@@ -273,6 +224,16 @@ import ProjectResources from "./components/ProjectResources.vue";
 import ProjectFooter from "./components/ProjectFooter.vue";
 import ProjectMetadata from "./components/ProjectMetadata.vue";
 import ProjectImageGrid from "~/pages/project/detail/components/ProjectImageGrid.vue";
+import ProjectFeatures from "./components/ProjectFeatures.vue";
+import ProjectTechnicalHighlight from "./components/ProjectTechnicalHighlight.vue";
+import {
+  type KeyFeature,
+  FeatureStyles,
+} from "./components/types/ItemKeyFeature";
+import {
+  type TechnicalHighlight,
+  TechnicalHighlightStyles,
+} from "./components/types/TechnicalHighlight";
 
 const progress = ref(60);
 const hue = ref(0);
@@ -291,6 +252,45 @@ const projectImages = [
   "/placeholder.svg?height=400&width=600&text=Results+Chart",
 ];
 
+const keyFeatures: KeyFeature[] = [
+  {
+    icon: "mdi:chart-line",
+    title: "Real-time Data Visualization",
+    description:
+      "Interactive charts and graphs that update in real-time for immediate insights",
+    ...FeatureStyles.blue,
+  },
+  {
+    icon: "mdi:view-dashboard",
+    title: "Customizable Dashboards",
+    description:
+      "Personalized data views tailored to your specific needs and preferences",
+    ...FeatureStyles.purple,
+  },
+  {
+    icon: "mdi:filter",
+    title: "Advanced Filtering",
+    description:
+      "Sophisticated sorting and filtering options for comprehensive data analysis",
+    ...FeatureStyles.emerald,
+  },
+  {
+    icon: "mdi:account-group",
+    title: "Team Collaboration",
+    description:
+      "Enhanced collaborative features for seamless team-based data exploration",
+    ...FeatureStyles.orange,
+  },
+  {
+    icon: "mdi:download",
+    title: "Export & Reporting",
+    description:
+      "Comprehensive export functionality for creating professional reports and presentations with multiple format options",
+    ...FeatureStyles.violet,
+    colSpan: 2,
+  },
+];
+
 const skills = [
   "Vue 3",
   "Nuxt 3",
@@ -299,6 +299,49 @@ const skills = [
   "UI/UX Design",
   "Responsive Web Design",
   "Performance Optimization",
+];
+
+const technicalHighlights: TechnicalHighlight[] = [
+  {
+    icon: "mdi:vuejs",
+    title: "Vue 3 & Nuxt 3 Framework",
+    description:
+      "Built with the latest Vue 3 composition API and Nuxt 3 for optimal performance, SSR capabilities, and modern development experience",
+    badge: "Frontend",
+    ...TechnicalHighlightStyles.emerald,
+  },
+  {
+    icon: "mdi:graphql",
+    title: "GraphQL Integration",
+    description:
+      "Efficient data fetching and management through GraphQL APIs, reducing over-fetching and improving application performance",
+    badge: "API Layer",
+    ...TechnicalHighlightStyles.pink,
+  },
+  {
+    icon: "mdi:lightning-bolt",
+    title: "WebSocket Real-time Updates",
+    description:
+      "Implements WebSocket connections for instant data synchronization and real-time collaborative features across all connected clients",
+    badge: "Real-time",
+    ...TechnicalHighlightStyles.blue,
+  },
+  {
+    icon: "mdi:cloud",
+    title: "Serverless Architecture",
+    description:
+      "Leverages modern serverless functions for scalable backend operations, automatic scaling, and cost-effective infrastructure management",
+    badge: "Backend",
+    ...TechnicalHighlightStyles.purple,
+  },
+  {
+    icon: "mdi:api",
+    title: "Custom API Integration",
+    description:
+      "Seamless integration with various data sources through custom-built APIs, enabling comprehensive data aggregation and analysis",
+    badge: "Integration",
+    ...TechnicalHighlightStyles.orange,
+  },
 ];
 
 const teamMembers = [
