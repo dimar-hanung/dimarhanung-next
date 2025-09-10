@@ -127,13 +127,34 @@
                     ref="circleInputSvg"
                     width="200"
                     height="200"
-                    class="cursor-crosshair border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100"
+                    class="cursor-crosshair border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 emotion-circle-input"
+                    role="slider"
+                    :aria-label="`Emotion input control. Current craving level: ${cravingValue}%, mood level: ${moodValue}%. Use arrow keys or click and drag to adjust values.`"
+                    :aria-valuemin="0"
+                    :aria-valuemax="100"
+                    :aria-valuenow="cravingValue"
+                    :aria-valuetext="`Craving ${cravingValue}%, Mood ${moodValue}%`"
+                    tabindex="0"
                     @click="onCircleClick"
                     @mousemove="onCircleMouseMove"
                     @mousedown="startDragging"
                     @mouseup="stopDragging"
                     @mouseleave="stopDragging"
+                    @touchstart="startTouchDragging"
+                    @touchmove="onTouchMove"
+                    @touchend="stopTouchDragging"
+                    @keydown="onKeyDown"
+                    @focus="onFocus"
+                    @blur="onBlur"
                   >
+                    <!-- Screen reader description -->
+                    <desc>
+                      Interactive emotion tracking grid. Horizontal axis
+                      represents craving intensity from low (left) to high
+                      (right). Vertical axis represents mood from bad (bottom)
+                      to good (top). Current position indicates your emotional
+                      state.
+                    </desc>
                     <!-- Background grid -->
                     <defs>
                       <pattern
@@ -218,6 +239,19 @@
                       stroke-width="2"
                       class="drop-shadow-sm"
                     />
+                    <!-- Focus ring for accessibility -->
+                    <circle
+                      v-if="isFocused"
+                      :cx="(cravingValue / 100) * 180 + 10"
+                      :cy="((100 - moodValue) / 100) * 180 + 10"
+                      r="12"
+                      fill="none"
+                      stroke="#3b82f6"
+                      stroke-width="2"
+                      stroke-dasharray="3,2"
+                      opacity="0.8"
+                      class="animate-pulse"
+                    />
                   </svg>
                   <template #fallback>
                     <div
@@ -229,35 +263,36 @@
                 </ClientOnly>
               </div>
             </div>
+
             <!-- Current values display -->
-            <div class="flex w-full gap-4">
+            <div class="flex w-full gap-3">
               <div
-                class="flex flex-1 flex-col items-center justify-center rounded-lg border border-amber-800/40 px-4 py-4 text-center shadow-sm vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
+                class="flex flex-1 items-center justify-between rounded-lg border border-amber-800/40 px-3 py-2 shadow-sm vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
               >
-                <span class="text-xs font-medium text-amber-800 mb-2"
-                  >Craving</span
-                >
                 <span
                   aria-live="polite"
                   aria-atomic="true"
-                  class="text-xl font-bold tabular-nums text-amber-950"
+                  class="text-lg font-bold tabular-nums text-amber-950"
                   >{{ cravingValue }}</span
                 >
-                <span class="text-xs text-amber-700 mt-2">X-Axis</span>
+                <div class="text-left">
+                  <div class="text-xs font-medium text-amber-800">Craving</div>
+                  <div class="text-xs text-amber-700">X-Axis</div>
+                </div>
               </div>
               <div
-                class="flex flex-1 flex-col items-center justify-center rounded-lg border border-amber-800/40 px-4 py-4 text-center shadow-sm vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
+                class="flex flex-1 items-center justify-between rounded-lg border border-amber-800/40 px-3 py-2 shadow-sm vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
               >
-                <span class="text-xs font-medium text-amber-800 mb-2"
-                  >Mood</span
-                >
                 <span
                   aria-live="polite"
                   aria-atomic="true"
-                  class="text-xl font-bold tabular-nums text-amber-950"
+                  class="text-lg font-bold tabular-nums text-amber-950"
                   >{{ moodValue }}</span
                 >
-                <span class="text-xs text-amber-700 mt-2">Y-Axis</span>
+                <div class="text-left">
+                  <div class="text-xs font-medium text-amber-800">Mood</div>
+                  <div class="text-xs text-amber-700">Y-Axis</div>
+                </div>
               </div>
             </div>
 
@@ -361,7 +396,7 @@
     <div aria-hidden="true" class="vintage-overlay vintage-vignette"></div>
     <div
       aria-hidden="true"
-      class="vintage-overlay vintage-flicker"
+      class="vintage-overlay vintage-nostalgia"
       :class="{ 'animate-enabled': isMounted }"
     ></div>
   </div>
@@ -561,6 +596,122 @@ function setCircleValues(craving: number, mood: number) {
   cravingValue.value = clamp100(craving);
   moodValue.value = clamp100(mood);
   valuesChangedSinceLastSample = true;
+}
+
+// Touch support for mobile devices
+function getTouchCoordinates(event: TouchEvent): { x: number; y: number } {
+  const svg = circleInputSvg.value;
+  if (!svg || event.touches.length === 0) return { x: 50, y: 50 };
+
+  const touch = event.touches[0];
+  const rect = svg.getBoundingClientRect();
+  const svgX = touch.clientX - rect.left;
+  const svgY = touch.clientY - rect.top;
+
+  // Convert SVG coordinates to percentage (with padding)
+  const x = clamp100(((svgX - 10) / 180) * 100);
+  const y = clamp100(100 - ((svgY - 10) / 180) * 100);
+
+  return { x, y };
+}
+
+function startTouchDragging(event: TouchEvent) {
+  event.preventDefault(); // Prevent scrolling
+  isDragging = true;
+  const { x, y } = getTouchCoordinates(event);
+  onCircleInput(x, y);
+}
+
+function onTouchMove(event: TouchEvent) {
+  if (!isDragging) return;
+  event.preventDefault(); // Prevent scrolling
+  const { x, y } = getTouchCoordinates(event);
+  onCircleInput(x, y);
+}
+
+function stopTouchDragging(event: TouchEvent) {
+  event.preventDefault();
+  isDragging = false;
+}
+
+// Keyboard accessibility support
+function onKeyDown(event: KeyboardEvent) {
+  const stepSize = event.shiftKey ? 10 : 1; // Larger steps when Shift is held
+  let handled = false;
+
+  switch (event.key) {
+    case "ArrowRight":
+      // Increase craving (X-axis)
+      cravingValue.value = clamp100(cravingValue.value + stepSize);
+      valuesChangedSinceLastSample = true;
+      handled = true;
+      break;
+    case "ArrowLeft":
+      // Decrease craving (X-axis)
+      cravingValue.value = clamp100(cravingValue.value - stepSize);
+      valuesChangedSinceLastSample = true;
+      handled = true;
+      break;
+    case "ArrowUp":
+      // Increase mood (Y-axis)
+      moodValue.value = clamp100(moodValue.value + stepSize);
+      valuesChangedSinceLastSample = true;
+      handled = true;
+      break;
+    case "ArrowDown":
+      // Decrease mood (Y-axis)
+      moodValue.value = clamp100(moodValue.value - stepSize);
+      valuesChangedSinceLastSample = true;
+      handled = true;
+      break;
+    case "Home":
+      // Reset to center
+      cravingValue.value = 50;
+      moodValue.value = 50;
+      valuesChangedSinceLastSample = true;
+      handled = true;
+      break;
+    case "Enter":
+    case " ":
+      // Mark as peak when space or enter is pressed (if session is active)
+      if (canMarkPeak.value) {
+        onMarkPeak();
+        handled = true;
+      }
+      break;
+  }
+
+  if (handled) {
+    event.preventDefault();
+    // Announce current values to screen readers
+    announceCurrentValues();
+  }
+}
+
+// Focus and blur handlers for accessibility
+const isFocused = ref(false);
+
+function onFocus() {
+  isFocused.value = true;
+  // Announce instructions to screen readers
+  announceInstructions();
+}
+
+function onBlur() {
+  isFocused.value = false;
+}
+
+// Screen reader announcements
+function announceCurrentValues() {
+  const message = `Craving level ${cravingValue.value}%, Mood level ${moodValue.value}%`;
+  // Use aria-live region for announcements
+  liveStatus.value = message;
+}
+
+function announceInstructions() {
+  const message =
+    "Use arrow keys to adjust craving and mood levels, Home to center, or Shift+arrows for larger steps";
+  liveStatus.value = message;
 }
 
 // Sampling engine (4 Hz - updates every 250ms)
@@ -1035,12 +1186,26 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
+// PNG export with fixed 800px width for consistent quality across devices
 function exportPNG() {
-  const canvas = canvasEl.value;
-  if (!canvas) return;
-  // Ensure latest draw
-  draw();
-  canvas.toBlob((blob: Blob | null) => {
+  // Create a temporary canvas for high-quality export at fixed 800px width
+  const exportCanvas = document.createElement('canvas');
+  const exportWidth = 800;
+  const exportHeight = 480; // Maintain reasonable aspect ratio
+  const dpr = 2; // Use higher DPR for crisp export
+
+  exportCanvas.width = exportWidth * dpr;
+  exportCanvas.height = exportHeight * dpr;
+  exportCanvas.style.width = exportWidth + 'px';
+  exportCanvas.style.height = exportHeight + 'px';
+
+  const ctx = exportCanvas.getContext('2d')!;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  // Render chart at fixed dimensions for export
+  renderChartForExport(ctx, exportWidth, exportHeight);
+
+  exportCanvas.toBlob((blob: Blob | null) => {
     if (!blob) return;
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -1051,6 +1216,179 @@ function exportPNG() {
     a.remove();
     URL.revokeObjectURL(url);
   });
+}
+
+// Separate render function for PNG export with fixed dimensions
+function renderChartForExport(ctx: CanvasRenderingContext2D, cssWidth: number, cssHeight: number) {
+  // Styles: slightly darker, warmer palette for stronger vintage feel
+  const bg = "#f3e0c0"; // deeper warm paper
+  const grid = "rgba(0,0,0,0.18)";
+  const subText = "#4b5563";
+  const cravingColor = "#dc2626"; // red-600 for craving
+  const moodColor = "#059669"; // emerald-600 for mood
+  const markerColor = "#e11d48"; // rose-600
+
+  // Clear background
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, cssWidth, cssHeight);
+
+  const margin = { top: 32, right: 40, bottom: 40, left: 56 }; // Larger margins for export
+  const plotX = margin.left;
+  const plotY = margin.top;
+  const plotW = cssWidth - margin.left - margin.right;
+  const plotH = cssHeight - margin.top - margin.bottom;
+
+  // Axes & grid
+  ctx.save();
+  ctx.strokeStyle = grid;
+  ctx.lineWidth = 1;
+  ctx.font = "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+  ctx.fillStyle = subText;
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+  for (let v = 0; v <= 100; v += 25) {
+    const y = plotY + plotH * (1 - v / 100);
+    ctx.beginPath();
+    ctx.moveTo(plotX, Math.round(y) + 0.5);
+    ctx.lineTo(plotX + plotW, Math.round(y) + 0.5);
+    ctx.stroke();
+    ctx.fillText(String(v), plotX - 8, y);
+  }
+
+  // X grid at each minute
+  const cur = elapsedSeconds.value;
+  const windowStart = cur <= 300 ? 0 : cur - 300;
+  const windowStop = windowStart + 300;
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  for (let t = Math.ceil(windowStart / 60) * 60; t <= windowStop; t += 60) {
+    const x = plotX + plotW * ((t - windowStart) / 300);
+    ctx.beginPath();
+    ctx.moveTo(Math.round(x) + 0.5, plotY);
+    ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
+    ctx.stroke();
+    ctx.fillText(mmss(t), x, plotY + plotH + 8);
+  }
+  ctx.restore();
+
+  // Helper mappers
+  const xForS = (s: number) => plotX + plotW * ((s - windowStart) / 300);
+  const yForV = (v: number) => plotY + plotH * (1 - v / 100);
+
+  // Plot lines
+  const points = samples.value.filter(
+    (p: Sample) => p.s >= windowStart && p.s <= windowStop
+  );
+
+  // Craving line (red)
+  if (points.length > 0) {
+    ctx.save();
+    ctx.lineWidth = 3; // Thicker line for export
+    ctx.strokeStyle = cravingColor;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i];
+      const x = xForS(p.s);
+      const y = yForV(p.craving);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Mood line (emerald)
+  if (points.length > 0) {
+    ctx.save();
+    ctx.lineWidth = 2.5; // Thicker line for export
+    ctx.strokeStyle = moodColor;
+    ctx.globalAlpha = 0.95;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i];
+      const x = xForS(p.s);
+      const y = yForV(p.mood);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Mark value change points
+    ctx.fillStyle = moodColor;
+    ctx.globalAlpha = 0.35;
+    for (const p of points) {
+      if (p.valuesChanged) {
+        const x = xForS(p.s);
+        const y = yForV(p.mood);
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2); // Larger dots for export
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
+  // Peak markers
+  if (peakMarkers.value.length > 0) {
+    ctx.save();
+    ctx.strokeStyle = markerColor;
+    ctx.fillStyle = markerColor;
+    ctx.lineWidth = 2;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "bottom";
+    ctx.font = "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+    for (const s of peakMarkers.value) {
+      if (s < windowStart || s > windowStop) continue;
+      const x = xForS(s);
+      ctx.beginPath();
+      ctx.moveTo(Math.round(x) + 0.5, plotY);
+      ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
+      ctx.stroke();
+      ctx.fillText("Peak noted", x, plotY - 4);
+    }
+    ctx.restore();
+  }
+
+  // Add title and legend for export
+  ctx.save();
+  ctx.fillStyle = "#1f2937";
+  ctx.font = "bold 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillText("Urge Surfing Session - 5 Minutes", cssWidth / 2, 8);
+
+  // Legend
+  ctx.font = "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+  ctx.textAlign = "left";
+  
+  // Craving legend
+  ctx.fillStyle = cravingColor;
+  ctx.fillRect(cssWidth - 150, 8, 12, 3);
+  ctx.fillStyle = "#1f2937";
+  ctx.fillText("Craving", cssWidth - 130, 8);
+  
+  // Mood legend  
+  ctx.fillStyle = moodColor;
+  ctx.fillRect(cssWidth - 150, 28, 12, 3);
+  ctx.fillStyle = "#1f2937";
+  ctx.fillText("Mood", cssWidth - 130, 28);
+  
+  ctx.restore();
+
+  // Add subtle noise overlay for vintage feel
+  const pat = ensureNoisePattern(ctx);
+  if (pat) {
+    ctx.save();
+    ctx.globalAlpha = 0.08;
+    ctx.fillStyle = pat as any;
+    ctx.fillRect(0, 0, cssWidth, cssHeight);
+    ctx.restore();
+  }
 }
 
 // Lightweight noise pattern for canvas overlay (cached)
@@ -1212,15 +1550,15 @@ function ensureNoisePattern(
   opacity: 0.7;
 }
 
-.vintage-flicker {
+.vintage-nostalgia {
   z-index: 52;
   background: #000;
   mix-blend-mode: multiply;
-  opacity: 0.02;
+  opacity: 0.05;
 }
 
-.vintage-flicker.animate-enabled {
-  animation: exposure-flicker 4.5s ease-in-out infinite;
+.vintage-nostalgia.animate-enabled {
+  animation: nostalgic-breathing 12s ease-in-out infinite;
 }
 
 /* Dust specks overlay */
@@ -1268,48 +1606,21 @@ function ensureNoisePattern(
   }
 }
 
-@keyframes exposure-flicker {
+@keyframes nostalgic-breathing {
   0% {
-    opacity: 0.02;
-  }
-  5% {
-    opacity: 0.08;
-  }
-  7% {
-    opacity: 0.02;
-  }
-  15% {
-    opacity: 0.06;
-  }
-  18% {
-    opacity: 0.02;
+    opacity: 0.05;
   }
   25% {
-    opacity: 0.1;
-  }
-  30% {
-    opacity: 0.02;
-  }
-  45% {
-    opacity: 0.04;
+    opacity: 0.08;
   }
   50% {
     opacity: 0.12;
   }
-  52% {
-    opacity: 0.02;
-  }
-  70% {
-    opacity: 0.07;
-  }
-  85% {
-    opacity: 0.09;
-  }
-  88% {
-    opacity: 0.02;
+  75% {
+    opacity: 0.08;
   }
   100% {
-    opacity: 0.02;
+    opacity: 0.05;
   }
 }
 
@@ -1380,7 +1691,58 @@ function ensureNoisePattern(
 .vintage-segmented .vintage-btn:not(.bg-amber-700):hover {
   background-color: #fff1dc;
 }
-/* Dark mode removed for this page */
+
+/* Enhanced accessibility and mobile support styles */
+.emotion-circle-input {
+  /* Improve touch targets for mobile */
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.emotion-circle-input:focus {
+  /* Enhanced focus styles for keyboard users */
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.emotion-circle-input:focus-visible {
+  /* Only show focus ring for keyboard users */
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .emotion-circle-input {
+    border-width: 2px;
+  }
+
+  .emotion-circle-input:focus {
+    outline-width: 3px;
+    outline-color: HighlightText;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .emotion-circle-input circle {
+    animation: none !important;
+  }
+
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  .emotion-circle-input {
+    /* Larger touch target on mobile */
+    padding: 8px;
+  }
+}
 </style>
 
 <!--
