@@ -7,7 +7,7 @@
           class="text-xl font-semibold tracking-tight sm:text-2xl"
           id="page-title"
         >
-          Urge Surfing – 5-Minute Wave
+          Urge Surfing - 5-Minute Wave
         </h1>
         <!-- Optional help tooltip -->
         <button
@@ -16,19 +16,19 @@
           aria-label="Show urge surfing tip"
         >
           <Icon name="mdi:information-outline" aria-hidden="true" />
-          <span>What’s this?</span>
+          <span>What's this?</span>
         </button>
       </div>
     </header>
     <!-- Main content -->
-    <main class="px-4 py-4 md:pt-6">
-      <div class="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row">
+    <main class="px-2 py-4 md:px-4 md:pt-6">
+      <div class="mx-auto flex max-w-6xl flex-col gap-4 md:gap-6 md:flex-row">
         <!-- Chart area -->
-        <section class="flex-1 min-w-0 space-y-4">
+        <section class="flex-1 min-w-0 space-y-3 md:space-y-4">
           <!-- Live Moving Chart - Last 1 Minute -->
           <div
             ref="liveChartContainer"
-            class="relative w-full min-w-[400px] overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-sm vintage-card bg-[#fff7ed]"
+            class="relative w-full overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-sm vintage-card bg-[#fff7ed]"
           >
             <!-- Live Chart Title -->
             <div class="mb-2 flex items-center justify-between">
@@ -51,11 +51,11 @@
                 ref="liveCanvasEl"
                 :aria-label="'Live scrolling chart of urge intensity, last 60 seconds'"
                 role="img"
-                class="block h-[180px] w-full vintage-canvas"
+                class="block h-[140px] w-full sm:h-[180px] vintage-canvas"
               ></canvas>
               <template #fallback>
                 <div
-                  class="h-[180px] w-full vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded flex items-center justify-center"
+                  class="h-[140px] w-full sm:h-[180px] vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded flex items-center justify-center"
                 >
                   <span class="text-amber-800 text-sm"
                     >Loading live chart...</span
@@ -68,7 +68,7 @@
           <!-- Main 5-Minute Chart -->
           <div
             ref="chartContainer"
-            class="relative w-full min-w-[400px] overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-sm vintage-card bg-[#fff7ed]"
+            class="relative w-full overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-sm vintage-card bg-[#fff7ed]"
           >
             <!-- Chart Title -->
             <div class="mb-2 flex items-center justify-between">
@@ -91,11 +91,11 @@
                 ref="canvasEl"
                 :aria-label="'Line chart of urge intensity over time, last five minutes'"
                 role="img"
-                class="block h-[300px] w-full sm:h-[360px] vintage-canvas"
+                class="block h-[200px] w-full sm:h-[300px] md:h-[360px] vintage-canvas"
               ></canvas>
               <template #fallback>
                 <div
-                  class="h-[300px] w-full sm:h-[360px] vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded flex items-center justify-center"
+                  class="h-[200px] w-full sm:h-[300px] md:h-[360px] vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded flex items-center justify-center"
                 >
                   <span class="text-amber-800 text-sm">Loading chart...</span>
                 </div>
@@ -108,14 +108,15 @@
         <!-- Circle input panel -->
         <aside class="w-full md:w-80">
           <div
-            class="flex h-full flex-col items-center gap-8 rounded-lg border border-amber-800/30 p-6 shadow-sm vintage-card bg-[#fff7ed]"
+            class="flex h-full flex-col items-center gap-6 md:gap-8 rounded-lg border border-amber-800/30 p-4 md:p-6 shadow-sm vintage-card bg-[#fff7ed]"
           >
             <div class="text-center">
               <h2 class="text-base font-semibold text-amber-950 mb-2">
                 Emotion Input
               </h2>
               <p class="text-xs text-amber-800/80 leading-relaxed">
-                Click on the circle to set craving (X) and mood (Y)
+                Click on the circle to set craving (X) and mood (Y). Press F for
+                follow-mouse mode.
               </p>
             </div>
             <!-- Circle input area -->
@@ -127,7 +128,8 @@
                     ref="circleInputSvg"
                     width="200"
                     height="200"
-                    class="cursor-crosshair border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 emotion-circle-input"
+                    class="cursor-crosshair border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 emotion-circle-input w-full max-w-[200px] h-auto"
+                    viewBox="0 0 200 200"
                     role="slider"
                     :aria-label="`Emotion input control. Current craving level: ${cravingValue}%, mood level: ${moodValue}%. Use arrow keys or click and drag to adjust values.`"
                     :aria-valuemin="0"
@@ -144,16 +146,17 @@
                     @touchmove="onTouchMove"
                     @touchend="stopTouchDragging"
                     @keydown="onKeyDown"
+                    @keyup="onKeyUp"
                     @focus="onFocus"
                     @blur="onBlur"
                   >
                     <!-- Screen reader description -->
                     <desc>
                       Interactive emotion tracking grid. Horizontal axis
-                      represents craving intensity from low (left) to high
-                      (right). Vertical axis represents mood from bad (bottom)
-                      to good (top). Current position indicates your emotional
-                      state.
+                      represents craving intensity from unstable (left) to
+                      stable (right). Vertical axis represents mood from
+                      unstable (bottom) to stable (top). Current position
+                      indicates your emotional state.
                     </desc>
                     <!-- Background grid -->
                     <defs>
@@ -200,7 +203,7 @@
                       font-size="10"
                       text-anchor="end"
                     >
-                      High Craving
+                      Stable Craving
                     </text>
                     <text
                       x="10"
@@ -209,7 +212,7 @@
                       font-size="10"
                       text-anchor="start"
                     >
-                      Low Craving
+                      Unstable Craving
                     </text>
                     <text
                       x="105"
@@ -218,7 +221,7 @@
                       font-size="10"
                       text-anchor="middle"
                     >
-                      Good Mood
+                      Stable Mood
                     </text>
                     <text
                       x="105"
@@ -227,7 +230,7 @@
                       font-size="10"
                       text-anchor="middle"
                     >
-                      Bad Mood
+                      Unstable Mood
                     </text>
                     <!-- Current position indicator -->
                     <circle
@@ -252,10 +255,35 @@
                       opacity="0.8"
                       class="animate-pulse"
                     />
+                    <!-- Follow mouse mode indicator -->
+                    <circle
+                      v-if="isFollowMouseMode"
+                      :cx="(cravingValue / 100) * 180 + 10"
+                      :cy="((100 - moodValue) / 100) * 180 + 10"
+                      r="15"
+                      fill="none"
+                      stroke="#10b981"
+                      stroke-width="2"
+                      stroke-dasharray="5,3"
+                      opacity="0.9"
+                      class="animate-pulse"
+                    />
+                    <!-- Follow mouse mode label -->
+                    <text
+                      v-if="isFollowMouseMode"
+                      x="10"
+                      y="25"
+                      fill="#10b981"
+                      font-size="12"
+                      font-weight="bold"
+                      text-anchor="start"
+                    >
+                      Follow Mouse (F)
+                    </text>
                   </svg>
                   <template #fallback>
                     <div
-                      class="w-[200px] h-[200px] border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center"
+                      class="w-full max-w-[200px] h-auto aspect-square border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center"
                     >
                       <span class="text-amber-800 text-sm">Loading...</span>
                     </div>
@@ -446,6 +474,13 @@ const peakMarkers = ref<number[]>([]); // seconds since start
 let valuesChangedSinceLastSample = false;
 let isDragging = false;
 
+// Keyboard state tracking for diagonal movement support
+const pressedKeys = ref(new Set<string>());
+let keyboardUpdateTimer: number | null = null;
+
+// Follow mouse mode - activated with "F" key for accessibility
+const isFollowMouseMode = ref(false);
+
 // Add mounted state for preventing animation flicker
 const isMounted = ref(false);
 
@@ -482,11 +517,15 @@ const canExport = computed(() => samples.value.length > 0);
 // Utilities
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const clamp100 = (n: number) => Math.min(100, Math.max(0, Math.round(n)));
-const mmss = (s: number) =>
-  `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(
+const mmss = (s: number) => {
+  const minutes = Math.floor(s / 60);
+  const seconds = Math.floor(s % 60);
+  const milliseconds = Math.floor((s % 1) * 100); // Get hundredths of a second
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
     2,
     "0"
-  )}`;
+  )}.${String(milliseconds).padStart(2, "0")}`;
+};
 
 function onStart() {
   if (running.value) return;
@@ -497,15 +536,13 @@ function onStart() {
 
   if (container && !cachedChartWidth) {
     cachedChartWidth = container.clientWidth - 32; // account for p-4 padding (16px each side)
-    cachedChartHeight = Math.max(
-      240,
-      Math.min(420, Math.floor(container.clientWidth * 0.45))
-    );
+    cachedChartHeight =
+      window.innerWidth < 640 ? 200 : window.innerWidth < 768 ? 300 : 360; // Responsive height
   }
 
   if (liveContainer && !cachedLiveChartWidth) {
     cachedLiveChartWidth = liveContainer.clientWidth - 32; // account for p-4 padding (16px each side)
-    cachedLiveChartHeight = 180; // Fixed height for live chart
+    cachedLiveChartHeight = window.innerWidth < 640 ? 140 : 180; // Responsive height based on screen size
   }
 
   running.value = true;
@@ -577,9 +614,12 @@ function onCircleClick(event: MouseEvent) {
 }
 
 function onCircleMouseMove(event: MouseEvent) {
-  if (!isDragging) return;
-  const { x, y } = getCircleCoordinates(event);
-  onCircleInput(x, y);
+  // Follow mouse mode: update position on any mouse movement when enabled
+  // Regular drag mode: only update when actively dragging
+  if (isFollowMouseMode.value || isDragging) {
+    const { x, y } = getCircleCoordinates(event);
+    onCircleInput(x, y);
+  }
 }
 
 function startDragging(event: MouseEvent) {
@@ -634,42 +674,27 @@ function stopTouchDragging(event: TouchEvent) {
   isDragging = false;
 }
 
-// Keyboard accessibility support
+// Enhanced keyboard accessibility support with diagonal movement
 function onKeyDown(event: KeyboardEvent) {
-  const stepSize = event.shiftKey ? 10 : 1; // Larger steps when Shift is held
+  const stepSize = event.shiftKey ? 25 : 3; // Much faster movement - 3x base speed, 25x with Shift
   let handled = false;
 
+  // Handle immediate actions (non-movement keys)
   switch (event.key) {
-    case "ArrowRight":
-      // Increase craving (X-axis)
-      cravingValue.value = clamp100(cravingValue.value + stepSize);
-      valuesChangedSinceLastSample = true;
-      handled = true;
-      break;
-    case "ArrowLeft":
-      // Decrease craving (X-axis)
-      cravingValue.value = clamp100(cravingValue.value - stepSize);
-      valuesChangedSinceLastSample = true;
-      handled = true;
-      break;
-    case "ArrowUp":
-      // Increase mood (Y-axis)
-      moodValue.value = clamp100(moodValue.value + stepSize);
-      valuesChangedSinceLastSample = true;
-      handled = true;
-      break;
-    case "ArrowDown":
-      // Decrease mood (Y-axis)
-      moodValue.value = clamp100(moodValue.value - stepSize);
-      valuesChangedSinceLastSample = true;
-      handled = true;
-      break;
     case "Home":
       // Reset to center
       cravingValue.value = 50;
       moodValue.value = 50;
       valuesChangedSinceLastSample = true;
       handled = true;
+      announceCurrentValues();
+      break;
+    case "f":
+    case "F":
+      // Toggle follow mouse mode for easier mouse interaction
+      isFollowMouseMode.value = !isFollowMouseMode.value;
+      handled = true;
+      announceFollowMouseMode();
       break;
     case "Enter":
     case " ":
@@ -679,12 +704,106 @@ function onKeyDown(event: KeyboardEvent) {
         handled = true;
       }
       break;
+    case "ArrowUp":
+    case "ArrowDown":
+    case "ArrowLeft":
+    case "ArrowRight":
+      // Add to pressed keys set for continuous movement
+      pressedKeys.value.add(event.key);
+      // Start continuous movement if not already running
+      if (!keyboardUpdateTimer) {
+        startKeyboardMovement(stepSize);
+      }
+      handled = true;
+      break;
   }
 
   if (handled) {
     event.preventDefault();
-    // Announce current values to screen readers
-    announceCurrentValues();
+  }
+}
+
+function onKeyUp(event: KeyboardEvent) {
+  // Remove from pressed keys set
+  if (pressedKeys.value.has(event.key)) {
+    pressedKeys.value.delete(event.key);
+
+    // Stop movement timer if no arrow keys are pressed
+    if (!hasArrowKeys()) {
+      stopKeyboardMovement();
+    }
+  }
+}
+
+function hasArrowKeys(): boolean {
+  return (
+    pressedKeys.value.has("ArrowUp") ||
+    pressedKeys.value.has("ArrowDown") ||
+    pressedKeys.value.has("ArrowLeft") ||
+    pressedKeys.value.has("ArrowRight")
+  );
+}
+
+function startKeyboardMovement(stepSize: number) {
+  // Clear any existing timer
+  if (keyboardUpdateTimer) {
+    clearInterval(keyboardUpdateTimer);
+  }
+
+  // Perform initial movement immediately
+  performKeyboardMovement(stepSize);
+
+  // Set up continuous movement
+  keyboardUpdateTimer = window.setInterval(() => {
+    performKeyboardMovement(stepSize);
+  }, 50); // Much faster updates - every 50ms for very responsive movement
+}
+
+function stopKeyboardMovement() {
+  if (keyboardUpdateTimer) {
+    clearInterval(keyboardUpdateTimer);
+    keyboardUpdateTimer = null;
+  }
+}
+
+function performKeyboardMovement(stepSize: number) {
+  let cravingDelta = 0;
+  let moodDelta = 0;
+  let moved = false;
+
+  // Calculate movement deltas based on pressed keys
+  if (pressedKeys.value.has("ArrowRight")) {
+    cravingDelta += stepSize;
+    moved = true;
+  }
+  if (pressedKeys.value.has("ArrowLeft")) {
+    cravingDelta -= stepSize;
+    moved = true;
+  }
+  if (pressedKeys.value.has("ArrowUp")) {
+    moodDelta += stepSize;
+    moved = true;
+  }
+  if (pressedKeys.value.has("ArrowDown")) {
+    moodDelta -= stepSize;
+    moved = true;
+  }
+
+  // Apply movement if any keys are pressed
+  if (moved) {
+    // For diagonal movement, reduce step size slightly to maintain consistent speed
+    const isDiagonal = cravingDelta !== 0 && moodDelta !== 0;
+    if (isDiagonal) {
+      cravingDelta *= 0.707; // Approximately 1/√2 to maintain consistent speed
+      moodDelta *= 0.707;
+    }
+
+    cravingValue.value = clamp100(cravingValue.value + cravingDelta);
+    moodValue.value = clamp100(moodValue.value + moodDelta);
+    valuesChangedSinceLastSample = true;
+
+    // Announce movement direction for screen readers
+    announceMovementDirection(cravingDelta, moodDelta);
   }
 }
 
@@ -710,8 +829,33 @@ function announceCurrentValues() {
 
 function announceInstructions() {
   const message =
-    "Use arrow keys to adjust craving and mood levels, Home to center, or Shift+arrows for larger steps";
+    "Use arrow keys for fast movement, Home to center, or Shift+arrows for very fast movement. Hold multiple arrow keys for diagonal movement. Press F to toggle follow-mouse mode";
   liveStatus.value = message;
+}
+
+function announceFollowMouseMode() {
+  const mode = isFollowMouseMode.value ? "enabled" : "disabled";
+  const message = `Follow mouse mode ${mode}. ${
+    isFollowMouseMode.value
+      ? "Move mouse over circle to adjust values"
+      : "Click and drag or use keyboard for adjustment"
+  }`;
+  liveStatus.value = message;
+}
+
+function announceMovementDirection(cravingDelta: number, moodDelta: number) {
+  const directions: string[] = [];
+
+  if (moodDelta > 0) directions.push("up");
+  if (moodDelta < 0) directions.push("down");
+  if (cravingDelta > 0) directions.push("right");
+  if (cravingDelta < 0) directions.push("left");
+
+  if (directions.length > 0) {
+    const directionText = directions.join("-");
+    const message = `Moving ${directionText}. Craving ${cravingValue.value}%, Mood ${moodValue.value}%`;
+    liveStatus.value = message;
+  }
 }
 
 // Sampling engine (4 Hz - updates every 250ms)
@@ -772,10 +916,8 @@ function draw() {
   } else {
     // Calculate fresh dimensions (initial load or after reset)
     cssWidth = container.clientWidth - 32; // account for p-4 padding (16px each side)
-    cssHeight = Math.max(
-      240,
-      Math.min(420, Math.floor(container.clientWidth * 0.45))
-    );
+    cssHeight =
+      window.innerWidth < 640 ? 200 : window.innerWidth < 768 ? 300 : 360; // Responsive height
   }
 
   // Set canvas size accounting for DPR
@@ -895,7 +1037,7 @@ function draw() {
         const x = xForS(p.s);
         const y = yForV(p.mood);
         ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.arc(x, y, 1, 0, Math.PI * 2);
         ctx.fill();
       }
     }
@@ -955,7 +1097,7 @@ function drawLiveChart() {
   } else {
     // Calculate fresh dimensions (initial load or after reset)
     cssWidth = container.clientWidth - 32; // account for p-4 padding (16px each side)
-    cssHeight = 180; // Fixed height for live chart
+    cssHeight = window.innerWidth < 640 ? 140 : 180; // Responsive height
   }
 
   // Set canvas size accounting for DPR
@@ -1158,6 +1300,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (intervalId != null) window.clearInterval(intervalId);
   intervalId = null;
+
+  // Clean up keyboard movement timer
+  stopKeyboardMovement();
+
   window.removeEventListener("resize", handleResize);
 });
 
@@ -1189,17 +1335,17 @@ function exportCSV() {
 // PNG export with fixed 800px width for consistent quality across devices
 function exportPNG() {
   // Create a temporary canvas for high-quality export at fixed 800px width
-  const exportCanvas = document.createElement('canvas');
+  const exportCanvas = document.createElement("canvas");
   const exportWidth = 800;
   const exportHeight = 480; // Maintain reasonable aspect ratio
   const dpr = 2; // Use higher DPR for crisp export
 
   exportCanvas.width = exportWidth * dpr;
   exportCanvas.height = exportHeight * dpr;
-  exportCanvas.style.width = exportWidth + 'px';
-  exportCanvas.style.height = exportHeight + 'px';
+  exportCanvas.style.width = exportWidth + "px";
+  exportCanvas.style.height = exportHeight + "px";
 
-  const ctx = exportCanvas.getContext('2d')!;
+  const ctx = exportCanvas.getContext("2d")!;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   // Render chart at fixed dimensions for export
@@ -1219,7 +1365,11 @@ function exportPNG() {
 }
 
 // Separate render function for PNG export with fixed dimensions
-function renderChartForExport(ctx: CanvasRenderingContext2D, cssWidth: number, cssHeight: number) {
+function renderChartForExport(
+  ctx: CanvasRenderingContext2D,
+  cssWidth: number,
+  cssHeight: number
+) {
   // Styles: slightly darker, warmer palette for stronger vintage feel
   const bg = "#f3e0c0"; // deeper warm paper
   const grid = "rgba(0,0,0,0.18)";
@@ -1242,7 +1392,8 @@ function renderChartForExport(ctx: CanvasRenderingContext2D, cssWidth: number, c
   ctx.save();
   ctx.strokeStyle = grid;
   ctx.lineWidth = 1;
-  ctx.font = "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+  ctx.font =
+    "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
   ctx.fillStyle = subText;
   ctx.textAlign = "right";
   ctx.textBaseline = "middle";
@@ -1341,7 +1492,8 @@ function renderChartForExport(ctx: CanvasRenderingContext2D, cssWidth: number, c
     ctx.lineWidth = 2;
     ctx.textAlign = "center";
     ctx.textBaseline = "bottom";
-    ctx.font = "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+    ctx.font =
+      "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
     for (const s of peakMarkers.value) {
       if (s < windowStart || s > windowStop) continue;
       const x = xForS(s);
@@ -1357,27 +1509,29 @@ function renderChartForExport(ctx: CanvasRenderingContext2D, cssWidth: number, c
   // Add title and legend for export
   ctx.save();
   ctx.fillStyle = "#1f2937";
-  ctx.font = "bold 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+  ctx.font =
+    "bold 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.fillText("Urge Surfing Session - 5 Minutes", cssWidth / 2, 8);
 
   // Legend
-  ctx.font = "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
+  ctx.font =
+    "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
   ctx.textAlign = "left";
-  
+
   // Craving legend
   ctx.fillStyle = cravingColor;
   ctx.fillRect(cssWidth - 150, 8, 12, 3);
   ctx.fillStyle = "#1f2937";
   ctx.fillText("Craving", cssWidth - 130, 8);
-  
-  // Mood legend  
+
+  // Mood legend
   ctx.fillStyle = moodColor;
   ctx.fillRect(cssWidth - 150, 28, 12, 3);
   ctx.fillStyle = "#1f2937";
   ctx.fillText("Mood", cssWidth - 130, 28);
-  
+
   ctx.restore();
 
   // Add subtle noise overlay for vintage feel
@@ -1741,6 +1895,56 @@ function ensureNoisePattern(
   .emotion-circle-input {
     /* Larger touch target on mobile */
     padding: 8px;
+  }
+
+  /* Reduce margins and padding on mobile for charts */
+  .vintage-card {
+    padding: 0.75rem; /* Reduce from 1rem (p-4) to 0.75rem */
+  }
+
+  /* Ensure charts don't overflow on small screens */
+  .vintage-canvas {
+    min-width: 0;
+    width: 100% !important;
+  }
+
+  /* Improve chart container responsiveness */
+  section.flex-1 {
+    min-width: 0;
+    overflow-x: hidden;
+  }
+}
+
+/* Extra small screens (phones in portrait) */
+@media (max-width: 480px) {
+  .vintage-card {
+    padding: 0.5rem; /* Further reduce padding on very small screens */
+  }
+
+  /* Reduce font sizes for better mobile experience */
+  .vintage-card h2 {
+    font-size: 0.875rem; /* text-sm */
+  }
+
+  .vintage-card .text-xs {
+    font-size: 0.75rem; /* Keep text-xs but ensure it's applied */
+  }
+
+  /* Ensure SVG input scales properly */
+  .emotion-circle-input {
+    max-width: 180px;
+  }
+
+  /* Improve header spacing on small screens */
+  header.vintage-header {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  /* Reduce main container padding */
+  main {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
 }
 </style>
