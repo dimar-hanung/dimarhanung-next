@@ -1,14 +1,15 @@
 <template>
+  <TNav></TNav>
   <div
-    class="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 p-8 dark:text-white"
+    class="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 dark:from-primary-900 dark:to-black p-8 dark:text-white"
   >
     <main
-      class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
+      class="max-w-4xl mx-auto bg-white dark:bg-muted-900 rounded-xl shadow-2xl overflow-hidden"
     >
       <div class="relative h-96">
         <img
           src="/home/project/srs.png"
-          alt="Project Hero Image"
+          alt="Project Hero"
           class="object-cover w-full h-full"
         />
         <div
@@ -23,15 +24,15 @@
       <div class="p-8">
         <div class="flex flex-wrap gap-4 mb-8">
           <div class="flex items-center text-blue-600">
-            <Calendar class="mr-2" />
+            <Icon name="mdi:calendar" class="mr-2" />
             <span>Start Date: 2023-06-01</span>
           </div>
           <div class="flex items-center text-green-600">
-            <Clock class="mr-2" />
+            <Icon name="mdi:clock" class="mr-2" />
             <span>Duration: 3 months</span>
           </div>
           <div class="flex items-center text-purple-600">
-            <User class="mr-2" />
+            <Icon name="mdi:user" class="mr-2" />
             <span>Team: 5 members</span>
           </div>
         </div>
@@ -48,83 +49,105 @@
             tools, providing an intuitive and aesthetically pleasing interface
             for complex data analysis.
           </p>
-          <template v-if="!showFullDescription">
-            <TButton
-              @click="showFullDescription = true"
-              variant="outline"
-              class="mt-2"
-            >
-              Read More <ChevronDown class="ml-2" />
-            </TButton>
-          </template>
-          <template v-else>
-            <p class="text-gray-600 mb-4">
+
+          <div v-if="showFullDescription" class="space-y-4">
+            <p class="text-gray-600 dark:text-gray-300">
               Our team has leveraged cutting-edge technologies to build a
               scalable and performant application that can handle large datasets
               with ease. The user interface is designed with accessibility in
               mind, ensuring that users of all abilities can navigate and
               utilize the tool effectively.
             </p>
-            <p class="text-gray-600 mb-4">
+            <p class="text-gray-600 dark:text-gray-300">
               Key features of the project include real-time data updates,
               customizable dashboards, advanced filtering options, and
               integration with popular data sources. We've also implemented
               machine learning algorithms to provide predictive insights, giving
               users a competitive edge in their decision-making processes.
             </p>
-            <TButton
-              @click="showFullDescription = false"
-              variant="outline"
-              class="mt-2"
-            >
-              Show Less <ChevronUp class="ml-2" />
-            </TButton>
-          </template>
+          </div>
+
+          <button
+            @click="showFullDescription = !showFullDescription"
+            class="mt-4 flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+          >
+            {{ showFullDescription ? "Show Less" : "Read More" }}
+            <Icon
+              :name="
+                showFullDescription ? 'mdi:chevron-up' : 'mdi:chevron-down'
+              "
+              class="ml-2"
+            />
+          </button>
         </div>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
+        <h2 class="text-2xl font-semibold mb-6 dark:text-white">
           Project Gallery
         </h2>
         <div class="mb-8">
-          <div class="relative h-80 mb-4">
+          <!-- Featured main image -->
+          <div
+            class="relative h-96 mb-6 group overflow-hidden rounded-xl cursor-pointer"
+            @click="
+              openModal('/home/project/srs.png', 'Main Project Screenshot')
+            "
+          >
             <img
-              :src="'/home/project/srs.png'"
-              :alt="'Project Image ' + (activeImage + 1)"
-              class="object-cover w-full h-full rounded-lg"
+              src="/home/project/srs.png"
+              alt="Main Project Screenshot"
+              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
             />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            ></div>
+            <!-- Click indicator -->
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <div class="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                <Icon name="mdi:magnify-plus" class="text-white text-2xl" />
+              </div>
+            </div>
           </div>
-          <div class="flex justify-center gap-2">
-            <button
-              v-for="(_, index) in projectImages"
+
+          <!-- Image grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              v-for="(image, index) in projectImages"
               :key="index"
-              class="w-3 h-3 rounded-full"
-              :class="index === activeImage ? 'bg-blue-600' : 'bg-gray-300'"
-              @click="activeImage = index"
-            />
+              class="group relative overflow-hidden rounded-lg aspect-video bg-gray-100 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              @click="openModal(image, 'Project Screenshot ' + (index + 1))"
+            >
+              <img
+                :src="image"
+                :alt="'Project Screenshot ' + (index + 1)"
+                class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-3 left-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <p class="text-sm font-medium">View {{ index + 1 }}</p>
+              </div>
+              <!-- Click indicator -->
+              <div
+                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <div class="bg-white/20 backdrop-blur-sm rounded-full p-2">
+                  <Icon name="mdi:magnify-plus" class="text-white text-xl" />
+                </div>
+              </div>
+              <!-- Hover overlay with subtle animation -->
+              <div
+                class="absolute inset-0 ring-2 ring-blue-500 ring-opacity-0 group-hover:ring-opacity-50 transition-all duration-300 rounded-lg"
+              ></div>
+            </div>
           </div>
         </div>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Project Progress
-        </h2>
-        <div class="mb-8">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            v-model="progress"
-            class="w-full"
-            @input="handleProgressChange"
-          />
-          <div
-            class="h-4 rounded-full mt-2 transition-all duration-300 ease-in-out"
-            :style="{
-              width: `${progress}%`,
-              backgroundColor: `hsl(${hue}, 100%, 50%)`,
-            }"
-          />
-          <p class="text-center mt-2">{{ progress }}% Complete</p>
-        </div>
+        <ProjectProgress :progress="progress" />
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">Skills Used</h2>
         <div class="flex flex-wrap gap-2 mb-8">
@@ -137,48 +160,9 @@
           </div>
         </div>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Team Members
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-          <div
-            v-for="member in teamMembers"
-            :key="member.name"
-            class="bg-white dark:bg-gray-700 shadow-md rounded-lg p-4 flex items-center space-x-4"
-          >
-            <img
-              :src="'/home/project/srs.png'"
-              :alt="member.name"
-              class="w-12 h-12 rounded-full"
-            />
-            <div>
-              <h3 class="font-semibold dark:text-white">{{ member.name }}</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-300">
-                {{ member.role }}
-              </p>
-            </div>
-          </div>
-        </div>
+        <TeamMembers :team-members="teamMembers" />
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Project Milestones
-        </h2>
-        <div class="mb-8">
-          <div
-            v-for="milestone in milestones"
-            :key="milestone.date"
-            class="flex items-center mb-4 dark:text-white"
-          >
-            <div class="bg-blue-500 rounded-full w-4 h-4 mr-4"></div>
-            <div>
-              <h3 class="font-semibold">{{ milestone.title }}</h3>
-              <p class="text-sm text-gray-500 dark:text-white">
-                {{ milestone.date }}
-              </p>
-              <p class="text-sm">{{ milestone.description }}</p>
-            </div>
-          </div>
-        </div>
+        <ProjectTimeline :milestones="milestones" />
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Project Details
@@ -233,134 +217,82 @@
           </TTabsContent>
         </TTabs>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Client Testimonials
-        </h2>
-        <div class="mb-8 space-y-4">
-          <div
-            v-for="testimonial in testimonials"
-            :key="testimonial.name"
-            class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
-          >
-            <p class="italic mb-2 dark:text-white">
-              "{{ testimonial.content }}"
-            </p>
-            <p class="text-sm text-gray-600 dark:text-gray-300">
-              - {{ testimonial.name }}, {{ testimonial.company }}
-            </p>
-          </div>
-        </div>
+        <ClientTestimonials :testimonials="testimonials" />
 
         <h2 class="text-2xl font-semibold mb-4 dark:text-white">
           Frequently Asked Questions
         </h2>
-        <UAccordion type="single" collapsible class="mb-8">
-          <UAccordionItem
+        <TAccordion type="single" collapsible class="mb-8">
+          <TAccordionItem
             v-for="(faq, index) in faqs"
             :key="index"
             :value="'item-' + index"
           >
-            <UAccordionTrigger>{{ faq.question }}</UAccordionTrigger>
-            <UAccordionContent>{{ faq.answer }}</UAccordionContent>
-          </UAccordionItem>
-        </UAccordion>
+            <TAccordionTrigger>{{ faq.question }}</TAccordionTrigger>
+            <TAccordionContent>{{ faq.answer }}</TAccordionContent>
+          </TAccordionItem>
+        </TAccordion>
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Project Resources
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <TButton variant="outline" class="flex items-center justify-center">
-            <Download class="mr-2" />
-            Download Project Brief
-          </TButton>
-          <TButton variant="outline" class="flex items-center justify-center">
-            <ExternalLink class="mr-2" />
-            View Live Demo
-          </TButton>
-          <TButton variant="outline" class="flex items-center justify-center">
-            <GitHub class="mr-2" />
-            View Source Code
-          </TButton>
-          <TButton variant="outline" class="flex items-center justify-center">
-            <Mail class="mr-2" />
-            Contact Support
-          </TButton>
-        </div>
+        <ProjectResources @resource-click="handleResourceClick" />
 
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">
-          Rate This Project
-        </h2>
-        <div class="flex items-center mb-8">
-          <Star
-            v-for="star in 5"
-            :key="star"
-            class="w-8 h-8 cursor-pointer"
-            :class="
-              star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-            "
-            @click="handleRating(star)"
-          />
-          <span class="ml-2 text-gray-600 dark:text-gray-300">
-            {{
-              rating > 0
-                ? `You rated this project ${rating} stars`
-                : "Click to rate"
-            }}
-          </span>
-        </div>
-
-        <h2 class="text-2xl font-semibold mb-4 dark:text-white">Contact Us</h2>
-        <form class="space-y-4 mb-8" @submit.prevent="handleSubmit">
-          <UInput type="text" placeholder="Your Name" />
-          <UInput type="email" placeholder="Your Email" />
-          <UTextarea placeholder="Your Message" />
-          <TButton type="submit" class="w-full">
-            <Send class="mr-2" />
-            Send Message
-          </TButton>
-        </form>
-
-        <footer class="border-t dark:border-gray-600 pt-8 mt-8">
-          <div class="flex justify-between items-center">
-            <p class="text-sm text-gray-600 dark:text-gray-300">
-              © {{ new Date().getFullYear() }} Colorful Interactive Project. All
-              rights reserved.
-            </p>
-            <div class="flex space-x-4">
-              <a
-                href="#"
-                class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                <Twitter class="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                <Linkedin class="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-              >
-                <GitHub class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </footer>
+        <ProjectFooter />
       </div>
     </main>
+  </div>
+
+  <!-- Image Modal -->
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+    @click="closeModal"
+  >
+    <div class="relative max-w-7xl max-h-[90vh] mx-4">
+      <!-- Close button -->
+      <button
+        @click="closeModal"
+        class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+      >
+        <Icon name="mdi:close" class="text-3xl" />
+      </button>
+
+      <!-- Modal image -->
+      <div class="relative overflow-hidden rounded-lg shadow-2xl">
+        <img
+          :src="modalImage"
+          :alt="modalAlt"
+          class="max-w-full max-h-[90vh] object-contain"
+          @click.stop
+        />
+
+        <!-- Image title -->
+        <div
+          class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4"
+        >
+          <h3 class="text-white text-lg font-semibold">{{ modalAlt }}</h3>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import ProjectTimeline from "./components/ProjectTimeline.vue";
+import TeamMembers from "./components/TeamMembers.vue";
+import ProjectProgress from "./components/ProjectProgress.vue";
+import ClientTestimonials from "./components/ClientTestimonials.vue";
+import ProjectResources from "./components/ProjectResources.vue";
+import ProjectFooter from "./components/ProjectFooter.vue";
 
-const activeImage = ref(0);
-const progress = ref(0);
+const progress = ref(60);
 const hue = ref(0);
 const showFullDescription = ref(false);
 const rating = ref(0);
+
+// Modal state
+const isModalOpen = ref(false);
+const modalImage = ref("");
+const modalAlt = ref("");
 
 const projectImages = [
   "/placeholder.svg?height=400&width=600&text=Main+Image",
@@ -490,18 +422,65 @@ const faqs = [
   },
 ];
 
-const handleProgressChange = (event) => {
-  const value = parseInt(event.target.value);
-  progress.value = value;
-  hue.value = value * 3.6; // 0-360 hue range
+const getProgressColor = (value: number) => {
+  if (value < 25) return "#ef4444"; // red
+  if (value < 50) return "#f97316"; // orange
+  if (value < 75) return "#eab308"; // yellow
+  return "#22c55e"; // green
 };
 
-const handleRating = (value) => {
-  rating.value = value;
+const getProgressColorEnd = (value: number) => {
+  if (value < 25) return "#dc2626"; // darker red
+  if (value < 50) return "#ea580c"; // darker orange
+  if (value < 75) return "#ca8a04"; // darker yellow
+  return "#16a34a"; // darker green
+};
+
+const handleResourceClick = (resource: any) => {
+  console.log("Resource clicked:", resource);
+  // Handle different resource actions here
+  if (resource.action) {
+    // Implement specific actions based on resource type
+  }
 };
 
 const handleSubmit = () => {
   // Implement form submission logic here
   console.log("Form submitted");
 };
+
+// Modal functions
+const openModal = (imageSrc: string, imageAlt: string) => {
+  modalImage.value = imageSrc;
+  modalAlt.value = imageAlt;
+  isModalOpen.value = true;
+  // Prevent body scroll when modal is open
+  document.body.style.overflow = "hidden";
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  modalImage.value = "";
+  modalAlt.value = "";
+  // Restore body scroll
+  document.body.style.overflow = "auto";
+};
+
+// Handle keyboard events
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === "Escape" && isModalOpen.value) {
+    closeModal();
+  }
+};
+
+// Add and remove event listeners
+onMounted(() => {
+  document.addEventListener("keydown", handleKeydown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("keydown", handleKeydown);
+  // Ensure body scroll is restored if component unmounts while modal is open
+  document.body.style.overflow = "auto";
+});
 </script>
