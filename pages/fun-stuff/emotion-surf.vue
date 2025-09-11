@@ -153,10 +153,10 @@
                     <!-- Screen reader description -->
                     <desc>
                       Interactive emotion tracking grid. Horizontal axis
-                      represents craving intensity from unstable (left) to
-                      stable (right). Vertical axis represents mood from
-                      unstable (bottom) to stable (top). Current position
-                      indicates your emotional state.
+                      represents craving intensity from Calm (left) to Unstable
+                      (right). Vertical axis represents mood from Calm (bottom)
+                      to Unstable (top). Current position indicates your
+                      emotional state.
                     </desc>
                     <!-- Background grid -->
                     <defs>
@@ -203,7 +203,7 @@
                       font-size="10"
                       text-anchor="end"
                     >
-                      Stable Craving
+                      Unstable Craving
                     </text>
                     <text
                       x="10"
@@ -212,7 +212,7 @@
                       font-size="10"
                       text-anchor="start"
                     >
-                      Unstable Craving
+                      Calm Craving
                     </text>
                     <text
                       x="105"
@@ -221,7 +221,7 @@
                       font-size="10"
                       text-anchor="middle"
                     >
-                      Stable Mood
+                      Unstable Mood
                     </text>
                     <text
                       x="105"
@@ -230,7 +230,7 @@
                       font-size="10"
                       text-anchor="middle"
                     >
-                      Unstable Mood
+                      Calm Mood
                     </text>
                     <!-- Current position indicator -->
                     <circle
