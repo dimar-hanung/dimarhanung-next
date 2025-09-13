@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen vintage-ui" :class="{ 'page-loaded': isMounted }">
+  <div class="min-h-screen vintage-ui">
     <!-- Header -->
     <header class="px-4 pt-6 md:pt-8 vintage-header">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-3">
@@ -25,85 +25,9 @@
       <div class="mx-auto flex max-w-6xl flex-col gap-4 md:gap-6 md:flex-row">
         <!-- Chart area -->
         <section class="flex-1 min-w-0 space-y-3 md:space-y-4">
-          <!-- Live Moving Chart - Last 1 Minute -->
-          <div
-            ref="liveChartContainer"
-            class="relative w-full overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-sm vintage-card bg-[#fff7ed]"
-          >
-            <!-- Live Chart Title -->
-            <div class="mb-2 flex items-center justify-between">
-              <h2 class="text-sm font-medium text-amber-900/90">
-                Live Wave - Last 60 Seconds
-              </h2>
-              <div class="text-xs text-amber-800/70" aria-hidden="true">
-                <span
-                  class="inline-block h-2 w-2 rounded-full bg-red-600 align-middle"
-                ></span>
-                <span class="ml-1 mr-3 align-middle">Craving</span>
-                <span
-                  class="inline-block h-2 w-2 rounded-full bg-emerald-600 align-middle"
-                ></span>
-                <span class="ml-1 align-middle">Mood</span>
-              </div>
-            </div>
-            <ClientOnly>
-              <canvas
-                ref="liveCanvasEl"
-                :aria-label="'Live scrolling chart of urge intensity, last 60 seconds'"
-                role="img"
-                class="block h-[140px] w-full sm:h-[180px] vintage-canvas"
-              ></canvas>
-              <template #fallback>
-                <div
-                  class="h-[140px] w-full sm:h-[180px] vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded flex items-center justify-center"
-                >
-                  <span class="text-amber-800 text-sm"
-                    >Loading live chart...</span
-                  >
-                </div>
-              </template>
-            </ClientOnly>
-          </div>
-
-          <!-- Main 5-Minute Chart -->
-          <div
-            ref="chartContainer"
-            class="relative w-full overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-sm vintage-card bg-[#fff7ed]"
-          >
-            <!-- Chart Title -->
-            <div class="mb-2 flex items-center justify-between">
-              <h2 class="text-sm font-medium text-amber-900/90">
-                Full Session - 5 Minutes
-              </h2>
-              <div class="text-xs text-amber-800/70" aria-hidden="true">
-                <span
-                  class="inline-block h-2 w-2 rounded-full bg-red-600 align-middle"
-                ></span>
-                <span class="ml-1 mr-3 align-middle">Craving</span>
-                <span
-                  class="inline-block h-2 w-2 rounded-full bg-emerald-600 align-middle"
-                ></span>
-                <span class="ml-1 align-middle">Mood</span>
-              </div>
-            </div>
-            <ClientOnly>
-              <canvas
-                ref="canvasEl"
-                :aria-label="'Line chart of urge intensity over time, last five minutes'"
-                role="img"
-                class="block h-[200px] w-full sm:h-[300px] md:h-[360px] vintage-canvas"
-              ></canvas>
-              <template #fallback>
-                <div
-                  class="h-[200px] w-full sm:h-[300px] md:h-[360px] vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded flex items-center justify-center"
-                >
-                  <span class="text-amber-800 text-sm">Loading chart...</span>
-                </div>
-              </template>
-            </ClientOnly>
-            <!-- Live status for screen readers, visually hidden but available -->
-            <p class="sr-only" aria-live="polite">{{ liveStatus }}</p>
-          </div>
+          <LiveWave ref="liveWave"></LiveWave>
+          <!-- Main 5-Minute Chart (moved to Wave.vue) -->
+          <Wave />
         </section>
         <!-- Circle input panel -->
         <aside class="w-full md:w-80">
@@ -120,177 +44,7 @@
               </p>
             </div>
             <!-- Circle input area -->
-            <div class="flex w-full items-center justify-center">
-              <div class="relative">
-                <!-- SVG Circle Input -->
-                <ClientOnly>
-                  <svg
-                    ref="circleInputSvg"
-                    width="200"
-                    height="200"
-                    class="cursor-crosshair border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 emotion-circle-input w-full max-w-[200px] h-auto"
-                    viewBox="0 0 200 200"
-                    role="slider"
-                    :aria-label="`Emotion input control. Current craving level: ${cravingValue}%, mood level: ${moodValue}%. Use arrow keys or click and drag to adjust values.`"
-                    :aria-valuemin="0"
-                    :aria-valuemax="100"
-                    :aria-valuenow="cravingValue"
-                    :aria-valuetext="`Craving ${cravingValue}%, Mood ${moodValue}%`"
-                    tabindex="0"
-                    @click="onCircleClick"
-                    @mousemove="onCircleMouseMove"
-                    @mousedown="startDragging"
-                    @mouseup="stopDragging"
-                    @mouseleave="stopDragging"
-                    @touchstart="startTouchDragging"
-                    @touchmove="onTouchMove"
-                    @touchend="stopTouchDragging"
-                    @keydown="onKeyDown"
-                    @keyup="onKeyUp"
-                    @focus="onFocus"
-                    @blur="onBlur"
-                  >
-                    <!-- Screen reader description -->
-                    <desc>
-                      Interactive emotion tracking grid. Horizontal axis
-                      represents craving intensity from Calm (left) to Unstable
-                      (right). Vertical axis represents mood from Calm (bottom)
-                      to Unstable (top). Current position indicates your
-                      emotional state.
-                    </desc>
-                    <!-- Background grid -->
-                    <defs>
-                      <pattern
-                        id="grid"
-                        width="20"
-                        height="20"
-                        patternUnits="userSpaceOnUse"
-                      >
-                        <path
-                          d="M 20 0 L 0 0 0 20"
-                          fill="none"
-                          stroke="#d97706"
-                          stroke-width="0.5"
-                          opacity="0.3"
-                        />
-                      </pattern>
-                    </defs>
-                    <rect width="200" height="200" fill="url(#grid)" />
-                    <!-- Axis lines -->
-                    <line
-                      x1="100"
-                      y1="0"
-                      x2="100"
-                      y2="200"
-                      stroke="#b45309"
-                      stroke-width="1"
-                      opacity="0.6"
-                    />
-                    <line
-                      x1="0"
-                      y1="100"
-                      x2="200"
-                      y2="100"
-                      stroke="#b45309"
-                      stroke-width="1"
-                      opacity="0.6"
-                    />
-                    <!-- Labels -->
-                    <text
-                      x="190"
-                      y="105"
-                      fill="#b45309"
-                      font-size="10"
-                      text-anchor="end"
-                    >
-                      Unstable Craving
-                    </text>
-                    <text
-                      x="10"
-                      y="105"
-                      fill="#b45309"
-                      font-size="10"
-                      text-anchor="start"
-                    >
-                      Calm Craving
-                    </text>
-                    <text
-                      x="105"
-                      y="15"
-                      fill="#b45309"
-                      font-size="10"
-                      text-anchor="middle"
-                    >
-                      Unstable Mood
-                    </text>
-                    <text
-                      x="105"
-                      y="195"
-                      fill="#b45309"
-                      font-size="10"
-                      text-anchor="middle"
-                    >
-                      Calm Mood
-                    </text>
-                    <!-- Current position indicator -->
-                    <circle
-                      :cx="(cravingValue / 100) * 180 + 10"
-                      :cy="((100 - moodValue) / 100) * 180 + 10"
-                      r="8"
-                      fill="#f59e0b"
-                      stroke="#fff7ed"
-                      stroke-width="2"
-                      class="drop-shadow-sm"
-                    />
-                    <!-- Focus ring for accessibility -->
-                    <circle
-                      v-if="isFocused"
-                      :cx="(cravingValue / 100) * 180 + 10"
-                      :cy="((100 - moodValue) / 100) * 180 + 10"
-                      r="12"
-                      fill="none"
-                      stroke="#3b82f6"
-                      stroke-width="2"
-                      stroke-dasharray="3,2"
-                      opacity="0.8"
-                      class="animate-pulse"
-                    />
-                    <!-- Follow mouse mode indicator -->
-                    <circle
-                      v-if="isFollowMouseMode"
-                      :cx="(cravingValue / 100) * 180 + 10"
-                      :cy="((100 - moodValue) / 100) * 180 + 10"
-                      r="15"
-                      fill="none"
-                      stroke="#10b981"
-                      stroke-width="2"
-                      stroke-dasharray="5,3"
-                      opacity="0.9"
-                      class="animate-pulse"
-                    />
-                    <!-- Follow mouse mode label -->
-                    <text
-                      v-if="isFollowMouseMode"
-                      x="10"
-                      y="25"
-                      fill="#10b981"
-                      font-size="12"
-                      font-weight="bold"
-                      text-anchor="start"
-                    >
-                      Follow Mouse (F)
-                    </text>
-                  </svg>
-                  <template #fallback>
-                    <div
-                      class="w-full max-w-[200px] h-auto aspect-square border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center"
-                    >
-                      <span class="text-amber-800 text-sm">Loading...</span>
-                    </div>
-                  </template>
-                </ClientOnly>
-              </div>
-            </div>
+            <EmotionInput />
 
             <!-- Current values display -->
             <div class="flex w-full gap-3">
@@ -380,68 +134,78 @@
               </button>
             </div>
 
-            <!-- Export Controls -->
-            <div class="w-full border-t border-amber-800/30 pt-6">
-              <p class="text-xs text-amber-800 text-center mb-4 font-medium">
-                Export Your Session
-              </p>
-              <div class="flex gap-3">
-                <button
-                  class="flex-1 rounded-lg border-2 border-amber-800/50 bg-white px-4 py-3 text-sm font-medium text-amber-800 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 transition-all duration-200 friendly-btn-outline"
-                  :disabled="!canExport"
-                  @click="exportCSV"
-                >
-                  <Icon name="mdi:file-table-outline" class="inline mr-1" />
-                  CSV
-                </button>
-                <button
-                  class="flex-1 rounded-lg border-2 border-amber-800/50 bg-white px-4 py-3 text-sm font-medium text-amber-800 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 transition-all duration-200 friendly-btn-outline"
-                  :disabled="!canExport"
-                  @click="exportPNG"
-                >
-                  <Icon name="mdi:image-outline" class="inline mr-1" />
-                  PNG
-                </button>
+            <!-- Breathing Effect Controls -->
+            <div class="w-full border-t border-amber-800/30 pt-4">
+              <div class="flex items-center gap-3">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    v-model="breathingEnabled"
+                    class="rounded border-amber-800/40 text-amber-600 focus:ring-amber-500 focus:ring-offset-1"
+                  />
+                  <span class="text-sm font-medium text-amber-800">
+                    4-4-4 Breathing Effect
+                  </span>
+                </label>
               </div>
+              <p class="text-xs text-amber-700 mt-1">
+                Enable vintage breathing overlay (4s in, 4s hold, 4s out)
+              </p>
             </div>
+
+            <!-- Export Controls -->
+            <ExportChart />
           </div>
         </aside>
       </div>
     </main>
     <!-- Vintage overlays -->
-    <div aria-hidden="true" class="vintage-overlay vintage-grade"></div>
-    <div aria-hidden="true" class="vintage-overlay vintage-grain"></div>
+    <div
+      aria-hidden="true"
+      class="vintage-overlay vintage-grade"
+      :class="{ hidden: !breathingEnabled }"
+    ></div>
+    <div
+      aria-hidden="true"
+      class="vintage-overlay vintage-grain"
+      :class="{ hidden: !breathingEnabled }"
+    ></div>
     <div
       aria-hidden="true"
       class="vintage-overlay vintage-dust"
-      :class="{ 'animate-enabled': isMounted }"
+      :class="{ hidden: !breathingEnabled }"
     ></div>
     <div
       aria-hidden="true"
       class="vintage-overlay vintage-scanlines"
-      :class="{ 'animate-enabled': isMounted }"
+      :class="{ hidden: !breathingEnabled }"
     ></div>
-    <div aria-hidden="true" class="vintage-overlay vintage-vignette"></div>
+    <div
+      aria-hidden="true"
+      class="vintage-overlay vintage-vignette"
+      :class="{ hidden: !breathingEnabled }"
+    ></div>
     <div
       aria-hidden="true"
       class="vintage-overlay vintage-nostalgia"
-      :class="{ 'animate-enabled': isMounted }"
+      :class="{
+        'breathing-active': breathingEnabled,
+        hidden: !breathingEnabled,
+      }"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
 // Use Nuxt auto-imports path for TypeScript friendliness
-import {
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-  computed,
-  nextTick,
-} from "#imports";
+import { onBeforeUnmount, onMounted, ref, watch, computed } from "#imports";
+import ExportChart from "./components/export-chart.vue";
+import LiveWave from "./components/live-wave.vue";
+import Wave from "./components/wave.vue";
+import EmotionInput from "./components/emotion-input.vue";
+import { clamp01, clamp100, createNoisePattern, mmss } from "./utils";
 
-type Sample = {
+export type Sample = {
   s: number; // seconds since start
   iso: string;
   label: string; // mm:ss
@@ -450,45 +214,43 @@ type Sample = {
   valuesChanged?: boolean;
 };
 
+const liveWave = ref<InstanceType<typeof LiveWave> | null>(null);
+
 // Constants
 const DURATION = 300; // seconds (5 minutes)
 const SAMPLE_MS = 500; // Update every 250ms for faster responsiveness
 
 // Refs & state
-const canvasEl = ref<HTMLCanvasElement | null>(null);
-const liveCanvasEl = ref<HTMLCanvasElement | null>(null);
-const chartContainer = ref<HTMLElement | null>(null);
-const liveChartContainer = ref<HTMLElement | null>(null);
-const circleInputSvg = ref<SVGElement | null>(null);
 
 const cravingValue = ref<number>(50); // x-axis (0-100)
 const moodValue = ref<number>(50); // y-axis (0-100)
+provide("cravingValue", cravingValue);
+provide("moodValue", moodValue);
+
+// Breathing effect control
+const breathingEnabled = ref<boolean>(false); // Breathing disabled by default
 
 const running = ref(false);
+provide("running", running);
+
 const paused = ref(false);
+provide("paused", paused);
+
 const elapsedSeconds = ref(0);
+provide("elapsedSeconds", elapsedSeconds);
+
 let intervalId: number | null = null;
 
 const samples = ref<Sample[]>([]);
+provide("samples", samples);
+
 const peakMarkers = ref<number[]>([]); // seconds since start
+provide("peakMarkers", peakMarkers);
 let valuesChangedSinceLastSample = false;
-let isDragging = false;
-
-// Keyboard state tracking for diagonal movement support
-const pressedKeys = ref(new Set<string>());
-let keyboardUpdateTimer: number | null = null;
-
-// Follow mouse mode - activated with "F" key for accessibility
-const isFollowMouseMode = ref(false);
-
-// Add mounted state for preventing animation flicker
-const isMounted = ref(false);
 
 // Cache chart dimensions to prevent width changes during session
 let cachedChartWidth: number | null = null;
 let cachedChartHeight: number | null = null;
-let cachedLiveChartWidth: number | null = null;
-let cachedLiveChartHeight: number | null = null;
 
 const liveStatus = ref("Ready. Press Start to begin.");
 const footerStatus = computed(() => {
@@ -512,38 +274,12 @@ const canPause = computed(() => running.value && !paused.value);
 const canResume = computed(() => running.value && paused.value);
 const canReset = computed(() => !running.value && samples.value.length > 0);
 const canMarkPeak = computed(() => running.value && !paused.value);
-const canExport = computed(() => samples.value.length > 0);
-
-// Utilities
-const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
-const clamp100 = (n: number) => Math.min(100, Math.max(0, Math.round(n)));
-const mmss = (s: number) => {
-  const minutes = Math.floor(s / 60);
-  const seconds = Math.floor(s % 60);
-  const milliseconds = Math.floor((s % 1) * 100); // Get hundredths of a second
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-    2,
-    "0"
-  )}.${String(milliseconds).padStart(2, "0")}`;
-};
+provide("canMarkPeak", canMarkPeak);
 
 function onStart() {
   if (running.value) return;
 
-  // Cache chart dimensions when starting session
-  const container = chartContainer.value;
-  const liveContainer = liveChartContainer.value;
-
-  if (container && !cachedChartWidth) {
-    cachedChartWidth = container.clientWidth - 32; // account for p-4 padding (16px each side)
-    cachedChartHeight =
-      window.innerWidth < 640 ? 200 : window.innerWidth < 768 ? 300 : 360; // Responsive height
-  }
-
-  if (liveContainer && !cachedLiveChartWidth) {
-    cachedLiveChartWidth = liveContainer.clientWidth - 32; // account for p-4 padding (16px each side)
-    cachedLiveChartHeight = window.innerWidth < 640 ? 140 : 180; // Responsive height based on screen size
-  }
+  liveWave.value?.onStart();
 
   running.value = true;
   paused.value = false;
@@ -571,292 +307,29 @@ function onReset() {
   // Reset cached dimensions to allow recalculation
   cachedChartWidth = null;
   cachedChartHeight = null;
-  cachedLiveChartWidth = null;
-  cachedLiveChartHeight = null;
 
   liveStatus.value = "Reset complete";
-  draw();
-  drawLiveChart();
+  liveWave.value?.onReset();
 }
 
 function onMarkPeak() {
   if (!running.value || paused.value) return;
   peakMarkers.value.push(elapsedSeconds.value);
   liveStatus.value = "Peak noted";
-  draw();
 }
+provide("onMarkPeak", onMarkPeak);
 
-function onCircleInput(x: number, y: number) {
-  cravingValue.value = clamp100(x);
-  moodValue.value = clamp100(y);
+// Emotion input updates from child component
+function onCravingUpdate(v: number) {
+  cravingValue.value = clamp100(v);
+  valuesChangedSinceLastSample = true;
+}
+function onMoodUpdate(v: number) {
+  moodValue.value = clamp100(v);
   valuesChangedSinceLastSample = true;
 }
 
-// Circle input handlers
-function getCircleCoordinates(event: MouseEvent): { x: number; y: number } {
-  const svg = circleInputSvg.value;
-  if (!svg) return { x: 50, y: 50 };
-
-  const rect = svg.getBoundingClientRect();
-  const svgX = event.clientX - rect.left;
-  const svgY = event.clientY - rect.top;
-
-  // Convert SVG coordinates to percentage (with padding)
-  const x = clamp100(((svgX - 10) / 180) * 100);
-  const y = clamp100(100 - ((svgY - 10) / 180) * 100);
-
-  return { x, y };
-}
-
-function onCircleClick(event: MouseEvent) {
-  const { x, y } = getCircleCoordinates(event);
-  onCircleInput(x, y);
-}
-
-function onCircleMouseMove(event: MouseEvent) {
-  // Follow mouse mode: update position on any mouse movement when enabled
-  // Regular drag mode: only update when actively dragging
-  if (isFollowMouseMode.value || isDragging) {
-    const { x, y } = getCircleCoordinates(event);
-    onCircleInput(x, y);
-  }
-}
-
-function startDragging(event: MouseEvent) {
-  isDragging = true;
-  const { x, y } = getCircleCoordinates(event);
-  onCircleInput(x, y);
-}
-
-function stopDragging() {
-  isDragging = false;
-}
-
-function setCircleValues(craving: number, mood: number) {
-  cravingValue.value = clamp100(craving);
-  moodValue.value = clamp100(mood);
-  valuesChangedSinceLastSample = true;
-}
-
-// Touch support for mobile devices
-function getTouchCoordinates(event: TouchEvent): { x: number; y: number } {
-  const svg = circleInputSvg.value;
-  if (!svg || event.touches.length === 0) return { x: 50, y: 50 };
-
-  const touch = event.touches[0];
-  const rect = svg.getBoundingClientRect();
-  const svgX = touch.clientX - rect.left;
-  const svgY = touch.clientY - rect.top;
-
-  // Convert SVG coordinates to percentage (with padding)
-  const x = clamp100(((svgX - 10) / 180) * 100);
-  const y = clamp100(100 - ((svgY - 10) / 180) * 100);
-
-  return { x, y };
-}
-
-function startTouchDragging(event: TouchEvent) {
-  event.preventDefault(); // Prevent scrolling
-  isDragging = true;
-  const { x, y } = getTouchCoordinates(event);
-  onCircleInput(x, y);
-}
-
-function onTouchMove(event: TouchEvent) {
-  if (!isDragging) return;
-  event.preventDefault(); // Prevent scrolling
-  const { x, y } = getTouchCoordinates(event);
-  onCircleInput(x, y);
-}
-
-function stopTouchDragging(event: TouchEvent) {
-  event.preventDefault();
-  isDragging = false;
-}
-
-// Enhanced keyboard accessibility support with diagonal movement
-function onKeyDown(event: KeyboardEvent) {
-  const stepSize = event.shiftKey ? 25 : 3; // Much faster movement - 3x base speed, 25x with Shift
-  let handled = false;
-
-  // Handle immediate actions (non-movement keys)
-  switch (event.key) {
-    case "Home":
-      // Reset to center
-      cravingValue.value = 50;
-      moodValue.value = 50;
-      valuesChangedSinceLastSample = true;
-      handled = true;
-      announceCurrentValues();
-      break;
-    case "f":
-    case "F":
-      // Toggle follow mouse mode for easier mouse interaction
-      isFollowMouseMode.value = !isFollowMouseMode.value;
-      handled = true;
-      announceFollowMouseMode();
-      break;
-    case "Enter":
-    case " ":
-      // Mark as peak when space or enter is pressed (if session is active)
-      if (canMarkPeak.value) {
-        onMarkPeak();
-        handled = true;
-      }
-      break;
-    case "ArrowUp":
-    case "ArrowDown":
-    case "ArrowLeft":
-    case "ArrowRight":
-      // Add to pressed keys set for continuous movement
-      pressedKeys.value.add(event.key);
-      // Start continuous movement if not already running
-      if (!keyboardUpdateTimer) {
-        startKeyboardMovement(stepSize);
-      }
-      handled = true;
-      break;
-  }
-
-  if (handled) {
-    event.preventDefault();
-  }
-}
-
-function onKeyUp(event: KeyboardEvent) {
-  // Remove from pressed keys set
-  if (pressedKeys.value.has(event.key)) {
-    pressedKeys.value.delete(event.key);
-
-    // Stop movement timer if no arrow keys are pressed
-    if (!hasArrowKeys()) {
-      stopKeyboardMovement();
-    }
-  }
-}
-
-function hasArrowKeys(): boolean {
-  return (
-    pressedKeys.value.has("ArrowUp") ||
-    pressedKeys.value.has("ArrowDown") ||
-    pressedKeys.value.has("ArrowLeft") ||
-    pressedKeys.value.has("ArrowRight")
-  );
-}
-
-function startKeyboardMovement(stepSize: number) {
-  // Clear any existing timer
-  if (keyboardUpdateTimer) {
-    clearInterval(keyboardUpdateTimer);
-  }
-
-  // Perform initial movement immediately
-  performKeyboardMovement(stepSize);
-
-  // Set up continuous movement
-  keyboardUpdateTimer = window.setInterval(() => {
-    performKeyboardMovement(stepSize);
-  }, 50); // Much faster updates - every 50ms for very responsive movement
-}
-
-function stopKeyboardMovement() {
-  if (keyboardUpdateTimer) {
-    clearInterval(keyboardUpdateTimer);
-    keyboardUpdateTimer = null;
-  }
-}
-
-function performKeyboardMovement(stepSize: number) {
-  let cravingDelta = 0;
-  let moodDelta = 0;
-  let moved = false;
-
-  // Calculate movement deltas based on pressed keys
-  if (pressedKeys.value.has("ArrowRight")) {
-    cravingDelta += stepSize;
-    moved = true;
-  }
-  if (pressedKeys.value.has("ArrowLeft")) {
-    cravingDelta -= stepSize;
-    moved = true;
-  }
-  if (pressedKeys.value.has("ArrowUp")) {
-    moodDelta += stepSize;
-    moved = true;
-  }
-  if (pressedKeys.value.has("ArrowDown")) {
-    moodDelta -= stepSize;
-    moved = true;
-  }
-
-  // Apply movement if any keys are pressed
-  if (moved) {
-    // For diagonal movement, reduce step size slightly to maintain consistent speed
-    const isDiagonal = cravingDelta !== 0 && moodDelta !== 0;
-    if (isDiagonal) {
-      cravingDelta *= 0.707; // Approximately 1/√2 to maintain consistent speed
-      moodDelta *= 0.707;
-    }
-
-    cravingValue.value = clamp100(cravingValue.value + cravingDelta);
-    moodValue.value = clamp100(moodValue.value + moodDelta);
-    valuesChangedSinceLastSample = true;
-
-    // Announce movement direction for screen readers
-    announceMovementDirection(cravingDelta, moodDelta);
-  }
-}
-
-// Focus and blur handlers for accessibility
-const isFocused = ref(false);
-
-function onFocus() {
-  isFocused.value = true;
-  // Announce instructions to screen readers
-  announceInstructions();
-}
-
-function onBlur() {
-  isFocused.value = false;
-}
-
-// Screen reader announcements
-function announceCurrentValues() {
-  const message = `Craving level ${cravingValue.value}%, Mood level ${moodValue.value}%`;
-  // Use aria-live region for announcements
-  liveStatus.value = message;
-}
-
-function announceInstructions() {
-  const message =
-    "Use arrow keys for fast movement, Home to center, or Shift+arrows for very fast movement. Hold multiple arrow keys for diagonal movement. Press F to toggle follow-mouse mode";
-  liveStatus.value = message;
-}
-
-function announceFollowMouseMode() {
-  const mode = isFollowMouseMode.value ? "enabled" : "disabled";
-  const message = `Follow mouse mode ${mode}. ${
-    isFollowMouseMode.value
-      ? "Move mouse over circle to adjust values"
-      : "Click and drag or use keyboard for adjustment"
-  }`;
-  liveStatus.value = message;
-}
-
-function announceMovementDirection(cravingDelta: number, moodDelta: number) {
-  const directions: string[] = [];
-
-  if (moodDelta > 0) directions.push("up");
-  if (moodDelta < 0) directions.push("down");
-  if (cravingDelta > 0) directions.push("right");
-  if (cravingDelta < 0) directions.push("left");
-
-  if (directions.length > 0) {
-    const directionText = directions.join("-");
-    const message = `Moving ${directionText}. Craving ${cravingValue.value}%, Mood ${moodValue.value}%`;
-    liveStatus.value = message;
-  }
-}
+// circle input logic moved into EmotionInput component
 
 // Sampling engine (4 Hz - updates every 250ms)
 function tick() {
@@ -868,8 +341,7 @@ function tick() {
     running.value = false;
     paused.value = false;
     liveStatus.value = "Session complete";
-    draw();
-    drawLiveChart();
+    liveWave.value?.drawLiveChart();
     return;
   }
 
@@ -893,690 +365,44 @@ function tick() {
 
   valuesChangedSinceLastSample = false;
 
-  draw();
-  drawLiveChart();
+  liveWave.value?.drawLiveChart();
 }
 
 // Canvas drawing
-function draw() {
-  const canvas = canvasEl.value;
-  const container = chartContainer.value;
-  if (!canvas || !container) return;
-
-  const dpr = Math.max(1, Math.floor((window as any).devicePixelRatio || 1));
-
-  // Use cached dimensions during session, or calculate fresh dimensions
-  let cssWidth: number;
-  let cssHeight: number;
-
-  if (running.value && cachedChartWidth && cachedChartHeight) {
-    // Use cached dimensions during active session to prevent width changes
-    cssWidth = cachedChartWidth;
-    cssHeight = cachedChartHeight;
-  } else {
-    // Calculate fresh dimensions (initial load or after reset)
-    cssWidth = container.clientWidth - 32; // account for p-4 padding (16px each side)
-    cssHeight =
-      window.innerWidth < 640 ? 200 : window.innerWidth < 768 ? 300 : 360; // Responsive height
-  }
-
-  // Set canvas size accounting for DPR
-  canvas.width = Math.floor(cssWidth * dpr);
-  canvas.height = Math.floor(cssHeight * dpr);
-  canvas.style.width = cssWidth + "px";
-  canvas.style.height = cssHeight + "px";
-
-  const ctx = canvas.getContext("2d")!;
-  (ctx as any).reset?.();
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  // Styles: slightly darker, warmer palette for stronger vintage feel
-  const bg = "#f3e0c0"; // deeper warm paper
-  const grid = "rgba(0,0,0,0.18)";
-  const subText = "#4b5563";
-  const cravingColor = "#dc2626"; // red-600 for craving
-  const moodColor = "#059669"; // emerald-600 for mood
-  const markerColor = "#e11d48"; // rose-600
-
-  // Clear background
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, cssWidth, cssHeight);
-
-  const margin = { top: 24, right: 32, bottom: 32, left: 44 };
-  const plotX = margin.left;
-  const plotY = margin.top;
-  const plotW = cssWidth - margin.left - margin.right;
-  const plotH = cssHeight - margin.top - margin.bottom;
-
-  // Axes & grid
-  ctx.save();
-  ctx.strokeStyle = grid;
-  ctx.lineWidth = 1;
-  ctx.font =
-    "12px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-  ctx.fillStyle = subText;
-  ctx.textAlign = "right";
-  ctx.textBaseline = "middle";
-  for (let v = 0; v <= 100; v += 25) {
-    const y = plotY + plotH * (1 - v / 100);
-    ctx.beginPath();
-    ctx.moveTo(plotX, Math.round(y) + 0.5);
-    ctx.lineTo(plotX + plotW, Math.round(y) + 0.5);
-    ctx.stroke();
-    ctx.fillText(String(v), plotX - 6, y);
-  }
-
-  // X grid at each minute
-  const cur = elapsedSeconds.value;
-  const windowStart = cur <= 300 ? 0 : cur - 300;
-  const windowStop = windowStart + 300;
-
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  for (let t = Math.ceil(windowStart / 60) * 60; t <= windowStop; t += 60) {
-    const x = plotX + plotW * ((t - windowStart) / 300);
-    ctx.beginPath();
-    ctx.moveTo(Math.round(x) + 0.5, plotY);
-    ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
-    ctx.stroke();
-    ctx.fillText(mmss(t), x, plotY + plotH + 6);
-  }
-  ctx.restore();
-
-  // Helper mappers
-  const xForS = (s: number) => plotX + plotW * ((s - windowStart) / 300);
-  const yForV = (v: number) => plotY + plotH * (1 - v / 100);
-
-  // Plot lines
-  const points = samples.value.filter(
-    (p: Sample) => p.s >= windowStart && p.s <= windowStop
-  );
-
-  // Craving line (red)
-  if (points.length > 0) {
-    ctx.save();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = cravingColor; // red for craving
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    for (let i = 0; i < points.length; i++) {
-      const p = points[i];
-      const x = xForS(p.s);
-      const y = yForV(p.craving);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // Mood line (emerald)
-  if (points.length > 0) {
-    ctx.save();
-    ctx.lineWidth = 1.5;
-    ctx.strokeStyle = moodColor; // emerald for mood
-    ctx.globalAlpha = 0.95;
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    for (let i = 0; i < points.length; i++) {
-      const p = points[i];
-      const x = xForS(p.s);
-      const y = yForV(p.mood);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-
-    // Mark value change points
-    ctx.fillStyle = moodColor;
-    ctx.globalAlpha = 0.35;
-    for (const p of points) {
-      if (p.valuesChanged) {
-        const x = xForS(p.s);
-        const y = yForV(p.mood);
-        ctx.beginPath();
-        ctx.arc(x, y, 1, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-    ctx.restore();
-  }
-
-  // Peak markers
-  if (peakMarkers.value.length > 0) {
-    ctx.save();
-    ctx.strokeStyle = markerColor;
-    ctx.fillStyle = markerColor;
-    ctx.lineWidth = 1;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "bottom";
-    ctx.font =
-      "12px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-    for (const s of peakMarkers.value) {
-      if (s < windowStart || s > windowStop) continue;
-      const x = xForS(s);
-      ctx.beginPath();
-      ctx.moveTo(Math.round(x) + 0.5, plotY);
-      ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
-      ctx.stroke();
-      // Label near top
-      ctx.fillText("Peak noted", x, plotY - 2);
-    }
-    ctx.restore();
-  }
-
-  // Subtle canvas noise overlay to add texture
-  const pat = ensureNoisePattern(ctx);
-  if (pat) {
-    ctx.save();
-    ctx.globalAlpha = 0.12;
-    ctx.fillStyle = pat as any;
-    ctx.fillRect(0, 0, cssWidth, cssHeight);
-    ctx.restore();
-  }
-}
-
-// Live chart drawing function - shows last 60 seconds with right-to-left scrolling
-function drawLiveChart() {
-  const canvas = liveCanvasEl.value;
-  const container = liveChartContainer.value;
-  if (!canvas || !container) return;
-
-  const dpr = Math.max(1, Math.floor((window as any).devicePixelRatio || 1));
-
-  // Use cached dimensions during session, or calculate fresh dimensions
-  let cssWidth: number;
-  let cssHeight: number;
-
-  if (running.value && cachedLiveChartWidth && cachedLiveChartHeight) {
-    // Use cached dimensions during active session to prevent width changes
-    cssWidth = cachedLiveChartWidth;
-    cssHeight = cachedLiveChartHeight;
-  } else {
-    // Calculate fresh dimensions (initial load or after reset)
-    cssWidth = container.clientWidth - 32; // account for p-4 padding (16px each side)
-    cssHeight = window.innerWidth < 640 ? 140 : 180; // Responsive height
-  }
-
-  // Set canvas size accounting for DPR
-  canvas.width = Math.floor(cssWidth * dpr);
-  canvas.height = Math.floor(cssHeight * dpr);
-  canvas.style.width = cssWidth + "px";
-  canvas.style.height = cssHeight + "px";
-
-  const ctx = canvas.getContext("2d")!;
-  (ctx as any).reset?.();
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  // Styles: slightly darker, warmer palette for stronger vintage feel
-  const bg = "#f3e0c0"; // deeper warm paper
-  const grid = "rgba(0,0,0,0.18)";
-  const subText = "#4b5563";
-  const cravingColor = "#dc2626"; // red-600 for craving
-  const moodColor = "#059669"; // emerald-600 for mood
-  const markerColor = "#e11d48"; // rose-600
-
-  // Clear background
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, cssWidth, cssHeight);
-
-  const margin = { top: 20, right: 32, bottom: 25, left: 40 };
-  const plotX = margin.left;
-  const plotY = margin.top;
-  const plotW = cssWidth - margin.left - margin.right;
-  const plotH = cssHeight - margin.top - margin.bottom;
-
-  // Live chart shows last 60 seconds with right-to-left scrolling
-  const currentTime = elapsedSeconds.value;
-  const windowDuration = 60; // 60 seconds window
-  const windowStart = Math.max(0, currentTime - windowDuration);
-  const windowEnd = currentTime;
-
-  // Grid and axes
-  ctx.save();
-  ctx.strokeStyle = grid;
-  ctx.lineWidth = 1;
-  ctx.font =
-    "11px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-  ctx.fillStyle = subText;
-  ctx.textAlign = "right";
-  ctx.textBaseline = "middle";
-
-  // Y-axis grid (intensity levels)
-  for (let v = 0; v <= 100; v += 25) {
-    const y = plotY + plotH * (1 - v / 100);
-    ctx.beginPath();
-    ctx.moveTo(plotX, Math.round(y) + 0.5);
-    ctx.lineTo(plotX + plotW, Math.round(y) + 0.5);
-    ctx.stroke();
-    ctx.fillText(String(v), plotX - 6, y);
-  }
-
-  // X-axis grid (time in seconds, every 15 seconds)
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  for (let t = Math.ceil(windowStart / 15) * 15; t <= windowEnd; t += 15) {
-    const x = plotX + plotW * ((t - windowStart) / windowDuration);
-    if (x >= plotX && x <= plotX + plotW) {
-      ctx.beginPath();
-      ctx.moveTo(Math.round(x) + 0.5, plotY);
-      ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
-      ctx.stroke();
-      const timeFromStart = t;
-      const displayTime =
-        timeFromStart >= 60 ? mmss(timeFromStart) : `${timeFromStart}s`;
-      ctx.fillText(displayTime, x, plotY + plotH + 4);
-    }
-  }
-  ctx.restore();
-
-  // Helper mappers for live chart
-  const xForS = (s: number) =>
-    plotX + plotW * ((s - windowStart) / windowDuration);
-  const yForV = (v: number) => plotY + plotH * (1 - v / 100);
-
-  // Filter points for live chart window
-  const livePoints = samples.value.filter(
-    (p: Sample) => p.s >= windowStart && p.s <= windowEnd
-  );
-
-  // Draw craving line (red)
-  if (livePoints.length > 0) {
-    ctx.save();
-    ctx.lineWidth = 2.5;
-    ctx.strokeStyle = cravingColor;
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    for (let i = 0; i < livePoints.length; i++) {
-      const p = livePoints[i];
-      const x = xForS(p.s);
-      const y = yForV(p.craving);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // Draw mood line (emerald)
-  if (livePoints.length > 0) {
-    ctx.save();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = moodColor;
-    ctx.globalAlpha = 0.95;
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    for (let i = 0; i < livePoints.length; i++) {
-      const p = livePoints[i];
-      const x = xForS(p.s);
-      const y = yForV(p.mood);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-
-    // Mark value change points with subtle indicators
-    ctx.fillStyle = moodColor;
-    ctx.globalAlpha = 0.4;
-    for (const p of livePoints) {
-      if (p.valuesChanged) {
-        const x = xForS(p.s);
-        const y = yForV(p.mood);
-        ctx.beginPath();
-        ctx.arc(x, y, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-    ctx.restore();
-  }
-
-  // Draw peak markers in live view
-  if (peakMarkers.value.length > 0) {
-    ctx.save();
-    ctx.strokeStyle = markerColor;
-    ctx.fillStyle = markerColor;
-    ctx.lineWidth = 1.5;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "bottom";
-    ctx.font =
-      "10px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-    for (const s of peakMarkers.value) {
-      if (s < windowStart || s > windowEnd) continue;
-      const x = xForS(s);
-      ctx.beginPath();
-      ctx.moveTo(Math.round(x) + 0.5, plotY);
-      ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
-      ctx.stroke();
-      ctx.fillText("Peak", x, plotY - 2);
-    }
-    ctx.restore();
-  }
-
-  // Current time indicator (vertical line at the right edge)
-  if (running.value && !paused.value) {
-    ctx.save();
-    ctx.strokeStyle = "#f59e0b";
-    ctx.lineWidth = 2;
-    ctx.globalAlpha = 0.8;
-    const currentX = xForS(currentTime);
-    ctx.beginPath();
-    ctx.moveTo(Math.round(currentX) + 0.5, plotY);
-    ctx.lineTo(Math.round(currentX) + 0.5, plotY + plotH);
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // Subtle canvas noise overlay
-  const pat = ensureNoisePattern(ctx);
-  if (pat) {
-    ctx.save();
-    ctx.globalAlpha = 0.08;
-    ctx.fillStyle = pat as any;
-    ctx.fillRect(0, 0, cssWidth, cssHeight);
-    ctx.restore();
-  }
-}
+// ...draw logic removed (now handled in Wave.vue)
 
 // Resize handling
-function handleResize() {
-  draw();
-  drawLiveChart();
-}
+// ...handleResize removed (now handled in Wave.vue)
 
 onMounted(() => {
   // Add small delay to prevent animation flicker on initial load
   nextTick(() => {
-    isMounted.value = true;
-    draw(); // Initial draw
-    drawLiveChart(); // Initial live chart draw
+    liveWave.value?.drawLiveChart(); // Initial live chart draw
   });
-  window.addEventListener("resize", handleResize);
 });
 
 onBeforeUnmount(() => {
   if (intervalId != null) window.clearInterval(intervalId);
   intervalId = null;
-
-  // Clean up keyboard movement timer
-  stopKeyboardMovement();
-
-  window.removeEventListener("resize", handleResize);
 });
 
-// Redraw when data changes
+// Redraw liveWave when data changes
 watch(samples, () => {
-  draw();
-  drawLiveChart();
+  liveWave.value?.drawLiveChart();
 });
 
-// Exporters
-function exportCSV() {
-  if (samples.value.length === 0) return;
-  const header = "timestamp,mm:ss,craving_intensity,mood_level" + "\n";
-  const rows = samples.value.map(
-    (r: Sample) => `${r.iso},${r.label},${r.craving},${r.mood}`
-  );
-  const csv = [header, ...rows].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "emotion_surfing_session.csv";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-
-// PNG export with fixed 800px width for consistent quality across devices
-function exportPNG() {
-  // Create a temporary canvas for high-quality export at fixed 800px width
-  const exportCanvas = document.createElement("canvas");
-  const exportWidth = 800;
-  const exportHeight = 480; // Maintain reasonable aspect ratio
-  const dpr = 2; // Use higher DPR for crisp export
-
-  exportCanvas.width = exportWidth * dpr;
-  exportCanvas.height = exportHeight * dpr;
-  exportCanvas.style.width = exportWidth + "px";
-  exportCanvas.style.height = exportHeight + "px";
-
-  const ctx = exportCanvas.getContext("2d")!;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  // Render chart at fixed dimensions for export
-  renderChartForExport(ctx, exportWidth, exportHeight);
-
-  exportCanvas.toBlob((blob: Blob | null) => {
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "urge_surfing_chart.png";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  });
-}
-
-// Separate render function for PNG export with fixed dimensions
-function renderChartForExport(
-  ctx: CanvasRenderingContext2D,
-  cssWidth: number,
-  cssHeight: number
-) {
-  // Styles: slightly darker, warmer palette for stronger vintage feel
-  const bg = "#f3e0c0"; // deeper warm paper
-  const grid = "rgba(0,0,0,0.18)";
-  const subText = "#4b5563";
-  const cravingColor = "#dc2626"; // red-600 for craving
-  const moodColor = "#059669"; // emerald-600 for mood
-  const markerColor = "#e11d48"; // rose-600
-
-  // Clear background
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, cssWidth, cssHeight);
-
-  const margin = { top: 32, right: 40, bottom: 40, left: 56 }; // Larger margins for export
-  const plotX = margin.left;
-  const plotY = margin.top;
-  const plotW = cssWidth - margin.left - margin.right;
-  const plotH = cssHeight - margin.top - margin.bottom;
-
-  // Axes & grid
-  ctx.save();
-  ctx.strokeStyle = grid;
-  ctx.lineWidth = 1;
-  ctx.font =
-    "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-  ctx.fillStyle = subText;
-  ctx.textAlign = "right";
-  ctx.textBaseline = "middle";
-  for (let v = 0; v <= 100; v += 25) {
-    const y = plotY + plotH * (1 - v / 100);
-    ctx.beginPath();
-    ctx.moveTo(plotX, Math.round(y) + 0.5);
-    ctx.lineTo(plotX + plotW, Math.round(y) + 0.5);
-    ctx.stroke();
-    ctx.fillText(String(v), plotX - 8, y);
-  }
-
-  // X grid at each minute
-  const cur = elapsedSeconds.value;
-  const windowStart = cur <= 300 ? 0 : cur - 300;
-  const windowStop = windowStart + 300;
-
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  for (let t = Math.ceil(windowStart / 60) * 60; t <= windowStop; t += 60) {
-    const x = plotX + plotW * ((t - windowStart) / 300);
-    ctx.beginPath();
-    ctx.moveTo(Math.round(x) + 0.5, plotY);
-    ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
-    ctx.stroke();
-    ctx.fillText(mmss(t), x, plotY + plotH + 8);
-  }
-  ctx.restore();
-
-  // Helper mappers
-  const xForS = (s: number) => plotX + plotW * ((s - windowStart) / 300);
-  const yForV = (v: number) => plotY + plotH * (1 - v / 100);
-
-  // Plot lines
-  const points = samples.value.filter(
-    (p: Sample) => p.s >= windowStart && p.s <= windowStop
-  );
-
-  // Craving line (red)
-  if (points.length > 0) {
-    ctx.save();
-    ctx.lineWidth = 3; // Thicker line for export
-    ctx.strokeStyle = cravingColor;
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    for (let i = 0; i < points.length; i++) {
-      const p = points[i];
-      const x = xForS(p.s);
-      const y = yForV(p.craving);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // Mood line (emerald)
-  if (points.length > 0) {
-    ctx.save();
-    ctx.lineWidth = 2.5; // Thicker line for export
-    ctx.strokeStyle = moodColor;
-    ctx.globalAlpha = 0.95;
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    for (let i = 0; i < points.length; i++) {
-      const p = points[i];
-      const x = xForS(p.s);
-      const y = yForV(p.mood);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-
-    // Mark value change points
-    ctx.fillStyle = moodColor;
-    ctx.globalAlpha = 0.35;
-    for (const p of points) {
-      if (p.valuesChanged) {
-        const x = xForS(p.s);
-        const y = yForV(p.mood);
-        ctx.beginPath();
-        ctx.arc(x, y, 4, 0, Math.PI * 2); // Larger dots for export
-        ctx.fill();
-      }
-    }
-    ctx.restore();
-  }
-
-  // Peak markers
-  if (peakMarkers.value.length > 0) {
-    ctx.save();
-    ctx.strokeStyle = markerColor;
-    ctx.fillStyle = markerColor;
-    ctx.lineWidth = 2;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "bottom";
-    ctx.font =
-      "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-    for (const s of peakMarkers.value) {
-      if (s < windowStart || s > windowStop) continue;
-      const x = xForS(s);
-      ctx.beginPath();
-      ctx.moveTo(Math.round(x) + 0.5, plotY);
-      ctx.lineTo(Math.round(x) + 0.5, plotY + plotH);
-      ctx.stroke();
-      ctx.fillText("Peak noted", x, plotY - 4);
-    }
-    ctx.restore();
-  }
-
-  // Add title and legend for export
-  ctx.save();
-  ctx.fillStyle = "#1f2937";
-  ctx.font =
-    "bold 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  ctx.fillText("Urge Surfing Session - 5 Minutes", cssWidth / 2, 8);
-
-  // Legend
-  ctx.font =
-    "14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue";
-  ctx.textAlign = "left";
-
-  // Craving legend
-  ctx.fillStyle = cravingColor;
-  ctx.fillRect(cssWidth - 150, 8, 12, 3);
-  ctx.fillStyle = "#1f2937";
-  ctx.fillText("Craving", cssWidth - 130, 8);
-
-  // Mood legend
-  ctx.fillStyle = moodColor;
-  ctx.fillRect(cssWidth - 150, 28, 12, 3);
-  ctx.fillStyle = "#1f2937";
-  ctx.fillText("Mood", cssWidth - 130, 28);
-
-  ctx.restore();
-
-  // Add subtle noise overlay for vintage feel
-  const pat = ensureNoisePattern(ctx);
-  if (pat) {
-    ctx.save();
-    ctx.globalAlpha = 0.08;
-    ctx.fillStyle = pat as any;
-    ctx.fillRect(0, 0, cssWidth, cssHeight);
-    ctx.restore();
-  }
-}
-
-// Lightweight noise pattern for canvas overlay (cached)
-let noisePattern: CanvasPattern | null = null;
+// Provide canvas noise pattern creator to children that need it (e.g., LiveWave)
+let cachedPattern: CanvasPattern | null = null;
 function ensureNoisePattern(
   ctx: CanvasRenderingContext2D
 ): CanvasPattern | null {
-  if (noisePattern) return noisePattern;
-  try {
-    const n = document.createElement("canvas");
-    const size = 64;
-    n.width = size;
-    n.height = size;
-    const nc = n.getContext("2d");
-    if (!nc) return null;
-    const img = nc.createImageData(size, size);
-    const data = img.data;
-    for (let i = 0; i < data.length; i += 4) {
-      const v = Math.floor(Math.random() * 256);
-      data[i] = v; // r
-      data[i + 1] = v; // g
-      data[i + 2] = v; // b
-      data[i + 3] = 24; // a (0-255) very subtle
-    }
-    nc.putImageData(img, 0, 0);
-    noisePattern = ctx.createPattern(n, "repeat");
-    return noisePattern;
-  } catch (_) {
-    return null;
-  }
+  if (!cachedPattern) cachedPattern = createNoisePattern(ctx);
+  return cachedPattern;
 }
+provide("ensureNoisePattern", ensureNoisePattern);
 </script>
 
-<style scoped>
+<style>
 /* Friendly button styles */
 .friendly-btn {
   transform: translateY(0);
@@ -1612,12 +438,9 @@ function ensureNoisePattern(
 
 .vintage-ui {
   background-color: #f3e0c0; /* darker warm paper */
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.vintage-ui.page-loaded {
-  opacity: 1;
+  /* Tunable breathing intensity */
+  --nostalgia-min: 0;
+  --nostalgia-max: 0.95;
 }
 
 .vintage-card {
@@ -1689,10 +512,6 @@ function ensureNoisePattern(
   mix-blend-mode: multiply;
 }
 
-.vintage-scanlines.animate-enabled {
-  animation: scan-flicker 4.2s linear infinite;
-}
-
 .vintage-vignette {
   z-index: 51;
   background: radial-gradient(
@@ -1706,13 +525,24 @@ function ensureNoisePattern(
 
 .vintage-nostalgia {
   z-index: 52;
-  background: #000;
-  mix-blend-mode: multiply;
-  opacity: 0.05;
+  /* Black vintage gradient overlay for breathing effect */
+  background: radial-gradient(
+      circle at 50% 42%,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.8) 70%
+    ),
+    #000;
+  /* Hidden by default when breathing is disabled */
+  opacity: 0;
+  will-change: opacity, filter;
+  transition: opacity 0.4s ease;
 }
 
-.vintage-nostalgia.animate-enabled {
-  animation: nostalgic-breathing 12s ease-in-out infinite;
+/* Active breathing animation using 4-4-4 method */
+.vintage-nostalgia.breathing-active {
+  opacity: var(--nostalgia-min);
+  /* Use per-segment timing in keyframes; keep animation itself neutral */
+  animation: breathing-444 12s infinite both;
 }
 
 /* Dust specks overlay */
@@ -1723,58 +553,56 @@ function ensureNoisePattern(
   background-position: 0 0;
   mix-blend-mode: screen; /* bright dust on darker base */
   opacity: 0.12;
-}
-
-.vintage-dust.animate-enabled {
   animation: dust-drift 60s linear infinite;
 }
 
-@keyframes scan-flicker {
+/* Primary breathing animation using CSS variables for easy tuning */
+@keyframes nostalgic-breathing {
   0%,
   100% {
-    opacity: 0.16;
+    opacity: var(--nostalgia-min);
   }
-  8% {
-    opacity: 0.22;
-  }
-  10% {
-    opacity: 0.17;
-  }
-  35% {
-    opacity: 0.2;
-  }
-  38% {
-    opacity: 0.24;
-  }
-  40% {
-    opacity: 0.17;
-  }
-  60% {
-    opacity: 0.21;
-  }
-  62% {
-    opacity: 0.26;
-  }
-  65% {
-    opacity: 0.18;
+  50% {
+    opacity: var(--nostalgia-max);
   }
 }
 
-@keyframes nostalgic-breathing {
+/* 4-4-4 Breathing Method: 4s in, 4s hold, 4s out (12s total cycle) */
+@keyframes breathing-444 {
+  /* 4 seconds inhale (0% to 33.33%) */
   0% {
-    opacity: 0.05;
+    opacity: var(--nostalgia-min);
   }
-  25% {
-    opacity: 0.08;
+  33.33% {
+    opacity: var(--nostalgia-max);
   }
-  50% {
-    opacity: 0.12;
+  /* 4 seconds hold (33.33% to 66.66%) */
+  33.34% {
+    /* lock value immediately after reaching max to avoid easing overshoot */
+    opacity: var(--nostalgia-max);
+    animation-timing-function: steps(1, end);
   }
-  75% {
-    opacity: 0.08;
+  66.66% {
+    opacity: var(--nostalgia-max);
+  }
+  /* 4 seconds exhale (66.66% to 100%) */
+  66.67% {
+    /* resume smooth easing on exhale */
+    animation-timing-function: ease-in-out;
   }
   100% {
-    opacity: 0.05;
+    opacity: var(--nostalgia-min);
+  }
+}
+
+/* Secondary slow glow (subtle luminance & hue drift) */
+@keyframes nostalgic-glow {
+  0%,
+  100% {
+    filter: brightness(1) sepia(0.35) saturate(0.85) hue-rotate(-6deg);
+  }
+  50% {
+    filter: brightness(1.12) sepia(0.45) saturate(0.75) hue-rotate(-14deg);
   }
 }
 
@@ -1789,7 +617,6 @@ function ensureNoisePattern(
 
 @media (prefers-reduced-motion: reduce) {
   .vintage-scanlines {
-    animation: none !important;
     opacity: 0.12;
   }
   .vintage-grain {
@@ -1798,6 +625,13 @@ function ensureNoisePattern(
   .vintage-dust {
     animation: none !important;
     opacity: 0.08;
+  }
+  /* Respect toggle: never force animation in reduced motion */
+  .vintage-nostalgia {
+    animation: none !important;
+  }
+  .vintage-nostalgia.breathing-active {
+    animation: breathing-444 12s ease-in-out infinite !important;
   }
 }
 
@@ -1948,10 +782,3 @@ function ensureNoisePattern(
   }
 }
 </style>
-
-<!--
-	Notes:
-	- Sampling runs at 1 Hz to model mindful checking-in cadence; auto mode provides a plausible wave for demos.
-	- We avoid external libs to keep the page light, fast, and offline-capable.
-	- CSV/PNG exports use client-only Blob/toBlob APIs; nothing leaves the page.
--->
