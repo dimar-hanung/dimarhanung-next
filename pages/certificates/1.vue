@@ -15,70 +15,113 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    min: {
-      type: Number,
-      default: 0,
-    },
-    max: {
-      type: Number,
-      default: 100,
-    },
-    value: {
-      type: Number,
-      default: 50,
-    },
-  },
-  data() {
-    return {
-      thumbPosition: "0px",
-      progressHeight: "50%",
-      isDragging: false,
-    };
-  },
-  mounted() {
-    this.updateSlider(this.value);
-  },
-  methods: {
-    handleClick(event) {
-      const rect = this.$refs.sliderTrack.getBoundingClientRect();
-      const newValue =
-        ((rect.bottom - event.clientY) / rect.height) * (this.max - this.min) +
-        this.min;
-      this.updateSlider(newValue);
-      this.$emit("input", newValue);
-    },
-    handleMouseDown() {
-      this.isDragging = true;
-      window.addEventListener("mousemove", this.handleMouseMove);
-      window.addEventListener("mouseup", this.handleMouseUp);
-    },
-    handleMouseUp() {
-      this.isDragging = false;
-      window.removeEventListener("mousemove", this.handleMouseMove);
-      window.removeEventListener("mouseup", this.handleMouseUp);
-    },
-    handleMouseMove(event) {
-      if (!this.isDragging) return;
-      const rect = this.$refs.sliderTrack.getBoundingClientRect();
-      const newValue =
-        ((rect.bottom - event.clientY) / rect.height) * (this.max - this.min) +
-        this.min;
-      this.updateSlider(newValue);
-      this.$emit("input", newValue);
-    },
-    updateSlider(value) {
-      const clampedValue = Math.max(this.min, Math.min(this.max, value));
-      const percentage =
-        ((clampedValue - this.min) / (this.max - this.min)) * 100;
-      this.progressHeight = percentage + "%";
-      this.thumbPosition = `calc(${percentage}% - 10px)`;
-    },
-  },
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
+interface Props {
+  min?: number;
+  max?: number;
+  value?: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  min: 0,
+  max: 100,
+  value: 50,
+});
+
+const emit = defineEmits<{
+  (e: 'input', value: number): void;
+}>();
+
+const sliderTrack = ref<HTMLElement | null>(null);
+const sliderThumb = ref<HTMLElement | null>(null);
+const thumbPosition = ref('0px');
+const progressHeight = ref('50%');
+const isDragging = ref(false);
+
+const updateSlider = (value: number) => {
+  const clampedValue = Math.max(props.min, Math.min(props.max, value));
+  const percentage =
+    ((clampedValue - props.min) / (props.max - props.min)) * 100;
+  progressHeight.value = percentage + "%";
+  thumbPosition.value = `calc(${percentage}% - 10px)`;
 };
+
+const handleClick = (event: MouseEvent) => {
+  if (!sliderTrack.value) return;
+  const rect = sliderTrack.value.getBoundingClientRect();
+  const newValue =
+    ((rect.bottom - event.clientY) / rect.height) * (props.max - props.min) +
+    props.min;
+  updateSlider(newValue);
+  emit("input", newValue);
+};
+
+const handleMouseMove = (event: MouseEvent) => {
+  if (!isDragging.value || !sliderTrack.value) return;
+  const rect = sliderTrack.value.getBoundingClientRect();
+  const newValue =
+    ((rect.bottom - event.clientY) / rect.height) * (props.max - props.min) +
+    props.min;
+  updateSlider(newValue);
+  emit("input", newValue);
+};
+
+const handleMouseUp = () => {
+  isDragging.value = false;
+  window.removeEventListener("mousemove", handleMouseMove);
+  window.removeEventListener("mouseup", handleMouseUp);
+};
+
+const handleMouseDown = () => {
+  isDragging.value = true;
+  window.addEventListener("mousemove", handleMouseMove);
+  window.addEventListener("mouseup", handleMouseUp);
+};
+
+onMounted(() => {
+  updateSlider(props.value);
+});
 </script>
+
+<style scoped>
+.range-slider {
+  width: 100%;
+  height: 800px;
+  user-select: none;
+}
+
+.range-slider-track {
+  position: relative;
+  width: 4px;
+  height: 100%;
+  background-color: #ddd;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.range-slider-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #4caf50;
+  border-radius: 2px;
+}
+
+.range-slider-thumb {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background-color: #4caf50;
+  border-radius: 50%;
+  cursor: pointer;
+}
+</style>
+
 
 <style scoped>
 .range-slider {
