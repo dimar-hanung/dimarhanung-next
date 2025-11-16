@@ -46,6 +46,6 @@ const props = defineProps<Props>();
 
 <style scoped>
 .challenge-card:hover .challenge-external-link-icon {
-  @apply text-blue-500;
+  /* @apply text-blue-500; */
 }
 </style>

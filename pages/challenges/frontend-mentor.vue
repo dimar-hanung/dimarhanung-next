@@ -164,6 +164,7 @@ onUnmounted(() => {
 
 <style>
 a.sidebar--link.router-link-exact-active {
-  @apply text-yellow-400 bg-slate-700;
+  color: #facc15;
+  background-color: #0f172a;
 }
 </style>

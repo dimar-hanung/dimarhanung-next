@@ -63,12 +63,12 @@ useSeoMeta({
 }
 
 .decoration-oval {
-  @apply rounded-full absolute;
-
   width: 270px;
   height: 270px;
   transition: all ease 0.3s;
   background: #3685ff;
+  border-radius: 9999px;
+  position: absolute;
 }
 
 .decoration-oval.--top-left {

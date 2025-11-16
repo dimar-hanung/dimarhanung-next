@@ -76,7 +76,6 @@ import IconMusic from "./components/icon-music.vue";
 }
 
 .button-primary {
-  @apply w-full py-3 mt-8;
   background: #382ae1;
   box-shadow: 0px 20px 20px rgba(56, 42, 225, 0.190291);
   border-radius: 11px;
