@@ -50,9 +50,11 @@
       ></div>
     </div>
 
-    <TButton class="block max-w-max mx-auto font-bold text-lg px-8"
-      >Berikan Feedback mu</TButton
-    >
+    <ClientOnly>
+      <TButton class="block max-w-max mx-auto font-bold text-lg px-8"
+        >Berikan Feedback mu</TButton
+      >
+    </ClientOnly>
   </div>
 </template>
 

@@ -213,9 +213,11 @@
     </div>
     <div class="w-full mt-24" v-if="!showAll">
       <NuxtLink to="/project">
-        <gradient-button class="block mx-auto">
-          Lihat {{ projects.length - 3 }} Lainnya
-        </gradient-button>
+        <ClientOnly>
+          <gradient-button class="block mx-auto">
+            Lihat {{ projects.length - 3 }} Lainnya
+          </gradient-button>
+        </ClientOnly>
       </NuxtLink>
     </div>
   </div>
