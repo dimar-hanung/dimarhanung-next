@@ -7,7 +7,7 @@
     >
       <!-- mobile -->
       <section class="relative w-full grid place-items-center md:hidden">
-        <div class="absolute w-full h-full bg-[#AB5CDB] bg-opacity-60"></div>
+        <div class="absolute w-full h-full bg-[#AB5CDB]/60"></div>
         <img
           class="w-full rounded"
           src="/challenges/9-stats-preview-card-component/image-header-mobile.jpg"
@@ -65,7 +65,7 @@
       </section>
       <!-- desktop -->
       <section class="hidden md:grid relative place-items-center">
-        <div class="absolute w-full h-full bg-[#AB5CDB] bg-opacity-60"></div>
+        <div class="absolute w-full h-full bg-[#AB5CDB]/60"></div>
         <img
           class="w-full block"
           src="/challenges/9-stats-preview-card-component/image-header-desktop.jpg"

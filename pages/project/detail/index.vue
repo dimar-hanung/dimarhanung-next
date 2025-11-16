@@ -13,7 +13,7 @@
           class="object-cover w-full h-full"
         />
         <div
-          class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          class="absolute inset-0 bg-black/50 flex items-center justify-center"
         >
           <h1 class="text-5xl font-bold text-white text-center">
             Colorful Interactive Project
@@ -104,7 +104,7 @@
             <div
               class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
-              <div class="bg-white/20 backdrop-blur-sm rounded-full p-3">
+              <div class="bg-white/20 backdrop-blur-xs rounded-full p-3">
                 <Icon name="mdi:magnify-plus" class="text-white text-2xl" />
               </div>
             </div>
@@ -135,13 +135,13 @@
               <div
                 class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               >
-                <div class="bg-white/20 backdrop-blur-sm rounded-full p-2">
+                <div class="bg-white/20 backdrop-blur-xs rounded-full p-2">
                   <Icon name="mdi:magnify-plus" class="text-white text-xl" />
                 </div>
               </div>
               <!-- Hover overlay with subtle animation -->
               <div
-                class="absolute inset-0 ring-2 ring-blue-500 ring-opacity-0 group-hover:ring-opacity-50 transition-all duration-300 rounded-lg"
+                class="absolute inset-0 ring-2 ring-blue-500/0 group-hover:ring-blue-500/50 transition-all duration-300 rounded-lg"
               ></div>
             </div>
           </div>
@@ -243,7 +243,7 @@
   <!-- Image Modal -->
   <div
     v-if="isModalOpen"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs"
     @click="closeModal"
   >
     <div class="relative max-w-7xl max-h-[90vh] mx-4">

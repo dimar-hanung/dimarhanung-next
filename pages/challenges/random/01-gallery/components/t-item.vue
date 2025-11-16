@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-2 overflow-hidden shadow rounded-xl w-72"
+    class="border-2 overflow-hidden shadow-sm rounded-xl w-72"
     :class="[selceted ? 'border-blue-700' : 'border-transparent']"
   >
     <div>

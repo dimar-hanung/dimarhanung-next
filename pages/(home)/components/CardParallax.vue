@@ -13,7 +13,7 @@
     >
       <!-- Glass card -->
       <div
-        class="bg-slate-200 dark:bg-black bg-opacity-50 dark:bg-opacity-20 rounded-2xl shadow-xl p-8 text-slate-900 dark:text-white transition-all duration-300 ease-out"
+        class="bg-slate-200/50 dark:bg-black/20 rounded-2xl shadow-xl p-8 text-slate-900 dark:text-white transition-all duration-300 ease-out"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
         :style="{

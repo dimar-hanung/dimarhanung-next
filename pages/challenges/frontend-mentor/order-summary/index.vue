@@ -1,7 +1,7 @@
 <template>
   <div class="order-summary min-h-screen bg-indigo-50 grid place-items-center">
     <div
-      class="w-full max-w-[1440px] mx-auto bg-[#E0E8FF] h-screen max-h-[900px] shadow relative grid place-items-center p-1"
+      class="w-full max-w-[1440px] mx-auto bg-[#E0E8FF] h-screen max-h-[900px] shadow-sm relative grid place-items-center p-1"
     >
       <bg-screen class="absolute top-0 left-0" />
       <div class="bg-white rounded-[20px] relative max-w-[450px]">

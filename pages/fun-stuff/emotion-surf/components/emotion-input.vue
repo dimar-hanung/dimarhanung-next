@@ -6,7 +6,7 @@
           ref="circleInputSvg"
           width="200"
           height="200"
-          class="cursor-crosshair border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 emotion-circle-input w-full max-w-[200px] h-auto"
+          class="cursor-crosshair border border-amber-800/40 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 focus:outline-hidden focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 emotion-circle-input w-full max-w-[200px] h-auto"
           viewBox="0 0 200 200"
           role="slider"
           :aria-label="`Emotion input control. Current craving level: ${cravingVal}% , mood level: ${moodVal}%. Use arrow keys or click and drag to adjust values.`"
@@ -111,7 +111,7 @@
             fill="#f59e0b"
             stroke="#fff7ed"
             stroke-width="2"
-            class="drop-shadow-sm"
+            class="drop-shadow-xs"
           />
 
           <!-- Focus ring for accessibility -->

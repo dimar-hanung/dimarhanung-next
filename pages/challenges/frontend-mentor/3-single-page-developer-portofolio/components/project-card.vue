@@ -2,7 +2,7 @@
   <div class="project-container w-full relative">
     <img class="w-full relative" :src="image" alt="" />
     <div
-      class="project-reference bg-black bg-opacity-75 grid place-items-center absolute w-full h-full left-0 top-0"
+      class="project-reference bg-black/75 grid place-items-center absolute w-full h-full left-0 top-0"
     >
       <div>
         <a

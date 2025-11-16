@@ -3,13 +3,13 @@
     <h2 class="text-2xl font-semibold mb-4 dark:text-white">
       Project Resources
     </h2>
-    <div class="border rounded-lg">
+    <div class="border border-gray-200 dark:border-gray-700 rounded-lg">
       <button
         v-for="(resource, index) in resources"
         :key="resource.label"
         class="flex items-center p-4 w-full text-left transition-all duration-300 hover:scale-105 hover:shadow-md group"
         :class="[
-          index < resources.length - 1 ? 'border-b' : '',
+          index < resources.length - 1 ? 'border-b border-gray-200 dark:border-gray-700' : '',
           resource.hoverColor,
         ]"
         @click="handleResourceClick(resource)"

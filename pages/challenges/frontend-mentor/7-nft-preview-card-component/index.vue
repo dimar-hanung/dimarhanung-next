@@ -11,7 +11,7 @@
         />
 
         <div
-          class="absolute opacity-0 hover:opacity-100 transition-opacity w-full h-full bg-[#00FFF8] left-0 top-0 grid place-items-center bg-opacity-50"
+          class="absolute opacity-0 hover:opacity-100 transition-opacity w-full h-full bg-[#00FFF8]/50 left-0 top-0 grid place-items-center"
         >
           <icon-view />
         </div>
