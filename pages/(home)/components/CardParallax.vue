@@ -47,7 +47,8 @@
             <div>
               <h1 class="text-4xl font-bold mb-4">Dimar Hanung</h1>
               <p class="mb-6">
-                3 years of professional experience as a full stack engineer.
+                {{ yearsOfExperience }} years of professional experience as a
+                full stack engineer.
               </p>
             </div>
           </div>
@@ -108,6 +109,14 @@ const lightPosition = computed(() => {
   const x = 50 + rotation.value.y * 2;
   const y = 50 - rotation.value.x * 2;
   return `${x}% ${y}%`;
+});
+
+const yearsOfExperience = computed(() => {
+  const start = new Date(2020, 7, 1); // August 1, 2020
+  const now = new Date();
+  const diffMs = now.getTime() - start.getTime();
+  const diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+  return diffYears.toFixed(1).replace(/\.0$/, "");
 });
 
 const observer = ref();
