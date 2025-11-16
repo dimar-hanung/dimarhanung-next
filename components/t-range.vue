@@ -28,100 +28,124 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    min: {
-      type: Number,
-      default: 0,
-    },
-    max: {
-      type: Number,
-      default: 100,
-    },
-    value: {
-      type: Number,
-      default: 50,
-    },
-    label: {
-      type: String,
-      default: "",
-    },
-  },
-  data() {
-    return {
-      //   thumbPosition: "0px",
-      //   progressHeight: "50%",
-      isDragging: false,
-    };
-  },
-  mounted() {
-    this.updateSlider(this.value);
-  },
-  computed: {
-    progressHeight() {
-      const percentage =
-        ((this.value - this.min) / (this.max - this.min)) * 100;
-      return percentage + "%";
-    },
-    thumbPosition() {
-      return `calc(${this.percentage}% - 10px)`;
-    },
-    percentage() {
-      return ((this.value - this.min) / (this.max - this.min)) * 100;
-    },
-  },
-  //   watch: {
-  //     value(value) {
-  //       const clampedValue = Math.floor(
-  //         Math.max(this.min, Math.min(this.max, value))
-  //       );
-  //       const percentage =
-  //         ((clampedValue - this.min) / (this.max - this.min)) * 100;
-  //       this.progressHeight = percentage + "%";
-  //       this.thumbPosition = `calc(${percentage}% - 10px)`;
-  //     },
-  //   },
-  methods: {
-    handleClick(event) {
-      const rect = this.$refs.sliderTrack.getBoundingClientRect();
-      const newValue =
-        ((rect.bottom - event.clientY) / rect.height) * (this.max - this.min) +
-        this.min;
-      this.updateSlider(newValue);
-      console.log("handleClick: " + newValue);
-      //   this.$emit("input", newValue);
-    },
-    handleMouseDown() {
-      this.isDragging = true;
-      window.addEventListener("mousemove", this.handleMouseMove);
-      window.addEventListener("mouseup", this.handleMouseUp);
-    },
-    handleMouseUp() {
-      this.isDragging = false;
-      window.removeEventListener("mousemove", this.handleMouseMove);
-      window.removeEventListener("mouseup", this.handleMouseUp);
-    },
-    handleMouseMove(event) {
-      if (!this.isDragging) return;
-      const rect = this.$refs.sliderTrack.getBoundingClientRect();
-      const newValue =
-        ((rect.bottom - event.clientY) / rect.height) * (this.max - this.min) +
-        this.min;
-      this.updateSlider(newValue);
-      //   this.$emit("input", newValue);
-    },
-    updateSlider(value) {
-      const clampedValue = Math.floor(
-        Math.max(this.min, Math.min(this.max, value))
-      );
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 
-      console.log("updateSlider: " + Math.floor(clampedValue));
-      this.$emit("input", Math.abs(clampedValue));
-    },
-  },
+interface Props {
+  min?: number;
+  max?: number;
+  value?: number;
+  label?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  min: 0,
+  max: 100,
+  value: 50,
+  label: "",
+});
+
+const emit = defineEmits<{
+  (e: "input", value: number): void;
+}>();
+
+const sliderTrack = ref<HTMLElement | null>(null);
+const sliderThumb = ref<HTMLElement | null>(null);
+const isDragging = ref(false);
+
+const percentage = computed(() => {
+  return ((props.value - props.min) / (props.max - props.min)) * 100;
+});
+
+const progressHeight = computed(() => {
+  return percentage.value + "%";
+});
+
+const thumbPosition = computed(() => {
+  return `calc(${percentage.value}% - 10px)`;
+});
+
+const updateSlider = (value: number) => {
+  const clampedValue = Math.floor(
+    Math.max(props.min, Math.min(props.max, value))
+  );
+
+  console.log("updateSlider: " + Math.floor(clampedValue));
+  emit("input", Math.abs(clampedValue));
 };
+
+const handleClick = (event: MouseEvent) => {
+  if (!sliderTrack.value) return;
+  const rect = sliderTrack.value.getBoundingClientRect();
+  const newValue =
+    ((rect.bottom - event.clientY) / rect.height) * (props.max - props.min) +
+    props.min;
+  updateSlider(newValue);
+  console.log("handleClick: " + newValue);
+};
+
+const handleMouseMove = (event: MouseEvent) => {
+  if (!isDragging.value || !sliderTrack.value) return;
+  const rect = sliderTrack.value.getBoundingClientRect();
+  const newValue =
+    ((rect.bottom - event.clientY) / rect.height) * (props.max - props.min) +
+    props.min;
+  updateSlider(newValue);
+};
+
+const handleMouseUp = () => {
+  isDragging.value = false;
+  window.removeEventListener("mousemove", handleMouseMove);
+  window.removeEventListener("mouseup", handleMouseUp);
+};
+
+const handleMouseDown = () => {
+  isDragging.value = true;
+  window.addEventListener("mousemove", handleMouseMove);
+  window.addEventListener("mouseup", handleMouseUp);
+};
+
+onMounted(() => {
+  updateSlider(props.value);
+});
 </script>
+
+<style scoped>
+.range-slider {
+  width: 100%;
+  user-select: none;
+}
+
+.range-slider-track {
+  position: relative;
+  width: 30px;
+  height: 100%;
+
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.range-slider-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* background-color: #4caf50; */
+  border-radius: 2px;
+}
+
+.range-slider-thumb {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  /* background-color: #4caf50; */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+</style>
 
 <style scoped>
 .range-slider {

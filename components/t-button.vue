@@ -1,6 +1,6 @@
 <template>
-  <button
-    v-wave
+  <WaveSurface
+    as="button"
     :aria-label="ariaLabel"
     :type="type"
     :disabled="disabled"
@@ -13,7 +13,7 @@
     "
   >
     <slot></slot>
-  </button>
+  </WaveSurface>
 </template>
 
 <script setup lang="ts">
