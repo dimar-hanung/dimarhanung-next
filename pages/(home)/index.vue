@@ -19,7 +19,7 @@
                   About Dimar
                 </h1>
                 <ul class="text-lg mt-4">
-                  <t-list>🏢 Front-End Engineer at Universitas Terbuka</t-list>
+                  <t-list>🏢 Software Engineer at Universitas Terbuka</t-list>
                   <t-list>🏡 Lives in Tangerang Selatan, Indonesia</t-list>
                   <t-list>
                     ⚡ I like to
