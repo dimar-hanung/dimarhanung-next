@@ -426,7 +426,7 @@ function checkWin() {
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap");
 
 .tic-tac-container {
-  @apply font-bold;
+  font-weight: 700;
   font-family: "Outfit", sans-serif;
 }
 .tic-tac-shadow {

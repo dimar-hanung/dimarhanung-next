@@ -132,7 +132,14 @@ useSeoMeta({
 }
 
 .summary__item {
-  @apply w-full h-[56px] flex justify-between place-items-center px-4 rounded-xl;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.75rem;
 }
 
 .summary__item.--red {
@@ -176,7 +183,12 @@ useSeoMeta({
 }
 
 .button__primary {
-  @apply bg-[#303B59] rounded-[128px] h-[56px] w-full text-lg font-bold;
+  background-color: #303b59;
+  border-radius: 128px;
+  height: 56px;
+  width: 100%;
+  font-size: 1.125rem;
+  font-weight: 700;
 }
 .button__primary:hover {
   background: linear-gradient(180deg, #7755ff 0%, #6943ff 0.01%, #2f2ce9 100%);

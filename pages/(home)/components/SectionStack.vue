@@ -129,8 +129,8 @@
         <Tooltip>
           <div v-motion-pop-visible :delay="50">
             <Icon
-              name="logos:mongodb"
-              class="bg-white rounded-full p-2 tech-stack-item transform hover:scale-125"
+              name="logos:mongodb-icon"
+              class="rounded-full tech-stack-item transform hover:scale-125"
               size="50"
             ></Icon>
           </div>
@@ -183,12 +183,12 @@
         <Tooltip>
           <div class="hover:scale-105" v-motion-pop-visible :delay="50">
             <Icon
-              name="logos:anthropic"
-              class="bg-white rounded-full p-2 tech-stack-item transform hover:scale-125"
+              name="logos:claude-icon"
+              class="rounded-full p-2 tech-stack-item transform hover:scale-125"
               size="50"
             ></Icon>
           </div>
-          <template #tooltip>Anthropic</template>
+          <template #tooltip>Claude</template>
         </Tooltip>
 
         <Tooltip>
