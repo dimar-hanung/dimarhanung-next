@@ -28,7 +28,6 @@
     "@vueuse/motion": "^2.2.6",
     "@vueuse/nuxt": "^11.1.0",
     "floating-vue": "^5.2.2",
-    "qrcode.vue": "^3.3.4",
-    "v-wave": "^3.0.4"
+    "qrcode.vue": "^3.3.4"
   }
 }

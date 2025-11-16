@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 
 interface Props {
   min?: number;
@@ -31,13 +31,13 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (e: 'input', value: number): void;
+  (e: "input", value: number): void;
 }>();
 
 const sliderTrack = ref<HTMLElement | null>(null);
 const sliderThumb = ref<HTMLElement | null>(null);
-const thumbPosition = ref('0px');
-const progressHeight = ref('50%');
+const thumbPosition = ref("0px");
+const progressHeight = ref("50%");
 const isDragging = ref(false);
 
 const updateSlider = (value: number) => {
@@ -121,7 +121,6 @@ onMounted(() => {
   cursor: pointer;
 }
 </style>
-
 
 <style scoped>
 .range-slider {

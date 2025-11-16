@@ -47,13 +47,15 @@
   </t-modal>
   <ClientOnly>
     <div class="relative z-20">
-      <div
+      <WaveSurface
+        as="div"
+        role="button"
+        tabindex="0"
         @click="isOpen = !isOpen"
-        v-wave
         class="text-2xl text-primary-500 cursor-pointer h-9 w-9 rounded grid place-items-center hover:bg-muted-200 dark:hover:bg-muted-700 hover:bg-opacity-50"
       >
         <Icon name="i-heroicons-paint-brush-solid"></Icon>
-      </div>
+      </WaveSurface>
     </div>
   </ClientOnly>
 </template>

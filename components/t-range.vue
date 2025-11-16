@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from "vue";
 
 interface Props {
   min?: number;
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (e: 'input', value: number): void;
+  (e: "input", value: number): void;
 }>();
 
 const sliderTrack = ref<HTMLElement | null>(null);
@@ -146,7 +146,6 @@ onMounted(() => {
   transition: all 0.1s ease-in-out;
 }
 </style>
-
 
 <style scoped>
 .range-slider {
