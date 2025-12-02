@@ -116,72 +116,74 @@
             </div>
             <div>
               <h2 class="text-xl font-bold mb-4">Find Me</h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <a
                   href="https://www.linkedin.com/in/dimar-hanung/"
                   target="_blank"
+                  class="find-me-link"
                 >
-                  <t-card class="dark:hover:bg-muted-700 cursor-pointer">
-                    <div>Become my relation</div>
-                    <div class="flex w-full justify-between place-items-center">
-                      <div class="flex gap-2 place-items-center">
+                  <t-card-cool class="h-full cursor-pointer">
+                    <div class="text-sm text-muted-500 dark:text-muted-400">Become my relation</div>
+                    <div class="flex w-full justify-between place-items-center mt-2">
+                      <div class="flex gap-2 place-items-center font-semibold">
                         <Icon
                           name="uil:linkedin"
-                          class="text-4xl text-blue-600"
+                          class="text-3xl text-blue-600"
                         />
-                        Linekdin
+                        LinkedIn
                       </div>
-                      <Icon class="text-3xl" name="mdi:external-link" />
+                      <Icon class="text-2xl find-me-icon transition-transform" name="mdi:arrow-top-right" />
                     </div>
-                  </t-card>
+                  </t-card-cool>
                 </a>
-                <a href="https://www.instagram.com/dmr_hanung/" target="_blank">
-                  <t-card class="dark:hover:bg-muted-700 cursor-pointer">
-                    <div>Story</div>
-                    <div class="flex w-full justify-between place-items-center">
-                      <div class="flex gap-2 place-items-center">
+                <a href="https://www.instagram.com/dmr_hanung/" target="_blank" class="find-me-link">
+                  <t-card-cool class="h-full cursor-pointer">
+                    <div class="text-sm text-muted-500 dark:text-muted-400">Story</div>
+                    <div class="flex w-full justify-between place-items-center mt-2">
+                      <div class="flex gap-2 place-items-center font-semibold">
                         <Icon
                           name="uil:instagram"
-                          class="text-4xl text-red-400"
+                          class="text-3xl text-pink-500"
                         />
                         Instagram
                       </div>
-                      <Icon class="text-3xl" name="mdi:external-link" />
+                      <Icon class="text-2xl find-me-icon transition-transform" name="mdi:arrow-top-right" />
                     </div>
-                  </t-card>
+                  </t-card-cool>
                 </a>
-                <a href="https://twitter.com/dimarhanung" target="_blank">
-                  <t-card class="dark:hover:bg-muted-700 cursor-pointer">
-                    <div>Just my daily note</div>
-                    <div class="flex w-full justify-between place-items-center">
-                      <div class="flex gap-2 place-items-center">
+                <a href="https://twitter.com/dimarhanung" target="_blank" class="find-me-link">
+                  <t-card-cool class="h-full cursor-pointer">
+                    <div class="text-sm text-muted-500 dark:text-muted-400">Just my daily note</div>
+                    <div class="flex w-full justify-between place-items-center mt-2">
+                      <div class="flex gap-2 place-items-center font-semibold">
                         <Icon
                           name="uil:twitter"
-                          class="text-4xl text-blue-400"
+                          class="text-3xl text-blue-400"
                         />
                         Twitter
                       </div>
-                      <Icon class="text-3xl" name="mdi:external-link" />
+                      <Icon class="text-2xl find-me-icon transition-transform" name="mdi:arrow-top-right" />
                     </div>
-                  </t-card>
+                  </t-card-cool>
                 </a>
                 <a
                   href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
                   target="_blank"
+                  class="find-me-link"
                 >
-                  <t-card class="dark:hover:bg-muted-700 cursor-pointer">
-                    <div>Be my friend / Collab</div>
-                    <div class="flex w-full justify-between place-items-center">
-                      <div class="flex gap-2 place-items-center">
+                  <t-card-cool class="h-full cursor-pointer">
+                    <div class="text-sm text-muted-500 dark:text-muted-400">Be my friend / Collab</div>
+                    <div class="flex w-full justify-between place-items-center mt-2">
+                      <div class="flex gap-2 place-items-center font-semibold">
                         <Icon
                           name="uil:whatsapp"
-                          class="text-4xl text-green-400"
+                          class="text-3xl text-green-500"
                         />
                         WhatsApp
                       </div>
-                      <Icon class="text-3xl" name="mdi:external-link" />
+                      <Icon class="text-2xl find-me-icon transition-transform" name="mdi:arrow-top-right" />
                     </div>
-                  </t-card>
+                  </t-card-cool>
                 </a>
               </div>
             </div>
@@ -241,5 +243,9 @@ useSeoMeta({
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
 .portofolio-container {
   font-family: "Outfit", sans-serif;
+}
+
+.find-me-link:hover .find-me-icon {
+  transform: translate(2px, -2px);
 }
 </style>
