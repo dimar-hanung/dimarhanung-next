@@ -69,49 +69,53 @@
           >
             <div>
               <h2 class="text-xl font-bold mb-4">Portofolio</h2>
-              <div class="flex flex-wrap gap-2">
-                <t-card
-                  class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
-                >
-                  <NuxtLink to="/certificates">
-                    <div>Certificate</div>
-                    <div class="flex w-full justify-between place-items-end">
-                      <div class="text-2xl font-bold">12+</div>
-                      <div>
-                        <Icon class="text-3xl" name="mdi:arrow-right" />
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <NuxtLink to="/certificates" class="portfolio-link">
+                  <t-card-cool class="h-full cursor-pointer">
+                    <div class="text-sm text-muted-500 dark:text-muted-400">📜 Achievements</div>
+                    <div class="flex w-full justify-between place-items-center mt-2">
+                      <div class="flex gap-2 place-items-center font-semibold">
+                        Certificate
+                      </div>
+                      <div class="flex place-items-center gap-2">
+                        <span class="text-2xl font-bold">12+</span>
+                        <Icon class="text-2xl portfolio-icon transition-transform" name="mdi:arrow-right" />
                       </div>
                     </div>
-                  </NuxtLink>
-                </t-card>
-                <t-card
-                  class="w-1/3 flex-grow min-w-[230px] dark:hover:bg-muted-700"
-                >
-                  <div>Project</div>
-                  <div class="flex w-full justify-between place-items-end">
-                    <div class="text-2xl font-bold">15+</div>
+                  </t-card-cool>
+                </NuxtLink>
+                <t-card-cool class="h-full">
+                  <div class="text-sm text-muted-500 dark:text-muted-400">💼 Work & Personal</div>
+                  <div class="flex w-full justify-between place-items-center mt-2">
+                    <div class="flex gap-2 place-items-center font-semibold">
+                      Project
+                    </div>
+                    <span class="text-2xl font-bold">15+</span>
                   </div>
-                </t-card>
-                <t-card
-                  class="w-1/3 flex-grow min-w-[230px] cursor-pointer dark:hover:bg-muted-700"
-                >
-                  <NuxtLink to="/challenges/frontend-mentor">
-                    <div>Front-End Mentor</div>
-                    <div class="flex w-full justify-between place-items-end">
-                      <div class="text-2xl font-bold">10+</div>
-                      <div>
-                        <Icon class="text-3xl" name="mdi:arrow-right" />
+                </t-card-cool>
+                <NuxtLink to="/challenges/frontend-mentor" class="portfolio-link">
+                  <t-card-cool class="h-full cursor-pointer">
+                    <div class="text-sm text-muted-500 dark:text-muted-400">🎯 UI Challenges</div>
+                    <div class="flex w-full justify-between place-items-center mt-2">
+                      <div class="flex gap-2 place-items-center font-semibold">
+                        Front-End Mentor
+                      </div>
+                      <div class="flex place-items-center gap-2">
+                        <span class="text-2xl font-bold">10+</span>
+                        <Icon class="text-2xl portfolio-icon transition-transform" name="mdi:arrow-right" />
                       </div>
                     </div>
-                  </NuxtLink>
-                </t-card>
-                <t-card
-                  class="w-1/3 flex-grow min-w-[230px] dark:hover:bg-muted-700"
-                >
-                  <div>Fun Stuff & Experiment</div>
-                  <div class="flex w-full justify-between place-items-end">
-                    <div class="text-2xl font-bold">10+</div>
+                  </t-card-cool>
+                </NuxtLink>
+                <t-card-cool class="h-full">
+                  <div class="text-sm text-muted-500 dark:text-muted-400">🧪 Experiments</div>
+                  <div class="flex w-full justify-between place-items-center mt-2">
+                    <div class="flex gap-2 place-items-center font-semibold">
+                      Fun Stuff
+                    </div>
+                    <span class="text-2xl font-bold">10+</span>
                   </div>
-                </t-card>
+                </t-card-cool>
               </div>
             </div>
             <div>
@@ -247,5 +251,9 @@ useSeoMeta({
 
 .find-me-link:hover .find-me-icon {
   transform: translate(2px, -2px);
+}
+
+.portfolio-link:hover .portfolio-icon {
+  transform: translateX(4px);
 }
 </style>
