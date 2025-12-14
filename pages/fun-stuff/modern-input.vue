@@ -40,7 +40,7 @@
         ref="inputRef"
         v-model="inputValue"
         type="text"
-        class="relative w-[400px] px-8 py-[18px] text-lg bg-transparent rounded-full outline-none z-[2] placeholder:text-gray-600 text-white"
+        class="relative w-[400px] px-8 py-[18px] text-lg bg-transparent rounded-full outline-hidden z-[2] placeholder:text-gray-600 text-white"
         placeholder="Type something magical... ✨"
         @focus="onFocus"
         @blur="onBlur"

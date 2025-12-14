@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen grid place-items-center">
     <main
-      class="relative w-96 h-60 border shadow rounded-xl bg-gradient-to-bl bg-slate-400"
+      class="relative w-96 h-60 border border-gray-300 shadow-sm rounded-xl bg-gradient-to-bl bg-slate-400"
     >
       <div
         class="decorator --1 bg-white/25 rounded-full -translate-x-1/2 -translate-y-1/2"

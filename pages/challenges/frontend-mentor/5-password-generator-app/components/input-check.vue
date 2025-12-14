@@ -8,7 +8,7 @@
     <div class="flex place-items-center">
       <div>
         <div
-          class="transition-all w-6 min-w-[1.5rem] h-6 rounded text-white grid place-items-center border-2"
+          class="transition-all w-6 min-w-[1.5rem] h-6 rounded-sm text-white grid place-items-center border-2"
           :class="[
             value ? 'bg-[#A4FFAF] border-transparent' : 'border-[#A4FFAF]',
             disabled ? 'bg-neutral-5' : '',

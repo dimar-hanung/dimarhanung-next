@@ -178,7 +178,7 @@
             <div class="flex-grow max-w-[445px] mx-auto lg:mx-0">
               <input
                 type="text"
-                class="block bg-transparent border-b border-b-white h-11 pl-6 w-full mt-8 outline-none focus:border-b-[#4EE1A0] max-w-[445px]"
+                class="block bg-transparent border-b border-b-white h-11 pl-6 w-full mt-8 outline-hidden focus:border-b-[#4EE1A0] max-w-[445px]"
                 :class="[form.name === '' ? 'border-b-[#FF6F5B]' : '']"
                 placeholder="NAME"
                 required
@@ -193,7 +193,7 @@
               </p>
               <input
                 type="email"
-                class="block bg-transparent border-b border-b-white h-11 pl-6 w-full mt-8 outline-none focus:border-b-[#4EE1A0] max-w-[445px]"
+                class="block bg-transparent border-b border-b-white h-11 pl-6 w-full mt-8 outline-hidden focus:border-b-[#4EE1A0] max-w-[445px]"
                 :class="[form.email === '' ? 'border-b-[#FF6F5B]' : '']"
                 placeholder="EMAIL"
                 required
@@ -213,7 +213,7 @@
               </p>
 
               <textarea
-                class="block bg-transparent border-b border-b-white h-28 pl-6 w-full mt-8 outline-none focus:border-b-[#4EE1A0] max-w-[445px]"
+                class="block bg-transparent border-b border-b-white h-28 pl-6 w-full mt-8 outline-hidden focus:border-b-[#4EE1A0] max-w-[445px]"
                 :class="[form.message === '' ? 'border-b-[#FF6F5B]' : '']"
                 placeholder="MESSAGE"
                 required

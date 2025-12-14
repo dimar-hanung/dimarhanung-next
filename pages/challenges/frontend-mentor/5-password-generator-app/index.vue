@@ -6,7 +6,7 @@
       <h1 class="text-[#817D92] text-center text-2xl">Password Generator</h1>
 
       <section
-        class="bg-[#24232C] rounded h-20 flex justify-between px-2 sm:px-8 place-items-center mt-8"
+        class="bg-[#24232C] rounded-sm h-20 flex justify-between px-2 sm:px-8 place-items-center mt-8"
       >
         <div
           class="text-[#E6E5EA] text-2xl overflow-hidden text-ellipsis whitespace-nowrap w-full"
@@ -33,7 +33,7 @@
         </div>
       </section>
 
-      <section class="mt-6 rounded bg-[#24232C] py-6 px-2 sm:px-8">
+      <section class="mt-6 rounded-sm bg-[#24232C] py-6 px-2 sm:px-8">
         <div class="flex justify-between">
           <label for="characterLength">
             <h2 class="text-lg text-[#E6E5EA]">Character Length</h2>
@@ -93,11 +93,11 @@
           v-tooltip="
             isOptionSelected ? 'Generate' : 'Select at least one option'
           "
-          class="h-[4.5rem] mt-8 block bg-[#A4FFAF] w-full text-center rounded border-2 border-transparent transition-all"
+          class="h-[4.5rem] mt-8 block bg-[#A4FFAF] w-full text-center rounded-sm border-2 border-transparent transition-all"
           :class="[
             isOptionSelected
               ? 'hover:border-[#A4FFAF] hover:bg-[transparent] text-[#24232C] hover:text-[#A4FFAF] hover:fill-[#A4FFAF]'
-              : 'bg-opacity-50 cursor-not-allowed',
+              : 'bg-[#A4FFAF]/50 cursor-not-allowed',
           ]"
           @click="
             password = generatePassword({

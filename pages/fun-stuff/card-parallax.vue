@@ -12,7 +12,7 @@
     >
       <!-- Glass card -->
       <div
-        class="bg-white bg-opacity-10 rounded-2xl shadow-xl backdrop-blur-md p-8 text-white transition-all duration-300 ease-out overflow-hidden"
+        class="bg-white/10 rounded-2xl shadow-xl backdrop-blur-md p-8 text-white transition-all duration-300 ease-out overflow-hidden"
         @mouseenter="isHovering = true"
         @mouseleave="isHovering = false"
         :style="{
@@ -41,7 +41,7 @@
             <input
               type="email"
               placeholder="Enter your email"
-              class="w-full px-4 py-2 rounded-md bg-white bg-opacity-10 placeholder-gray-300 text-white outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+              class="w-full px-4 py-2 rounded-md bg-white/10 placeholder-gray-300 text-white outline-hidden focus:ring-2 focus:ring-blue-500 transition-all duration-300"
             />
           </div>
           <button

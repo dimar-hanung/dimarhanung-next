@@ -1,5 +1,5 @@
 <template>
-  <div class="border rounded-lg bg-white">
+  <div class="border border-gray-200 dark:border-gray-700 rounded-lg bg-white">
     <div
       :data-state="isExpanded ? 'open' : 'closed'"
       :data-disabled="disabled"

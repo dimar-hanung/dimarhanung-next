@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen h-full w-full grid place-items-center bg-slate-950">
     <div
-      class="max-h-[800px] max-w-[1440px] fylo-data-container bg-[#0C122C] h-full grid place-items-center w-full rounded p-4 relative overflow-hidden"
+      class="max-h-[800px] max-w-[1440px] fylo-data-container bg-[#0C122C] h-full grid place-items-center w-full rounded-sm p-4 relative overflow-hidden"
     >
       <div
         class="hidden md:block absolute bottom-0 left-0 w-full overflow-hidden"

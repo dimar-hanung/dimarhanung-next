@@ -14,7 +14,7 @@
 
     <div class="p-3 mt-8">
       <div class="font-bold">Terpilih</div>
-      <table class="mt-8 w-full border border-collapse">
+      <table class="mt-8 w-full border border-gray-300 border-collapse">
         <tbody>
           <tr>
             <th>Judul</th>
@@ -22,11 +22,11 @@
             <th>Thumbnail</th>
           </tr>
           <tr>
-            <td class="border p-2">
+            <td class="border border-gray-300 p-2">
               {{ selected.title || "-" }}
             </td>
-            <td class="border p-2">{{ selected.description || "-" }}</td>
-            <td class="border p-2">{{ selected.thumbUrl || "-" }}</td>
+            <td class="border border-gray-300 p-2">{{ selected.description || "-" }}</td>
+            <td class="border border-gray-300 p-2">{{ selected.thumbUrl || "-" }}</td>
           </tr>
         </tbody>
       </table>
