@@ -26,38 +26,46 @@ const shades = [
   "950",
 ] as const;
 
-const EMPTY_COLOR = "0 0 0";
+const EMPTY_COLOR = "#000000";
 
 /**
- * Convert color to RGB values, for use with Tailwind CSS variables.
+ * Normalize color to hex format for Tailwind CSS v4.
+ * Tailwind v4 uses OKLCH by default but also accepts hex values.
  */
-export const colorToRgb = (color: string): string => {
+export const normalizeColor = (color: string): string => {
   if (!color) {
     return EMPTY_COLOR;
   }
 
-  color = color.replace("#", "");
+  // If it's already in OKLCH, RGB, or other CSS format, pass it through
+  if (
+    color.includes("oklch") ||
+    color.includes("rgb") ||
+    color.includes("hsl")
+  ) {
+    console.log("Passing through CSS color format:", color);
+    return color;
+  }
 
-  // Konversi singkat hex (misal, #FFF) menjadi bentuk panjang (#FFFFFF)
-  if (color.length === 3) {
-    color = color
+  // Handle hex colors
+  let hexColor = color.replace("#", "");
+
+  // Convert short hex (e.g., #FFF) to long form (#FFFFFF)
+  if (hexColor.length === 3) {
+    hexColor = hexColor
       .split("")
       .map((char) => char + char)
       .join("");
   }
 
-  // Pastikan kode warnanya valid
-  if (color.length !== 6) {
-    throw new Error("Invalid color value");
+  // Validate hex color code
+  if (hexColor.length !== 6) {
+    console.warn("Invalid color value:", color);
+    return EMPTY_COLOR;
   }
 
-  // Ekstrak komponen RGB dari hex color
-  const r = parseInt(color.slice(0, 2), 16);
-  const g = parseInt(color.slice(2, 4), 16);
-  const b = parseInt(color.slice(4, 6), 16);
-
-  // Gabungkan komponen RGB menjadi string
-  return `${r} ${g} ${b}`;
+  // Return as hex string with # prefix
+  return `#${hexColor}`;
 };
 
 /**
@@ -76,10 +84,10 @@ export function switchColorShades(
  * Set a single tailwind color shade from a hex value.
  */
 export function switchColor(name: ColorName, shade: ColorShade, color: string) {
-  const rgb = colorToRgb(color);
+  const hexColor = normalizeColor(color);
   window.document.documentElement.style.setProperty(
     `--color-${name}-${shade}`,
-    rgb
+    hexColor
   );
 }
 

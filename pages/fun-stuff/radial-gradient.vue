@@ -19,7 +19,7 @@
         <div
           v-for="(color, index) in colors"
           :key="index"
-          class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full"
+          class="flex items-center gap-2 bg-white/10 backdrop-blur-xs px-3 py-1.5 rounded-full"
         >
           <div
             class="w-4 h-4 rounded-full border border-white/20"

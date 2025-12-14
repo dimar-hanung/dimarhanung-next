@@ -5,7 +5,7 @@
     </p>
     <div class="flex gap-3">
       <button
-        class="flex-1 rounded-lg border-2 border-amber-800/50 bg-white px-4 py-3 text-sm font-medium text-amber-800 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 transition-all duration-200 friendly-btn-outline"
+        class="flex-1 rounded-lg border-2 border-amber-800/50 bg-white px-4 py-3 text-sm font-medium text-amber-800 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 transition-all duration-200 friendly-btn-outline"
         :disabled="!canExport"
         @click="exportCSV"
       >
@@ -13,7 +13,7 @@
         CSV
       </button>
       <button
-        class="flex-1 rounded-lg border-2 border-amber-800/50 bg-white px-4 py-3 text-sm font-medium text-amber-800 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 transition-all duration-200 friendly-btn-outline"
+        class="flex-1 rounded-lg border-2 border-amber-800/50 bg-white px-4 py-3 text-sm font-medium text-amber-800 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:border-gray-300 disabled:text-gray-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 transition-all duration-200 friendly-btn-outline"
         :disabled="!canExport"
         @click="exportPNG"
       >

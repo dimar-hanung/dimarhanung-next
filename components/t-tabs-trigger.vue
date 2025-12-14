@@ -20,7 +20,7 @@ const handleClick = () => {
     @click="handleClick"
     :class="[
       'px-4 py-2 font-medium text-sm transition-colors duration-200',
-      'hover:text-primary-600 focus:outline-none',
+      'hover:text-primary-600 focus:outline-hidden',
       isActive
         ? 'text-primary-600 border-b-2 border-primary-600'
         : 'text-gray-600',

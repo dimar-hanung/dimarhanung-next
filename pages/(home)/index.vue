@@ -4,7 +4,7 @@
   >
     <t-nav class="relative z-50"></t-nav>
 
-    <div class="py-28 border-y bg-white relative">
+    <div class="py-28 border-y border-gray-200 bg-white relative">
       <div
         class="absolute inset-0 h-full w-full bg-muted-100 dark:bg-muted-900 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]"
       ></div>

@@ -1,3 +1,5 @@
+import tailwindcss from "@tailwindcss/vite";
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
@@ -31,7 +33,6 @@ export default defineNuxtConfig({
 
   ignore: ["/pages/**/components/**"],
   modules: [
-    "@nuxtjs/tailwindcss",
     "@nuxt/image",
     "floating-vue/nuxt",
     "@nuxtjs/color-mode",
@@ -39,7 +40,11 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@vueuse/motion/nuxt",
   ],
+
+  css: ["~/assets/css/tailwind.css"],
+
   vite: {
+    plugins: [tailwindcss()],
     server: {
       watch: {
         ignored: [
@@ -53,10 +58,5 @@ export default defineNuxtConfig({
     classSuffix: "",
   },
 
-  tailwindcss: {
-    configPath: "tailwind.config",
-  },
-
-  css: ["~/assets/css/colors.css"],
   compatibilityDate: "2024-10-20",
 });

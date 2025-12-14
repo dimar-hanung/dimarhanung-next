@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-2xl cursor-pointer h-9 w-9 rounded grid place-items-center hover:bg-muted-200 dark:hover:bg-muted-700 hover:bg-opacity-50 transition-all"
+    class="text-2xl cursor-pointer h-9 w-9 rounded-sm grid place-items-center hover:bg-muted-200/50 dark:hover:bg-muted-700 transition-all"
     @click="toggleDarkMode"
   >
     <Icon

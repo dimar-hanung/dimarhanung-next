@@ -1,7 +1,7 @@
 <template>
   <div class="range-slider h-full">
     <div
-      class="range-slider-track bg-white bg-opacity-40"
+      class="range-slider-track bg-white/40"
       @click="handleClick"
       ref="sliderTrack"
     >
@@ -10,7 +10,7 @@
         :style="{ height: progressHeight }"
       ></div>
       <div
-        class="range-slider-thumb bg-green-100 bg-opacity-40 relative"
+        class="range-slider-thumb bg-green-100/40 relative"
         @mousedown="handleMouseDown"
         :style="{ bottom: thumbPosition }"
         ref="sliderThumb"
