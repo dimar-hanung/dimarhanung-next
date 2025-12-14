@@ -3,7 +3,7 @@
     <label :for="id" v-if="label">{{ label }}</label>
     <div class="mt-2 w-full">
       <input
-        class="block w-full p-2 rounded-lg outline-none focus:ring-4 border"
+        class="block w-full p-2 rounded-lg outline-hidden focus:ring-4 border border-gray-300"
         :class="[isValid || !modelValue ? '' : 'border-red-500 ring-red-500']"
         :id="id"
         type="text"

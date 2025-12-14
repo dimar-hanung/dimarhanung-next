@@ -2,7 +2,7 @@
   <div
     class="feedback min-h-screen p-1 md:px-4 py-12 bg-slate-300 text-slate-800"
   >
-    <main class="container mx-auto bg-opacity-25 p-1 md:p-4 min-h-screen">
+    <main class="container mx-auto bg-slate-300/25 p-1 md:p-4 min-h-screen">
       <h3 class="font-bold text-3xl">
         Beri Feedback Kepada
         <a
@@ -14,7 +14,7 @@
         🌠
       </h3>
       <textarea
-        class="w-full rounded-lg mt-8 p-4 h-36 outline-none focus:shadow-lg transition-all"
+        class="w-full rounded-lg mt-8 p-4 h-36 outline-hidden focus:shadow-lg transition-all"
         name="feedback-input"
         id="feedback-input"
         placeholder="Ketikkan Feedback dan keluhan keluhan mu untuk Dimar Disini"
@@ -22,11 +22,11 @@
       ></textarea>
       <button
         @click="submitFeedback"
-        class="text-white rounded-lg px-4 py-2 mt-4 hover:bg-opacity-75 transition-colors text-lg"
+        class="text-white rounded-lg px-4 py-2 mt-4 transition-colors text-lg"
         :class="[
           isLoadingSubmit || !feedback
             ? 'cursor-not-allowed bg-gray-600'
-            : 'cursor-pointer bg-blue-700',
+            : 'cursor-pointer bg-blue-700 hover:bg-blue-700/75',
         ]"
       >
         {{ isLoadingSubmit ? "Tunggu sebentar hehe" : "Submit Feedback" }}
@@ -64,15 +64,15 @@
         </div>
         <div class="animate-pulse flex flex-wrap md:flex-nowrap gap-4">
           <section class="w-full md:w-1/2">
-            <div class="p-4 rounded bg-blue-100 mt-4"></div>
-            <div class="p-4 rounded bg-blue-100 mt-4"></div>
-            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded-sm bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded-sm bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded-sm bg-blue-100 mt-4"></div>
           </section>
 
           <section class="w-full md:w-1/2">
-            <div class="p-4 rounded bg-blue-100 mt-4"></div>
-            <div class="p-4 rounded bg-blue-100 mt-4"></div>
-            <div class="p-4 rounded bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded-sm bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded-sm bg-blue-100 mt-4"></div>
+            <div class="p-4 rounded-sm bg-blue-100 mt-4"></div>
           </section>
         </div>
       </div>
@@ -83,7 +83,7 @@
 
           <div
             v-if="!negativeFeedbacks?.length"
-            class="p-4 rounded bg-blue-100 mt-4"
+            class="p-4 rounded-sm bg-blue-100 mt-4"
           >
             Belum ada feedback negatif nih, ayo jadi yang pertama hehe
           </div>
@@ -109,7 +109,7 @@
 
           <div
             v-if="!positiveFeedbacks?.length"
-            class="p-4 rounded bg-blue-100 mt-4"
+            class="p-4 rounded-sm bg-blue-100 mt-4"
           >
             Belum ada feedback positif nih, yuk jadi yang pertama!
           </div>

@@ -26,7 +26,7 @@
           </h3>
           <NuxtLink
             v-for="(challenge, i) in challenges"
-            class="sidebar--link px-3 block hover:text-white hover:bg-white hover:bg-opacity-25 p-4 text-slate-300 rounded-lg transition-all"
+            class="sidebar--link px-3 block hover:text-white hover:bg-white/25 p-4 text-slate-300 rounded-lg transition-all"
             :to="challenge.path"
             ><div class="flex place-items-center border-l border-l-slate-500">
               <div class="mr-2"></div>

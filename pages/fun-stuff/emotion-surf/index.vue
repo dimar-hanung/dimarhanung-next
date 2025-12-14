@@ -11,7 +11,7 @@
         </h1>
         <!-- Optional help tooltip -->
         <button
-          class="inline-flex items-center gap-2 rounded-md border border-transparent px-3 py-1.5 text-sm text-gray-700 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-700 focus-visible:ring-offset-2 vintage-ghost"
+          class="inline-flex items-center gap-2 rounded-md border border-transparent px-3 py-1.5 text-sm text-gray-700 underline-offset-2 hover:underline focus:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-700 focus-visible:ring-offset-2 vintage-ghost"
           :title="'Notice → Breathe → Surf the wave → Let it pass.'"
           aria-label="Show urge surfing tip"
         >
@@ -32,7 +32,7 @@
         <!-- Circle input panel -->
         <aside class="w-full md:w-80">
           <div
-            class="flex h-full flex-col items-center gap-6 md:gap-8 rounded-lg border border-amber-800/30 p-4 md:p-6 shadow-sm vintage-card bg-[#fff7ed]"
+            class="flex h-full flex-col items-center gap-6 md:gap-8 rounded-lg border border-amber-800/30 p-4 md:p-6 shadow-xs vintage-card bg-[#fff7ed]"
           >
             <div class="text-center">
               <h2 class="text-base font-semibold text-amber-950 mb-2">
@@ -49,7 +49,7 @@
             <!-- Current values display -->
             <div class="flex w-full gap-3">
               <div
-                class="flex flex-1 items-center justify-between rounded-lg border border-amber-800/40 px-3 py-2 shadow-sm vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
+                class="flex flex-1 items-center justify-between rounded-lg border border-amber-800/40 px-3 py-2 shadow-xs vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
               >
                 <span
                   aria-live="polite"
@@ -63,7 +63,7 @@
                 </div>
               </div>
               <div
-                class="flex flex-1 items-center justify-between rounded-lg border border-amber-800/40 px-3 py-2 shadow-sm vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
+                class="flex flex-1 items-center justify-between rounded-lg border border-amber-800/40 px-3 py-2 shadow-xs vintage-card bg-gradient-to-b from-amber-50 to-amber-100"
               >
                 <span
                   aria-live="polite"
@@ -98,7 +98,7 @@
             <!-- Primary Controls -->
             <div class="w-full grid grid-cols-2 gap-2">
               <button
-                class="rounded-md bg-gradient-to-b from-emerald-500 to-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:from-emerald-600 hover:to-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
+                class="rounded-md bg-gradient-to-b from-emerald-500 to-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:from-emerald-600 hover:to-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
                 :disabled="!canStart"
                 @click="onStart"
               >
@@ -106,7 +106,7 @@
                 Start
               </button>
               <button
-                class="rounded-md bg-gradient-to-b from-amber-500 to-amber-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:from-amber-600 hover:to-amber-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
+                class="rounded-md bg-gradient-to-b from-amber-500 to-amber-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:from-amber-600 hover:to-amber-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
                 :disabled="!canPause && !canResume"
                 @click="onTogglePause"
               >
@@ -117,7 +117,7 @@
                 {{ paused ? "Resume" : "Pause" }}
               </button>
               <button
-                class="rounded-md bg-gradient-to-b from-rose-500 to-rose-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:from-rose-600 hover:to-rose-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
+                class="rounded-md bg-gradient-to-b from-rose-500 to-rose-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:from-rose-600 hover:to-rose-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
                 :disabled="!canMarkPeak"
                 @click="onMarkPeak"
               >
@@ -125,7 +125,7 @@
                 Peak
               </button>
               <button
-                class="rounded-md bg-gradient-to-b from-gray-500 to-gray-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:from-gray-600 hover:to-gray-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
+                class="rounded-md bg-gradient-to-b from-gray-500 to-gray-600 px-3 py-2 text-xs font-semibold text-white shadow-xs hover:from-gray-600 hover:to-gray-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:from-gray-400 disabled:to-gray-500 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1 transition-all duration-200 friendly-btn"
                 :disabled="!canReset"
                 @click="onReset"
               >
@@ -141,7 +141,7 @@
                   <input
                     type="checkbox"
                     v-model="breathingEnabled"
-                    class="rounded border-amber-800/40 text-amber-600 focus:ring-amber-500 focus:ring-offset-1"
+                    class="rounded-sm border-amber-800/40 text-amber-600 focus:ring-amber-500 focus:ring-offset-1"
                   />
                   <span class="text-sm font-medium text-amber-800">
                     4-4-4 Breathing Effect
@@ -406,32 +406,32 @@ provide("ensureNoisePattern", ensureNoisePattern);
 /* Friendly button styles */
 .friendly-btn {
   transform: translateY(0);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: xs 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .friendly-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: xs 6px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .friendly-btn:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: xs 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .friendly-btn-outline {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-shadow: xs 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .friendly-btn-outline:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: xs 4px 8px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .friendly-btn-outline:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: xs 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Vintage look & feel */
@@ -450,7 +450,7 @@ provide("ensureNoisePattern", ensureNoisePattern);
     rgba(255, 255, 255, 0.02),
     rgba(0, 0, 0, 0.02)
   );
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06),
+  box-shadow: xs 1px 0 rgba(0, 0, 0, 0.06),
     inset 0 0 0 1px rgba(180, 83, 9, 0.08);
 }
 
@@ -469,7 +469,7 @@ provide("ensureNoisePattern", ensureNoisePattern);
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: xsnset 0 1px 0 rgba(255, 255, 255, 0.08);
   mix-blend-mode: soft-light;
 }
 
@@ -638,7 +638,7 @@ provide("ensureNoisePattern", ensureNoisePattern);
 /* Header accents */
 .vintage-header h1 {
   letter-spacing: 0.02em;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: xs 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Dark mode removed for this page */
@@ -648,12 +648,12 @@ provide("ensureNoisePattern", ensureNoisePattern);
   background-color: #f3e6c8;
   border-color: #d97706;
   color: #1f2937;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: xsnset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .vintage-input:focus {
   outline: none;
   border-color: #b45309;
-  box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.25);
+  box-shadow: xs 0 0 2px rgba(180, 83, 9, 0.25);
 }
 
 .vintage-ghost {
@@ -664,13 +664,13 @@ provide("ensureNoisePattern", ensureNoisePattern);
     rgba(255, 255, 255, 0.2)
   );
   border-color: rgba(180, 83, 9, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+  box-shadow: xsnset 0 1px 0 rgba(255, 255, 255, 0.5),
     0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .vintage-segmented {
   background: #fff7ed;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
+  box-shadow: xsnset 0 1px 0 rgba(255, 255, 255, 0.4),
     0 1px 2px rgba(0, 0, 0, 0.04);
 }
 .vintage-segmented .vintage-btn {

@@ -37,7 +37,7 @@
 
           <!-- Graph Container -->
           <div
-            class="bg-black/50 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30"
+            class="bg-black/50 backdrop-blur-xs rounded-xl p-6 border border-purple-500/30"
           >
             <div
               class="relative w-96 h-80 border border-gray-600 rounded-lg overflow-hidden bg-gray-900/50"
@@ -159,7 +159,7 @@
 
           <!-- Stats Panel -->
           <div
-            class="bg-black/50 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30 text-white"
+            class="bg-black/50 backdrop-blur-xs rounded-xl p-6 border border-purple-500/30 text-white"
           >
             <h3 class="text-lg font-semibold mb-4">Statistics</h3>
             <div class="space-y-3 text-sm">
@@ -198,7 +198,7 @@
           </h2>
 
           <div
-            class="bg-black/50 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30"
+            class="bg-black/50 backdrop-blur-xs rounded-xl p-6 border border-purple-500/30"
           >
             <!-- Historical Graph Container - Full Width -->
             <div
@@ -391,7 +391,7 @@
                 <div class="flex items-center gap-2">
                   <button
                     @click="zoomOut"
-                    class="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600"
+                    class="px-2 py-1 bg-gray-700 rounded-sm hover:bg-gray-600"
                   >
                     -
                   </button>
@@ -400,7 +400,7 @@
                   >
                   <button
                     @click="zoomIn"
-                    class="px-2 py-1 bg-gray-700 rounded hover:bg-gray-600"
+                    class="px-2 py-1 bg-gray-700 rounded-sm hover:bg-gray-600"
                   >
                     +
                   </button>

@@ -5,7 +5,7 @@
     <Transition name="fade" mode="in-out">
       <div
         v-if="modal"
-        class="fade-in z-10 fixed w-screen h-screen bg-[#000000] bg-opacity-50 grid place-items-center left-0"
+        class="fade-in z-10 fixed w-screen h-screen bg-[#000000]/50 grid place-items-center left-0"
       >
         <div
           class="bg-[#1F3641] w-full h-1/2 max-h-[280px] flex place-items-center"
@@ -157,7 +157,7 @@
         <button
           v-for="(cell, index) in board"
           :key="index"
-          class="tic-tac-shadow bg-[#1F3641] outline-none border-none rounded-2xl relative sm:w-[8.75rem] sm:h-[8.75rem] flex items-center justify-center"
+          class="tic-tac-shadow bg-[#1F3641] outline-hidden border-none rounded-2xl relative sm:w-[8.75rem] sm:h-[8.75rem] flex items-center justify-center"
           :class="[
             getCellClass(cell),
             winBoard.includes(index)

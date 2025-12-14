@@ -2,7 +2,7 @@
   <!-- Live Moving Chart - Last 1 Minute -->
   <div
     ref="liveChartContainer"
-    class="relative w-full overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-sm vintage-card bg-[#fff7ed]"
+    class="relative w-full overflow-hidden rounded-lg border border-amber-800/30 p-4 shadow-xs vintage-card bg-[#fff7ed]"
   >
     <!-- Live Chart Title -->
     <div class="mb-2 flex items-center justify-between">
@@ -29,7 +29,7 @@
       ></canvas>
       <template #fallback>
         <div
-          class="h-[140px] w-full sm:h-[180px] vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded flex items-center justify-center"
+          class="h-[140px] w-full sm:h-[180px] vintage-canvas bg-[#f3e0c0] border border-amber-800/30 rounded-sm flex items-center justify-center"
         >
           <span class="text-amber-800 text-sm">Loading live chart...</span>
         </div>

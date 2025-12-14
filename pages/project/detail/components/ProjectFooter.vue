@@ -1,5 +1,5 @@
 <template>
-  <footer class="border-t dark:border-gray-600 pt-8 mt-8">
+  <footer class="border-t border-gray-200 dark:border-gray-600 pt-8 mt-8">
     <div class="flex justify-between items-center">
       <p class="text-sm text-gray-600 dark:text-gray-300">
         © {{ new Date().getFullYear() }} {{ projectName }}. All rights reserved.

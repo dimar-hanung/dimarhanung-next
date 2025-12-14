@@ -14,7 +14,7 @@
 
     <p
       ref="quoteContent"
-      class="py-24 border-t border-b border-muted-800 relative bg-slate-100 bg-opacity-40 w-full backdrop-blur-2xl"
+      class="py-24 border-t border-b border-muted-800 relative bg-slate-100/40 w-full backdrop-blur-2xl"
     >
       Sekecil apapun progress, itu adalah progress.
     </p>

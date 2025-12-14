@@ -3,7 +3,7 @@
     class="text-2xl bg-[#D5E1EF] h-full min-h-screen grid place-items-center"
   >
     <div
-      class="h-full xs:h-auto grid place-items-center shadow-xl hover:shadow-2xl transition-shadow w-full max-w-[320px] bg-white px-4 pt-4 pb-10 xs:rounded-[20px]"
+      class="h-full xs:h-auto grid place-items-center shadow-lg hover:shadow-xl transition-shadow w-full max-w-[320px] bg-white px-4 pt-4 pb-10 xs:rounded-[20px]"
     >
       <div>
         <div
