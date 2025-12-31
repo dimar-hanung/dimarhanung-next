@@ -1,27 +1,29 @@
 :root {
-  /* violet from tailwind as r g b */
-  --color-primary-50: 240 249 255;
-  --color-primary-100: 224 242 254;
-  --color-primary-200: 186 230 253;
-  --color-primary-300: 125 211 252;
-  --color-primary-400: 56 189 248;
-  --color-primary-500: 14 165 233;
-  --color-primary-600: 2 132 199;
-  --color-primary-700: 3 105 161;
-  --color-primary-800: 7 89 133;
-  --color-primary-900: 12 74 110;
-  --color-primary-950: 8 47 73;
+  /* App-level tokens (real CSS colors). Tailwind theme variables map to these. */
 
-  /* slate from tailwind as r g b */
-  --color-muted-50: 250 250 250;
-  --color-muted-100: 245 245 245;
-  --color-muted-200: 229 229 229;
-  --color-muted-300: 212 212 212;
-  --color-muted-400: 163 163 163;
-  --color-muted-500: 115 115 115;
-  --color-muted-600: 82 82 82;
-  --color-muted-700: 64 64 64;
-  --color-muted-800: 38 38 38;
-  --color-muted-900: 23 23 23;
-  --color-muted-950: 10 10 10;
+  /* Primary (default: sky-ish) */
+  --app-primary-50: rgb(240 249 255);
+  --app-primary-100: rgb(224 242 254);
+  --app-primary-200: rgb(186 230 253);
+  --app-primary-300: rgb(125 211 252);
+  --app-primary-400: rgb(56 189 248);
+  --app-primary-500: rgb(14 165 233);
+  --app-primary-600: rgb(2 132 199);
+  --app-primary-700: rgb(3 105 161);
+  --app-primary-800: rgb(7 89 133);
+  --app-primary-900: rgb(12 74 110);
+  --app-primary-950: rgb(8 47 73);
+
+  /* Muted (default: neutral-ish) */
+  --app-muted-50: rgb(250 250 250);
+  --app-muted-100: rgb(245 245 245);
+  --app-muted-200: rgb(229 229 229);
+  --app-muted-300: rgb(212 212 212);
+  --app-muted-400: rgb(163 163 163);
+  --app-muted-500: rgb(115 115 115);
+  --app-muted-600: rgb(82 82 82);
+  --app-muted-700: rgb(64 64 64);
+  --app-muted-800: rgb(38 38 38);
+  --app-muted-900: rgb(23 23 23);
+  --app-muted-950: rgb(10 10 10);
 }

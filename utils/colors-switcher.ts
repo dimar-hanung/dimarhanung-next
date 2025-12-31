@@ -43,7 +43,6 @@ export const normalizeColor = (color: string): string => {
     color.includes("rgb") ||
     color.includes("hsl")
   ) {
-    console.log("Passing through CSS color format:", color);
     return color;
   }
 
@@ -86,7 +85,7 @@ export function switchColorShades(
 export function switchColor(name: ColorName, shade: ColorShade, color: string) {
   const hexColor = normalizeColor(color);
   window.document.documentElement.style.setProperty(
-    `--color-${name}-${shade}`,
+    `--app-${name}-${shade}`,
     hexColor
   );
 }
@@ -97,7 +96,7 @@ export function switchColor(name: ColorName, shade: ColorShade, color: string) {
 export function resetColor(name: ColorName) {
   for (const shade of shades) {
     window.document.documentElement.style.removeProperty(
-      `--color-${name}-${shade}`
+      `--app-${name}-${shade}`
     );
   }
 }
