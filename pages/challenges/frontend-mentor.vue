@@ -1,42 +1,59 @@
 <template>
-  <div class="flex">
+  <div class="flex h-screen overflow-hidden bg-[#0f172a]">
     <div
       v-if="$route.query.preview !== 'full'"
-      class="bg-slate-800 text-white justify-between w-full max-w-[280px] hidden xl:flex"
+      class="bg-[#0B1120] border-r border-white/5 text-slate-400 w-full max-w-[300px] hidden xl:flex flex-col h-full"
     >
-      <div class="w-full min-h-screen h-screen top-0 sticky overflow-auto">
-        <div class="p-2">
-          <div class="flex justify-between p-4 bg-slate-700 w-full rounded-lg">
-            <ClientOnly>
-              <NuxtLink to="/"
-                ><font-awesome-icon
-                  class="text-xl cursor-pointer"
-                  :icon="['fa', 'home']"
-              /></NuxtLink>
-              <NuxtLink :to="{ query: { preview: 'full' } }">
-                <font-awesome-icon class="text-xl" :icon="['fa', 'times']" />
-              </NuxtLink>
-            </ClientOnly>
-          </div>
-        </div>
-        <div class="mt-4 px-2">
-          <h3 class="px-3 block p-4 text-slate-300 mt-4 font-bold text-lg">
-            <font-awesome-icon class="mr-1" :icon="['fa', 'cloud']" />
-            Challenges
-          </h3>
-          <NuxtLink
-            v-for="(challenge, i) in challenges"
-            class="sidebar--link px-3 block hover:text-white hover:bg-white/25 p-4 text-slate-300 rounded-lg transition-all"
-            :to="challenge.path"
-            ><div class="flex place-items-center border-l border-l-slate-500">
-              <div class="mr-2"></div>
-              <div>{{ challenge.title }}</div>
-            </div></NuxtLink
+      <!-- Header -->
+      <div
+        class="p-5 flex items-center justify-between border-b border-white/5 shrink-0"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center text-yellow-500"
           >
+            <font-awesome-icon :icon="['fa', 'cloud']" />
+          </div>
+          <h3 class="font-bold text-slate-100 tracking-wide">Challenges</h3>
         </div>
+        <ClientOnly>
+          <div class="flex gap-1">
+            <NuxtLink
+              to="/"
+              class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 hover:text-white transition-colors"
+              title="Back to Home"
+            >
+              <font-awesome-icon :icon="['fa', 'home']" class="text-sm" />
+            </NuxtLink>
+            <NuxtLink
+              :to="{ query: { preview: 'full' } }"
+              class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 hover:text-white transition-colors"
+              title="Close Sidebar"
+            >
+              <font-awesome-icon :icon="['fa', 'times']" class="text-sm" />
+            </NuxtLink>
+          </div>
+        </ClientOnly>
+      </div>
+
+      <!-- List -->
+      <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1 custom-scrollbar">
+        <NuxtLink
+          v-for="(challenge, i) in challenges"
+          :key="challenge.path"
+          class="sidebar--link group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-white/5 hover:text-slate-100"
+          :to="challenge.path"
+        >
+          <span
+            class="w-1.5 h-1.5 rounded-full bg-slate-700 group-hover:bg-yellow-500 transition-colors shrink-0"
+          ></span>
+          <span class="text-sm font-medium truncate">{{
+            challenge.title
+          }}</span>
+        </NuxtLink>
       </div>
     </div>
-    <div class="w-full">
+    <div class="w-full h-full overflow-auto bg-[#0f172a]">
       <NuxtPage />
     </div>
   </div>
@@ -162,9 +179,30 @@ onUnmounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Active Link Styles */
 a.sidebar--link.router-link-exact-active {
-  color: #facc15;
-  background-color: #0f172a;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+a.sidebar--link.router-link-exact-active span:first-child {
+  background-color: #eab308;
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.5);
 }
 </style>
