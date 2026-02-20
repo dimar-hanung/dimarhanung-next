@@ -43,7 +43,7 @@
           :max="certificates.length - 8"
           :min="0"
           @input="changeIndex"
-          :value="index"
+          :value="(certificates.length - 8) - index"
           :label="
             new Date(certificates?.[realIndex]?.date).toLocaleDateString(
               'id-ID',
@@ -162,7 +162,11 @@ const scrollCertificate = (e) => {
     clearTimeout(timer.value);
   }
   if (!isScroll.value) {
-    e.wheelDeltaY < 0 ? index.value++ : index.value--;
+    if (e.wheelDeltaY < 0 && index.value < certificates.length - 8) {
+      index.value++;
+    } else if (e.wheelDeltaY > 0 && index.value > 0) {
+      index.value--;
+    }
   }
   isScroll.value = true;
 
@@ -174,7 +178,7 @@ const scrollCertificate = (e) => {
 const changeIndex = (e) => {
   console.log(e);
   if (timer.value !== null) {
-    index.value = parseInt(e);
+    index.value = (certificates.length - 8) - parseInt(e);
     // clearTimeout(timer.value);
     // timer.value = setTimeout(function () {
     // }, 100);
@@ -186,9 +190,9 @@ const changeIndex = (e) => {
 };
 
 const setArrow = (e) => {
-  if (e.key === "ArrowUp") {
+  if (e.key === "ArrowDown") {
     if (index.value < certificates.length - 8) index.value++;
-  } else if (e.key === "ArrowDown") {
+  } else if (e.key === "ArrowUp") {
     if (index.value > 0) index.value--;
   }
 };
