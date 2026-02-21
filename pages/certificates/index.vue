@@ -139,18 +139,23 @@ const getStyle = (i) => {
   const state = [
     {
       transform: `translateY(${600 * 1.5}px) scale(${0.5})`,
+      opacity: 0,
     },
     {
       transform: `translateY(${300 * 1.5}px) scale(${0.5})`,
+      opacity: 0.4,
     },
     {
       transform: `translateY(${0 * 1.5}px) scale(${1})`,
+      opacity: 1,
     },
     {
       transform: `translateY(-${300 * 1.5}px) scale(${0.5})`,
+      opacity: 0.4,
     },
     {
       transform: `translateY(-${600 * 1.5}px) scale(${0.5})`,
+      opacity: 0,
     },
   ];
 
