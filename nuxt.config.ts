@@ -39,7 +39,40 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@vueuse/nuxt",
     "@vueuse/motion/nuxt",
+    "@nuxtjs/mdc",
   ],
+
+  mdc: {
+    highlight: {
+      theme: {
+        default: "github-light",
+        dark: "github-dark",
+      },
+      langs: [
+        "javascript",
+        "typescript",
+        "vue",
+        "html",
+        "css",
+        "scss",
+        "json",
+        "markdown",
+        "bash",
+        "shell",
+        "yaml",
+        "sql",
+        "python",
+        "java",
+        "c",
+        "cpp",
+        "csharp",
+        "php",
+        "go",
+        "rust",
+        "ruby",
+      ],
+    },
+  },
 
   css: ["~/assets/css/tailwind.css"],
 
