@@ -4,33 +4,58 @@
   >
     <t-nav class="relative z-50"></t-nav>
 
-    <div class="py-28 border-y border-gray-200 bg-white relative">
+    <div class="py-28 border-y border-gray-200 bg-white relative overflow-hidden">
       <div
         class="absolute inset-0 h-full w-full bg-muted-100 dark:bg-muted-900 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]"
       ></div>
-      <header class="flex flex-wrap container mx-auto">
-        <div class="w-1/2 flex-grow p-2 min-w-[230px]">
+      
+      <!-- Gradient orbs -->
+      <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-500/15 to-cyan-500/15 rounded-full blur-3xl"></div>
+      
+      <header class="flex flex-wrap container mx-auto relative z-10">
+        <div class="w-1/2 grow p-2 min-w-[230px]">
           <section>
-            <grid-background class="h-96 py-12">
+            <grid-background class="h-96 py-12 flex items-center">
               <div>
-                <h1
-                  class="mt-4 block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-900 dark:from-indigo-500 to-red-500 dark:to-red-500 max-w-max"
-                >
-                  About Dimar
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="px-3 py-1 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full">Software Engineer</span>
+                </div>
+                <h1 class="mt-4 text-5xl font-bold text-gray-900 dark:text-white">
+                  Dimar <span class="text-indigo-600 dark:text-indigo-400">Hanung</span>
                 </h1>
-                <ul class="text-lg mt-4">
-                  <t-list>🏢 Software Engineer at Universitas Terbuka</t-list>
-                  <t-list>🏡 Lives in Tangerang Selatan, Indonesia</t-list>
-                  <t-list>
-                    ⚡ I like to
-                    <t-kbd>> code .</t-kbd>
-                  </t-list>
-                </ul>
+                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-md">
+                  Building digital experiences with passion. Specializing in full-stack development and creating impactful solutions.
+                </p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                  <a href="https://github.com/dimar-hanung" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
+                    <Icon name="uil:github" class="text-xl" />
+                    GitHub
+                  </a>
+                  <a href="https://www.linkedin.com/in/dimar-hanung/" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                    <Icon name="uil:linkedin" class="text-xl" />
+                    LinkedIn
+                  </a>
+                  <a href="mailto:dimarhanung@gmail.com" class="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-medium hover:border-indigo-500 hover:text-indigo-600 dark:hover:border-indigo-400 dark:hover:text-indigo-400 transition-colors">
+                    <Icon name="uil:envelope" class="text-xl" />
+                    Email
+                  </a>
+                </div>
+                <div class="mt-6 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                  <span class="flex items-center gap-1">
+                    <Icon name="uil:map-marker" class="text-lg" />
+                    Tangerang Selatan, Indonesia
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <Icon name="uil:briefcase" class="text-lg" />
+                    Universitas Terbuka
+                  </span>
+                </div>
               </div>
             </grid-background>
           </section>
         </div>
-        <CardParallax class="w-1/2 flex-grow p-2 min-w-[230px]"></CardParallax>
+        <CardParallax class="w-1/2 grow p-2 min-w-[230px]"></CardParallax>
       </header>
     </div>
 
@@ -70,7 +95,7 @@
             <div>
               <h2 class="text-xl font-bold mb-4">Portofolio</h2>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <NuxtLink to="/certificates" class="portfolio-link">
+                <NuxtLink to="/certificates/gallery" class="portfolio-link">
                   <t-card-cool class="h-full cursor-pointer">
                     <div class="text-sm text-muted-500 dark:text-muted-400">📜 Achievements</div>
                     <div class="flex w-full justify-between place-items-center mt-2">
@@ -231,11 +256,11 @@ const SectionApaKataOrang = defineAsyncComponent(
 );
 
 useSeoMeta({
-  title: "Dimar Hanung",
+  title: "Dimar Hanung | Software Engineer",
   description:
-    "Dimar Hanung is a Frontend Developer with 2 years of experience. He is a self-taught developer who loves to learn new things and share his knowledge with others.",
+    "Dimar Hanung is a Software Engineer at Universitas Terbuka with expertise in frontend development. Building digital experiences with passion.",
   ogDescription:
-    "Dimar Hanung is a Frontend Developer with 2 years of experience. He is a self-taught developer who loves to learn new things and share his knowledge with others.",
+    "Dimar Hanung is a Software Engineer at Universitas Terbuka with expertise in frontend development. Building digital experiences with passion.",
   author: "Dimar Hanung",
   ogImage: "https://i.ibb.co/SfVpQCz/IMG20211117182339.jpg",
   ogImageAlt: "Dimar Hanung",

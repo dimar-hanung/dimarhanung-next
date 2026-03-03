@@ -1,107 +1,219 @@
 <template>
-  <div>
-    <div
-      class="py-10 px-6 md:px-10 min-h-screen bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-900 dark:to-slate-800"
-    >
-      <h1
-        class="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-blue-600 via-purple-500 to-rose-500 bg-clip-text text-transparent"
-      >
-        Sertifikat Saya
-      </h1>
-      <p
-        class="text-center text-slate-600 dark:text-slate-300 mb-12 max-w-2xl mx-auto"
-      >
-        Kumpulan sertifikasi profesional yang telah diperoleh sepanjang
-        perjalanan karir di bidang teknologi dan pengembangan perangkat lunak.
-      </p>
+  <div class="min-h-screen relative overflow-hidden">
+    <!-- SVG Filters -->
+    <svg class="absolute w-0 h-0" aria-hidden="true">
+      <defs>
+        <filter id="bg-metal-noise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise"/>
+          <feColorMatrix type="saturate" values="0"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.15"/>
+          </feComponentTransfer>
+        </filter>
+      </defs>
+    </svg>
 
+    <!-- Metal background - Cool silver/gunmetal tones -->
+    <div
+      class="fixed inset-0 -z-10 transition-all duration-500"
+      :style="{
+        background: isDark
+          ? 'linear-gradient(135deg, #1a1d20 0%, #25282b 25%, #2a2d30 50%, #202326 75%, #1a1d20 100%)'
+          : 'linear-gradient(135deg, #d8dce0 0%, #e0e4e8 25%, #e8ecef 50%, #d5d9dd 75%, #d8dce0 100%)'
+      }"
+    >
+      <!-- Brushed horizontal lines -->
       <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
-      >
+        class="absolute inset-0 opacity-30"
+        :style="{
+          background: isDark
+            ? `repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 3px,
+                rgba(255,255,255,0.05) 3px,
+                rgba(255,255,255,0.05) 4px,
+                transparent 4px,
+                transparent 8px
+              )`
+            : `repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 3px,
+                rgba(255,255,255,0.5) 3px,
+                rgba(255,255,255,0.5) 4px,
+                transparent 4px,
+                transparent 8px
+              )`
+        }"
+      />
+      
+      <!-- Secondary fine texture -->
+      <div
+        class="absolute inset-0 opacity-20"
+        :style="{
+          background: isDark
+            ? `repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 1px,
+                rgba(255,255,255,0.03) 1px,
+                rgba(255,255,255,0.03) 2px
+              )`
+            : `repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 1px,
+                rgba(0,0,0,0.03) 1px,
+                rgba(0,0,0,0.03) 2px
+              )`
+        }"
+      />
+
+      <!-- Top shine -->
+      <div
+        class="absolute top-0 left-0 right-0 h-32 pointer-events-none"
+        :style="{
+          background: isDark
+            ? 'linear-gradient(180deg, rgba(100,110,120,0.15) 0%, transparent 100%)'
+            : 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%)'
+        }"
+      />
+
+      <!-- Bottom shadow -->
+      <div
+        class="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+        :style="{
+          background: isDark
+            ? 'linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 100%)'
+            : 'linear-gradient(0deg, rgba(0,0,0,0.1) 0%, transparent 100%)'
+        }"
+      />
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button
+      @click="toggleDarkMode"
+      class="fixed top-6 right-6 z-50 w-14 h-14 rounded-full cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95"
+      :style="{
+        background: isDark
+          ? 'linear-gradient(145deg, #3a3d40 0%, #4a4d50 50%, #3a3d40 100%)'
+          : 'linear-gradient(145deg, #e0e4e8 0%, #f0f2f4 50%, #d8dce0 100%)',
+        boxShadow: isDark
+          ? '0 4px 20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.05)'
+          : '0 4px 20px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8), 0 0 0 1px rgba(0,0,0,0.05)',
+      }"
+    >
+      <!-- Button inner bevel -->
+      <div
+        class="absolute inset-1 rounded-full pointer-events-none"
+        :style="{
+          boxShadow: isDark
+            ? 'inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -1px 2px rgba(0,0,0,0.3)'
+            : 'inset 0 1px 2px rgba(255,255,255,0.9), inset 0 -1px 2px rgba(0,0,0,0.1)',
+        }"
+      />
+      
+      <!-- Icon -->
+      <div class="relative w-full h-full flex items-center justify-center">
+        <Icon
+          v-if="!isDark"
+          name="uil:moon"
+          class="text-2xl transition-all duration-300"
+          :style="{
+            color: '#505560',
+            filter: 'drop-shadow(0 1px 1px rgba(255,255,255,0.5))'
+          }"
+        />
+        <Icon
+          v-else
+          name="uil:sun"
+          class="text-2xl transition-all duration-300"
+          :style="{
+            color: '#d4a853',
+            filter: 'drop-shadow(0 0 8px rgba(212,168,83,0.5))'
+          }"
+        />
+      </div>
+    </button>
+
+    <div class="max-w-7xl mx-auto px-6 py-16 md:py-24">
+      <!-- Header -->
+      <header class="text-center mb-16 md:mb-20">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+          <span 
+            class="bg-clip-text text-transparent transition-all duration-500"
+            :style="{
+              backgroundImage: isDark
+                ? 'linear-gradient(180deg, #c0c5cc 0%, #a0a5ac 50%, #80858c 100%)'
+                : 'linear-gradient(180deg, #505050 0%, #404040 50%, #202020 100%)',
+              filter: isDark 
+                ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' 
+                : 'drop-shadow(0 1px 2px rgba(255,255,255,0.5))'
+            }"
+          >
+            Sertifikat Profesional
+          </span>
+        </h1>
+        <p
+          class="text-lg max-w-2xl mx-auto leading-relaxed transition-colors duration-500"
+          :style="{ 
+            color: isDark ? '#9095a0' : '#505050',
+            textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.5)' : '0 1px 0 rgba(255,255,255,0.5)'
+          }"
+        >
+          Dokumentasi sertifikasi dan pencapaian dalam perjalanan karir di
+          bidang teknologi dan pengembangan software.
+        </p>
+      </header>
+
+      <!-- Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <ClientOnly>
-          <div
+          <Certificate3DCard
             v-for="(item, index) in certificates"
             :key="index"
-            class="w-full"
-          >
-            <TransformCardContainer>
-              <TransformCardBody
-                class="w-full h-auto rounded-xl border border-slate-200/50 dark:border-slate-700/50 overflow-hidden bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-lg hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/5 transition-all duration-300"
-              >
-                <!-- Gambar sertifikat dengan efek hover -->
-                <TransformCardItem
-                  :translate-z="40"
-                  class="relative w-full overflow-hidden"
-                >
-                  <div
-                    class="relative group w-full aspect-[4/3] overflow-hidden"
-                  >
-                    <nuxt-img
-                      :src="item.imageUrl"
-                      class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
-                      format="webp"
-                      :quality="80"
-                    />
-                    <div
-                      class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    ></div>
-                    <div
-                      class="absolute bottom-0 left-0 right-0 p-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
-                    >
-                      <a
-                        v-if="item.cradential"
-                        :href="item.cradential"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors duration-200"
-                      >
-                        <span>Lihat Sertifikat</span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="w-4 h-4"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <path
-                            d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                          ></path>
-                          <polyline points="15 3 21 3 21 9"></polyline>
-                          <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </TransformCardItem>
+            :image-url="item.imageUrl"
+            :title="item.title"
+            :desc="item.desc"
+            :date="item.date"
+            :cradential="item.cradential"
+          />
 
-                <!-- Konten sertifikat -->
-                <TransformCardItem :translate-z="50" class="p-5 w-full">
-                  <h3
-                    class="text-xl font-bold text-slate-800 dark:text-white mb-2"
-                  >
-                    {{ item.title }}
-                  </h3>
-                  <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">
-                    {{
-                      new Date(item.date).toLocaleDateString("id-ID", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })
-                    }}
-                  </p>
-                  <p
-                    class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3"
-                  >
-                    {{ item.desc }}
-                  </p>
-                </TransformCardItem>
-              </TransformCardBody>
-            </TransformCardContainer>
-          </div>
+          <template #fallback>
+            <div
+              v-for="n in 6"
+              :key="n"
+              class="rounded-xl overflow-hidden shadow-xl"
+              :style="{
+                background: isDark
+                  ? 'linear-gradient(170deg, #3a3d40 0%, #2a2d30 50%, #35383b 100%)'
+                  : 'linear-gradient(170deg, #e0e4e8 0%, #d0d4d8 50%, #e0e4e8 100%)',
+                boxShadow: isDark
+                  ? '0 10px 30px -10px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05)'
+                  : '0 10px 30px -10px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.05)'
+              }"
+            >
+              <div
+                class="aspect-[4/3] animate-pulse"
+                :class="isDark ? 'bg-slate-700/50' : 'bg-slate-300/50'"
+              />
+              <div class="p-6 space-y-3">
+                <div
+                  class="h-3 rounded animate-pulse w-1/3"
+                  :class="isDark ? 'bg-slate-600' : 'bg-slate-400'"
+                />
+                <div
+                  class="h-5 rounded animate-pulse"
+                  :class="isDark ? 'bg-slate-600' : 'bg-slate-400'"
+                />
+                <div
+                  class="h-4 rounded animate-pulse"
+                  :class="isDark ? 'bg-slate-600' : 'bg-slate-400'"
+                />
+              </div>
+            </div>
+          </template>
         </ClientOnly>
       </div>
     </div>
@@ -109,17 +221,29 @@
 </template>
 
 <script setup lang="ts">
+import { reactive, ref, onMounted } from "vue";
 import certicatesData from "./certificates.json";
+import Certificate3DCard from "./components/Certificate3DCard.vue";
 
 const certificates = reactive(certicatesData);
-</script>
+const isDark = ref(false);
+const colorMode = useColorMode();
 
-<style scoped>
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>
+onMounted(() => {
+  isDark.value = document.documentElement.classList.contains('dark');
+  const observer = new MutationObserver(() => {
+    isDark.value = document.documentElement.classList.contains('dark');
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+});
+
+const toggleDarkMode = () => {
+  if (colorMode.value === 'light') {
+    colorMode.value = 'dark';
+    colorMode.preference = 'dark';
+  } else {
+    colorMode.value = 'light';
+    colorMode.preference = 'light';
+  }
+};
+</script>
