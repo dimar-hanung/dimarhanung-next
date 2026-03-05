@@ -61,15 +61,25 @@
             <div class="flex items-center gap-2">
 <span class="text-xs font-semibold text-muted-600 dark:text-muted-300 uppercase tracking-wider">Editor</span>
             </div>
-            <button
-              @click="loadSample"
-              class="text-xs font-medium text-muted-600 dark:text-muted-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1.5"
-            >
-              <Icon name="mdi:file-document-plus-outline" class="text-base" />
-              Load Sample
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                @click="jumpToBottomEditor"
+                class="text-xs font-medium text-muted-600 dark:text-muted-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1.5"
+              >
+                <Icon name="mdi:arrow-down" class="text-base" />
+                Jump to Bottom
+              </button>
+              <button
+                @click="loadSample"
+                class="text-xs font-medium text-muted-600 dark:text-muted-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1.5"
+              >
+                <Icon name="mdi:file-document-plus-outline" class="text-base" />
+                Load Sample
+              </button>
+            </div>
           </div>
           <textarea
+            ref="editorTextarea"
             v-model="markdownInput"
             placeholder="Write your markdown here...
 
@@ -95,20 +105,30 @@ const hello = 'world';
             <div class="flex items-center gap-2">
 <span class="text-xs font-semibold text-muted-600 dark:text-muted-300 uppercase tracking-wider">Preview</span>
             </div>
-            <button
-              @click="copyHtml"
-              :disabled="!markdownInput"
-              class="text-xs font-medium text-muted-500 hover:text-primary-500 disabled:opacity-50 disabled:hover:text-muted-500 transition-colors flex items-center gap-1.5"
-            >
+            <div class="flex items-center gap-2">
+              <button
+                @click="jumpToBottomPreview"
+                class="text-xs font-medium text-muted-600 dark:text-muted-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1.5"
+              >
+                <Icon name="mdi:arrow-down" class="text-base" />
+                Jump to Bottom
+              </button>
+              <button
+                @click="copyHtml"
+                :disabled="!markdownInput"
+                class="text-xs font-medium text-muted-500 hover:text-primary-500 disabled:opacity-50 disabled:hover:text-muted-500 transition-colors flex items-center gap-1.5"
+              >
               <Icon
                 :name="copiedHtml ? 'mdi:check' : 'mdi:content-copy'"
                 class="text-base"
               />
               {{ copiedHtml ? "Copied!" : "Copy HTML" }}
             </button>
+            </div>
           </div>
           <div
-            class="flex-1 min-h-[70vh] p-8 bg-white dark:bg-muted-900 border border-t-0 border-muted-200 dark:border-muted-800 rounded-b-2-xl overflow-auto prose-content"
+            ref="splitPreview"
+            class="flex-1 min-h-[70vh] p-8 bg-white dark:bg-muted-900 border border-t-0 border-muted-200 dark:border-muted-800 rounded-b-2-xl prose-content"
             :key="colorMode.value"
           >
             <div v-html="renderedHtml" v-if="markdownInput"></div>
@@ -148,6 +168,7 @@ const hello = 'world';
           </button>
         </div>
         <textarea
+          ref="editorOnlyTextarea"
           v-model="markdownInput"
           placeholder="Write your markdown here..."
           class="w-full min-h-[80vh] p-6 bg-white dark:bg-muted-900 border border-t-0 border-muted-300 dark:border-muted-700 rounded-b-2xl resize-none text-base font-mono leading-relaxed text-muted-700 dark:text-muted-300 placeholder:text-muted-400 dark:placeholder:text-muted-600 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 transition-all"
@@ -161,6 +182,13 @@ const hello = 'world';
         >
           <span class="text-xs font-semibold text-muted-600 dark:text-muted-300 uppercase tracking-wider">Preview</span>
           <div class="flex items-center gap-4">
+            <button
+              @click="jumpToBottomPreview"
+              class="text-xs font-medium text-muted-600 dark:text-muted-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1.5"
+            >
+              <Icon name="mdi:arrow-down" class="text-base" />
+              Jump to Bottom
+            </button>
             <button
               @click="downloadHtml"
               :disabled="!markdownInput"
@@ -183,7 +211,8 @@ const hello = 'world';
           </div>
         </div>
         <div
-          class="min-h-[80vh] p-10 bg-white dark:bg-muted-900 border border-t-0 border-muted-300 dark:border-muted-700 rounded-b-2xl overflow-auto prose-content"
+          ref="previewOnlyContainer"
+          class="min-h-[80vh] p-10 bg-white dark:bg-muted-900 border border-t-0 border-muted-300 dark:border-muted-700 rounded-b-2xl prose-content"
           :key="colorMode.value"
         >
           <div v-html="renderedHtml" v-if="markdownInput"></div>
@@ -242,6 +271,12 @@ const colorMode = useColorMode();
 const activeView = ref<"split" | "editor" | "preview">("split");
 const markdownInput = ref("");
 const copiedHtml = ref(false);
+
+// Refs for jump to bottom
+const editorTextarea = ref<HTMLTextAreaElement | null>(null);
+const editorOnlyTextarea = ref<HTMLTextAreaElement | null>(null);
+const splitPreview = ref<HTMLElement | null>(null);
+const previewOnlyContainer = ref<HTMLElement | null>(null);
 
 const viewModes = [
   { value: "split" as const, label: "Split", icon: "mdi:view-split-vertical" },
@@ -398,6 +433,34 @@ function downloadMarkdown() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+async function jumpToBottomEditor() {
+  await nextTick();
+  // Find the currently visible textarea based on active view
+  let textarea: HTMLTextAreaElement | null = null;
+  
+  if (activeView.value === 'editor' && editorOnlyTextarea.value) {
+    textarea = editorOnlyTextarea.value;
+  } else if (activeView.value === 'split' && editorTextarea.value) {
+    textarea = editorTextarea.value;
+  }
+  
+  if (textarea) {
+    textarea.scrollTop = textarea.scrollHeight;
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    textarea.focus();
+  }
+}
+
+async function jumpToBottomPreview() {
+  await nextTick();
+  
+  // Scroll the entire page to the bottom
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'instant'
+  });
 }
 
 useHead({
