@@ -23,14 +23,14 @@
       </div>
     </div>
     <hr class="border-muted-200 dark:border-muted-700" />
-    <div>
+    <div class="relative z-50">
       <div class="flex items-center p-4 bg-muted-200 dark:bg-muted-800">
         <div class="ml-auto flex items-center justify-end gap-2">
           <button
             v-for="color in mutedPresets"
             :key="color.name"
             type="button"
-            class="block h-6 w-6 rounded-full"
+            class="block h-6 w-6 rounded-full relative z-10"
             :class="[
               color.class,
               currentMuted === color.name
