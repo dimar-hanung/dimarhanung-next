@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-muted-50 dark:bg-muted-950 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="min-h-screen bg-muted-50 dark:bg-muted-950 py-12 px-4 sm:px-6 lg:px-8 print:p-0 print:bg-white">
     <!-- Header -->
-    <div class="max-w-[1600px] mx-auto mb-8">
+    <div class="max-w-[1600px] mx-auto mb-8 print:hidden">
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-4">
           <div
@@ -25,7 +25,7 @@
     </div>
 
     <!-- View Mode Tabs -->
-    <div class="max-w-[1600px] mx-auto mb-6">
+    <div class="max-w-[1600px] mx-auto mb-6 print:hidden">
       <div
         class="inline-flex rounded-2xl bg-muted-200 dark:bg-muted-800 p-1.5 gap-1"
       >
@@ -51,10 +51,10 @@
       <!-- Split View / Editor Only / Preview Only -->
       <div
         v-if="activeView === 'split'"
-        class="grid grid-cols-1 xl:grid-cols-2 gap-6"
+        class="grid grid-cols-1 xl:grid-cols-2 gap-6 print:block"
       >
         <!-- Editor Panel -->
-        <div class="flex flex-col">
+        <div class="flex flex-col print:hidden">
           <div
             class="flex items-center justify-between px-5 py-3.5 bg-muted-200 dark:bg-muted-800 rounded-t-2xl border border-b-0 border-muted-300 dark:border-muted-700"
           >
@@ -98,9 +98,9 @@ const hello = 'world';
         </div>
 
         <!-- Preview Panel -->
-        <div class="flex flex-col">
+        <div class="flex flex-col print:w-full">
           <div
-            class="flex items-center justify-between px-5 py-3.5 bg-muted-200 dark:bg-muted-800 rounded-t-2xl border border-b-0 border-muted-300 dark:border-muted-700"
+            class="flex items-center justify-between px-5 py-3.5 bg-muted-200 dark:bg-muted-800 rounded-t-2xl border border-b-0 border-muted-300 dark:border-muted-700 print:hidden"
           >
             <div class="flex items-center gap-2">
 <span class="text-xs font-semibold text-muted-600 dark:text-muted-300 uppercase tracking-wider">Preview</span>
@@ -124,11 +124,19 @@ const hello = 'world';
               />
               {{ copiedHtml ? "Copied!" : "Copy HTML" }}
             </button>
+              <button
+                @click="exportPdf"
+                :disabled="!markdownInput"
+                class="text-xs font-medium text-muted-500 hover:text-primary-500 disabled:opacity-50 disabled:hover:text-muted-500 transition-colors flex items-center gap-1.5"
+              >
+                <Icon name="mdi:file-pdf-box" class="text-base" />
+                Export PDF
+              </button>
             </div>
           </div>
           <div
             ref="splitPreview"
-            class="flex-1 min-h-[70vh] p-8 bg-white dark:bg-muted-900 border border-t-0 border-muted-200 dark:border-muted-800 rounded-b-2-xl prose-content"
+            class="flex-1 min-h-[70vh] p-8 bg-white dark:bg-muted-900 border border-t-0 border-muted-200 dark:border-muted-800 rounded-b-2-xl prose-content print:min-h-0 print:p-0 print:border-0 print:rounded-none print:bg-white print:text-black"
             :key="colorMode.value"
           >
             <div v-html="renderedHtml" v-if="markdownInput"></div>
@@ -154,7 +162,7 @@ const hello = 'world';
       </div>
 
       <!-- Editor Only -->
-      <div v-else-if="activeView === 'editor'" >
+      <div v-else-if="activeView === 'editor'" class="print:hidden">
         <div
           class="flex items-center justify-between px-5 py-3.5 bg-muted-200 dark:bg-muted-800 rounded-t-2xl border border-b-0 border-muted-300 dark:border-muted-700"
         >
@@ -176,9 +184,9 @@ const hello = 'world';
       </div>
 
       <!-- Preview Only -->
-      <div v-else >
+      <div v-else class="print:w-full">
         <div
-          class="flex items-center justify-between px-5 py-3.5 bg-muted-200 dark:bg-muted-800 rounded-t-2xl border border-b-0 border-muted-300 dark:border-muted-700"
+          class="flex items-center justify-between px-5 py-3.5 bg-muted-200 dark:bg-muted-800 rounded-t-2xl border border-b-0 border-muted-300 dark:border-muted-700 print:hidden"
         >
           <span class="text-xs font-semibold text-muted-600 dark:text-muted-300 uppercase tracking-wider">Preview</span>
           <div class="flex items-center gap-4">
@@ -208,11 +216,19 @@ const hello = 'world';
               />
               {{ copiedHtml ? "Copied!" : "Copy HTML" }}
             </button>
+            <button
+              @click="exportPdf"
+              :disabled="!markdownInput"
+              class="text-xs font-medium text-muted-600 dark:text-muted-300 hover:text-primary-600 dark:hover:text-primary-400 disabled:opacity-50 disabled:hover:text-muted-600 dark:disabled:hover:text-muted-300 transition-colors flex items-center gap-1.5"
+            >
+              <Icon name="mdi:file-pdf-box" class="text-base" />
+              Export PDF
+            </button>
           </div>
         </div>
         <div
           ref="previewOnlyContainer"
-          class="min-h-[80vh] p-10 bg-white dark:bg-muted-900 border border-t-0 border-muted-300 dark:border-muted-700 rounded-b-2xl prose-content"
+          class="min-h-[80vh] p-10 bg-white dark:bg-muted-900 border border-t-0 border-muted-300 dark:border-muted-700 rounded-b-2xl prose-content print:min-h-0 print:p-0 print:border-0 print:rounded-none print:bg-white print:text-black"
           :key="colorMode.value"
         >
           <div v-html="renderedHtml" v-if="markdownInput"></div>
@@ -239,7 +255,7 @@ const hello = 'world';
       <!-- Bottom Actions -->
       <div
         v-if="markdownInput"
-        class="flex items-center gap-4 mt-6 flex-wrap"
+        class="flex items-center gap-4 mt-6 flex-wrap print:hidden"
       >
         <button
           @click="clearEditor"
@@ -277,6 +293,9 @@ const editorTextarea = ref<HTMLTextAreaElement | null>(null);
 const editorOnlyTextarea = ref<HTMLTextAreaElement | null>(null);
 const splitPreview = ref<HTMLElement | null>(null);
 const previewOnlyContainer = ref<HTMLElement | null>(null);
+
+// Store previous view mode before printing
+const previousView = ref<"split" | "editor" | "preview" | null>(null);
 
 const viewModes = [
   { value: "split" as const, label: "Split", icon: "mdi:view-split-vertical" },
@@ -433,6 +452,30 @@ function downloadMarkdown() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+async function exportPdf() {
+  // Store current view and switch to preview-only for clean PDF output
+  if (activeView.value !== 'preview') {
+    previousView.value = activeView.value;
+    activeView.value = 'preview';
+    await nextTick();
+  }
+
+  // Small delay to allow DOM to settle before opening print dialog
+  setTimeout(() => {
+    window.print();
+  }, 150);
+}
+
+// Restore view mode after print dialog closes
+if (process.client) {
+  window.addEventListener('afterprint', () => {
+    if (previousView.value) {
+      activeView.value = previousView.value;
+      previousView.value = null;
+    }
+  });
 }
 
 async function jumpToBottomEditor() {
@@ -602,5 +645,83 @@ useHead({
 }
 :deep(.dark) :deep(.prose-content) th {
   background-color: var(--color-muted-800) !important;
+}
+
+/* Print-specific styles for PDF export */
+@media print {
+  /* Prevent orphaned headings */
+  :deep(.prose-content) h1,
+  :deep(.prose-content) h2,
+  :deep(.prose-content) h3 {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  /* Keep code blocks together on one page */
+  :deep(.prose-content) pre {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Keep table rows together */
+  :deep(.prose-content) tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Ensure blockquotes stay together */
+  :deep(.prose-content) blockquote {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Print-optimized colors - force light mode for readability */
+  :deep(.prose-content) h1,
+  :deep(.prose-content) h2,
+  :deep(.prose-content) h3,
+  :deep(.prose-content) h4,
+  :deep(.prose-content) h5,
+  :deep(.prose-content) h6 {
+    color: #1a1a1a !important;
+  }
+
+  :deep(.prose-content) p,
+  :deep(.prose-content) ul,
+  :deep(.prose-content) ol,
+  :deep(.prose-content) li {
+    color: #333 !important;
+  }
+
+  :deep(.prose-content) code {
+    background-color: #f4f4f4 !important;
+    color: #1a1a1a !important;
+  }
+
+  :deep(.prose-content) pre {
+    background-color: #f8f8f8 !important;
+    border: 1px solid #e5e5e5 !important;
+  }
+
+  :deep(.prose-content) blockquote {
+    background-color: #f9f9f9 !important;
+    border-left-color: #ccc !important;
+    color: #555 !important;
+  }
+
+  :deep(.prose-content) th {
+    background-color: #f4f4f4 !important;
+  }
+
+  :deep(.prose-content) th,
+  :deep(.prose-content) td {
+    border-color: #ddd !important;
+  }
+
+  /* Ensure links show URL for printed documents */
+  :deep(.prose-content) a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
 }
 </style>
