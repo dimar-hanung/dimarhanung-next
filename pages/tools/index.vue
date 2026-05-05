@@ -211,7 +211,15 @@ const categories: Category[] = [
     name: 'Converters',
     icon: 'mdi:swap-horizontal',
     tools: [
-      // Future tools can be added here
+      {
+        name: 'JSON to CSV',
+        path: '/tools/json-to-csv',
+        description: 'Convert JSON data to CSV format with flattening, custom delimiters, and preview',
+        icon: 'mdi:code-json',
+        iconBg: 'bg-cyan-500/10 dark:bg-cyan-400/10',
+        iconColor: 'text-cyan-500',
+        tags: ['json', 'csv', 'convert'],
+      },
     ],
   },
 ];
