@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative flex items-center justify-center p-10 perspective-1000"
+    class="relative flex items-center justify-center md:p-10 perspective-1000"
     ref="wrapper"
     @pointerenter="onPointerEnter"
     @pointerleave="onPointerLeave"
