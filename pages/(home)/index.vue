@@ -97,7 +97,10 @@
               <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <NuxtLink to="/certificates/gallery" class="portfolio-link">
                   <t-card-cool class="h-full cursor-pointer">
-                    <div class="text-sm text-muted-500 dark:text-muted-400">📜 Achievements</div>
+                    <div class="flex items-center gap-1 text-sm text-muted-500 dark:text-muted-400">
+                      <Icon name="mdi:certificate-outline" class="text-base" />
+                      Achievements
+                    </div>
                     <div class="flex w-full justify-between place-items-center mt-2">
                       <div class="flex gap-2 place-items-center font-semibold">
                         Certificate
@@ -109,18 +112,29 @@
                     </div>
                   </t-card-cool>
                 </NuxtLink>
-                <t-card-cool class="h-full">
-                  <div class="text-sm text-muted-500 dark:text-muted-400">💼 Work & Personal</div>
-                  <div class="flex w-full justify-between place-items-center mt-2">
-                    <div class="flex gap-2 place-items-center font-semibold">
-                      Project
+                <NuxtLink to="/project" class="portfolio-link">
+                  <t-card-cool class="h-full cursor-pointer">
+                    <div class="flex items-center gap-1 text-sm text-muted-500 dark:text-muted-400">
+                      <Icon name="mdi:briefcase-outline" class="text-base" />
+                      Work & Personal
                     </div>
-                    <span class="text-2xl font-bold">15+</span>
-                  </div>
-                </t-card-cool>
+                    <div class="flex w-full justify-between place-items-center mt-2">
+                      <div class="flex gap-2 place-items-center font-semibold">
+                        Project
+                      </div>
+                      <div class="flex place-items-center gap-2">
+                        <span class="text-2xl font-bold">15+</span>
+                        <Icon class="text-2xl portfolio-icon transition-transform" name="mdi:arrow-right" />
+                      </div>
+                    </div>
+                  </t-card-cool>
+                </NuxtLink>
                 <NuxtLink to="/challenges/frontend-mentor" class="portfolio-link">
                   <t-card-cool class="h-full cursor-pointer">
-                    <div class="text-sm text-muted-500 dark:text-muted-400">🎯 UI Challenges</div>
+                    <div class="flex items-center gap-1 text-sm text-muted-500 dark:text-muted-400">
+                      <Icon name="mdi:target" class="text-base" />
+                      UI Challenges
+                    </div>
                     <div class="flex w-full justify-between place-items-center mt-2">
                       <div class="flex gap-2 place-items-center font-semibold">
                         Front-End Mentor
@@ -133,7 +147,10 @@
                   </t-card-cool>
                 </NuxtLink>
                 <t-card-cool class="h-full">
-                  <div class="text-sm text-muted-500 dark:text-muted-400">🧪 Experiments</div>
+                  <div class="flex items-center gap-1 text-sm text-muted-500 dark:text-muted-400">
+                    <Icon name="mdi:flask-outline" class="text-base" />
+                    Experiments
+                  </div>
                   <div class="flex w-full justify-between place-items-center mt-2">
                     <div class="flex gap-2 place-items-center font-semibold">
                       Fun Stuff
