@@ -174,6 +174,15 @@ const categories: Category[] = [
         tags: ['csv', 'split', 'data'],
       },
       {
+        name: 'CSV Even Splitter',
+        path: '/tools/csv-even-splitter',
+        description: 'Split CSV files into a target number of balanced parts',
+        icon: 'mdi:file-tree-outline',
+        iconBg: 'bg-teal-500/10 dark:bg-teal-400/10',
+        iconColor: 'text-teal-500',
+        tags: ['csv', 'split', 'balanced'],
+      },
+      {
         name: 'Markdown Render',
         path: '/tools/markdown-render',
         description: 'Write or paste Markdown and see it rendered beautifully in real-time',
@@ -211,6 +220,15 @@ const categories: Category[] = [
     name: 'Converters',
     icon: 'mdi:swap-horizontal',
     tools: [
+      {
+        name: 'CSV Separator Changer',
+        path: '/tools/csv-separator-changer',
+        description: 'Change CSV separators with delimiter detection, preview, and export options',
+        icon: 'mdi:swap-horizontal-circle-outline',
+        iconBg: 'bg-emerald-500/10 dark:bg-emerald-400/10',
+        iconColor: 'text-emerald-500',
+        tags: ['csv', 'delimiter', 'separator'],
+      },
       {
         name: 'JSON to CSV',
         path: '/tools/json-to-csv',
