@@ -36,6 +36,12 @@
             activeClass="text-primary-500"
             >Blog</NuxtLink
           >
+          <NuxtLink
+            to="/tools"
+            class="font-bold transition-colors hover:text-primary-500"
+            activeClass="text-primary-500"
+            >Tools</NuxtLink
+          >
         </div>
       </div>
 
@@ -133,5 +139,6 @@ const isMobileMenuOpen = ref(false);
 const navLinks = [
   { name: "Projects", path: "/project" },
   { name: "Blog", path: "/blog" },
+  { name: "Tools", path: "/tools" },
 ];
 </script>
