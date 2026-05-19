@@ -1,6 +1,8 @@
 <template>
   <div :class="[color.value]">
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 <script setup>
