@@ -68,10 +68,18 @@ export function useToolsRegistry() {
       ],
     },
     {
-      name: 'Text & Content',
-      icon: 'mdi:text-box',
+      name: 'Calculators',
+      icon: 'mdi:calculator',
       tools: [
-        // Future tools can be added here
+        {
+          name: 'Daily Progress Calculator',
+          path: '/tools/daily-progress-calculator',
+          description: 'Hitung berapa persen progress yang harus dicapai setiap hari untuk mencapai target',
+          icon: 'mdi:chart-timeline-variant',
+          iconBg: 'bg-orange-500/10 dark:bg-orange-400/10',
+          iconColor: 'text-orange-500',
+          tags: ['progress', 'calculator', 'planning'],
+        },
       ],
     },
     {
