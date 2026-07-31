@@ -104,6 +104,15 @@ export function useToolsRegistry() {
           iconColor: 'text-cyan-500',
           tags: ['json', 'csv', 'convert'],
         },
+        {
+          name: 'Markdown to Docx',
+          path: '/tools/markdown-to-docx',
+          description: 'Convert Markdown into a downloadable Microsoft Word .docx with headings, lists, tables, and code',
+          icon: 'mdi:file-word-box',
+          iconBg: 'bg-cyan-500/10 dark:bg-cyan-400/10',
+          iconColor: 'text-cyan-500',
+          tags: ['markdown', 'docx', 'word', 'convert'],
+        },
       ],
     },
   ];
