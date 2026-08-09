@@ -168,6 +168,33 @@
 
     <!-- Actions -->
     <div class="max-w-5xl mx-auto mb-6">
+      <div class="mb-4">
+        <span class="text-xs font-semibold text-muted-600 dark:text-muted-300 uppercase tracking-wider">
+          Template Style
+        </span>
+        <div class="mt-2 inline-flex rounded-xl bg-muted-100 dark:bg-muted-900 p-1 gap-1">
+          <button
+            v-for="option in templateOptions"
+            :key="option.value"
+            @click="selectedTemplate = option.value"
+            :class="[
+              'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+              selectedTemplate === option.value
+                ? 'bg-white dark:bg-muted-800 text-primary-600 dark:text-primary-400 shadow-sm'
+                : 'text-muted-500 hover:text-muted-700 dark:hover:text-muted-300',
+            ]"
+          >
+            {{ option.label }}
+          </button>
+        </div>
+        <p
+          v-if="activeTemplateHelper"
+          class="mt-2 text-xs text-muted-500 dark:text-muted-400"
+        >
+          {{ activeTemplateHelper }}
+        </p>
+      </div>
+
       <div class="flex flex-wrap items-center gap-3">
         <input
           v-model="filename"
@@ -235,6 +262,7 @@
 
 <script setup lang="ts">
 import { markdownToDocxBlob } from '~/utils/markdown-to-docx';
+import { DOCX_TEMPLATE_OPTIONS, type DocxTemplateId } from '~/utils/markdown-to-docx-templates';
 
 const activeMode = ref<'paste' | 'upload'>('paste');
 const isDragging = ref(false);
@@ -246,6 +274,13 @@ const uploadedFile = ref<File | null>(null);
 const parseError = ref('');
 const convertError = ref('');
 const filename = ref('document');
+const selectedTemplate = ref<DocxTemplateId>('default');
+
+const templateOptions = DOCX_TEMPLATE_OPTIONS;
+
+const activeTemplateHelper = computed(() => {
+  return templateOptions.find((option) => option.value === selectedTemplate.value)?.helperText ?? '';
+});
 
 const modes = [
   { value: 'paste' as const, label: 'Paste Markdown', icon: 'mdi:content-paste' },
@@ -379,7 +414,7 @@ async function convertAndDownload() {
   convertError.value = '';
   isConverting.value = true;
   try {
-    const blob = await markdownToDocxBlob(markdownInput.value);
+    const blob = await markdownToDocxBlob(markdownInput.value, selectedTemplate.value);
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
