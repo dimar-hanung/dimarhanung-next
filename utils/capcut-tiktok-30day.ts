@@ -1,9 +1,13 @@
+import { DAILY_EXTRA, type CapcutVideoScript } from './capcut-tiktok-30day-daily'
+
 export type CapcutPhase = 0 | 1 | 2 | 3 | 4 | 5
 
 export interface CapcutRef {
   label: string
   href: string
 }
+
+export type { CapcutVideoScript } from './capcut-tiktok-30day-daily'
 
 export interface CapcutDay {
   day: number
@@ -14,6 +18,8 @@ export interface CapcutDay {
   tasks: string[]
   tip: string
   refs: CapcutRef[]
+  selfCheck: string[]
+  videoScript: CapcutVideoScript
 }
 
 export interface CapcutCompetency {
@@ -137,7 +143,8 @@ export const COMPETENCY_ITEMS: CapcutCompetency[] = [
   },
 ]
 
-export const CAPCUT_DAYS: CapcutDay[] = [
+export const CAPCUT_DAYS: CapcutDay[] = (
+  [
   {
     day: 1,
     phase: 0,
@@ -558,10 +565,22 @@ export const CAPCUT_DAYS: CapcutDay[] = [
     tip: 'Lulus = cepat dengan AI, tapi hook, proofread, dan export check tetap kuat.',
     refs: [CORE_REFS.learningPath, CORE_REFS.exportSettings],
   },
-]
+] as const satisfies readonly Omit<CapcutDay, 'selfCheck' | 'videoScript'>[]
+).map((day) => ({
+  ...day,
+  ...DAILY_EXTRA[day.day],
+}))
 
 export function taskKey(day: number, taskIndex: number) {
   return `d${day}-t${taskIndex}`
+}
+
+export function selfCheckKey(day: number, checkIndex: number) {
+  return `d${day}-sc${checkIndex}`
+}
+
+export function daySelfCheckKeys(day: CapcutDay) {
+  return day.selfCheck.map((_, i) => selfCheckKey(day.day, i))
 }
 
 export function dayTaskKeys(day: CapcutDay) {

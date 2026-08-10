@@ -62,7 +62,7 @@
             <span class="block text-[var(--cs-accent)]">AI assist, skill lanjutan</span>
           </h1>
           <p class="mt-5 max-w-xl cs-body text-lg leading-relaxed text-[var(--cs-muted)]">
-            AI untuk first pass. Kamu fokus hook, pacing, proofread, dan motion. Centang latihan tiap hari.
+            AI untuk first pass. Kamu fokus hook, pacing, proofread, dan motion. Tiap hari ada ujian mandiri dan script video.
           </p>
           <div class="mt-7 flex flex-wrap gap-3">
             <button
@@ -276,14 +276,14 @@
                 <input
                   type="checkbox"
                   class="cs-check mt-1"
-                  :checked="!!stored.tasks[taskKey(selected.day, index)]"
-                  :aria-checked="!!stored.tasks[taskKey(selected.day, index)]"
+                  :checked="!!stored.tasks?.[taskKey(selected.day, index)]"
+                  :aria-checked="!!stored.tasks?.[taskKey(selected.day, index)]"
                   @change="toggleTask(selected.day, index)"
                 />
                 <span
                   class="cs-body text-base leading-relaxed"
                   :class="
-                    stored.tasks[taskKey(selected.day, index)]
+                    stored.tasks?.[taskKey(selected.day, index)]
                       ? 'text-[var(--cs-muted)] line-through decoration-[var(--cs-line)]'
                       : 'text-[var(--cs-ink)]'
                   "
@@ -294,6 +294,103 @@
             </li>
           </ul>
         </fieldset>
+
+        <!-- Daily self-check -->
+        <fieldset class="border-t border-[var(--cs-line)] px-4 py-2 sm:px-6">
+          <legend class="mb-1 block px-0 py-3 cs-body text-base font-semibold text-[var(--cs-ink)]">
+            Ujian mandiri hari ini
+          </legend>
+          <p class="mb-2 cs-body text-base text-[var(--cs-muted)]">
+            Centang kalau sudah bisa tanpa buka tutorial.
+          </p>
+          <ul class="divide-y divide-[var(--cs-line)]">
+            <li
+              v-for="(check, index) in selected.selfCheck"
+              :key="selfCheckKey(selected.day, index)"
+            >
+              <label
+                class="flex cursor-pointer items-start gap-3 py-4 transition-colors duration-150 ease-out hover:bg-white/[0.02]"
+              >
+                <input
+                  type="checkbox"
+                  class="cs-check mt-1"
+                  :checked="!!stored.selfCheck?.[selfCheckKey(selected.day, index)]"
+                  @change="toggleSelfCheck(selected.day, index)"
+                />
+                <span
+                  class="cs-body text-base leading-relaxed"
+                  :class="
+                    stored.selfCheck?.[selfCheckKey(selected.day, index)]
+                      ? 'text-[var(--cs-muted)] line-through decoration-[var(--cs-line)]'
+                      : 'text-[var(--cs-ink)]'
+                  "
+                >
+                  {{ check }}
+                </span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <!-- Daily video script -->
+        <div class="border-t border-[var(--cs-line)] px-4 py-5 sm:px-6">
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p class="cs-body text-base font-semibold text-[var(--cs-ink)]">
+                Script video harian
+              </p>
+              <p class="mt-1 cs-body text-base text-[var(--cs-muted)]">
+                Rekam apa yang dipelajari hari ini. Target 25-45 detik.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="rounded-[var(--cs-radius-md)] border border-[var(--cs-line)] px-3 py-2 text-base text-[var(--cs-muted)] transition-[color,border-color] duration-150 ease-out hover:border-[var(--cs-accent)]/40 hover:text-[var(--cs-ink)]"
+              @click="copyVideoScript"
+            >
+              {{ scriptCopied ? 'Tersalin' : 'Salin script' }}
+            </button>
+          </div>
+
+          <div class="space-y-4 rounded-[var(--cs-radius-md)] border border-[var(--cs-line)] bg-[var(--cs-bg)]/50 p-4">
+            <div>
+              <p class="cs-body text-base text-[var(--cs-accent)]">Hook (0-3 dtk)</p>
+              <p class="mt-1 cs-body text-base leading-relaxed text-[var(--cs-ink)]">
+                {{ selected.videoScript.hook }}
+              </p>
+            </div>
+            <div>
+              <p class="cs-body text-base text-[var(--cs-muted)]">Isi</p>
+              <ul class="mt-2 space-y-2">
+                <li
+                  v-for="(line, index) in selected.videoScript.body"
+                  :key="index"
+                  class="cs-body text-base leading-relaxed text-[var(--cs-ink)]"
+                >
+                  {{ line }}
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p class="cs-body text-base text-[var(--cs-muted)]">Penutup</p>
+              <p class="mt-1 cs-body text-base leading-relaxed text-[var(--cs-ink)]">
+                {{ selected.videoScript.cta }}
+              </p>
+            </div>
+            <div v-if="selected.videoScript.onScreen?.length">
+              <p class="cs-body text-base text-[var(--cs-muted)]">Tampilkan di layar</p>
+              <ul class="mt-2 space-y-1">
+                <li
+                  v-for="(cue, index) in selected.videoScript.onScreen"
+                  :key="index"
+                  class="cs-body text-base text-[var(--cs-muted)]"
+                >
+                  · {{ cue }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
         <div
           v-if="selected.refs.length"
@@ -328,10 +425,10 @@
             id="kompetensi-heading"
             class="cs-display text-2xl tracking-tight text-[var(--cs-ink)]"
           >
-            Ujian mandiri
+            Ujian mandiri akhir (hari 30)
           </h2>
           <p class="mt-2 cs-body text-base text-[var(--cs-muted)]">
-            Untuk hari 30. Centang yang sudah bisa dengan AI assist + proofread manual.
+            Centang yang sudah bisa dengan AI assist + proofread manual.
             {{ competencyDoneCount }}/{{ COMPETENCY_ITEMS.length }} siap.
           </p>
         </div>
@@ -345,13 +442,13 @@
                 <input
                   type="checkbox"
                   class="cs-check mt-1"
-                  :checked="!!stored.competency[item.id]"
+                  :checked="!!stored.competency?.[item.id]"
                   @change="toggleCompetency(item.id)"
                 />
                 <span
                   class="cs-body text-base leading-relaxed"
                   :class="
-                    stored.competency[item.id]
+                    stored.competency?.[item.id]
                       ? 'text-[var(--cs-muted)] line-through decoration-[var(--cs-line)]'
                       : 'text-[var(--cs-ink)]'
                   "
@@ -441,7 +538,9 @@ import {
   CAPCUT_DAYS,
   COMPETENCY_ITEMS,
   PHASE_META,
+  daySelfCheckKeys,
   dayTaskKeys,
+  selfCheckKey,
   taskKey,
   type CapcutPhase,
 } from '~/utils/capcut-tiktok-30day'
@@ -467,21 +566,38 @@ useHead({
 
 interface StoredProgress {
   tasks: Record<string, boolean>
+  selfCheck: Record<string, boolean>
   competency: Record<string, boolean>
   activeDay: number
 }
 
 const STORAGE_KEY = 'capcut-tiktok-30day-ai-v1'
 
-const stored = useStorage<StoredProgress>(STORAGE_KEY, {
-  tasks: {},
-  competency: {},
-  activeDay: 1,
-})
+const stored = useStorage<StoredProgress>(
+  STORAGE_KEY,
+  {
+    tasks: {},
+    selfCheck: {},
+    competency: {},
+    activeDay: 1,
+  },
+  undefined,
+  { mergeDefaults: true },
+)
+
+if (import.meta.client) {
+  stored.value = {
+    tasks: stored.value.tasks ?? {},
+    selfCheck: stored.value.selfCheck ?? {},
+    competency: stored.value.competency ?? {},
+    activeDay: stored.value.activeDay || 1,
+  }
+}
 
 const phaseFilter = ref<'all' | CapcutPhase>('all')
 const showResetDialog = ref(false)
 const playheadIndex = ref(7)
+const scriptCopied = ref(false)
 
 const principles = [
   'AI untuk first pass: Auto Cut, caption, remove BG. Kamu yang proofread dan putuskan pacing.',
@@ -520,7 +636,11 @@ const filteredDays = computed(() => {
 function isDayComplete(dayNumber: number) {
   const day = CAPCUT_DAYS.find((d) => d.day === dayNumber)
   if (!day) return false
-  return dayTaskKeys(day).every((key) => !!stored.value.tasks[key])
+  const tasksDone = dayTaskKeys(day).every((key) => !!stored.value.tasks?.[key])
+  const checksDone = daySelfCheckKeys(day).every(
+    (key) => !!stored.value.selfCheck?.[key],
+  )
+  return tasksDone && checksDone
 }
 
 const completedDayCount = computed(
@@ -541,7 +661,8 @@ const streakCount = computed(() => {
 })
 
 const competencyDoneCount = computed(
-  () => COMPETENCY_ITEMS.filter((item) => !!stored.value.competency[item.id]).length,
+  () =>
+    COMPETENCY_ITEMS.filter((item) => !!stored.value.competency?.[item.id]).length,
 )
 
 const focusDay = computed(() => {
@@ -562,16 +683,54 @@ function jumpToToday() {
 
 function toggleTask(day: number, taskIndex: number) {
   const key = taskKey(day, taskIndex)
+  const current = stored.value.tasks ?? {}
   stored.value.tasks = {
-    ...stored.value.tasks,
-    [key]: !stored.value.tasks[key],
+    ...current,
+    [key]: !current[key],
+  }
+}
+
+function toggleSelfCheck(day: number, checkIndex: number) {
+  const key = selfCheckKey(day, checkIndex)
+  const current = stored.value.selfCheck ?? {}
+  stored.value.selfCheck = {
+    ...current,
+    [key]: !current[key],
+  }
+}
+
+function formatVideoScript(day = selected.value) {
+  const lines = [
+    `[Hook] ${day.videoScript.hook}`,
+    '',
+    ...day.videoScript.body.map((line) => line),
+    '',
+    `[Penutup] ${day.videoScript.cta}`,
+  ]
+  if (day.videoScript.onScreen?.length) {
+    lines.push('', '[Tampilkan di layar]', ...day.videoScript.onScreen.map((c) => `- ${c}`))
+  }
+  return lines.join('\n')
+}
+
+async function copyVideoScript() {
+  if (!import.meta.client) return
+  try {
+    await navigator.clipboard.writeText(formatVideoScript())
+    scriptCopied.value = true
+    window.setTimeout(() => {
+      scriptCopied.value = false
+    }, 2000)
+  } catch {
+    scriptCopied.value = false
   }
 }
 
 function toggleCompetency(id: string) {
+  const current = stored.value.competency ?? {}
   stored.value.competency = {
-    ...stored.value.competency,
-    [id]: !stored.value.competency[id],
+    ...current,
+    [id]: !current[id],
   }
 }
 
@@ -594,6 +753,7 @@ function requestReset() {
 function confirmReset() {
   stored.value = {
     tasks: {},
+    selfCheck: {},
     competency: {},
     activeDay: 1,
   }
