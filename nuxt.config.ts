@@ -31,7 +31,25 @@ export default defineNuxtConfig({
   },
   components: ["~/components", "~/components/ui"],
 
-  ignore: ["/pages/**/components/**"],
+  // Windows + Vite virtual ids (\0...) trip `ignore` unless relative paths are allowed.
+  ignoreOptions: {
+    allowRelativePaths: true,
+  },
+
+  // Avoid nuxt `ignore` + Windows virtual Vite ids (null-byte paths break `ignore` package).
+  // Drop colocated page helper folders from the route table instead.
+  hooks: {
+    "pages:extend"(pages) {
+      const drop = pages.filter((page) =>
+        /[/\\]components[/\\]/.test(page.file || ""),
+      );
+      for (const page of drop) {
+        const index = pages.indexOf(page);
+        if (index !== -1) pages.splice(index, 1);
+      }
+    },
+  },
+
   modules: [
     "@nuxt/image",
     "floating-vue/nuxt",

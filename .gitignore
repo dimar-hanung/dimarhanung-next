@@ -93,3 +93,6 @@ sw.*
 
 # Vercel
 .vercel
+
+# Agent canvas markdown reports
+.agents/canvas-markdown/

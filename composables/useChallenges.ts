@@ -79,11 +79,26 @@ const randomItems: ChallengeItem[] = [
   },
 ];
 
+const streakItems: ChallengeItem[] = [
+  {
+    title: "30 hari CapCut TikTok (AI)",
+    path: "/challenges/streak/30-day-learn-capcut-tiktok",
+    icon: ["fa", "fire"],
+  },
+];
+
 export const useChallenges = () => {
   const route = useRoute();
   const router = useRouter();
 
   const challengeGroups = useState<ChallengeGroup[]>("challenge-groups", () => [
+    {
+      key: "streak",
+      label: "Streak",
+      icon: ["fa", "fire"],
+      collapsed: false,
+      items: streakItems,
+    },
     {
       key: "frontend-mentor",
       label: "Frontend Mentor",

@@ -333,6 +333,13 @@ function greet(name) {
 | Lists        | ✅     |
 | Tables       | ✅     |
 | Code blocks  | ✅     |
+| Images       | ✅     |
+
+![Sample diagram](https://picsum.photos/seed/md2docx/640/360)
+
+![SVG logo](https://upload.wikimedia.org/wikipedia/commons/0/02/SVG_logo.svg)
+
+![Garuda Pancasila](https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg)
 
 > This is a blockquote — indented and bordered in Word.
 
