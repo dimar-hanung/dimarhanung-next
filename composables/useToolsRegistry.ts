@@ -65,6 +65,15 @@ export function useToolsRegistry() {
           iconColor: 'text-amber-500',
           tags: ['base64', 'encode', 'decode'],
         },
+        {
+          name: 'QR to Text',
+          path: '/tools/qr-to-text',
+          description: 'Decode QR codes from images with upload, drag-and-drop, and paste support',
+          icon: 'mdi:qrcode-scan',
+          iconBg: 'bg-indigo-500/10 dark:bg-indigo-400/10',
+          iconColor: 'text-indigo-500',
+          tags: ['qr', 'decode', 'image', 'scan'],
+        },
       ],
     },
     {
