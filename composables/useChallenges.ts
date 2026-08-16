@@ -85,6 +85,11 @@ const streakItems: ChallengeItem[] = [
     path: "/challenges/streak/30-day-learn-capcut-tiktok",
     icon: ["fa", "fire"],
   },
+  {
+    title: "30 hari vibe coding sampai expert",
+    path: "/challenges/streak/30-day-learn-vibe-code",
+    icon: ["fa", "terminal"],
+  },
 ];
 
 export const useChallenges = () => {

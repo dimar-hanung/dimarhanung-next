@@ -15,6 +15,15 @@
             <span class="text-amber-400">Buka</span>
           </NuxtLink>
         </li>
+        <li>
+          <NuxtLink
+            to="/challenges/streak/30-day-learn-vibe-code"
+            class="flex items-center justify-between gap-3 px-4 py-4 text-base transition-colors duration-150 ease-out hover:bg-white/5"
+          >
+            <span>30 hari vibe coding sampai expert</span>
+            <span class="text-emerald-400">Buka</span>
+          </NuxtLink>
+        </li>
       </ul>
     </div>
   </div>

@@ -414,8 +414,9 @@
         </div>
       </section>
 
-      <!-- Competency -->
+      <!-- Competency: only on day 30 -->
       <section
+        v-if="activeDay === 30"
         id="kompetensi"
         class="mb-12 overflow-hidden rounded-[var(--cs-radius-lg)] border border-[var(--cs-line)] bg-[var(--cs-panel)]"
         aria-labelledby="kompetensi-heading"
