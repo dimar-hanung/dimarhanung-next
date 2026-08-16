@@ -442,24 +442,319 @@
         >
           Kapan pakai apa
         </h2>
-        <dl class="divide-y divide-[var(--vc-line)] rounded-[var(--vc-radius-lg)] border border-[var(--vc-line)] bg-[var(--vc-panel)]">
-          <div
-            v-for="row in cheatRows"
-            :key="row.label"
-            class="grid grid-cols-1 gap-1 px-4 py-3 sm:grid-cols-[9rem_1fr] sm:gap-3"
+        <div class="overflow-x-auto rounded-[var(--vc-radius-lg)] border border-[var(--vc-line)] bg-[var(--vc-panel)]">
+          <table class="w-full text-left">
+            <caption class="sr-only">
+              Pintu Cursor dan kapan memakainya
+            </caption>
+            <thead>
+              <tr class="border-b border-[var(--vc-line)]">
+                <th scope="col" class="px-4 py-3 vc-body text-base font-semibold text-[var(--vc-muted)]">
+                  Pintu
+                </th>
+                <th scope="col" class="px-4 py-3 vc-body text-base font-semibold text-[var(--vc-muted)]">
+                  Dipakai untuk
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="row in cheatRows"
+                :key="row.label"
+                class="border-b border-[var(--vc-line)] last:border-b-0"
+              >
+                <th
+                  scope="row"
+                  class="whitespace-nowrap px-4 py-3 vc-mono text-base font-medium text-[var(--vc-accent)]"
+                >
+                  {{ row.label }}
+                </th>
+                <td class="px-4 py-3 vc-body text-base text-[var(--vc-ink)]">
+                  {{ row.value }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section
+        id="laboratorium"
+        class="mb-8 overflow-hidden rounded-[var(--vc-radius-lg)] border border-[var(--vc-line)] bg-[var(--vc-panel)]"
+        aria-labelledby="lab-heading"
+      >
+        <div class="border-b border-[var(--vc-line)] px-4 py-5 sm:px-6">
+          <h2
+            id="lab-heading"
+            class="vc-display text-2xl tracking-tight text-[var(--vc-ink)]"
           >
-            <dt class="vc-body text-base text-[var(--vc-muted)]">
-              {{ row.label }}
-            </dt>
-            <dd class="vc-body text-base text-[var(--vc-ink)]">
-              {{ row.value }}
-            </dd>
+            Laboratorium
+          </h2>
+          <p class="mt-2 vc-body text-base leading-relaxed text-[var(--vc-muted)]">
+            Bukan hari ke-31. Ini meja latihan di halaman yang sama:
+            <strong class="font-semibold text-[var(--vc-ink)]">gambar, video, audio, form, dan tabel</strong>
+            supaya elemen HTML yang biasa diajar di kelas web ikut kelihatan.
+            <em class="text-[var(--vc-ink)]">Catatan tersimpan di browser ini</em>, terpisah dari streak 30 hari.
+          </p>
+        </div>
+
+        <figure class="border-b border-[var(--vc-line)] px-4 py-5 sm:px-6">
+          <img
+            class="w-full max-h-80 rounded-[var(--vc-radius-md)] object-cover object-center"
+            src="/challenges/streak/vibe-code/programming.jpg"
+            width="960"
+            height="640"
+            alt="Cuplikan kode JavaScript di layar monitor"
+          />
+          <figcaption class="mt-3 vc-body text-base text-[var(--vc-muted)]">
+            Kode di layar. Foto
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Programming.jpg"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--vc-accent)] underline-offset-4 hover:underline"
+            >
+              Lorenzo Cafaro / Pixabay (CC0)
+            </a>.
+          </figcaption>
+        </figure>
+
+        <div class="border-b border-[var(--vc-line)] px-4 py-5 sm:px-6">
+          <p class="mb-3 vc-body text-base font-semibold text-[var(--vc-ink)]">
+            Video: unggah file di alat kolaborasi
+          </p>
+          <video
+            class="w-full rounded-[var(--vc-radius-md)] bg-[var(--vc-bg)]"
+            controls
+            preload="metadata"
+            width="1920"
+            height="1080"
+          >
+            <source src="/challenges/streak/vibe-code/uploading-files.webm" type="video/webm" />
+            Browser tidak memutar video ini. Buka berkas WebM di folder media.
+          </video>
+          <p class="mt-3 vc-body text-base text-[var(--vc-muted)]">
+            Tutorial singkat unggah file.
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Uploading_files.webm"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--vc-accent)] underline-offset-4 hover:underline"
+            >
+              Robinverhoef, Wikimedia Commons
+            </a>.
+          </p>
+        </div>
+
+        <div class="border-b border-[var(--vc-line)] px-4 py-5 sm:px-6">
+          <p id="lab-audio-label" class="mb-3 vc-body text-base font-semibold text-[var(--vc-ink)]">
+            Audio: bunyi papan ketik
+          </p>
+          <audio
+            class="w-full"
+            controls
+            preload="metadata"
+            aria-labelledby="lab-audio-label"
+          >
+            <source src="/challenges/streak/vibe-code/keyboard.mp3" type="audio/mpeg" />
+            Browser tidak memutar audio ini.
+          </audio>
+          <p class="mt-3 vc-body text-base text-[var(--vc-muted)]">
+            Rekaman papan ketik komputer.
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Computer_keyboard.ogg"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--vc-accent)] underline-offset-4 hover:underline"
+            >
+              Wikimedia Commons
+            </a>.
+          </p>
+        </div>
+
+        <form
+          class="border-b border-[var(--vc-line)] px-4 py-5 sm:px-6"
+          novalidate
+          @submit.prevent="submitLabNote"
+        >
+          <h3 class="vc-display text-xl tracking-tight text-[var(--vc-ink)]">
+            Catat sesi latihan
+          </h3>
+          <p class="mt-1 vc-body text-base text-[var(--vc-muted)]">
+            Isi form, lalu lihat baris baru di tabel bawah. JavaScript yang menyimpan datanya.
+          </p>
+
+          <p
+            v-if="labFormErrorSummary"
+            id="lab-error-summary"
+            class="mt-4 vc-body text-base text-[#FECACA]"
+            role="alert"
+          >
+            {{ labFormErrorSummary }}
+          </p>
+          <p
+            v-else-if="labStatus"
+            class="mt-4 vc-body text-base text-[var(--vc-accent)]"
+            role="status"
+          >
+            {{ labStatus }}
+          </p>
+
+          <div class="mt-4 grid gap-4">
+            <div>
+              <label for="lab-title" class="mb-2 block vc-body text-base text-[var(--vc-ink)]">
+                Judul sesi
+              </label>
+              <input
+                id="lab-title"
+                v-model="labForm.title"
+                type="text"
+                name="title"
+                autocomplete="off"
+                maxlength="80"
+                class="vc-field"
+                :class="{ 'vc-field--error': !!labErrors.title }"
+                :aria-invalid="labErrors.title ? 'true' : 'false'"
+                :aria-describedby="labErrors.title ? 'lab-title-error' : undefined"
+              />
+              <p
+                v-if="labErrors.title"
+                id="lab-title-error"
+                class="mt-2 vc-body text-base text-[#FECACA]"
+              >
+                {{ labErrors.title }}
+              </p>
+            </div>
+
+            <div>
+              <label for="lab-day" class="mb-2 block vc-body text-base text-[var(--vc-ink)]">
+                Terhubung ke hari
+              </label>
+              <select
+                id="lab-day"
+                v-model.number="labForm.day"
+                name="day"
+                class="vc-field"
+              >
+                <option v-for="day in VIBE_DAYS" :key="day.day" :value="day.day">
+                  Hari {{ day.day }}: {{ day.title }}
+                </option>
+              </select>
+              <p class="mt-2 vc-body text-base text-[var(--vc-muted)]">
+                {{ labDayHint }}
+              </p>
+            </div>
+
+            <div>
+              <label for="lab-body" class="mb-2 block vc-body text-base text-[var(--vc-ink)]">
+                Catatan
+              </label>
+              <textarea
+                id="lab-body"
+                v-model="labForm.body"
+                name="body"
+                rows="4"
+                maxlength="400"
+                class="vc-field min-h-28 resize-y"
+                :class="{ 'vc-field--error': !!labErrors.body }"
+                :aria-invalid="labErrors.body ? 'true' : 'false'"
+                :aria-describedby="labErrors.body ? 'lab-body-error lab-body-count' : 'lab-body-count'"
+              />
+              <p
+                v-if="labErrors.body"
+                id="lab-body-error"
+                class="mt-2 vc-body text-base text-[#FECACA]"
+              >
+                {{ labErrors.body }}
+              </p>
+              <p id="lab-body-count" class="mt-2 vc-body text-base text-[var(--vc-muted)]">
+                {{ labForm.body.length }}/400 karakter
+              </p>
+            </div>
           </div>
-        </dl>
+
+          <button
+            type="submit"
+            class="mt-4 rounded-[var(--vc-radius-md)] bg-[var(--vc-accent)] px-5 py-3 vc-body text-base font-semibold text-[var(--vc-bg)] transition-[transform,opacity] duration-150 ease-out hover:opacity-90 active:scale-[0.97]"
+          >
+            {{ labSaving ? 'Menyimpan…' : 'Simpan catatan' }}
+          </button>
+        </form>
+
+        <div class="px-4 py-5 sm:px-6">
+          <h3 class="vc-display text-xl tracking-tight text-[var(--vc-ink)]">
+            Daftar catatan
+          </h3>
+          <p class="mt-1 vc-body text-base text-[var(--vc-muted)]">
+            {{ labNotes.length }} catatan tersimpan.
+          </p>
+
+          <div
+            v-if="labNotes.length"
+            class="mt-4 overflow-x-auto"
+          >
+            <table class="w-full text-left">
+              <caption class="sr-only">
+                Catatan laboratorium yang tersimpan di browser
+              </caption>
+              <thead>
+                <tr class="border-b border-[var(--vc-line)] bg-[var(--vc-bg)]">
+                  <th scope="col" class="px-4 py-3 vc-body text-base font-semibold text-[var(--vc-muted)]">
+                    Hari
+                  </th>
+                  <th scope="col" class="px-4 py-3 vc-body text-base font-semibold text-[var(--vc-muted)]">
+                    Judul
+                  </th>
+                  <th scope="col" class="px-4 py-3 vc-body text-base font-semibold text-[var(--vc-muted)]">
+                    Waktu
+                  </th>
+                  <th scope="col" class="px-4 py-3 vc-body text-base font-semibold text-[var(--vc-muted)]">
+                    Aksi
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="note in labNotes"
+                  :key="note.id"
+                  class="border-b border-[var(--vc-line)] last:border-b-0"
+                >
+                  <td class="px-4 py-3 tabular-nums vc-body text-base text-[var(--vc-ink)]">
+                    {{ note.day }}
+                  </td>
+                  <td class="px-4 py-3 vc-body text-base text-[var(--vc-ink)]">
+                    {{ note.title }}
+                  </td>
+                  <td class="px-4 py-3 vc-body text-base text-[var(--vc-muted)]">
+                    {{ formatLabTime(note.createdAt) }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <button
+                      type="button"
+                      class="vc-body text-base text-[#FECACA] underline-offset-4 hover:underline"
+                      :aria-label="`Hapus catatan ${note.title}`"
+                      @click="deleteLabNote(note.id)"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p
+            v-else
+            class="mt-4 vc-body text-base text-[var(--vc-muted)]"
+          >
+            Belum ada catatan. Isi form di atas, lalu simpan.
+          </p>
+        </div>
       </section>
 
       <p class="vc-body text-base text-[var(--vc-muted)]">
-        Progress tersimpan di browser ini. Hapus lewat Mulai ulang, atau hapus data situs di pengaturan browser.
+        Progress streak tersimpan di browser ini. Hapus lewat Mulai ulang.
+        <a href="#laboratorium" class="text-[var(--vc-accent)] underline-offset-4 hover:underline">Laboratorium</a>
+        (gambar, video, audio, form, tabel) terpisah dari path 30 hari.
       </p>
     </div>
 
@@ -570,6 +865,87 @@ const phaseFilter = ref<'all' | VibePhase>('all')
 const showResetDialog = ref(false)
 const promptCopied = ref(false)
 const caretOn = ref(true)
+
+interface LabNote {
+  id: string
+  day: number
+  title: string
+  body: string
+  createdAt: string
+}
+
+const labNotes = useStorage<LabNote[]>('vibe-code-lab-notes-v1', [])
+const labForm = reactive({
+  title: '',
+  day: 1,
+  body: '',
+})
+const labErrors = ref<{ title?: string; body?: string }>({})
+const labStatus = ref('')
+const labSaving = ref(false)
+
+const labDayHint = computed(() => {
+  const day = VIBE_DAYS.find((item) => item.day === labForm.day)
+  if (!day) return ''
+  return `Fokus hari itu: ${day.focus}.`
+})
+
+const labFormErrorSummary = computed(() => {
+  const parts = [labErrors.value.title, labErrors.value.body].filter(Boolean)
+  if (!parts.length) return ''
+  return `Form belum lengkap. ${parts.join(' ')}`
+})
+
+function submitLabNote() {
+  labStatus.value = ''
+  const nextErrors: { title?: string; body?: string } = {}
+  if (!labForm.title.trim()) {
+    nextErrors.title = 'Isi judul sesi.'
+  }
+  if (!labForm.body.trim()) {
+    nextErrors.body = 'Tulis catatan, minimal satu kalimat.'
+  }
+  labErrors.value = nextErrors
+  if (nextErrors.title || nextErrors.body) {
+    const firstId = nextErrors.title ? 'lab-title' : 'lab-body'
+    document.getElementById(firstId)?.focus()
+    return
+  }
+
+  labSaving.value = true
+  const note: LabNote = {
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    day: labForm.day,
+    title: labForm.title.trim(),
+    body: labForm.body.trim(),
+    createdAt: new Date().toISOString(),
+  }
+  labNotes.value = [note, ...(labNotes.value ?? [])]
+  labForm.title = ''
+  labForm.body = ''
+  labStatus.value = `Catatan "${note.title}" tersimpan.`
+  window.setTimeout(() => {
+    labSaving.value = false
+  }, 200)
+}
+
+function deleteLabNote(id: string) {
+  const current = labNotes.value ?? []
+  const note = current.find((item) => item.id === id)
+  labNotes.value = current.filter((item) => item.id !== id)
+  labStatus.value = note ? `Catatan "${note.title}" dihapus.` : 'Catatan dihapus.'
+}
+
+function formatLabTime(iso: string) {
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return iso
+  return new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
+}
 
 const principles = [
   'Rumah Cursor. ChatGPT atau Claude boleh ngerancang. Copilot Tab boleh. Eksekusi di repo tetap di sini.',
@@ -811,6 +1187,36 @@ onUnmounted(() => {
 .vc-check:focus-visible {
   outline: 2px solid var(--vc-accent);
   outline-offset: 2px;
+}
+
+.vc-field {
+  width: 100%;
+  border: 1px solid var(--vc-line);
+  border-radius: var(--vc-radius-md);
+  background: #101512;
+  color: var(--vc-ink);
+  padding: 0.75rem 0.9rem;
+  font-family: var(--vc-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  transition:
+    border-color 150ms ease-out,
+    background-color 150ms ease-out;
+}
+
+.vc-field:focus {
+  border-color: var(--vc-accent);
+  outline: 2px solid var(--vc-accent);
+  outline-offset: 2px;
+}
+
+.vc-field--error {
+  border-color: #f87171;
+}
+
+.vc-field option {
+  background: #101512;
+  color: var(--vc-ink);
 }
 
 @media (prefers-reduced-motion: reduce) {

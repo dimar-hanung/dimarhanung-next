@@ -25,6 +25,7 @@ Building or changing streak challenge pages under `/challenges/streak/*` — mul
 - CapCut TikTok learning order: AI rough pass first (Auto Cut, caption), then manual hook/pacing/proofread; motion from week 2.
 - UI copy: Bahasa Indonesia, light-casual / omit pronouns, verb-first buttons, keep CapCut/TikTok loanwords; no em dash.
 - Vibe-code track: Cursor as home; also cover ChatGPT/Claude (plan), Copilot Tab, Claude Code. Joining requirement (fundamentals) is a one-line hero note, not a checklist section or calendar phase. 30 days must reach expert: prompt, `.agents`/`SKILL.md`, `/loop`, hooks, subagent, review, context engineering. Keep Cursor/prompt/agent/skill/loop as loanwords.
+- College web-tech requirements (heading, paragraph, formatting, image, link, list, table, form, video, audio, CSS, JavaScript) live in page markup, not as extra calendar days. Lab notes use `vibe-code-lab-notes-v1`. Media files sit in `public/challenges/streak/vibe-code/` (Wikimedia/Pixabay CC0 or Commons attribution).
 
 ## Learned Workspace Facts
 
