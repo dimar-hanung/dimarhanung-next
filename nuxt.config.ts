@@ -78,6 +78,9 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['mermaid'],
+    },
     server: {
       watch: {
         ignored: [
