@@ -31,6 +31,7 @@
     "@vueuse/nuxt": "^14.0.0",
     "docx": "^9.7.1",
     "floating-vue": "^5.2.2",
+    "jsqr": "^1.4.0",
     "jszip": "^3.10.1",
     "marked": "^17.0.4",
     "mermaid": "^11.17.2",
