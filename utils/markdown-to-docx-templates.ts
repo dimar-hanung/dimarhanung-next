@@ -30,11 +30,16 @@ export interface DocxTemplateConfig {
   blockquoteLineSpacing: number;
   bodyAlignment?: (typeof AlignmentType)[keyof typeof AlignmentType];
   bodyFirstLineIndent?: number;
+  imageSpacingBefore: number;
+  imageSpacingAfter: number;
   headings: Partial<Record<1 | 2 | 3 | 4 | 5 | 6, HeadingStyleConfig>>;
 }
 
 const A4_WIDTH = 11906;
 const A4_HEIGHT = 16838;
+const LETTER_WIDTH = 12240;
+const LETTER_HEIGHT = 15840;
+const INCH = 1440;
 
 const LAPORAN_INDONESIA_MARGINS = {
   top: convertMillimetersToTwip(40),
@@ -46,14 +51,52 @@ const LAPORAN_INDONESIA_MARGINS = {
 const DEFAULT_TEMPLATE: DocxTemplateConfig = {
   id: 'default',
   label: 'Default',
-  useDocumentStyles: false,
+  helperText: 'US Letter · Arial 12 pt · 1" margins · heading gap 240/180',
+  useDocumentStyles: true,
+  page: {
+    size: { width: LETTER_WIDTH, height: LETTER_HEIGHT },
+    margin: { top: INCH, right: INCH, bottom: INCH, left: INCH },
+  },
   bodyFont: 'Arial',
   bodyFontSize: 24,
   bodyColor: '000000',
   codeFont: 'Consolas',
-  lineSpacing: 276,
-  blockquoteLineSpacing: 312,
-  headings: {},
+  lineSpacing: 240,
+  blockquoteLineSpacing: 276,
+  imageSpacingBefore: 240,
+  imageSpacingAfter: 240,
+  headings: {
+    1: {
+      fontSize: 32,
+      bold: true,
+      alignment: AlignmentType.LEFT,
+      uppercase: false,
+      pageBreakBefore: false,
+      spacingBefore: 240,
+      spacingAfter: 240,
+      outlineLevel: 0,
+    },
+    2: {
+      fontSize: 28,
+      bold: true,
+      alignment: AlignmentType.LEFT,
+      uppercase: false,
+      pageBreakBefore: false,
+      spacingBefore: 180,
+      spacingAfter: 180,
+      outlineLevel: 1,
+    },
+    3: {
+      fontSize: 24,
+      bold: true,
+      alignment: AlignmentType.LEFT,
+      uppercase: false,
+      pageBreakBefore: false,
+      spacingBefore: 160,
+      spacingAfter: 160,
+      outlineLevel: 2,
+    },
+  },
 };
 
 const LAPORAN_INDONESIA_TEMPLATE: DocxTemplateConfig = {
@@ -73,6 +116,8 @@ const LAPORAN_INDONESIA_TEMPLATE: DocxTemplateConfig = {
   blockquoteLineSpacing: 360,
   bodyAlignment: AlignmentType.JUSTIFIED,
   bodyFirstLineIndent: convertMillimetersToTwip(10),
+  imageSpacingBefore: 120,
+  imageSpacingAfter: 160,
   headings: {
     1: {
       fontSize: 28,
