@@ -16,7 +16,7 @@
     "@nuxtjs/color-mode": "^4.0.0",
     "clsx": "^2.1.1",
     "docx": "^9.7.1",
-    "nuxt": "^4.2.1",
+    "nuxt": "^4.5.2",
     "tailwind-merge": "^2.5.4"
   },
   "dependencies": {
@@ -37,5 +37,11 @@
     "papaparse": "^5.5.3",
     "qrcode.vue": "^3.3.4",
     "tailwindcss": "^4.1.17"
+  },
+  "overrides": {
+    "seroval": "1.6.4",
+    "shell-quote": "1.10.0",
+    "simple-git": "3.36.0",
+    "tar": "7.5.22"
   }
 }
