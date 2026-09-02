@@ -10,7 +10,7 @@ export interface VibeDailyExtra {
   promptTemplate: VibePromptTemplate
 }
 
-export const DAILY_EXTRA: Record<number, VibeDailyExtra> = {
+export const VIBE_DAILY_EXTRA: Record<number, VibeDailyExtra> = {
   1: {
     selfCheck: [
       'Bisa sebut kapan Tab, Chat, Agent, dan inline (Ctrl/Cmd+K), masing-masing 1 contoh',

@@ -1,4 +1,4 @@
-import { DAILY_EXTRA, type CapcutVideoScript } from './capcut-tiktok-30day-daily'
+import { CAPCUT_DAILY_EXTRA, type CapcutDailyExtra } from './capcut-tiktok-30day-daily'
 
 export type CapcutPhase = 0 | 1 | 2 | 3 | 4 | 5
 
@@ -6,8 +6,6 @@ export interface CapcutRef {
   label: string
   href: string
 }
-
-export type { CapcutVideoScript } from './capcut-tiktok-30day-daily'
 
 export interface CapcutDay {
   day: number
@@ -19,7 +17,7 @@ export interface CapcutDay {
   tip: string
   refs: CapcutRef[]
   selfCheck: string[]
-  videoScript: CapcutVideoScript
+  videoScript: CapcutDailyExtra['videoScript']
 }
 
 export interface CapcutCompetency {
@@ -568,7 +566,7 @@ export const CAPCUT_DAYS: CapcutDay[] = (
 ] as const satisfies readonly Omit<CapcutDay, 'selfCheck' | 'videoScript'>[]
 ).map((day) => ({
   ...day,
-  ...DAILY_EXTRA[day.day],
+  ...CAPCUT_DAILY_EXTRA[day.day],
 }))
 
 export function taskKey(day: number, taskIndex: number) {

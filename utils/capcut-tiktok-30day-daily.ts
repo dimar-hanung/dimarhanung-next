@@ -10,7 +10,7 @@ export interface CapcutDailyExtra {
   videoScript: CapcutVideoScript
 }
 
-export const DAILY_EXTRA: Record<number, CapcutDailyExtra> = {
+export const CAPCUT_DAILY_EXTRA: Record<number, CapcutDailyExtra> = {
   1: {
     selfCheck: [
       'Project 9:16 (1080×1920) sudah dibuat',

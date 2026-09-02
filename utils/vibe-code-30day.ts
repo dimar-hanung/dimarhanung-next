@@ -1,4 +1,4 @@
-import { DAILY_EXTRA, type VibePromptTemplate } from './vibe-code-30day-daily'
+import { VIBE_DAILY_EXTRA, type VibeDailyExtra } from './vibe-code-30day-daily'
 
 export type VibePhase = 0 | 1 | 2 | 3 | 4 | 5
 
@@ -6,8 +6,6 @@ export interface VibeRef {
   label: string
   href: string
 }
-
-export type { VibePromptTemplate } from './vibe-code-30day-daily'
 
 export interface VibeDay {
   day: number
@@ -19,7 +17,7 @@ export interface VibeDay {
   tip: string
   refs: VibeRef[]
   selfCheck: string[]
-  promptTemplate: VibePromptTemplate
+  promptTemplate: VibeDailyExtra['promptTemplate']
 }
 
 export interface VibeCompetency {
@@ -588,7 +586,7 @@ export const VIBE_DAYS: VibeDay[] = (
   ] as const satisfies readonly Omit<VibeDay, 'selfCheck' | 'promptTemplate'>[]
 ).map((day) => ({
   ...day,
-  ...DAILY_EXTRA[day.day],
+  ...VIBE_DAILY_EXTRA[day.day],
 }))
 
 export function vibeTaskKey(day: number, taskIndex: number) {
