@@ -127,7 +127,7 @@
                 :translate-z="100"
                 :rotate-x="20"
                 :rotate-z="-10"
-                class="mt-4 w-full"
+                class="pointer-events-none mt-4 w-full"
               >
                 <NuxtImg
                   :src="project.image"
@@ -172,38 +172,38 @@
                 </div>
               </TransformCardItem>
 
-              <div class="mt-20 flex items-center justify-between">
+              <div class="relative z-20 mt-20 flex items-center justify-between">
                 <TransformCardItem
                   v-if="project.link"
                   :translate-z="20"
                   :translate-x="-40"
                   as="a"
                   :href="project.link"
-                  target="__blank"
-                  class="rounded-xl px-4 py-2 font-normal dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black cursor-pointer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="pointer-events-auto rounded-xl px-4 py-2 text-base font-normal dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black cursor-pointer"
                 >
                   Visit
                 </TransformCardItem>
-                <TransformCardItem
+                <span
                   v-else
-                  :translate-z="20"
-                  :translate-x="-40"
-                  as="a"
-                  :href="project.link"
-                  target="__blank"
+                  class="text-base text-neutral-500 dark:text-neutral-300"
                 >
-                  <span class="text-xs text-neutral-500 dark:text-neutral-300">
-                    Link not available
-                  </span>
-                </TransformCardItem>
+                  Link not available
+                </span>
 
                 <TransformCardItem
+                  v-if="project.detailPath"
                   :translate-z="20"
                   :translate-x="40"
-                  as="button"
-                  class="rounded-xl bg-black px-4 py-2 text-xs font-bold text-white dark:bg-white dark:text-black"
+                  class="pointer-events-auto"
                 >
-                  Detail
+                  <NuxtLink
+                    :to="project.detailPath"
+                    class="block rounded-xl bg-black px-4 py-2 text-base font-bold text-white dark:bg-white dark:text-black"
+                  >
+                    Detail
+                  </NuxtLink>
                 </TransformCardItem>
               </div>
             </TransformCardBody>
@@ -231,6 +231,7 @@ const projects = [
       "Adalah sebuah aplikasi berbasis web yang digunakan untuk mengelola data mahasiswa.",
     image: "/home/project/srs.png",
     link: "https://srs5g.ut.ac.id",
+    detailPath: "/project/srs",
     tags: ["Full-Stack", "Vue", "TailwindCSS"],
     contribution: 5,
     complexity: 5,
@@ -238,9 +239,10 @@ const projects = [
   {
     title: "Sistem Informasi Akademik (SIA)",
     description:
-      "Adalah sebuah aplikasi berbasis web yang digunakan untuk mengelola data akademik.",
+      "Portal pendaftaran mahasiswa baru Universitas Terbuka: daftar, pilih program, unggah berkas.",
     image: "/home/project/sia.png",
     link: "https://admisi-sia.ut.ac.id",
+    detailPath: "/project/admisi-ut",
     tags: ["Full-Stack", "Vue", "Nest.js"],
     contribution: 5,
     complexity: 5,
@@ -248,9 +250,10 @@ const projects = [
   {
     title: "My UT",
     description:
-      "Adalah sebuah aplikasi berbasis web yang digunakan untuk mengelola data akademik.",
+      "Portal akademik mahasiswa Universitas Terbuka: registrasi, pembayaran, modul, ujian, dan e-KTM.",
     image: "/home/project/myut.png",
     link: "https://myut.ut.ac.id",
+    detailPath: "/project/myut",
     tags: ["Full-Stack", "Vue", "Nest.js"],
     contribution: 5,
     complexity: 5,

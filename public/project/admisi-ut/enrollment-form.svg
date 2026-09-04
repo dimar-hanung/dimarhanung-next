@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" viewBox="0 0 1044.94 743.7">
+  <g id="Layer_1-2">
+    <g>
+      <g>
+        <rect width="341.46" height="235.67" x="77.09" y="490.15" rx="7.07" ry="7.07" style="stroke-width:0;fill:#ededed"/>
+        <rect width="207.33" height="44.26" x="144.16" y="528.82" rx="6.02" ry="6.02" style="fill:#34a852;stroke-width:0"/>
+        <g>
+          <line x1="109.88" x2="385.77" y1="613.58" y2="613.58" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke:#b4b9c1;stroke-width:7.15px"/>
+          <line x1="109.88" x2="385.77" y1="640.33" y2="640.33" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke:#b4b9c1;stroke-width:7.15px"/>
+          <line x1="109.88" x2="274.73" y1="667.08" y2="667.08" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke:#b4b9c1;stroke-width:7.15px"/>
+        </g>
+      </g>
+      <g>
+        <path d="M752.56,119.5c19.49-12.3,48.91-26.21,81.94-21.46,32.19,4.63,44.75,23.66,79.13,36.46,22.23,8.28,56.36,14.99,105.34,4.02-1.48,67.19,1.05,134.37-.44,201.56-53.3,3.2-96.13-5.76-121.97-14.73-19.8-6.87-29.74-12.97-47.57-14.36-39.48-3.09-73.46,20.31-96.1,40.72l-.34-232.21Z" style="stroke-width:0;fill:#dadce0"/>
+        <path d="M743.97,84.27h0c4.95,0,8.97,4.02,8.97,8.97v478.63h-17.94V93.24c0-4.95,4.02-8.97,8.97-8.97Z" style="stroke-width:0;fill:#494e51"/>
+        <rect width="76.81" height="37.24" x="706.49" y="570.71" style="fill:#34a852;stroke-width:0"/>
+      </g>
+      <g>
+        <rect width="359.62" height="509.88" x="363.21" y="214.68" rx="23.18" ry="23.18" style="stroke-width:0;fill:#dadce0"/>
+        <rect width="214.64" height="50.22" x="435.7" y="258.25" rx="9.11" ry="9.11" style="stroke-width:0;fill:#4c8af4"/>
+        <text style="font-family:Poppins-SemiBold,Poppins;font-size:42.88px;font-weight:600;fill:#fff" transform="translate(486.85 296.85)"><tspan x="0" y="0">From</tspan></text>
+        <rect width="302.97" height="51.73" x="391.53" y="361.24" rx="4.59" ry="4.59" style="stroke-width:0;fill:#fff"/>
+        <rect width="302.97" height="51.73" x="391.53" y="454.02" rx="4.59" ry="4.59" style="stroke-width:0;fill:#fff"/>
+        <rect width="302.97" height="51.73" x="391.53" y="546.8" rx="4.59" ry="4.59" style="stroke-width:0;fill:#fff"/>
+        <rect width="302.97" height="51.73" x="391.53" y="639.58" rx="4.59" ry="4.59" style="stroke-width:0;fill:#fff"/>
+        <text style="fill:#9dabbf;font-family:Poppins-Medium,Poppins;font-size:31.65px;font-weight:500" transform="translate(406.36 395.43)"><tspan x="0" y="0">City</tspan></text>
+        <text style="fill:#9dabbf;font-family:Poppins-Medium,Poppins;font-size:31.65px;font-weight:500" transform="translate(406.36 490.14)"><tspan x="0" y="0">Name</tspan></text>
+        <text style="fill:#9dabbf;font-family:Poppins-Medium,Poppins;font-size:31.65px;font-weight:500" transform="translate(406.36 583.67)"><tspan x="0" y="0">Class</tspan></text>
+        <text style="fill:#9dabbf;font-family:Poppins-Medium,Poppins;font-size:31.65px;font-weight:500" transform="translate(406.36 676.47)"><tspan x="0" y="0">School</tspan></text>
+      </g>
+      <path d="M965.85,49.44C952.36,18.77,921.33-.45,888.63,0c-28.19.38-54.72,15.39-69.08,38.93-18.92,31.06-14.47,73.37,11.92,103.75,1.52,1.75,3.01,3.47,4.41,5.32,10.59,13.95,21.82,30.6,32.45,50.08,6.01,11.01,11.15,21.66,15.54,31.74,1.78,4.11,7.64,3.88,9.11-.35,3.24-9.31,7.44-19.44,12.91-30.03,11.67-22.51,25.25-39.6,36.69-51.81,1.5-1.59,3.09-3.09,4.64-4.62,25.02-24.56,32.5-62,18.61-93.58ZM890.36,108.8c-17.46,0-31.6-14.14-31.6-31.6s14.14-31.6,31.6-31.6,31.6,14.16,31.6,31.6-14.14,31.6-31.6,31.6Z" style="stroke-width:0;fill:#4c8af4"/>
+      <g>
+        <circle cx="242.56" cy="410.18" r="65.58" style="stroke-width:0;fill:#4c8af4"/>
+        <polyline points="201.07 415.9 223.96 438.79 284.05 381.56" style="stroke:#fff;stroke-width:13.51px;fill:none;stroke-linecap:round;stroke-linejoin:round"/>
+      </g>
+      <line x1="10" x2="1034.94" y1="733.7" y2="733.7" style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke:#717982;stroke-width:20px"/>
+    </g>
+  </g>
+</svg>
