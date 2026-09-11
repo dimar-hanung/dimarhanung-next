@@ -83,8 +83,8 @@
           <Certificate3DCard
             v-for="(item, index) in visibleCertificates"
             :key="itemKey(item, index)"
-            v-motion-pop-visible
-            :delay="Math.min(index * 40, 240)"
+            class="gallery-card"
+            :style="{ animationDelay: `${Math.min(index * 45, 270)}ms` }"
             :image-url="item.imageUrl"
             :title="item.title"
             :desc="item.desc"
@@ -353,5 +353,26 @@ onUnmounted(() => {
 
 .gallery-page {
   font-family: "Outfit", sans-serif;
+}
+
+.gallery-card {
+  animation: gallery-fade-up 0.45s ease both;
+}
+
+@keyframes gallery-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-card {
+    animation: none;
+  }
 }
 </style>
