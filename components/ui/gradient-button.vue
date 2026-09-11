@@ -1,16 +1,32 @@
 <template>
   <WaveSurface
-    as="button"
-    class="relative hover:scale-105 px-20 py-3 font-semibold text-white transition duration-300 ease-in-out rounded-lg shadow-lg group transform scale-100"
+    as="span"
+    class="more-projects-btn inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white rounded-lg bg-primary-600 hover:bg-primary-700"
   >
-    <span
-      class="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-600 rounded-lg blur-xl opacity-75 group-hover:opacity-100 transition-opacity duration-500"
-    ></span>
-    <span
-      class="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-600 rounded-lg group-hover:animate-pulse"
-    ></span>
-    <span class="relative"><slot></slot></span>
+    <slot />
   </WaveSurface>
 </template>
 
 <script lang="ts" setup></script>
+
+<style scoped>
+.more-projects-btn {
+  transition:
+    background-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.more-projects-btn:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .more-projects-btn {
+    transition: none;
+  }
+
+  .more-projects-btn:active {
+    transform: none;
+  }
+}
+</style>
