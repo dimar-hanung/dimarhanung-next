@@ -12,39 +12,17 @@
       <div
         class="absolute inset-0 bg-gradient-to-b from-black via-[#01040f] to-primary-950"
       />
-      <div
-        ref="galaxyFar"
-        class="stack-layer pointer-events-none absolute left-[-22%] top-[14%] h-[52%] w-[150%]"
-      >
-        <div class="stack-galaxy stack-galaxy-far" />
-      </div>
-      <div
-        ref="galaxy"
-        class="stack-layer pointer-events-none absolute left-[-18%] top-[24%] h-[42%] w-[140%]"
-      >
-        <div class="stack-galaxy" />
-      </div>
-      <div
-        ref="hazeFar"
-        class="stack-layer pointer-events-none absolute left-[6%] top-[18%] h-[46%] w-[62%]"
-      >
-        <div class="stack-haze stack-haze-far" />
-      </div>
-      <div
-        ref="hazeNear"
-        class="stack-layer pointer-events-none absolute right-[4%] bottom-[22%] h-[32%] w-[38%]"
-      >
-        <div class="stack-haze stack-haze-near" />
-      </div>
+      <div class="stack-well absolute inset-0" />
       <canvas
-        class="pointer-events-none absolute inset-0 h-full w-full"
-        ref="canvas"
+        ref="skyCanvas"
+        class="stack-shader absolute inset-0 h-full w-full"
+        :class="shaderReady ? 'opacity-100' : 'opacity-0'"
       ></canvas>
-      <div class="stack-well pointer-events-none absolute inset-0" />
+      <canvas ref="starCanvas" class="absolute inset-0 h-full w-full"></canvas>
     </div>
     <div
       class="tech-stack-group text-slate-300 hover:text-white dark:hover:text-gray-50 gap-4 z-10 relative mx-auto max-w-7xl px-5"
-      style="--group-depth: 1"
+      style="--row-depth: 1"
     >
       <div class="stack-icons flex flex-wrap justify-center gap-4">
         <Tooltip>
@@ -138,7 +116,7 @@
     </div>
     <div
       class="tech-stack-group text-slate-300 hover:text-white gap-4 mt-8 z-10 relative mx-auto max-w-7xl px-5"
-      style="--group-depth: 0.58"
+      style="--row-depth: 1.12"
     >
       <div class="stack-icons flex flex-wrap justify-center gap-4">
         <Tooltip>
@@ -166,7 +144,7 @@
         <Tooltip>
           <div v-motion-pop-visible :delay="100">
             <Icon
-              name="logos:flutter"
+              name="logos:flutter-icon"
               class="tech-stack-item block"
               size="50"
             ></Icon>
@@ -188,7 +166,7 @@
     </div>
     <div
       class="tech-stack-group text-slate-300 hover:text-white dark:hover:text-gray-50 gap-4 mt-8 z-10 relative mx-auto max-w-7xl px-5"
-      style="--group-depth: 0.32"
+      style="--row-depth: 1.26"
     >
       <div class="stack-icons flex flex-wrap justify-center gap-4">
         <Tooltip>
@@ -270,7 +248,7 @@
         <Tooltip>
           <div v-motion-pop-visible :delay="200">
             <Icon
-              name="logos:firebase"
+              name="logos:firebase-icon"
               class="tech-stack-item block"
               size="50"
             ></Icon>
@@ -286,56 +264,118 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
+import {
+  COMPOSITE_FRAGMENT,
+  NEBULA_FRAGMENT,
+  SKY_VERTEX,
+} from "./stack-sky-shader";
 
-const canvas = ref<HTMLCanvasElement | null>(null);
-const hazeFar = ref<HTMLElement | null>(null);
-const hazeNear = ref<HTMLElement | null>(null);
-const galaxy = ref<HTMLElement | null>(null);
-const galaxyFar = ref<HTMLElement | null>(null);
+const starCanvas = ref<HTMLCanvasElement | null>(null);
+const skyCanvas = ref<HTMLCanvasElement | null>(null);
 const wrapper = ref<HTMLElement | null>(null);
+const shaderReady = ref(false);
 
 let ctx: CanvasRenderingContext2D | null = null;
-let glowSprite: HTMLCanvasElement | null = null;
-let cloudSprite: HTMLCanvasElement | null = null;
+let gl: WebGLRenderingContext | null = null;
+let glowSprites: (HTMLCanvasElement | null)[] = [];
+let flareSprite: HTMLCanvasElement | null = null;
 let animationFrameId = 0;
 let resizeObserver: ResizeObserver | null = null;
+let themeObserver: MutationObserver | null = null;
 let reduceMotion = false;
 let width = 0;
 let height = 0;
+let bandWidth = 0;
 let clock = 0;
 let lastFrame = 0;
+let viewTop = 0;
+let viewBottom = 0;
+let skyBottom: [number, number, number] = [8 / 255, 47 / 255, 73 / 255];
 
-const STAR_COUNT = 460;
-const CLOUD_COUNT = 6;
-const PARALLAX_X = 76;
-const PARALLAX_Y = 46;
-const SCROLL_DEPTH = 170;
+// Depth: 1 = first icon row, larger = farther. Icon rows sit at 1–1.26 and the
+// nearest star at 1.4, so parallax never contradicts the icons covering stars.
+const STAR_COUNT = 520;
+const NEAR_DEPTH = 1.4;
+const FAR_DEPTH = 10;
+// Offsets at depth 1; every layer divides them by its depth.
+const PARALLAX_X = 44;
+const PARALLAX_Y = 26;
+const DRIFT_X = 150;
+const DRIFT_Y = 80;
+const DRIFT_SPEED = (Math.PI * 2) / 100;
+// Share of the section's scroll offset that far layers hold back.
+const SCROLL_PARALLAX = 0.35;
+const WRAP_MARGIN = 48;
+const BAND_ANGLE = -0.29;
+const BAND_DIR = { x: Math.cos(BAND_ANGLE), y: Math.sin(BAND_ANGLE) };
 const GLOW_SPRITE_SIZE = 64;
-const CLOUD_SPRITE_SIZE = 256;
+const FLARE_SPRITE_SIZE = 128;
+// Rough stellar colors, hot to cool, with how common each is among the stars
+// drawn here: blue-white, white, yellow-white, orange.
+const STAR_TINTS = [
+  { rgb: [170, 196, 255], weight: 0.22 },
+  { rgb: [236, 240, 255], weight: 0.43 },
+  { rgb: [255, 240, 214], weight: 0.25 },
+  { rgb: [255, 206, 158], weight: 0.1 },
+] as const;
+// Star dust renders at device resolution (capped); the soft nebula underneath
+// renders at half resolution or less and is upsampled by the composite pass.
+const SKY_MAX_DPR = 2;
+const SKY_PIXEL_BUDGET = 8_000_000;
+const NEBULA_MAX_SCALE = 0.5;
+const NEBULA_PIXEL_BUDGET = 400_000;
+// While animating, redraw only the rows in view plus this share of the viewport
+// above and below; the rest keeps its last frame until it scrolls in.
+const VISIBLE_PAD = 0.25;
+const NEBULA_UNIFORMS = [
+  "uResolution",
+  "uSize",
+  "uTime",
+  "uCamera",
+  "uScroll",
+  "uBandDir",
+  "uBandWidth",
+  "uBottom",
+] as const;
+const COMPOSITE_UNIFORMS = [
+  "uResolution",
+  "uSize",
+  "uTime",
+  "uCamera",
+  "uScroll",
+  "uNebula",
+] as const;
 
 interface Star {
   x: number;
   y: number;
-  z: number;
-  r: number;
+  depth: number;
+  near: number;
+  brightness: number;
   phase: number;
-  spike: boolean;
+  flare: boolean;
   tint: number;
+  color: string;
 }
 
-interface Cloud {
-  x: number;
-  y: number;
-  rx: number;
-  ry: number;
-  z: number;
-  rot: number;
+interface SkyPass<Name extends string> {
+  program: WebGLProgram;
+  uniforms: Record<Name, WebGLUniformLocation | null>;
 }
+
+let nebulaPass: SkyPass<(typeof NEBULA_UNIFORMS)[number]> | null = null;
+let compositePass: SkyPass<(typeof COMPOSITE_UNIFORMS)[number]> | null = null;
+let nebulaTarget: {
+  texture: WebGLTexture;
+  framebuffer: WebGLFramebuffer;
+  width: number;
+  height: number;
+} | null = null;
 
 const stars: Star[] = [];
-const clouds: Cloud[] = [];
 const pointer = { x: 0, y: 0 };
 const pointerTarget = { x: 0, y: 0 };
+const drift = { x: 0, y: 0 };
 let scrollShift = 0;
 let scrollShiftTarget = 0;
 
@@ -343,7 +383,7 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-function buildGlowSprite() {
+function buildGlowSprite(r: number, g: number, b: number) {
   const sprite = document.createElement("canvas");
   sprite.width = GLOW_SPRITE_SIZE;
   sprite.height = GLOW_SPRITE_SIZE;
@@ -352,279 +392,452 @@ function buildGlowSprite() {
 
   const half = GLOW_SPRITE_SIZE / 2;
   const glow = sctx.createRadialGradient(half, half, 0, half, half, half);
-  glow.addColorStop(0, "rgba(255, 255, 255, 0.9)");
-  glow.addColorStop(0.25, "rgba(230, 240, 255, 0.35)");
-  glow.addColorStop(0.6, "rgba(200, 220, 255, 0.08)");
-  glow.addColorStop(1, "rgba(200, 220, 255, 0)");
+  glow.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+  glow.addColorStop(0.12, `rgba(${r}, ${g}, ${b}, 0.55)`);
+  glow.addColorStop(0.35, `rgba(${r}, ${g}, ${b}, 0.14)`);
+  glow.addColorStop(0.65, `rgba(${r}, ${g}, ${b}, 0.035)`);
+  glow.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
   sctx.fillStyle = glow;
   sctx.fillRect(0, 0, GLOW_SPRITE_SIZE, GLOW_SPRITE_SIZE);
   return sprite;
 }
 
-function buildCloudSprite() {
+// Diffraction flare for the brightest stars: tapered spikes that fade from the
+// center, drawn once at high resolution so they stay crisp when scaled.
+function buildFlareSprite() {
   const sprite = document.createElement("canvas");
-  sprite.width = CLOUD_SPRITE_SIZE;
-  sprite.height = CLOUD_SPRITE_SIZE;
+  sprite.width = FLARE_SPRITE_SIZE;
+  sprite.height = FLARE_SPRITE_SIZE;
   const sctx = sprite.getContext("2d");
   if (!sctx) return null;
 
-  const half = CLOUD_SPRITE_SIZE / 2;
-  const glow = sctx.createRadialGradient(half, half, 0, half, half, half);
-  glow.addColorStop(0, "rgba(186, 210, 255, 0.14)");
-  glow.addColorStop(0.16, "rgba(150, 190, 240, 0.09)");
-  glow.addColorStop(0.32, "rgba(118, 170, 228, 0.055)");
-  glow.addColorStop(0.5, "rgba(90, 148, 214, 0.03)");
-  glow.addColorStop(0.68, "rgba(70, 128, 200, 0.014)");
-  glow.addColorStop(0.84, "rgba(55, 110, 185, 0.004)");
-  glow.addColorStop(1, "rgba(55, 110, 185, 0)");
-  sctx.fillStyle = glow;
-  sctx.fillRect(0, 0, CLOUD_SPRITE_SIZE, CLOUD_SPRITE_SIZE);
+  const half = FLARE_SPRITE_SIZE / 2;
+  sctx.globalCompositeOperation = "lighter";
+
+  for (const { length, angle } of [
+    { length: half, angle: 0 },
+    { length: half * 0.72, angle: Math.PI / 2 },
+  ]) {
+    const spike = sctx.createLinearGradient(-length, 0, length, 0);
+    spike.addColorStop(0, "rgba(255, 255, 255, 0)");
+    spike.addColorStop(0.38, "rgba(235, 242, 255, 0.12)");
+    spike.addColorStop(0.5, "rgba(255, 255, 255, 0.9)");
+    spike.addColorStop(0.62, "rgba(235, 242, 255, 0.12)");
+    spike.addColorStop(1, "rgba(255, 255, 255, 0)");
+    sctx.save();
+    sctx.translate(half, half);
+    sctx.rotate(angle);
+    sctx.fillStyle = spike;
+    sctx.beginPath();
+    sctx.moveTo(-length, 0);
+    sctx.lineTo(0, -1.3);
+    sctx.lineTo(length, 0);
+    sctx.lineTo(0, 1.3);
+    sctx.closePath();
+    sctx.fill();
+    sctx.restore();
+  }
+
+  const core = sctx.createRadialGradient(half, half, 0, half, half, half * 0.32);
+  core.addColorStop(0, "rgba(255, 255, 255, 0.7)");
+  core.addColorStop(0.3, "rgba(225, 236, 255, 0.18)");
+  core.addColorStop(1, "rgba(225, 236, 255, 0)");
+  sctx.fillStyle = core;
+  sctx.fillRect(0, 0, FLARE_SPRITE_SIZE, FLARE_SPRITE_SIZE);
   return sprite;
 }
 
+function compileShader(
+  context: WebGLRenderingContext,
+  type: number,
+  source: string
+) {
+  const shader = context.createShader(type);
+  if (!shader) return null;
+
+  context.shaderSource(shader, source);
+  context.compileShader(shader);
+  if (context.getShaderParameter(shader, context.COMPILE_STATUS)) return shader;
+
+  console.warn(context.getShaderInfoLog(shader));
+  context.deleteShader(shader);
+  return null;
+}
+
+function linkPass<Name extends string>(
+  context: WebGLRenderingContext,
+  fragmentSource: string,
+  uniformNames: readonly Name[]
+): SkyPass<Name> | null {
+  const vertex = compileShader(context, context.VERTEX_SHADER, SKY_VERTEX);
+  const fragment = compileShader(context, context.FRAGMENT_SHADER, fragmentSource);
+  const program = context.createProgram();
+  if (!vertex || !fragment || !program) return null;
+
+  context.attachShader(program, vertex);
+  context.attachShader(program, fragment);
+  // Both passes read the same triangle buffer from attribute 0.
+  context.bindAttribLocation(program, 0, "aPosition");
+  context.linkProgram(program);
+  if (!context.getProgramParameter(program, context.LINK_STATUS)) {
+    console.warn(context.getProgramInfoLog(program));
+    return null;
+  }
+
+  const uniforms = {} as Record<Name, WebGLUniformLocation | null>;
+  for (const name of uniformNames) {
+    uniforms[name] = context.getUniformLocation(program, name);
+  }
+  return { program, uniforms };
+}
+
+function initSky() {
+  gl = null;
+  const el = skyCanvas.value;
+  if (!el) return false;
+
+  const context = el.getContext("webgl", {
+    alpha: false,
+    antialias: false,
+    depth: false,
+    stencil: false,
+    // Rows outside the scissor must keep their last frame.
+    preserveDrawingBuffer: true,
+    powerPreference: "low-power",
+  });
+  if (!context) return false;
+
+  const nebula = linkPass(context, NEBULA_FRAGMENT, NEBULA_UNIFORMS);
+  const composite = linkPass(context, COMPOSITE_FRAGMENT, COMPOSITE_UNIFORMS);
+  const texture = context.createTexture();
+  const framebuffer = context.createFramebuffer();
+  if (!nebula || !composite || !texture || !framebuffer) return false;
+
+  // One oversized triangle covers the whole target.
+  context.bindBuffer(context.ARRAY_BUFFER, context.createBuffer());
+  context.bufferData(
+    context.ARRAY_BUFFER,
+    new Float32Array([-1, -1, 3, -1, -1, 3]),
+    context.STATIC_DRAW
+  );
+  context.enableVertexAttribArray(0);
+  context.vertexAttribPointer(0, 2, context.FLOAT, false, 0, 0);
+
+  context.bindTexture(context.TEXTURE_2D, texture);
+  context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.LINEAR);
+  context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.LINEAR);
+  context.texParameteri(context.TEXTURE_2D, context.TEXTURE_WRAP_S, context.CLAMP_TO_EDGE);
+  context.texParameteri(context.TEXTURE_2D, context.TEXTURE_WRAP_T, context.CLAMP_TO_EDGE);
+  context.enable(context.SCISSOR_TEST);
+
+  nebulaPass = nebula;
+  compositePass = composite;
+  nebulaTarget = { texture, framebuffer, width: 0, height: 0 };
+  gl = context;
+  return true;
+}
+
+// Theme presets swap --app-primary-950 at runtime and may use any CSS color
+// syntax, so let a 1px canvas resolve it to sRGB.
+function readSkyBottom() {
+  const probe = document.createElement("canvas");
+  probe.width = 1;
+  probe.height = 1;
+  const pctx = probe.getContext("2d", { willReadFrequently: true });
+  if (!pctx) return;
+
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue("--app-primary-950")
+    .trim();
+  if (!value) return;
+
+  pctx.fillStyle = value;
+  pctx.fillRect(0, 0, 1, 1);
+  const [r = 0, g = 0, b = 0] = pctx.getImageData(0, 0, 1, 1).data;
+  skyBottom = [r / 255, g / 255, b / 255];
+}
+
+function pickTint() {
+  let roll = Math.random();
+  for (const [index, tint] of STAR_TINTS.entries()) {
+    roll -= tint.weight;
+    if (roll <= 0) return index;
+  }
+  return 0;
+}
+
+function starColor(near: number, tint: number) {
+  // Far stars sink into the blue haze; near stars show their own temperature.
+  const [ownR, ownG, ownB] = (STAR_TINTS[tint] ?? STAR_TINTS[1]).rgb;
+  const mixNear = Math.pow(near, 0.6);
+  const r = Math.round(138 + (ownR - 138) * mixNear);
+  const g = Math.round(160 + (ownG - 160) * mixNear);
+  const b = Math.round(212 + (ownB - 212) * mixNear);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 function createStar(): Star {
-  const z = Math.pow(Math.random(), 1.9) * 0.9 + 0.06;
-  const alongBand = Math.random() < 0.56;
+  // Most stars are far and faint; a few come close.
+  const near = Math.pow(Math.random(), 2.2);
+  const depth = 1 / (1 / FAR_DEPTH + near * (1 / NEAR_DEPTH - 1 / FAR_DEPTH));
+  const tint = pickTint();
   let x = Math.random() * width;
   let y = Math.random() * height;
 
-  if (alongBand) {
-    const t = Math.random();
-    const scatter = (Math.random() - 0.5) * height * 0.24;
-    x = t * width;
-    y = height * 0.26 + t * height * 0.4 + scatter;
+  if (Math.random() < 0.5) {
+    const along = ((Math.random() - 0.5) * width) / BAND_DIR.x;
+    const across =
+      (Math.random() + Math.random() + Math.random() - 1.5) * bandWidth * 0.9;
+    x = width / 2 + along * BAND_DIR.x - across * BAND_DIR.y;
+    y = height / 2 + along * BAND_DIR.y + across * BAND_DIR.x;
   }
 
   return {
     x,
     y,
-    z,
-    r: 0.14 + z * 2.05,
+    depth,
+    near,
+    brightness: 0.55 + Math.random() * 0.45,
     phase: Math.random() * Math.PI * 2,
-    spike: z > 0.84 && Math.random() < 0.4,
-    tint: Math.random(),
+    flare: near > 0.84 && Math.random() < 0.35,
+    tint,
+    color: starColor(near, tint),
   };
 }
 
-function createCloud(): Cloud {
-  const t = Math.random();
-  const scatter = (Math.random() - 0.5) * height * 0.16;
-
-  return {
-    x: t * width,
-    y: height * 0.28 + t * height * 0.38 + scatter,
-    rx: 160 + Math.random() * 220,
-    ry: 70 + Math.random() * 90,
-    z: 0.08 + Math.random() * 0.22,
-    rot: -0.42 + Math.random() * 0.18,
-  };
-}
-
-function sizeCanvas() {
-  const el = canvas.value;
+function sizeCanvases() {
+  const el = starCanvas.value;
   if (!el) return;
 
-  const nextWidth = el.offsetWidth;
-  const nextHeight = el.offsetHeight;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  width = el.offsetWidth;
+  height = el.offsetHeight;
+  bandWidth = Math.min(Math.max(width * 0.16, 120), 360);
 
-  width = nextWidth;
-  height = nextHeight;
-  el.width = Math.floor(nextWidth * dpr);
-  el.height = Math.floor(nextHeight * dpr);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  el.width = Math.floor(width * dpr);
+  el.height = Math.floor(height * dpr);
   ctx = el.getContext("2d");
   ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
-  if (ctx) ctx.imageSmoothingEnabled = true;
+
+  const sky = skyCanvas.value;
+  if (!gl || !sky || !nebulaTarget) return;
+
+  const area = Math.max(1, width * height);
+  const skyScale = Math.min(
+    Math.min(window.devicePixelRatio || 1, SKY_MAX_DPR),
+    Math.sqrt(SKY_PIXEL_BUDGET / area)
+  );
+  sky.width = Math.max(1, Math.round(width * skyScale));
+  sky.height = Math.max(1, Math.round(height * skyScale));
+
+  const nebulaScale = Math.min(
+    NEBULA_MAX_SCALE,
+    Math.sqrt(NEBULA_PIXEL_BUDGET / area)
+  );
+  nebulaTarget.width = Math.max(1, Math.round(width * nebulaScale));
+  nebulaTarget.height = Math.max(1, Math.round(height * nebulaScale));
+  gl.bindTexture(gl.TEXTURE_2D, nebulaTarget.texture);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    nebulaTarget.width,
+    nebulaTarget.height,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    null
+  );
+  gl.bindFramebuffer(gl.FRAMEBUFFER, nebulaTarget.framebuffer);
+  gl.framebufferTexture2D(
+    gl.FRAMEBUFFER,
+    gl.COLOR_ATTACHMENT0,
+    gl.TEXTURE_2D,
+    nebulaTarget.texture,
+    0
+  );
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }
 
 function seedStars() {
   stars.length = 0;
-  clouds.length = 0;
   if (width === 0 || height === 0) return;
   for (let i = 0; i < STAR_COUNT; i++) {
     stars.push(createStar());
   }
-  for (let i = 0; i < CLOUD_COUNT; i++) {
-    clouds.push(createCloud());
-  }
-  stars.sort((a, b) => a.z - b.z);
+  // Far first, so near stars paint over them.
+  stars.sort((a, b) => b.depth - a.depth);
 }
 
-function updateScrollShift() {
+function updateScrollTarget() {
   const section = wrapper.value;
-  if (!section) {
-    scrollShift = 0;
-    return;
-  }
-
-  const rect = section.getBoundingClientRect();
-  const mid = rect.top + rect.height / 2;
-  scrollShiftTarget =
-    ((window.innerHeight / 2 - mid) / window.innerHeight) * SCROLL_DEPTH;
-}
-
-function applyParallax() {
-  const section = wrapper.value;
-
-  if (reduceMotion) {
-    if (galaxy.value) galaxy.value.style.transform = "none";
-    if (galaxyFar.value) galaxyFar.value.style.transform = "none";
-    if (hazeFar.value) hazeFar.value.style.transform = "none";
-    if (hazeNear.value) hazeNear.value.style.transform = "none";
-    if (section) {
-      section.style.setProperty("--stack-px", "0");
-      section.style.setProperty("--stack-py", "0");
-      section.style.setProperty("--stack-sy", "0");
-    }
-    return;
-  }
-
-  const farX = pointer.x * 16;
-  const farY = pointer.y * 11 + scrollShift * 0.14;
-  const nearX = pointer.x * 38;
-  const nearY = pointer.y * 22 + scrollShift * 0.32;
-  const galaxyX = pointer.x * 9;
-  const galaxyY = pointer.y * 6 + scrollShift * 0.08;
-  const galaxyFarX = pointer.x * 4;
-  const galaxyFarY = pointer.y * 3 + scrollShift * 0.04;
-
-  if (galaxyFar.value) {
-    galaxyFar.value.style.transform = `translate3d(${galaxyFarX}px, ${galaxyFarY}px, 0)`;
-  }
-  if (galaxy.value) {
-    galaxy.value.style.transform = `translate3d(${galaxyX}px, ${galaxyY}px, 0)`;
-  }
-  if (hazeFar.value) {
-    hazeFar.value.style.transform = `translate3d(${farX}px, ${farY}px, 0)`;
-  }
-  if (hazeNear.value) {
-    hazeNear.value.style.transform = `translate3d(${nearX}px, ${nearY}px, 0)`;
-  }
-
   if (!section) return;
 
-  section.style.setProperty("--stack-px", pointer.x.toFixed(4));
-  section.style.setProperty("--stack-py", pointer.y.toFixed(4));
-  section.style.setProperty("--stack-sy", scrollShift.toFixed(2));
+  const rect = section.getBoundingClientRect();
+  scrollShiftTarget = window.innerHeight / 2 - (rect.top + rect.height / 2);
+  viewTop = -rect.top;
+  viewBottom = window.innerHeight - rect.top;
 }
 
-function wrapStar(star: Star) {
-  const margin = 64;
-
-  if (star.x < -margin) star.x = width + margin;
-  if (star.x > width + margin) star.x = -margin;
-  if (star.y < -margin) star.y = height + margin;
-  if (star.y > height + margin) star.y = -margin;
+function wrap(value: number, size: number) {
+  const span = size + WRAP_MARGIN * 2;
+  return ((((value + WRAP_MARGIN) % span) + span) % span) - WRAP_MARGIN;
 }
 
-function drawClouds() {
-  if (!ctx || !cloudSprite) return;
-
-  for (const cloud of clouds) {
-    const x = cloud.x + pointer.x * cloud.z * PARALLAX_X;
-    const y = cloud.y + pointer.y * cloud.z * PARALLAX_Y + scrollShift * cloud.z;
-
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(cloud.rot);
-    ctx.drawImage(
-      cloudSprite,
-      -cloud.rx,
-      -cloud.ry,
-      cloud.rx * 2,
-      cloud.ry * 2
-    );
-    ctx.restore();
-  }
+// Same falloff as the shader's well, so stars dim with the sky at the edges.
+function edgeShade(x: number, y: number) {
+  const ex = (x / width - 0.5) / 0.74;
+  const ey = (y / height - 0.48) / 0.64;
+  return 1 - 0.74 * Math.pow(Math.min(Math.hypot(ex, ey), 1), 1.6);
 }
 
-function drawSpike(x: number, y: number, z: number, twinkle: number) {
-  if (!ctx) return;
-
-  const span = (6 + z * 10) * (0.85 + twinkle * 0.15);
-  ctx.strokeStyle = `rgba(255, 255, 255, ${(0.14 + z * 0.2) * twinkle})`;
-  ctx.lineWidth = 0.7;
-  ctx.beginPath();
-  ctx.moveTo(x - span, y);
-  ctx.lineTo(x + span, y);
-  ctx.moveTo(x, y - span * 0.7);
-  ctx.lineTo(x, y + span * 0.7);
-  ctx.stroke();
-}
-
-function starColor(star: Star) {
-  // tint 0 = cool blue-white, 1 = warm amber-white; near stars whiter
-  const warm = star.tint;
-  const r = Math.round(160 + star.z * 80 + warm * 15);
-  const g = Math.round(175 + star.z * 70 + warm * 6);
-  const b = Math.round(225 + star.z * 30 - warm * 40);
-  return { r, g, b };
-}
-
-function drawStars(animate: boolean, dt: number) {
+function drawStars(cameraX: number, cameraY: number, scroll: number) {
   if (!ctx || width === 0 || height === 0) return;
 
   ctx.clearRect(0, 0, width, height);
-  drawClouds();
-
-  const drift = dt * 60;
 
   for (const star of stars) {
-    if (animate) {
-      star.x += (0.014 + star.z * 0.06) * drift;
-      star.y += (0.008 + star.z * 0.04) * drift;
-      wrapStar(star);
-    }
-
-    const x = star.x + pointer.x * star.z * PARALLAX_X;
-    const y = star.y + pointer.y * star.z * PARALLAX_Y + scrollShift * star.z;
+    const scale = 1 / star.depth;
+    const x = wrap(star.x + cameraX * scale, width);
+    const y = wrap(star.y + cameraY * scale + scroll * (1 - scale), height);
+    const shade = edgeShade(x, y);
+    // Far stars twinkle more; near ones hold steady.
     const twinkle = reduceMotion
       ? 1
-      : 0.74 + 0.26 * Math.sin(clock * (0.4 + star.z * 0.5) + star.phase);
-    const alpha = (0.07 + star.z * 0.85) * twinkle;
-    const { r, g, b } = starColor(star);
+      : 1 -
+        (0.3 - star.near * 0.22) *
+          (0.5 +
+            0.5 * Math.sin(clock * (0.5 + (1 - star.near) * 0.9) + star.phase));
+    const light = star.brightness * twinkle * shade;
 
-    if (star.z > 0.62 && glowSprite) {
-      const glowSize = (8 + star.z * 22) * (0.9 + twinkle * 0.1);
-      ctx.globalAlpha = 0.22 * star.z * twinkle;
-      ctx.drawImage(
-        glowSprite,
-        x - glowSize / 2,
-        y - glowSize / 2,
-        glowSize,
-        glowSize
-      );
-      ctx.globalAlpha = 1;
+    const glow = glowSprites[star.tint];
+    if (star.near > 0.3 && glow) {
+      const glowSize = (5 + star.near * 24) * star.brightness;
+      ctx.globalAlpha = 0.36 * star.near * twinkle * shade;
+      ctx.drawImage(glow, x - glowSize / 2, y - glowSize / 2, glowSize, glowSize);
     }
 
+    ctx.globalAlpha = (0.18 + star.near * 0.8) * light;
+    ctx.fillStyle = star.color;
     ctx.beginPath();
-    ctx.arc(x, y, star.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    ctx.arc(x, y, 0.32 + star.near * 0.9 * star.brightness, 0, Math.PI * 2);
     ctx.fill();
 
-    if (star.spike) {
-      drawSpike(x, y, star.z, twinkle);
+    if (star.flare && flareSprite) {
+      const flareSize = (16 + star.near * 40) * star.brightness;
+      ctx.globalAlpha = 0.55 * light;
+      ctx.drawImage(
+        flareSprite,
+        x - flareSize / 2,
+        y - flareSize / 2,
+        flareSize,
+        flareSize
+      );
     }
   }
+
+  ctx.globalAlpha = 1;
+}
+
+// Scissor to section rows [top, bottom] (CSS px, y down) on a target whose
+// buffer is `targetHeight` px tall; GL counts rows from the bottom.
+function scissorRows(targetWidth: number, targetHeight: number, top: number, bottom: number) {
+  if (!gl) return;
+
+  const scale = targetHeight / height;
+  const y = Math.max(0, Math.floor((height - bottom) * scale));
+  gl.scissor(0, y, targetWidth, Math.ceil((bottom - top) * scale) + 1);
+}
+
+function drawSky(
+  cameraX: number,
+  cameraY: number,
+  scroll: number,
+  visibleOnly: boolean
+) {
+  const sky = skyCanvas.value;
+  if (!gl || !sky || !nebulaPass || !compositePass || !nebulaTarget) return;
+  if (height === 0) return;
+
+  let top = 0;
+  let bottom = height;
+  if (visibleOnly) {
+    const pad = window.innerHeight * VISIBLE_PAD;
+    top = Math.max(0, viewTop - pad);
+    bottom = Math.min(height, viewBottom + pad);
+    if (bottom <= top) return;
+  }
+
+  // Pass 1: soft nebula into the half-resolution texture
+  gl.bindFramebuffer(gl.FRAMEBUFFER, nebulaTarget.framebuffer);
+  gl.viewport(0, 0, nebulaTarget.width, nebulaTarget.height);
+  scissorRows(nebulaTarget.width, nebulaTarget.height, top, bottom);
+  gl.useProgram(nebulaPass.program);
+  const nebula = nebulaPass.uniforms;
+  gl.uniform2f(nebula.uResolution, nebulaTarget.width, nebulaTarget.height);
+  gl.uniform2f(nebula.uSize, width, height);
+  gl.uniform1f(nebula.uTime, clock);
+  gl.uniform2f(nebula.uCamera, cameraX, cameraY);
+  gl.uniform1f(nebula.uScroll, scroll);
+  gl.uniform2f(nebula.uBandDir, BAND_DIR.x, BAND_DIR.y);
+  gl.uniform1f(nebula.uBandWidth, bandWidth);
+  gl.uniform3fv(nebula.uBottom, skyBottom);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+  // Pass 2: upsample, star dust, edge well and dither onto the canvas
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, sky.width, sky.height);
+  scissorRows(sky.width, sky.height, top, bottom);
+  gl.useProgram(compositePass.program);
+  const composite = compositePass.uniforms;
+  gl.uniform2f(composite.uResolution, sky.width, sky.height);
+  gl.uniform2f(composite.uSize, width, height);
+  gl.uniform1f(composite.uTime, clock);
+  gl.uniform2f(composite.uCamera, cameraX, cameraY);
+  gl.uniform1f(composite.uScroll, scroll);
+  gl.uniform1i(composite.uNebula, 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+// `visibleOnly` is for animation frames; one-off draws (mount, resize, theme,
+// reduced motion) repaint the whole pane.
+function drawFrame(visibleOnly = false) {
+  const cameraX = drift.x + pointer.x * PARALLAX_X;
+  const cameraY = drift.y + pointer.y * PARALLAX_Y;
+  const scroll = scrollShift * SCROLL_PARALLAX;
+
+  // Icon rows follow pointer and scroll only; the drift belongs to the sky.
+  const section = wrapper.value;
+  if (section) {
+    section.style.setProperty("--stack-px", (pointer.x * PARALLAX_X).toFixed(2));
+    section.style.setProperty("--stack-py", (pointer.y * PARALLAX_Y).toFixed(2));
+    section.style.setProperty("--stack-sy", scroll.toFixed(2));
+  }
+
+  drawSky(cameraX, cameraY, scroll, visibleOnly);
+  drawStars(cameraX, cameraY, scroll);
 }
 
 function tick(now: number) {
   const dt = lastFrame ? Math.min((now - lastFrame) / 1000, 0.05) : 1 / 60;
   lastFrame = now;
-  clock = now * 0.001;
+  // Advance only while running, so the sky resumes where it stopped.
+  clock += dt;
 
-  // frame-rate independent damping: ~ 0.08/frame at 60fps
+  // Frame-rate independent damping
   const pointerEase = 1 - Math.exp(-dt * 5.5);
-  const scrollEase = 1 - Math.exp(-dt * 7);
+  const scrollEase = 1 - Math.exp(-dt * 8);
 
   pointer.x += (pointerTarget.x - pointer.x) * pointerEase;
   pointer.y += (pointerTarget.y - pointer.y) * pointerEase;
 
-  updateScrollShift();
+  updateScrollTarget();
   scrollShift += (scrollShiftTarget - scrollShift) * scrollEase;
 
-  applyParallax();
-  drawStars(true, dt);
+  drift.x = Math.sin(clock * DRIFT_SPEED) * DRIFT_X;
+  drift.y = Math.sin(clock * DRIFT_SPEED * 1.37 + 1.3) * DRIFT_Y;
+
+  drawFrame(true);
   animationFrameId = requestAnimationFrame(tick);
 }
 
@@ -647,15 +860,9 @@ function stopAnimation() {
   lastFrame = 0;
 }
 
+// Reduced motion keeps the single static frame drawn on mount and resize.
 function syncAnimation() {
-  if (reduceMotion) {
-    stopAnimation();
-    updateScrollShift();
-    scrollShift = scrollShiftTarget;
-    applyParallax();
-    drawStars(false, 0);
-    return;
-  }
+  if (reduceMotion) return;
 
   if (sectionInView()) {
     startAnimation();
@@ -666,7 +873,7 @@ function syncAnimation() {
 }
 
 function updatePointer(event: MouseEvent) {
-  const el = canvas.value;
+  const el = starCanvas.value;
   if (!el) return;
 
   const rect = el.getBoundingClientRect();
@@ -684,37 +891,58 @@ function updatePointer(event: MouseEvent) {
 
 onMounted(() => {
   reduceMotion = prefersReducedMotion();
-  glowSprite = buildGlowSprite();
-  cloudSprite = buildCloudSprite();
-  sizeCanvas();
+  glowSprites = STAR_TINTS.map(({ rgb: [r, g, b] }) => buildGlowSprite(r, g, b));
+  flareSprite = buildFlareSprite();
+  shaderReady.value = initSky();
+  readSkyBottom();
+  sizeCanvases();
   seedStars();
-  updateScrollShift();
-  scrollShift = scrollShiftTarget;
-  applyParallax();
-  drawStars(false, 0);
+  if (!reduceMotion) {
+    updateScrollTarget();
+    scrollShift = scrollShiftTarget;
+  }
+  drawFrame();
   syncAnimation();
 
-  if (canvas.value) {
+  if (starCanvas.value) {
     resizeObserver = new ResizeObserver(() => {
-      sizeCanvas();
+      sizeCanvases();
       seedStars();
-      drawStars(false, 0);
+      drawFrame();
     });
-    resizeObserver.observe(canvas.value);
+    resizeObserver.observe(starCanvas.value);
   }
+
+  themeObserver = new MutationObserver(() => {
+    readSkyBottom();
+    if (!animationFrameId) drawFrame();
+  });
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
 });
 
 useEventListener("scroll", syncAnimation, { passive: true });
+useEventListener("resize", syncAnimation);
 useEventListener("mousemove", updatePointer);
-useEventListener("resize", () => {
-  sizeCanvas();
-  seedStars();
-  syncAnimation();
+useEventListener(skyCanvas, "webglcontextlost", (event: Event) => {
+  event.preventDefault();
+  gl = null;
+  shaderReady.value = false;
+});
+useEventListener(skyCanvas, "webglcontextrestored", () => {
+  shaderReady.value = initSky();
+  sizeCanvases();
+  drawFrame();
 });
 
 onUnmounted(() => {
   stopAnimation();
   resizeObserver?.disconnect();
+  themeObserver?.disconnect();
+  // Browsers cap live WebGL contexts; free this one when leaving the page.
+  gl?.getExtension("WEBGL_lose_context")?.loseContext();
 });
 </script>
 
@@ -741,78 +969,11 @@ onUnmounted(() => {
     inset 0 -1px 0 rgb(0 0 0 / 0.5);
 }
 
-.stack-layer {
-  will-change: transform;
-  backface-visibility: hidden;
+.stack-shader {
+  transition: opacity 700ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.stack-haze,
-.stack-galaxy {
-  position: absolute;
-  inset: -20%;
-  pointer-events: none;
-}
-
-.stack-galaxy {
-  inset: -10% -6%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgb(80 130 200 / 0.03) 12%,
-    rgb(110 160 220 / 0.07) 28%,
-    rgb(210 225 255 / 0.14) 50%,
-    rgb(90 155 215 / 0.07) 72%,
-    rgb(70 150 210 / 0.03) 86%,
-    transparent 100%
-  );
-  filter: blur(56px);
-  transform: rotate(-18deg);
-}
-
-.stack-galaxy-far {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgb(40 80 160 / 0.02) 16%,
-    rgb(80 130 200 / 0.05) 32%,
-    rgb(120 160 230 / 0.08) 50%,
-    rgb(70 130 200 / 0.045) 68%,
-    rgb(50 110 180 / 0.02) 84%,
-    transparent 100%
-  );
-  filter: blur(80px);
-  transform: rotate(-14deg);
-}
-
-.stack-haze {
-  border-radius: 50%;
-  filter: blur(88px);
-}
-
-.stack-haze-far {
-  background: radial-gradient(
-    ellipse at 50% 48%,
-    rgb(30 64 175 / 0.28) 0%,
-    rgb(30 64 175 / 0.16) 22%,
-    rgb(30 64 175 / 0.08) 42%,
-    rgb(30 64 175 / 0.03) 62%,
-    rgb(30 64 175 / 0.01) 80%,
-    transparent 100%
-  );
-}
-
-.stack-haze-near {
-  background: radial-gradient(
-    ellipse at 50% 50%,
-    rgb(224 242 254 / 0.11) 0%,
-    rgb(186 230 253 / 0.06) 26%,
-    rgb(186 230 253 / 0.025) 50%,
-    rgb(186 230 253 / 0.008) 72%,
-    transparent 100%
-  );
-  filter: blur(72px);
-}
-
+/* Sits under the opaque shader canvas: seen while it fades in, or when WebGL is unavailable. */
 .stack-well {
   background: radial-gradient(
     ellipse 74% 64% at 50% 48%,
@@ -823,18 +984,19 @@ onUnmounted(() => {
   );
 }
 
-.tech-stack-group {
-  --group-depth: 1;
-}
-
+/* Same camera rule as the sky: pointer / depth, scroll * (1 - 1 / depth). */
 .stack-icons {
+  --row-scale: calc(1 / var(--row-depth, 1));
   will-change: transform;
   backface-visibility: hidden;
   transform: translate3d(
-    calc(var(--stack-px, 0) * var(--group-depth) * 44px),
+    calc(var(--stack-px, 0) * var(--row-scale) * 1px),
     calc(
-      var(--stack-py, 0) * var(--group-depth) * 26px + var(--stack-sy, 0) *
-        var(--group-depth) * 0.42px
+      (
+          var(--stack-py, 0) * var(--row-scale) + var(--stack-sy, 0) *
+            (1 - var(--row-scale))
+        ) *
+        1px
     ),
     0
   );
@@ -882,18 +1044,9 @@ onUnmounted(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stack-layer,
   .stack-icons {
     will-change: auto;
     transform: none;
-  }
-
-  .stack-galaxy {
-    transform: rotate(-18deg);
-  }
-
-  .stack-galaxy-far {
-    transform: rotate(-14deg);
   }
 
   .tech-stack-item {
