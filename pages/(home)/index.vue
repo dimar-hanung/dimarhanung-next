@@ -237,13 +237,14 @@
         </main>
       </div>
     </div>
-    <SectionStack />
     <!-- <SectionApaKataOrang /> -->
 
     <div class="mt-28">
       <SectionProject />
     </div>
     <SectionMotivasi />
+    <SectionStack />
+    <SectionFooter class="mt-24" />
   </div>
 </template>
 
@@ -267,6 +268,9 @@ const SectionProject = defineAsyncComponent(
 
 const SectionMotivasi = defineAsyncComponent(
   () => import("./components/SectionMotivasi.vue")
+);
+const SectionFooter = defineAsyncComponent(
+  () => import("./components/SectionFooter.vue")
 );
 const SectionApaKataOrang = defineAsyncComponent(
   () => import("./components/SectionApaKataOrang.vue")
