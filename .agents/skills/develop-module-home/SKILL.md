@@ -5,7 +5,9 @@ description: Building or changing the home page (`pages/(home)/`), especially th
 
 ## When to Use
 
-Changing anything under `pages/(home)/` — hero, "Find Me", the tech-stack starfield (`SectionStack`), or the project cards below it.
+Changing anything under `pages/(home)/` — hero, "Find Me", the project cards, the quote, the tech-stack starfield (`SectionStack`), or the footer.
+
+Page order: hero → Challenge Me / Portofolio / Find Me → `SectionProject` → `SectionMotivasi` → `SectionStack` → `SectionFooter` (`mt-24` gap below the sky window).
 
 ## Key locations
 
@@ -15,6 +17,7 @@ Changing anything under `pages/(home)/` — hero, "Find Me", the tech-stack star
 - `pages/(home)/components/SectionStack.vue` — tech-stack "space" section: WebGL sky canvas (Milky Way + star dust) + 2D canvas for resolved stars, depth camera, parallax icon rows
 - `pages/(home)/components/stack-sky-shader.ts` — GLSL: `NEBULA_FRAGMENT` (half-res Milky Way into a texture) and `COMPOSITE_FRAGMENT` (device-res upsample, star dust, well, dither)
 - `pages/(home)/components/CardParallax.vue` — pointer-parallax card pattern reused for reference
+- `pages/(home)/components/SectionFooter.vue` — home footer, last on the page after `SectionStack`: display-size email CTA + copy button, live WIB time (`ClientOnly`), "On this site" / "Elsewhere" link lists, bottom bar with source link and back-to-top. Sits on the page bg with a `border-primary-500/25` top hairline; no cards, no social icon circles, all text ≥16px.
 - `components/ui/tooltip.vue` — custom tooltip used for icon names (mouseenter/leave, show 60ms / hide 80ms, `pointer-events: none`)
 
 ## References
