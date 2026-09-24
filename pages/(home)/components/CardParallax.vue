@@ -63,7 +63,7 @@
               :style="{ transform: layerTransform(30, 10) }"
             >
               <h1
-                class="text-4xl md:text-5xl font-bold mb-3 tracking-tight bg-clip-text text-transparent bg-linear-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400"
+                class="text-4xl md:text-5xl font-bold pb-[0.15em] mb-1.5 tracking-tight bg-clip-text text-transparent bg-linear-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400"
               >
                 Dimar Hanung
               </h1>
