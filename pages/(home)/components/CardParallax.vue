@@ -16,6 +16,7 @@
     >
       <!-- Glass card -->
       <div
+        data-grid-hole
         class="relative overflow-hidden bg-white/80 dark:bg-slate-900/40 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-3xl shadow-2xl p-8 md:p-10 text-slate-900 dark:text-white transition-all duration-300 ease-out"
         :style="{
           transform: 'translateZ(20px)',
