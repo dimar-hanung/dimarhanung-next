@@ -52,7 +52,7 @@
         role="button"
         tabindex="0"
         @click="isOpen = !isOpen"
-        class="text-2xl text-primary-500 cursor-pointer h-9 w-9 rounded-sm grid place-items-center hover:bg-muted-200/50 dark:hover:bg-muted-700"
+        class="text-2xl text-primary-500 cursor-pointer h-9 w-9 rounded-lg grid place-items-center hover:bg-muted-200/60 dark:hover:bg-white/5 transition-colors"
       >
         <Icon name="i-heroicons-paint-brush-solid"></Icon>
       </WaveSurface>
