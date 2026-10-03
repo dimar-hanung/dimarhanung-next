@@ -2,30 +2,24 @@
   <div
     class="portofolio-container bg-muted-200 dark:bg-muted-900 pb-4 min-h-screen transition-all dark:text-white"
   >
-    <t-nav class="relative z-50"></t-nav>
+    <t-nav overlay class="relative z-50"></t-nav>
 
-    <div class="py-28 border-y border-gray-200 bg-white relative overflow-hidden">
-      <div
-        class="absolute inset-0 h-full w-full bg-muted-100 dark:bg-muted-900 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]"
-      ></div>
-      
-      <!-- Gradient orbs -->
-      <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full blur-3xl"></div>
-      <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-500/15 to-cyan-500/15 rounded-full blur-3xl"></div>
-      
+    <div class="py-28 border-b border-gray-200 bg-white relative overflow-hidden">
+      <HeroGrid />
+
       <header class="flex flex-wrap container mx-auto relative z-10">
         <div class="w-1/2 grow p-2 min-w-[230px]">
           <section>
             <grid-background class="h-96 py-12 flex items-center">
-              <div>
-                <div class="flex items-center gap-2 mb-2">
-                  <span class="px-3 py-1 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full">Software Engineer</span>
-                </div>
+              <HeroDraggable data-grid-hole class="w-fit">
+                <p class="mb-2 text-base font-medium text-indigo-600 dark:text-indigo-400">
+                  Software Engineer · 6+ years
+                </p>
                 <h1 class="mt-4 text-5xl font-bold text-gray-900 dark:text-white">
                   Dimar <span class="text-indigo-600 dark:text-indigo-400">Hanung</span>
                 </h1>
                 <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-md">
-                  Building digital experiences with passion. Specializing in full-stack development and creating impactful solutions.
+                  I build fast with AI, and it holds up. Speed comes from vibe coding; stability comes from 6+ years of shipping software professionally.
                 </p>
                 <div class="mt-6 flex flex-wrap gap-3">
                   <a href="https://github.com/dimar-hanung" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
@@ -51,11 +45,13 @@
                     Universitas Terbuka
                   </span>
                 </div>
-              </div>
+              </HeroDraggable>
             </grid-background>
           </section>
         </div>
-        <CardParallax class="w-1/2 grow p-2 min-w-[230px]"></CardParallax>
+        <HeroDraggable class="w-1/2 grow p-2 md:p-0 min-w-[230px]">
+          <CardParallax />
+        </HeroDraggable>
       </header>
     </div>
 
@@ -239,6 +235,8 @@
     </div>
     <!-- <SectionApaKataOrang /> -->
 
+    <SectionHowIWork class="mt-16" />
+
     <div class="mt-28">
       <SectionProject />
     </div>
@@ -249,6 +247,9 @@
 </template>
 
 <script setup lang="ts">
+import HeroGrid from "./components/HeroGrid.vue";
+import HeroDraggable from "./components/HeroDraggable.vue";
+
 const CardChallenge = defineAsyncComponent(
   () => import("./components/CardChallenge.vue")
 );
@@ -260,6 +261,10 @@ const CardParallax = defineAsyncComponent(
 );
 const SectionStack = defineAsyncComponent(
   () => import("./components/SectionStack.vue")
+);
+
+const SectionHowIWork = defineAsyncComponent(
+  () => import("./components/SectionHowIWork.vue")
 );
 
 const SectionProject = defineAsyncComponent(
@@ -279,9 +284,9 @@ const SectionApaKataOrang = defineAsyncComponent(
 useSeoMeta({
   title: "Dimar Hanung | Software Engineer",
   description:
-    "Dimar Hanung is a Software Engineer at Universitas Terbuka with expertise in frontend development. Building digital experiences with passion.",
+    "Dimar Hanung is a Software Engineer at Universitas Terbuka with 6+ years of professional experience, building fast with AI while keeping the result stable.",
   ogDescription:
-    "Dimar Hanung is a Software Engineer at Universitas Terbuka with expertise in frontend development. Building digital experiences with passion.",
+    "Dimar Hanung is a Software Engineer at Universitas Terbuka with 6+ years of professional experience, building fast with AI while keeping the result stable.",
   author: "Dimar Hanung",
   ogImage: "https://i.ibb.co/SfVpQCz/IMG20211117182339.jpg",
   ogImageAlt: "Dimar Hanung",
