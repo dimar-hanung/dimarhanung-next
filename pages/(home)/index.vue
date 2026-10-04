@@ -125,15 +125,15 @@
                     </div>
                   </t-card-cool>
                 </NuxtLink>
-                <NuxtLink to="/challenges/frontend-mentor" class="portfolio-link">
+                <NuxtLink to="/challenges/ui-general" class="portfolio-link">
                   <t-card-cool class="h-full cursor-pointer">
                     <div class="flex items-center gap-1 text-sm text-muted-500 dark:text-muted-400">
                       <Icon name="mdi:target" class="text-base" />
-                      UI Challenges
+                      Challenges
                     </div>
                     <div class="flex w-full justify-between place-items-center mt-2">
                       <div class="flex gap-2 place-items-center font-semibold">
-                        Front-End Mentor
+                        UI Challenges
                       </div>
                       <div class="flex place-items-center gap-2">
                         <span class="text-2xl font-bold">10+</span>
@@ -241,7 +241,7 @@
       <SectionProject />
     </div>
     <SectionMotivasi />
-    <SectionStack />
+    <SectionStack class="mt-16" />
     <SectionFooter class="mt-24" />
   </div>
 </template>
