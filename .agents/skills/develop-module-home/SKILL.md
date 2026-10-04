@@ -1,13 +1,13 @@
 ---
 name: develop-module-home
-description: Building or changing the home page (`pages/(home)/`), especially the tech-stack starfield section (`SectionStack.vue`) and its canvas/parallax/edge-fade behavior.
+description: Building or changing the home page (`pages/(home)/`), including the simple tech-stack section (`SectionStack.vue`), and the Milky Way starfield stack that now lives on `/challenges/ui-general` (canvas/parallax/edge-fade behavior).
 ---
 
 ## When to Use
 
-Changing anything under `pages/(home)/` — hero, "Find Me", the project cards, the quote, the tech-stack starfield (`SectionStack`), or the footer.
+Changing anything under `pages/(home)/` — hero, "Find Me", the project cards, the quote, the simple tech stack (`SectionStack`), or the footer. Also changing the Milky Way stack on `/challenges/ui-general`.
 
-Page order: hero → Challenge Me / Portofolio / Find Me → `SectionHowIWork` → `SectionProject` → `SectionMotivasi` → `SectionStack` → `SectionFooter` (`mt-24` gap below the sky window).
+Page order: hero → Challenge Me / Portofolio / Find Me → `SectionHowIWork` → `SectionProject` → `SectionMotivasi` → `SectionStack` (`mt-16`) → `SectionFooter` (`mt-24`).
 
 ## Key locations
 
@@ -16,8 +16,11 @@ Page order: hero → Challenge Me / Portofolio / Find Me → `SectionHowIWork` �
 - `pages/(home)/components/HeroDraggable.vue` — wraps the hero text block (`w-fit`, so the hole hugs the text) and the `CardParallax` column. Mouse-only drag (touch keeps page scroll), 4px threshold so link clicks still work; a drag that starts on a link swallows that one click (reset on the next press). Release hands the smoothed pointer velocity to a spring home (stiffness 170, damping 16, one soft overshoot); grabbing mid-spring picks it up where it is. The block swings up to 8° with horizontal speed, around the grab point (`transform-origin`). Transform is written straight to `style` (no reactive per-frame state). Every moving frame and every resize dispatches a bubbling `hero-grid-wake`. Reduced motion: drop snaps home without the spring.
 - `components/home/project.vue` — home project listing; "see more" uses `gradient-button.vue` (name leftover; it is a flat primary CTA)
 - `components/ui/gradient-button.vue` — home "Lihat N proyek lain" control. Flat `bg-primary-600`, no pink/purple/blue gradient, no pulse, no hover-scale.
-- `pages/(home)/components/SectionStack.vue` — tech-stack "space" section: WebGL sky canvas (Milky Way + star dust) + 2D canvas for resolved stars, depth camera, parallax icon rows
-- `pages/(home)/components/stack-sky-shader.ts` — GLSL: `NEBULA_FRAGMENT` (half-res Milky Way into a texture) and `COMPOSITE_FRAGMENT` (device-res upsample, star dust, well, dither)
+- `pages/(home)/components/SectionStack.vue` — simple tech-stack section in `SectionHowIWork` style: eyebrow "Stack", heading "Tools I ship with", hairline top border, typed `groups` array (Frontend / Backend & Data / AI & Tooling) rendered as a `divide-y` `<dl>`; each tool is a chip (`bg-muted-50 dark:bg-muted-800`, 24px brand-color icon + visible name). No canvas, no motion directive, no tooltip, no background. Black monochrome marks (Cursor, Copilot, OpenAI) set `darkInvert` so they stay visible on the dark chip; Copilot uses `selfhst:github-copilot` (the `-light` variant is white and vanishes on light chips).
+- `pages/(home)/index.vue` Portofolio card "Challenges / UI Challenges / 10+" links to `/challenges/ui-general`.
+- `pages/challenges/ui-general/index.vue` — "UI General Challenges" page inside the dark challenges layout (`pages/challenges.vue`), listed in the sidebar as group "UI General" via `composables/useChallenges.ts` (icon `fa star`, registered in `plugins/fontAwesome.ts`). Hosts the Milky Way stack.
+- `pages/challenges/ui-general/components/UiGeneralMilkyWayStack.vue` — the former home `SectionStack`: tech-stack "space" section, WebGL sky canvas (Milky Way + star dust) + 2D canvas for resolved stars, depth camera, parallax icon rows. Its `scroll` listener is a capture listener on `document`, because the challenges layout scrolls an inner pane, not the window.
+- `pages/challenges/ui-general/components/stack-sky-shader.ts` — GLSL: `NEBULA_FRAGMENT` (half-res Milky Way into a texture) and `COMPOSITE_FRAGMENT` (device-res upsample, star dust, well, dither)
 - `pages/(home)/components/CardParallax.vue` — pointer-parallax card pattern reused for reference
 - `pages/(home)/components/SectionHowIWork.vue` — "How I work" positioning: fast because of AI/vibe coding, stable (not AI slop) because of 6+ years of professional work. Left claim + right numbered `divide-y` list; no cards. The description marks short phrases with `PencilHighlight.vue` (rough SVG strokes behind the words, drawn once on first view): red `tone="negative"` first, then green `tone="positive"` (weeks → days, AI slop → 6+ years), staggered by `delay`. The 4 list bodies are `BodyPart[]` arrays with the same one-red-then-one-green pattern (green gets a 400ms delay). Highlighted phrases are `whitespace-nowrap`, so keep them short. The hero tagline and SEO description say the same thing.
 - `pages/(home)/components/SectionFooter.vue` — home footer, last on the page after `SectionStack`: display-size email CTA + copy button, live WIB time (`ClientOnly`), "On this site" / "Elsewhere" link lists, bottom bar with source link and back-to-top. Sits on the page bg with a `border-primary-500/25` top hairline; no cards, no social icon circles, all text ≥16px.
@@ -28,6 +31,8 @@ Page order: hero → Challenge Me / Portofolio / Find Me → `SectionHowIWork` �
 - (none)
 
 ## Learned user preferences
+
+- The home page stack stays simple and light (no heavy background, no canvas). The Milky Way stack moved to `/challenges/ui-general`; the starfield notes below apply to `UiGeneralMilkyWayStack.vue`.
 
 - Hero has no blurred gradient orbs or circle glows (read as AI slop). The interactive grid is the hero's background effect.
 - Icons always in brand color; no grayscale-until-hover.

@@ -79,6 +79,14 @@ const randomItems: ChallengeItem[] = [
   },
 ];
 
+const uiGeneralItems: ChallengeItem[] = [
+  {
+    title: "Milky Way Stack",
+    path: "/challenges/ui-general",
+    icon: ["fa", "star"],
+  },
+];
+
 const streakItems: ChallengeItem[] = [
   {
     title: "30 hari CapCut TikTok (AI)",
@@ -110,6 +118,13 @@ export const useChallenges = () => {
       icon: ["fa", "code"],
       collapsed: false,
       items: frontendMentorItems,
+    },
+    {
+      key: "ui-general",
+      label: "UI General",
+      icon: ["fa", "star"],
+      collapsed: false,
+      items: uiGeneralItems,
     },
     {
       key: "random",
