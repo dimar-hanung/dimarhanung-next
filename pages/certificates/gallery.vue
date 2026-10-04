@@ -1,249 +1,378 @@
 <template>
-  <div class="min-h-screen relative overflow-hidden">
-    <!-- SVG Filters -->
-    <svg class="absolute w-0 h-0" aria-hidden="true">
-      <defs>
-        <filter id="bg-metal-noise">
-          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise"/>
-          <feColorMatrix type="saturate" values="0"/>
-          <feComponentTransfer>
-            <feFuncA type="linear" slope="0.15"/>
-          </feComponentTransfer>
-        </filter>
-      </defs>
-    </svg>
+  <div class="gallery-page min-h-screen bg-muted-100 text-muted-900 dark:bg-muted-950 dark:text-white">
+    <t-nav class="relative z-50" />
 
-    <!-- Metal background - Cool silver/gunmetal tones -->
-    <div
-      class="fixed inset-0 -z-10 transition-all duration-500"
-      :style="{
-        background: isDark
-          ? 'linear-gradient(135deg, #1a1d20 0%, #25282b 25%, #2a2d30 50%, #202326 75%, #1a1d20 100%)'
-          : 'linear-gradient(135deg, #d8dce0 0%, #e0e4e8 25%, #e8ecef 50%, #d5d9dd 75%, #d8dce0 100%)'
-      }"
-    >
-      <!-- Brushed horizontal lines -->
+    <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <div
-        class="absolute inset-0 opacity-30"
-        :style="{
-          background: isDark
-            ? `repeating-linear-gradient(
-                0deg,
-                transparent 0px,
-                transparent 3px,
-                rgba(255,255,255,0.05) 3px,
-                rgba(255,255,255,0.05) 4px,
-                transparent 4px,
-                transparent 8px
-              )`
-            : `repeating-linear-gradient(
-                0deg,
-                transparent 0px,
-                transparent 3px,
-                rgba(255,255,255,0.5) 3px,
-                rgba(255,255,255,0.5) 4px,
-                transparent 4px,
-                transparent 8px
-              )`
-        }"
+        class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] dark:bg-[linear-gradient(to_right,#ffffff0d_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0d_1px,transparent_1px)]"
       />
-      
-      <!-- Secondary fine texture -->
       <div
-        class="absolute inset-0 opacity-20"
-        :style="{
-          background: isDark
-            ? `repeating-linear-gradient(
-                90deg,
-                transparent 0px,
-                transparent 1px,
-                rgba(255,255,255,0.03) 1px,
-                rgba(255,255,255,0.03) 2px
-              )`
-            : `repeating-linear-gradient(
-                90deg,
-                transparent 0px,
-                transparent 1px,
-                rgba(0,0,0,0.03) 1px,
-                rgba(0,0,0,0.03) 2px
-              )`
-        }"
+        class="absolute -top-24 right-0 h-96 w-96 rounded-full bg-gradient-to-br from-primary-400/25 to-indigo-500/20 blur-3xl"
       />
-
-      <!-- Top shine -->
       <div
-        class="absolute top-0 left-0 right-0 h-32 pointer-events-none"
-        :style="{
-          background: isDark
-            ? 'linear-gradient(180deg, rgba(100,110,120,0.15) 0%, transparent 100%)'
-            : 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 100%)'
-        }"
-      />
-
-      <!-- Bottom shadow -->
-      <div
-        class="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        :style="{
-          background: isDark
-            ? 'linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 100%)'
-            : 'linear-gradient(0deg, rgba(0,0,0,0.1) 0%, transparent 100%)'
-        }"
+        class="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-gradient-to-tr from-amber-400/15 to-primary-500/10 blur-3xl"
       />
     </div>
 
-    <!-- Dark Mode Toggle Button -->
-    <button
-      @click="toggleDarkMode"
-      class="fixed top-6 right-6 z-50 w-14 h-14 rounded-full cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95"
-      :style="{
-        background: isDark
-          ? 'linear-gradient(145deg, #3a3d40 0%, #4a4d50 50%, #3a3d40 100%)'
-          : 'linear-gradient(145deg, #e0e4e8 0%, #f0f2f4 50%, #d8dce0 100%)',
-        boxShadow: isDark
-          ? '0 4px 20px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.05)'
-          : '0 4px 20px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8), 0 0 0 1px rgba(0,0,0,0.05)',
-      }"
-    >
-      <!-- Button inner bevel -->
-      <div
-        class="absolute inset-1 rounded-full pointer-events-none"
-        :style="{
-          boxShadow: isDark
-            ? 'inset 0 1px 2px rgba(255,255,255,0.1), inset 0 -1px 2px rgba(0,0,0,0.3)'
-            : 'inset 0 1px 2px rgba(255,255,255,0.9), inset 0 -1px 2px rgba(0,0,0,0.1)',
-        }"
-      />
-      
-      <!-- Icon -->
-      <div class="relative w-full h-full flex items-center justify-center">
-        <Icon
-          v-if="!isDark"
-          name="uil:moon"
-          class="text-2xl transition-all duration-300"
-          :style="{
-            color: '#505560',
-            filter: 'drop-shadow(0 1px 1px rgba(255,255,255,0.5))'
-          }"
-        />
-        <Icon
-          v-else
-          name="uil:sun"
-          class="text-2xl transition-all duration-300"
-          :style="{
-            color: '#d4a853',
-            filter: 'drop-shadow(0 0 8px rgba(212,168,83,0.5))'
-          }"
-        />
-      </div>
-    </button>
-
-    <div class="max-w-7xl mx-auto px-6 py-16 md:py-24">
-      <!-- Header -->
-      <header class="text-center mb-16 md:mb-20">
-        <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-          <span 
-            class="bg-clip-text text-transparent transition-all duration-500"
-            :style="{
-              backgroundImage: isDark
-                ? 'linear-gradient(180deg, #c0c5cc 0%, #a0a5ac 50%, #80858c 100%)'
-                : 'linear-gradient(180deg, #505050 0%, #404040 50%, #202020 100%)',
-              filter: isDark 
-                ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' 
-                : 'drop-shadow(0 1px 2px rgba(255,255,255,0.5))'
-            }"
-          >
-            Sertifikat Profesional
-          </span>
-        </h1>
+    <div class="mx-auto max-w-7xl px-6 pb-24 pt-10 md:py-16">
+      <header class="mb-12 md:mb-16">
         <p
-          class="text-lg max-w-2xl mx-auto leading-relaxed transition-colors duration-500"
-          :style="{ 
-            color: isDark ? '#9095a0' : '#505050',
-            textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.5)' : '0 1px 0 rgba(255,255,255,0.5)'
-          }"
+          class="inline-flex items-center gap-2 rounded-full border border-muted-200 bg-white/80 px-3 py-1 text-xs font-medium text-muted-500 backdrop-blur dark:border-white/10 dark:bg-muted-900/70 dark:text-muted-400"
         >
-          Dokumentasi sertifikasi dan pencapaian dalam perjalanan karir di
-          bidang teknologi dan pengembangan software.
+          <Icon name="mdi:certificate-outline" class="h-4 w-4 text-primary-500" />
+          Achievements
         </p>
+        <div class="mt-5 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-2xl">
+            <h1 class="text-4xl font-bold tracking-tight md:text-6xl">
+              Sertifikat
+              <span class="text-primary-600 dark:text-primary-400">Profesional</span>
+            </h1>
+            <p class="mt-4 text-lg leading-relaxed text-muted-500 dark:text-muted-400">
+              Dokumentasi sertifikasi dan pencapaian dalam perjalanan karir di
+              bidang teknologi dan pengembangan software.
+            </p>
+          </div>
+          <dl class="flex gap-6">
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-muted-400">
+                Terverifikasi
+              </dt>
+              <dd class="mt-1 text-3xl font-bold tabular-nums">{{ verifiedCount }}</dd>
+            </div>
+            <div>
+              <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-muted-400">
+                Ditampilkan
+              </dt>
+              <dd class="mt-1 text-3xl font-bold tabular-nums">{{ visibleCertificates.length }}</dd>
+            </div>
+          </dl>
+        </div>
       </header>
 
-      <!-- Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="mb-10 flex flex-wrap items-center gap-2">
+        <button
+          v-for="filter in filters"
+          :key="filter.id"
+          type="button"
+          class="rounded-full border px-4 py-2 text-sm font-medium transition-colors"
+          :class="
+            activeFilter === filter.id
+              ? 'border-muted-900 bg-muted-900 text-white dark:border-white dark:bg-white dark:text-muted-950'
+              : 'border-muted-200 bg-white/80 text-muted-600 hover:border-muted-300 hover:text-muted-900 dark:border-white/10 dark:bg-muted-900/70 dark:text-muted-300 dark:hover:border-white/20 dark:hover:text-white'
+          "
+          :aria-pressed="activeFilter === filter.id"
+          @click="activeFilter = filter.id"
+        >
+          {{ filter.label }}
+          <span
+            class="ml-1 tabular-nums"
+            :class="
+              activeFilter === filter.id
+                ? 'text-white/70 dark:text-muted-500'
+                : 'text-muted-400 dark:text-muted-500'
+            "
+          >
+            {{ filter.count }}
+          </span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         <ClientOnly>
           <Certificate3DCard
-            v-for="(item, index) in certificates"
-            :key="index"
+            v-for="(item, index) in visibleCertificates"
+            :key="itemKey(item, index)"
+            class="gallery-card"
+            :style="{ animationDelay: `${Math.min(index * 45, 270)}ms` }"
             :image-url="item.imageUrl"
             :title="item.title"
             :desc="item.desc"
             :date="item.date"
             :cradential="item.cradential"
+            :issuer="item.issuer"
+            :issuer-icon="item.issuerIcon"
+            @preview="openPreview(index)"
           />
 
           <template #fallback>
             <div
               v-for="n in 6"
               :key="n"
-              class="rounded-xl overflow-hidden shadow-xl"
-              :style="{
-                background: isDark
-                  ? 'linear-gradient(170deg, #3a3d40 0%, #2a2d30 50%, #35383b 100%)'
-                  : 'linear-gradient(170deg, #e0e4e8 0%, #d0d4d8 50%, #e0e4e8 100%)',
-                boxShadow: isDark
-                  ? '0 10px 30px -10px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05)'
-                  : '0 10px 30px -10px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.05)'
-              }"
+              class="overflow-hidden rounded-2xl border border-muted-200 bg-white shadow-sm dark:border-white/10 dark:bg-muted-900"
             >
-              <div
-                class="aspect-[4/3] animate-pulse"
-                :class="isDark ? 'bg-slate-700/50' : 'bg-slate-300/50'"
-              />
-              <div class="p-6 space-y-3">
-                <div
-                  class="h-3 rounded animate-pulse w-1/3"
-                  :class="isDark ? 'bg-slate-600' : 'bg-slate-400'"
-                />
-                <div
-                  class="h-5 rounded animate-pulse"
-                  :class="isDark ? 'bg-slate-600' : 'bg-slate-400'"
-                />
-                <div
-                  class="h-4 rounded animate-pulse"
-                  :class="isDark ? 'bg-slate-600' : 'bg-slate-400'"
-                />
+              <div class="aspect-[4/3] animate-pulse bg-muted-200 dark:bg-muted-800" />
+              <div class="space-y-3 p-5">
+                <div class="h-3 w-1/3 animate-pulse rounded bg-muted-200 dark:bg-muted-700" />
+                <div class="h-5 animate-pulse rounded bg-muted-200 dark:bg-muted-700" />
+                <div class="h-4 w-5/6 animate-pulse rounded bg-muted-200 dark:bg-muted-700" />
               </div>
             </div>
           </template>
         </ClientOnly>
       </div>
     </div>
+
+    <Teleport to="body">
+      <div
+        v-if="preview"
+        class="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-8"
+        role="dialog"
+        aria-modal="true"
+        :aria-labelledby="previewTitleId"
+      >
+        <button
+          type="button"
+          class="absolute inset-0 bg-muted-950/70 backdrop-blur-sm"
+          aria-label="Tutup pratinjau"
+          @click="closePreview"
+        />
+        <div
+          class="relative z-10 grid w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-white shadow-2xl dark:bg-muted-900 md:grid-cols-[1.4fr_1fr]"
+        >
+          <div class="relative bg-muted-100 dark:bg-muted-800">
+            <nuxt-img
+              :src="preview.imageUrl"
+              :alt="preview.title"
+              class="h-full max-h-[70vh] w-full object-contain md:max-h-[80vh]"
+              format="webp"
+              quality="90"
+            />
+          </div>
+          <div class="flex flex-col p-6 md:p-8">
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-muted-400">
+              {{ preview.issuer }} · {{ formatPreviewDate(preview.date) }}
+            </p>
+            <h2 :id="previewTitleId" class="mt-3 text-2xl font-bold">
+              {{ preview.title }}
+            </h2>
+            <p class="mt-3 text-sm leading-relaxed text-muted-500 dark:text-muted-400">
+              {{ preview.desc }}
+            </p>
+            <div class="mt-auto flex flex-wrap items-center gap-3 pt-8">
+              <a
+                v-if="preview.cradential"
+                :href="preview.cradential"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 rounded-full bg-muted-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-600 dark:bg-white dark:text-muted-950 dark:hover:bg-primary-400"
+              >
+                Lihat Sertifikat
+                <Icon name="mdi:open-in-new" class="h-4 w-4" />
+              </a>
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 rounded-full border border-muted-200 px-5 py-2.5 text-sm font-medium text-muted-600 hover:border-muted-400 dark:border-white/15 dark:text-muted-300"
+                @click="closePreview"
+              >
+                Tutup
+              </button>
+              <div class="ml-auto flex gap-2">
+                <button
+                  type="button"
+                  class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-muted-200 text-muted-600 disabled:opacity-30 dark:border-white/15 dark:text-muted-300"
+                  :disabled="previewIndex <= 0"
+                  aria-label="Sertifikat sebelumnya"
+                  @click="shiftPreview(-1)"
+                >
+                  <Icon name="mdi:chevron-left" class="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-muted-200 text-muted-600 disabled:opacity-30 dark:border-white/15 dark:text-muted-300"
+                  :disabled="previewIndex >= visibleCertificates.length - 1"
+                  aria-label="Sertifikat berikutnya"
+                  @click="shiftPreview(1)"
+                >
+                  <Icon name="mdi:chevron-right" class="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-muted-700 shadow-sm dark:bg-muted-800 dark:text-white"
+            aria-label="Tutup"
+            @click="closePreview"
+          >
+            <Icon name="mdi:close" class="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import certicatesData from "./certificates.json";
 import Certificate3DCard from "./components/Certificate3DCard.vue";
 
-const certificates = reactive(certicatesData);
-const isDark = ref(false);
-const colorMode = useColorMode();
+type CertificateRecord = {
+  imageUrl: string;
+  title: string;
+  desc: string;
+  date: string;
+  cradential?: string;
+};
 
-onMounted(() => {
-  isDark.value = document.documentElement.classList.contains('dark');
-  const observer = new MutationObserver(() => {
-    isDark.value = document.documentElement.classList.contains('dark');
-  });
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+type GalleryItem = CertificateRecord & {
+  issuer: string;
+  issuerIcon: string;
+};
+
+const certificates = reactive(certicatesData) as CertificateRecord[];
+const activeFilter = ref("all");
+const preview = ref<GalleryItem | null>(null);
+const previewTitleId = "certificate-preview-title";
+
+useSeoMeta({
+  title: "Certificates | Dimar Hanung",
+  description:
+    "Professional certificates and credentials in software development by Dimar Hanung.",
 });
 
-const toggleDarkMode = () => {
-  if (colorMode.value === 'light') {
-    colorMode.value = 'dark';
-    colorMode.preference = 'dark';
-  } else {
-    colorMode.value = 'light';
-    colorMode.preference = 'light';
+function resolveIssuer(item: CertificateRecord) {
+  const url = item.cradential || "";
+  if (url.includes("hackerrank.com")) {
+    return { issuer: "HackerRank", issuerIcon: "mdi:code-braces" };
   }
-};
+  if (url.includes("testdome.com")) {
+    return { issuer: "TestDome", issuerIcon: "mdi:domain" };
+  }
+  if (url.includes("codecademy.com")) {
+    return { issuer: "Codecademy", issuerIcon: "mdi:school-outline" };
+  }
+  if (url.includes("programminghub") || url.includes("googleapis.com")) {
+    return { issuer: "Programming Hub", issuerIcon: "mdi:language-javascript" };
+  }
+  return { issuer: "Mendatang", issuerIcon: "mdi:clock-outline" };
+}
+
+const galleryItems = computed<GalleryItem[]>(() => {
+  return certificates
+    .map((item) => ({ ...item, ...resolveIssuer(item) }))
+    .sort((a, b) => {
+      const aUpcoming = !a.cradential ? 1 : 0;
+      const bUpcoming = !b.cradential ? 1 : 0;
+      if (aUpcoming !== bUpcoming) return aUpcoming - bUpcoming;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+});
+
+const verifiedCount = computed(
+  () => galleryItems.value.filter((item) => Boolean(item.cradential)).length,
+);
+
+const filters = computed(() => {
+  const counts = new Map<string, number>();
+  for (const item of galleryItems.value) {
+    counts.set(item.issuer, (counts.get(item.issuer) || 0) + 1);
+  }
+  return [
+    { id: "all", label: "Semua", count: galleryItems.value.length },
+    ...[...counts.entries()].map(([issuer, count]) => ({
+      id: issuer,
+      label: issuer,
+      count,
+    })),
+  ];
+});
+
+const visibleCertificates = computed(() => {
+  if (activeFilter.value === "all") return galleryItems.value;
+  return galleryItems.value.filter((item) => item.issuer === activeFilter.value);
+});
+
+function itemKey(item: GalleryItem, index: number) {
+  return `${item.title}-${item.date}-${item.imageUrl}-${index}`;
+}
+
+function formatPreviewDate(date: string) {
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime()) || parsed.getFullYear() > 2100) {
+    return "Mendatang";
+  }
+  return parsed.toLocaleDateString("id-ID", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+const previewIndex = ref(0);
+
+function openPreview(index: number) {
+  const item = visibleCertificates.value[index];
+  if (!item) return;
+  previewIndex.value = index;
+  preview.value = item;
+}
+
+function closePreview() {
+  preview.value = null;
+}
+
+function shiftPreview(step: number) {
+  const next = previewIndex.value + step;
+  const target = visibleCertificates.value[next];
+  if (target) {
+    previewIndex.value = next;
+    preview.value = target;
+  }
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (!preview.value) return;
+  if (event.key === "Escape") closePreview();
+  if (event.key === "ArrowRight") shiftPreview(1);
+  if (event.key === "ArrowLeft") shiftPreview(-1);
+}
+
+watch(activeFilter, () => {
+  closePreview();
+});
+
+watch(preview, (value) => {
+  if (typeof document === "undefined") return;
+  document.body.style.overflow = value ? "hidden" : "";
+});
+
+onMounted(() => {
+  document.addEventListener("keydown", onKeydown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("keydown", onKeydown);
+  document.body.style.overflow = "";
+});
 </script>
+
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap");
+
+.gallery-page {
+  font-family: "Outfit", sans-serif;
+}
+
+.gallery-card {
+  animation: gallery-fade-up 0.45s ease both;
+}
+
+@keyframes gallery-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-card {
+    animation: none;
+  }
+}
+</style>

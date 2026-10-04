@@ -37,7 +37,7 @@ Building or changing streak challenge pages under `/challenges/streak/*` — mul
 - AI-assisted CapCut track: Auto Cut/caption week 1, motion week 2, batch + masking week 3-4.
 - Vibe-code phases: Cursor (1-5), prompt (6-10), ajari agent (11-16), operasi (17-22), mutu (23-26), studio expert (27-30).
 - Day content lives in `utils/capcut-tiktok-30day.ts` or `utils/vibe-code-30day.ts`; shared refs in `CORE_REFS` in the same file.
-- Prefix vibe-code helpers (`vibeTaskKey`, `VIBE_PHASE_META`) so they do not collide with CapCut util exports under Nuxt auto-import.
+- Prefix vibe-code helpers (`vibeTaskKey`, `VIBE_PHASE_META`, `VIBE_DAILY_EXTRA`) so they do not collide with CapCut util exports under Nuxt auto-import. CapCut daily extras use `CAPCUT_DAILY_EXTRA`. Do not re-export `VibePromptTemplate` / `CapcutVideoScript` from the main day files — they already export from `*-daily.ts`.
 - Competency checklist IDs may change between roadmap versions; old localStorage keys become orphaned.
 - On Windows, `nuxt.config` uses `ignoreOptions.allowRelativePaths: true` and `pages:extend` (not `ignore: pages/**/components`) so Vite virtual ids do not crash `ignore`.
 - Import `useStorage` from `@vueuse/core` explicitly in streak pages (do not rely on auto-import alone).
