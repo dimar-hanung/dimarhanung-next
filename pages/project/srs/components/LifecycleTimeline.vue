@@ -1,6 +1,11 @@
 <template>
-  <ol class="timeline">
-    <li v-for="(stage, index) in stages" :key="stage.id" class="step">
+  <ol class="timeline" data-reveal="group">
+    <li
+      v-for="(stage, index) in stages"
+      :key="stage.id"
+      class="step"
+      :style="{ '--i': index }"
+    >
       <span class="step__dot" aria-hidden="true">
         {{ String(index + 1).padStart(2, "0") }}
       </span>
@@ -126,6 +131,59 @@ defineProps<{
 
   .step__summary {
     margin-top: 0.35rem;
+  }
+}
+
+/* Motion: the connecting line draws itself, then each numbered dot pops in
+   after the step's text has started to rise (the rise comes from the page's
+   shared group reveal). Hidden states only apply once `.srs-motion` is armed. */
+@media (prefers-reduced-motion: no-preference) {
+  .timeline {
+    /* Vertical line grows down on phones, horizontal line grows right on desktop. */
+    --line-from: 1 0;
+  }
+
+  .timeline::before {
+    transform-origin: top;
+  }
+
+  .srs-motion .timeline:not(.is-revealed)::before {
+    scale: var(--line-from);
+  }
+
+  .srs-motion .timeline.is-revealed::before {
+    animation: line-draw 1200ms var(--srs-ease) both;
+  }
+
+  .srs-motion .timeline:not(.is-revealed) .step__dot {
+    opacity: 0;
+  }
+
+  .srs-motion .timeline.is-revealed .step__dot {
+    animation: dot-pop 600ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(150ms + var(--i) * 180ms) both;
+  }
+
+  @media (min-width: 960px) {
+    .timeline {
+      --line-from: 0 1;
+    }
+
+    .timeline::before {
+      transform-origin: left;
+    }
+  }
+}
+
+@keyframes line-draw {
+  from {
+    scale: var(--line-from);
+  }
+}
+
+@keyframes dot-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
   }
 }
 </style>

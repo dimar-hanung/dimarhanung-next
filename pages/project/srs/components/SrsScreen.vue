@@ -1,5 +1,5 @@
 <template>
-  <figure class="screen">
+  <figure class="screen" :class="assemble && `screen--assemble-${assemble}`">
     <div class="screen__window">
       <div class="screen__bar" aria-hidden="true">
         <span class="screen__dots">
@@ -27,10 +27,11 @@
           <div class="mock__side" aria-hidden="true">
             <p class="mock__logo">SRS<b>5G</b></p>
             <span
-              v-for="item in nav"
+              v-for="(item, index) in nav"
               :key="item.label"
               class="mock__nav"
               :class="{ 'mock__nav--active': item.mock === mock }"
+              :style="{ '--i': index }"
             >
               <Icon :name="item.icon" class="mock__nav-icon" />
               {{ item.label }}
@@ -49,13 +50,18 @@
 
             <div v-if="mock === 'dashboard'" class="mock__body mock-dash">
               <div class="mock-dash__stats">
-                <div v-for="stat in stats" :key="stat.label" class="mock-card">
+                <div
+                  v-for="(stat, index) in stats"
+                  :key="stat.label"
+                  class="mock-card"
+                  :style="{ '--i': index }"
+                >
                   <p class="mock-label">{{ stat.label }}</p>
                   <div class="mock-bars">
                     <span
-                      v-for="(height, index) in stat.bars"
-                      :key="index"
-                      :style="{ height: `${height}%` }"
+                      v-for="(height, bar) in stat.bars"
+                      :key="bar"
+                      :style="{ height: `${height}%`, '--b': bar }"
                     />
                   </div>
                 </div>
@@ -63,7 +69,12 @@
               <div class="mock-dash__split">
                 <div class="mock-card">
                   <p class="mock-heading">Registrasi terbaru</p>
-                  <div v-for="row in students" :key="row.name" class="mock-row">
+                  <div
+                    v-for="(row, index) in students"
+                    :key="row.name"
+                    class="mock-row"
+                    :style="{ '--i': index }"
+                  >
                     <span class="mock-initials">MC</span>
                     <span class="mock-row__main">
                       <b>{{ row.name }}</b>
@@ -110,7 +121,12 @@
               </div>
               <div class="mock-card">
                 <p class="mock-heading">Mata kuliah semester ini</p>
-                <div v-for="course in courses" :key="course.code" class="mock-row">
+                <div
+                  v-for="(course, index) in courses"
+                  :key="course.code"
+                  class="mock-row"
+                  :style="{ '--i': index }"
+                >
                   <span
                     class="mock-check"
                     :class="{ 'mock-check--on': course.picked }"
@@ -141,7 +157,12 @@
                 <span>Riwayat</span>
               </div>
               <div class="mock-card mock-rec__grid">
-                <div v-for="field in fields" :key="field.key" class="mock-field">
+                <div
+                  v-for="(field, index) in fields"
+                  :key="field.key"
+                  class="mock-field"
+                  :style="{ '--i': index }"
+                >
                   <span class="mock-label">{{ field.key }}</span>
                   <b>{{ field.value }}</b>
                 </div>
@@ -165,7 +186,12 @@
               <div class="mock-paper">
                 <p class="mock-paper__title">Transkrip Akademik</p>
                 <p class="mock-muted">Contoh · bukan data asli</p>
-                <div v-for="grade in grades" :key="grade.course" class="mock-paper__row">
+                <div
+                  v-for="(grade, index) in grades"
+                  :key="grade.course"
+                  class="mock-paper__row"
+                  :style="{ '--i': index }"
+                >
                   <span>{{ grade.course }}</span>
                   <b>{{ grade.grade }}</b>
                 </div>
@@ -175,7 +201,12 @@
               <div class="mock-rep__side">
                 <div class="mock-card">
                   <p class="mock-heading">Kesiapan wisuda</p>
-                  <div v-for="check in checks" :key="check.label" class="mock-row">
+                  <div
+                    v-for="(check, index) in checks"
+                    :key="check.label"
+                    class="mock-row"
+                    :style="{ '--i': index }"
+                  >
                     <span
                       class="mock-check"
                       :class="{ 'mock-check--on': check.done }"
@@ -202,9 +233,12 @@
 <script setup lang="ts">
 import type { SrsMock, SrsScreen } from "../data";
 
+// "load": the mock assembles on first paint (hero). "reveal": it assembles when
+// the page's reveal observer adds `is-revealed` to this figure.
 const props = defineProps<{
   screen: SrsScreen;
   eager?: boolean;
+  assemble?: "load" | "reveal";
 }>();
 
 const mock = computed<SrsMock>(() => props.screen.mock ?? "dashboard");
@@ -279,6 +313,7 @@ const checks = [
 }
 
 .screen__window {
+  position: relative;
   overflow: hidden;
   border-radius: 1rem;
   border: 1px solid var(--srs-line);
@@ -861,6 +896,128 @@ const checks = [
 
   .mock-steps {
     gap: 0.9em;
+  }
+}
+
+/* Assembly motion. Only runs for `assemble` frames, only when the visitor has
+   no reduced-motion preference, and only animates opacity and transform. `--base` is when the sequence starts. */
+@media (prefers-reduced-motion: no-preference) {
+  .screen--assemble-load {
+    --base: 1050ms;
+  }
+
+  .screen--assemble-reveal {
+    --base: 350ms;
+  }
+
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) .mock__side {
+    animation: mock-wipe 700ms var(--srs-ease) var(--base) both;
+  }
+
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) .mock__nav {
+    animation: mock-slide 500ms var(--srs-ease) calc(var(--base) + 200ms + var(--i) * 50ms) both;
+  }
+
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) .mock__top {
+    animation: mock-fade 600ms var(--srs-ease) calc(var(--base) + 120ms) both;
+  }
+
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) .mock__body > *,
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) .mock-card[style] {
+    animation: mock-rise 650ms var(--srs-ease) calc(var(--base) + 220ms + var(--i, 0) * 80ms) both;
+  }
+
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) .mock-bars span {
+    transform-origin: bottom;
+    animation: mock-grow 700ms var(--srs-ease) calc(var(--base) + 480ms + var(--b) * 60ms) both;
+  }
+
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) :is(.mock-row, .mock-field, .mock-paper__row)[style] {
+    animation: mock-rise 550ms var(--srs-ease) calc(var(--base) + 520ms + var(--i) * 70ms) both;
+  }
+
+  :is(.screen--assemble-load, .screen--assemble-reveal.is-revealed) .mock-donut {
+    animation: mock-spin 1100ms var(--srs-ease) calc(var(--base) + 560ms) both;
+  }
+
+  /* One slow light sweep across the hero frame, then a long rest. */
+  .screen--assemble-load .screen__window::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 2;
+    width: 30%;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgb(255 255 255 / 0.22) 45%,
+      rgb(255 255 255 / 0.32) 50%,
+      rgb(255 255 255 / 0.22) 55%,
+      transparent
+    );
+    transform: translateX(-120%);
+    pointer-events: none;
+    animation: mock-sweep 11s ease-in-out 2.6s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 767px) {
+  .screen--assemble-load {
+    --base: 700ms;
+  }
+
+  .screen--assemble-load .screen__window::after {
+    display: none;
+  }
+}
+
+@keyframes mock-wipe {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes mock-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-0.8em);
+  }
+}
+
+@keyframes mock-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes mock-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1em) scale(0.98);
+  }
+}
+
+@keyframes mock-grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes mock-spin {
+  from {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.7);
+  }
+}
+
+@keyframes mock-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  22%,
+  100% {
+    transform: translateX(380%);
   }
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
-  <ul class="modules" aria-label="SRS functional domains">
-    <li v-for="module in modules" :key="module.id" class="module">
+  <ul class="modules" aria-label="SRS functional domains" data-reveal="group">
+    <li
+      v-for="(module, index) in modules"
+      :key="module.id"
+      class="module srs-lift"
+      :style="{ '--i': index }"
+    >
       <span class="module__glyph" aria-hidden="true">
         <Icon :name="module.icon" class="module__icon" />
       </span>
@@ -38,11 +43,6 @@ defineProps<{
   border-radius: 1rem;
   border: 1px solid var(--srs-line);
   background: var(--srs-panel);
-  transition: border-color 150ms ease-out;
-}
-
-.module:hover {
-  border-color: var(--srs-line-strong);
 }
 
 .module__glyph {
