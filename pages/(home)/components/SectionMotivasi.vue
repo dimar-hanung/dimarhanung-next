@@ -1,28 +1,26 @@
 <template>
-  <div
-    ref="quoteWrapper"
-    class="text-3xl text-center mt-24 h-screen grid place-items-center relative rounded-3xl"
+  <section
+    aria-label="Motto"
+    class="container mx-auto px-2 text-muted-900 dark:text-muted-100"
   >
-    <div>
-      <p
-        ref="quoteContent"
-        class="gradient-text py-24 relative w-full max-w-4xl mx-auto"
-      >
-        When it feels like you've hit your limit, that's the moment you need to
-        push harder!
-      </p>
-      <div class="flex gap-2 justify-center place-items-center">
+    <figure class="border-t border-primary-500/25 pt-12">
+      <p class="text-base text-muted-500">Motto</p>
+      <blockquote class="mt-3 max-w-4xl">
+        <p
+          class="gradient-text pb-1 text-3xl font-bold leading-tight tracking-tight text-balance sm:text-4xl lg:text-5xl"
+        >
+          When it feels like you've hit your limit, that's the moment you need
+          to push harder!
+        </p>
+      </blockquote>
+      <div aria-hidden="true" class="mt-6 flex items-center gap-2">
         <div class="rounded-full h-2 w-12 bg-red-500"></div>
         <div class="rounded-full h-2 w-12 bg-green-500"></div>
         <div class="rounded-full h-2 w-12 bg-blue-500"></div>
       </div>
-    </div>
-  </div>
+    </figure>
+  </section>
 </template>
-
-<script setup lang="ts">
-// Add any reactive logic here if needed
-</script>
 
 <style scoped>
 .gradient-text {
