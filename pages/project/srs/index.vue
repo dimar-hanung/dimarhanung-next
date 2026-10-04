@@ -4,26 +4,23 @@
 
     <main class="srs-main">
       <header class="srs-hero">
-        <div class="srs-hero__copy">
-          <p class="srs-hero__kicker">Case study · Open distance learning</p>
+        <div class="srs-hero__copy srs-rise">
+          <p class="srs-kicker">{{ hero.kicker }}</p>
           <h1 class="srs-hero__title">
-            Student Record System
-            <span class="srs-hero__gen">Generation 5</span>
+            {{ hero.title }}
+            <span class="srs-hero__gen">{{ hero.generation }}</span>
           </h1>
-          <p class="srs-hero__lead">
-            A full-stack web platform that helps university staff manage student
-            academic records, from enrollment through graduation, across
-            multiple study programs and operational domains.
-          </p>
-          <div class="srs-hero__actions">
+          <p class="srs-hero__pitch">{{ hero.pitch }}</p>
+          <div class="srs-actions">
             <a
-              href="https://srs5g.ut.ac.id"
+              :href="liveUrl"
               target="_blank"
               rel="noopener noreferrer"
               class="srs-cta srs-cta--primary"
             >
               Visit live platform
               <Icon name="mdi:open-in-new" class="srs-cta__icon" aria-hidden="true" />
+              <span class="srs-sr-only">(opens in a new tab)</span>
             </a>
             <NuxtLink to="/project" class="srs-cta srs-cta--ghost">
               Back to projects
@@ -31,161 +28,205 @@
           </div>
         </div>
 
-        <figure class="srs-banner">
-          <img
-            :src="srsIllustrations.banner.src"
-            :alt="srsIllustrations.banner.alt"
-            class="srs-banner__img"
-            width="1440"
-            height="900"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </figure>
-
-        <div class="srs-hero__metrics" aria-label="Project at a glance">
-          <div
-            v-for="metric in metrics"
-            :key="metric.label"
-            class="srs-metric"
-          >
-            <p class="srs-metric__value">{{ metric.value }}</p>
-            <p class="srs-metric__label">{{ metric.label }}</p>
+        <dl class="srs-facts srs-rise" aria-label="Project facts">
+          <div v-for="fact in facts" :key="fact.label" class="srs-fact">
+            <dt class="srs-fact__label">{{ fact.label }}</dt>
+            <dd class="srs-fact__value">{{ fact.value }}</dd>
           </div>
+        </dl>
+
+        <div class="srs-hero__visual srs-rise">
+          <SrsScreen :screen="hero.screen" eager />
         </div>
       </header>
 
-      <section class="srs-overview" aria-labelledby="overview-heading">
-        <h2 id="overview-heading" class="srs-section-title">
-          What SRS does
-        </h2>
-        <div class="srs-overview__grid">
-          <div class="srs-overview__copy">
-            <p class="srs-body srs-overview__text">
-              SRS5G is the operational backbone for student record management at
-              Universitas Terbuka, Indonesia's open and distance learning
-              university. Staff use it daily to keep academic data accurate,
-              coordinate registrations, and support students across their entire
-              study journey.
+      <section class="srs-section" aria-labelledby="did-heading">
+        <div class="srs-section__head">
+          <p class="srs-kicker">My role</p>
+          <h2 id="did-heading" class="srs-h2">What I did</h2>
+        </div>
+
+        <dl v-if="outcomeMetrics.length" class="srs-metrics">
+          <div v-for="metric in outcomeMetrics" :key="metric.label" class="srs-metric">
+            <dt class="srs-metric__label">{{ metric.label }}</dt>
+            <dd class="srs-metric__value">{{ metric.value }}</dd>
+          </div>
+        </dl>
+
+        <div class="srs-did">
+          <article class="srs-card srs-did__card">
+            <p class="srs-did__step">
+              <Icon name="mdi:help-circle-outline" class="srs-did__icon" aria-hidden="true" />
+              01
             </p>
-            <ul class="srs-overview__points">
-              <li
-                v-for="point in overviewPoints"
-                :key="point"
-                class="srs-body"
-              >
+            <h3 class="srs-h3">{{ problem.title }}</h3>
+            <p class="srs-body srs-muted">{{ problem.body }}</p>
+          </article>
+
+          <article class="srs-card srs-did__card srs-did__card--built">
+            <p class="srs-did__step">
+              <Icon name="mdi:hammer-wrench" class="srs-did__icon" aria-hidden="true" />
+              02
+            </p>
+            <h3 class="srs-h3">{{ built.title }}</h3>
+            <ul class="srs-checks">
+              <li v-for="point in built.points" :key="point">
+                <Icon name="mdi:check-circle-outline" class="srs-checks__icon" aria-hidden="true" />
                 {{ point }}
               </li>
             </ul>
-          </div>
-          <SrsIllustration
-            class="srs-overview__art"
-            :src="srsIllustrations.overview.src"
-            :alt="srsIllustrations.overview.alt"
-          />
+          </article>
+
+          <article class="srs-card srs-did__card">
+            <p class="srs-did__step">
+              <Icon name="mdi:flag-checkered" class="srs-did__icon" aria-hidden="true" />
+              03
+            </p>
+            <h3 class="srs-h3">{{ outcome.title }}</h3>
+            <ul class="srs-checks">
+              <li v-for="point in outcome.points" :key="point">
+                <Icon name="mdi:check-circle-outline" class="srs-checks__icon" aria-hidden="true" />
+                {{ point }}
+              </li>
+            </ul>
+          </article>
         </div>
       </section>
 
-      <LifecycleOrbit class="srs-block" />
-
-      <ModuleConstellation class="srs-block" />
-
-      <RecordSeal class="srs-block" />
-
-      <section class="srs-stack" aria-labelledby="stack-heading">
-        <div class="srs-stack__header">
-          <div>
-            <h2 id="stack-heading" class="srs-section-title">
-              Technology stack
-            </h2>
-            <p class="srs-body srs-stack__intro">
-              Built as a modern full-stack product with a Vue.js frontend and
-              NestJS backend, designed for long-running enterprise use.
-            </p>
-          </div>
-          <SrsIllustration
-            class="srs-stack__art"
-            variant="accent"
-            :src="srsIllustrations.stack.src"
-            :alt="srsIllustrations.stack.alt"
-          />
+      <section class="srs-section" aria-labelledby="features-heading">
+        <div class="srs-section__head">
+          <p class="srs-kicker">Key features</p>
+          <h2 id="features-heading" class="srs-h2">What staff do in SRS</h2>
+          <p class="srs-lead">
+            One platform carries a student's record through every term. Here are
+            the main areas, kept high level and shown with sample data.
+          </p>
         </div>
-        <div class="srs-stack__grid">
-          <div
-            v-for="group in techStack"
-            :key="group.title"
-            class="srs-stack__group"
+
+        <div class="srs-features">
+          <article
+            v-for="(feature, index) in features"
+            :key="feature.id"
+            class="srs-feature"
+            :class="{ 'srs-feature--flip': index % 2 === 1 }"
           >
-            <h3 class="srs-stack__group-title">{{ group.title }}</h3>
+            <div class="srs-feature__copy">
+              <p class="srs-kicker">{{ feature.eyebrow }}</p>
+              <h3 class="srs-feature__title">{{ feature.title }}</h3>
+              <p class="srs-body srs-muted">{{ feature.summary }}</p>
+              <ul class="srs-checks">
+                <li v-for="point in feature.points" :key="point">
+                  <Icon name="mdi:check-circle-outline" class="srs-checks__icon" aria-hidden="true" />
+                  {{ point }}
+                </li>
+              </ul>
+            </div>
+            <SrsScreen class="srs-feature__screen" :screen="feature.screen" />
+          </article>
+        </div>
+
+        <div class="srs-modules">
+          <h3 class="srs-h3 srs-modules__title">Seven domains, one platform</h3>
+          <p class="srs-body srs-muted srs-modules__lead">
+            SRS is organized into domains that mirror how university staff work.
+          </p>
+          <ModuleGrid :modules="modules" />
+        </div>
+      </section>
+
+      <section class="srs-section" aria-labelledby="lifecycle-heading">
+        <div class="srs-section__head">
+          <p class="srs-kicker">Student lifecycle</p>
+          <h2 id="lifecycle-heading" class="srs-h2">From enrollment to graduation</h2>
+          <p class="srs-lead">
+            Where SRS supports each stage of a student's journey. A simplified
+            view, not every workflow or rule.
+          </p>
+        </div>
+        <LifecycleTimeline :stages="stages" />
+      </section>
+
+      <section class="srs-section srs-section--last" aria-labelledby="stack-heading">
+        <div class="srs-section__head">
+          <p class="srs-kicker">Technology</p>
+          <h2 id="stack-heading" class="srs-h2">Tech stack</h2>
+          <p class="srs-lead">
+            A Vue.js frontend and a NestJS backend, built for long-running
+            enterprise use.
+          </p>
+        </div>
+        <div class="srs-stack">
+          <div v-for="group in techStack" :key="group.title" class="srs-card">
+            <h3 class="srs-stack__title">{{ group.title }}</h3>
             <ul class="srs-stack__list">
-              <li
-                v-for="item in group.items"
-                :key="item"
-                class="srs-body"
-              >
-                {{ item }}
+              <li v-for="item in group.items" :key="item.name" class="srs-stack__item">
+                <span class="srs-stack__logo" aria-hidden="true">
+                  <Icon :name="item.icon" class="srs-stack__icon" />
+                </span>
+                {{ item.name }}
               </li>
             </ul>
           </div>
         </div>
       </section>
+    </main>
 
-      <footer class="srs-footer">
-        <div class="srs-footer__inner">
-          <div class="srs-footer__copy">
-            <h2 class="srs-footer__title">See the live system</h2>
-            <p class="srs-body srs-footer__lead">
-              SRS5G is in daily use by university staff at Universitas Terbuka.
-              This page stays high-level: no internal workflows or production
-              data.
-            </p>
-            <div class="srs-footer__actions">
-              <a
-                href="https://srs5g.ut.ac.id"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="srs-cta srs-cta--on-teal"
-                aria-describedby="srs-live-hint"
-              >
-                Visit srs5g.ut.ac.id
-                <Icon name="mdi:open-in-new" class="srs-cta__icon" aria-hidden="true" />
-                <span class="srs-sr-only">(opens in a new tab)</span>
-              </a>
-              <NuxtLink to="/project" class="srs-cta srs-cta--ghost-on-teal">
-                More projects
-              </NuxtLink>
-            </div>
-            <p id="srs-live-hint" class="srs-footer__hint">
-              Staff login required. Opens in a new tab.
-            </p>
-          </div>
-          <SrsIllustration
-            class="srs-footer__art"
-            variant="flush"
-            :src="srsIllustrations.graduation.src"
-            :alt="srsIllustrations.graduation.alt"
-          />
-          <p class="srs-footer__credit">
-            Illustrations from
+    <footer class="srs-footer">
+      <div class="srs-footer__inner">
+        <div class="srs-footer__copy">
+          <h2 class="srs-footer__title">See the live system</h2>
+          <p class="srs-body srs-footer__lead">
+            SRS5G is in daily use by university staff at Universitas Terbuka.
+            This page stays high level: no internal workflows or production data.
+          </p>
+          <div class="srs-actions">
             <a
-              href="https://iconscout.com"
+              :href="liveUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="srs-footer__credit-link"
-            >IconScout<span class="srs-sr-only"> (opens in a new tab)</span></a>.
+              class="srs-cta srs-cta--on-teal"
+              aria-describedby="srs-live-hint"
+            >
+              Visit srs5g.ut.ac.id
+              <Icon name="mdi:open-in-new" class="srs-cta__icon" aria-hidden="true" />
+              <span class="srs-sr-only">(opens in a new tab)</span>
+            </a>
+            <NuxtLink to="/project" class="srs-cta srs-cta--ghost-on-teal">
+              More projects
+            </NuxtLink>
+          </div>
+          <p id="srs-live-hint" class="srs-footer__hint">
+            Staff login required. Opens in a new tab.
           </p>
         </div>
-      </footer>
-    </main>
+        <SrsScreen class="srs-footer__screen" :screen="loginScreen" />
+        <p class="srs-footer__credit">
+          Product screens on this page are illustrative mocks with sample data.
+          Icons from Material Design Icons and SVG Logos.
+        </p>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import LifecycleOrbit from "./components/LifecycleOrbit.vue";
-import ModuleConstellation from "./components/ModuleConstellation.vue";
-import RecordSeal from "./components/RecordSeal.vue";
-import SrsIllustration from "./components/SrsIllustration.vue";
-import { srsIllustrations } from "./illustrations";
+import LifecycleTimeline from "./components/LifecycleTimeline.vue";
+import ModuleGrid from "./components/ModuleGrid.vue";
+import SrsScreen from "./components/SrsScreen.vue";
+import {
+  built,
+  facts,
+  features,
+  hero,
+  liveUrl,
+  loginScreen,
+  modules,
+  outcome,
+  outcomeMetrics,
+  problem,
+  stages,
+  techStack,
+} from "./data";
 
 useHead({
   title: "SRS5G - Student Record System | Dimar Hanung",
@@ -208,73 +249,71 @@ useHead({
     {
       name: "description",
       content:
-        "SRS5G is a full-stack student record management platform for open and distance learning. Explore the project overview and interactive demos.",
+        "SRS5G is the full-stack student record platform Dimar Hanung works on for Universitas Terbuka staff: registration, student records, reports, and graduation, built with Vue and NestJS.",
     },
   ],
 });
-
-const metrics = [
-  { value: "Web", label: "Staff-facing platform" },
-  { value: "Multi-track", label: "Program domains" },
-  { value: "Full-stack", label: "Vue + NestJS" },
-  { value: "Enterprise", label: "Long-term operations" },
-];
-
-const overviewPoints = [
-  "Centralizes student academic data in one trusted system",
-  "Supports undergraduate, graduate, and specialized programs",
-  "Covers registration, course enrollment, reporting, and graduation prep",
-  "Built for staff workflows at scale in a distance-learning context",
-];
-
-const techStack = [
-  {
-    title: "Frontend",
-    items: ["Vue.js", "Vuex", "Tailwind CSS", "Progressive Web App"],
-  },
-  {
-    title: "Backend",
-    items: ["NestJS", "TypeORM", "PostgreSQL & MySQL", "Redis & message queues"],
-  },
-  {
-    title: "Platform",
-    items: ["Azure AD authentication", "Real-time updates", "Report generation", "Sentry monitoring"],
-  },
-];
 </script>
 
 <style scoped>
 .srs-page {
   --srs-teal: #0d5c63;
-  --srs-copper: #c47b3a;
+  --srs-accent: #0d5c63;
+  --srs-copper: #a35b22;
+  --srs-copper-soft: #c47b3a;
   --srs-ink: #1a2b2e;
-  --srs-muted: #5a6d71;
-  --srs-page: #f4f0e8;
+  --srs-muted: #55686c;
+  --srs-page-solid: #f4f0e8;
   --srs-panel: #fffcf7;
+  --srs-chrome: #f1ebe0;
+  --srs-tint: color-mix(in srgb, var(--srs-teal) 9%, var(--srs-panel));
+  --srs-line: color-mix(in srgb, var(--srs-teal) 16%, transparent);
+  --srs-line-strong: color-mix(in srgb, var(--srs-teal) 40%, transparent);
+  --srs-button-bg: #0d5c63;
+  --srs-button-fg: #f8f6f1;
+  --srs-band: #0d5c63;
   --srs-font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
   --srs-font-body: "Source Serif 4", "Georgia", serif;
 
   min-height: 100vh;
   background:
     radial-gradient(
-      ellipse 80% 50% at 10% -10%,
-      color-mix(in srgb, var(--srs-copper) 14%, transparent),
-      transparent 55%
+      ellipse 80% 40rem at 10% -10%,
+      color-mix(in srgb, var(--srs-copper-soft) 14%, transparent),
+      transparent 60%
     ),
     radial-gradient(
-      ellipse 60% 40% at 100% 0%,
-      color-mix(in srgb, var(--srs-teal) 10%, transparent),
-      transparent 50%
+      ellipse 60% 36rem at 100% 0%,
+      color-mix(in srgb, var(--srs-teal) 12%, transparent),
+      transparent 55%
     ),
-    var(--srs-page);
+    var(--srs-page-solid);
   color: var(--srs-ink);
   overflow-x: clip;
 }
 
+:global(.dark .srs-page) {
+  --srs-teal: #0d5c63;
+  --srs-accent: #7cc8cd;
+  --srs-copper: #e2a46c;
+  --srs-copper-soft: #c98a50;
+  --srs-ink: #ece6da;
+  --srs-muted: #a7b6b7;
+  --srs-page-solid: #0f1a1b;
+  --srs-panel: #152325;
+  --srs-chrome: #1a2b2d;
+  --srs-tint: color-mix(in srgb, #7cc8cd 12%, var(--srs-panel));
+  --srs-line: color-mix(in srgb, #7cc8cd 16%, transparent);
+  --srs-line-strong: color-mix(in srgb, #7cc8cd 42%, transparent);
+  --srs-button-bg: #7cc8cd;
+  --srs-button-fg: #0f1a1b;
+  --srs-band: #0b4146;
+}
+
 .srs-main {
-  max-width: 68rem;
+  max-width: 72rem;
   margin-inline: auto;
-  padding: 2rem 1.25rem 0;
+  padding: 1rem 1.25rem 0;
 }
 
 @media (min-width: 768px) {
@@ -283,98 +322,422 @@ const techStack = [
   }
 }
 
+/* Type scale: h1 clamp 2.75-4.25rem, h2 2.25rem, h3 1.25rem, body 1.0625rem. */
+.srs-kicker {
+  font-family: var(--srs-font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--srs-copper);
+}
+
+.srs-h2 {
+  margin-top: 0.35rem;
+  font-family: var(--srs-font-display);
+  font-size: clamp(1.85rem, 3.5vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--srs-ink);
+}
+
+.srs-h3 {
+  font-family: var(--srs-font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--srs-ink);
+}
+
+.srs-body {
+  font-family: var(--srs-font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.srs-muted {
+  color: var(--srs-muted);
+}
+
+.srs-lead {
+  max-width: 40rem;
+  margin-top: 0.85rem;
+  font-family: var(--srs-font-body);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--srs-muted);
+}
+
+.srs-card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--srs-line);
+  background: var(--srs-panel);
+  transition: border-color 150ms ease-out;
+}
+
+.srs-card:hover {
+  border-color: var(--srs-line-strong);
+}
+
+/* Hero */
 .srs-hero {
   display: grid;
-  gap: 1.75rem;
-  padding-block: 2rem 3rem;
+  gap: 2.5rem;
+  padding-block: 3rem 0;
 }
 
 .srs-hero__copy {
-  min-width: 0;
-  max-width: 40rem;
-}
-
-.srs-banner {
-  margin: 0;
-  min-width: 0;
-  border-radius: 1rem;
-  border: 1px solid color-mix(in srgb, var(--srs-teal) 20%, transparent);
-  background: #d7e8f4;
-  overflow: hidden;
-  box-shadow: 0 18px 40px color-mix(in srgb, var(--srs-ink) 12%, transparent);
-}
-
-.srs-banner__img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: min(26rem, 72vw);
-  object-fit: cover;
-  object-position: center 22%;
-}
-
-.srs-hero__metrics {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-
-@media (min-width: 900px) {
-  .srs-hero__metrics {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .srs-banner__img {
-    max-height: 28rem;
-  }
-}
-
-.srs-hero__kicker {
-  font-family: var(--srs-font-body);
-  font-size: 1rem;
-  color: var(--srs-copper);
-  margin-bottom: 0.75rem;
+  max-width: 48rem;
 }
 
 .srs-hero__title {
+  margin-top: 0.75rem;
   font-family: var(--srs-font-display);
-  font-size: clamp(2.4rem, 5vw, 3.75rem);
+  font-size: clamp(2.75rem, 6vw, 4.25rem);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   color: var(--srs-ink);
 }
 
 .srs-hero__gen {
   display: block;
-  color: var(--srs-teal);
-  font-size: 0.72em;
-  margin-top: 0.15em;
+  margin-top: 0.1em;
+  font-size: 0.62em;
+  color: var(--srs-accent);
 }
 
-.srs-hero__lead {
+.srs-hero__pitch {
+  max-width: 40rem;
+  margin-top: 1.5rem;
   font-family: var(--srs-font-body);
-  font-size: 1.125rem;
-  line-height: 1.65;
+  font-size: clamp(1.125rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
   color: var(--srs-muted);
-  margin-top: 1.25rem;
-  max-width: 36rem;
 }
 
-.srs-hero__actions {
+.srs-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1.75rem;
+  margin-top: 2rem;
 }
 
+.srs-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1.5rem;
+  padding-block: 1.5rem;
+  border-block: 1px solid var(--srs-line);
+}
+
+@media (min-width: 768px) {
+  .srs-facts {
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  }
+}
+
+.srs-fact__label {
+  font-family: var(--srs-font-body);
+  font-size: 0.9375rem;
+  color: var(--srs-copper);
+}
+
+.srs-fact__value {
+  margin-top: 0.2rem;
+  font-family: var(--srs-font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--srs-ink);
+}
+
+.srs-hero__visual {
+  position: relative;
+}
+
+.srs-hero__visual::before {
+  content: "";
+  position: absolute;
+  inset: 10% -3% 12%;
+  z-index: -1;
+  border-radius: 2rem;
+  background:
+    radial-gradient(
+      closest-side at 25% 60%,
+      color-mix(in srgb, var(--srs-copper-soft) 22%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      closest-side at 75% 40%,
+      color-mix(in srgb, var(--srs-teal) 20%, transparent),
+      transparent
+    );
+  filter: blur(24px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .srs-rise {
+    animation: srs-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .srs-rise:nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .srs-rise:nth-child(3) {
+    animation-delay: 160ms;
+  }
+}
+
+@keyframes srs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Sections */
+.srs-section {
+  margin-top: 4rem;
+}
+
+.srs-section__head {
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .srs-section {
+    margin-top: 6rem;
+  }
+
+  .srs-section__head {
+    margin-bottom: 2.5rem;
+  }
+}
+
+.srs-section--last {
+  margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .srs-section--last {
+    margin-bottom: 6rem;
+  }
+}
+
+.srs-checks {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  font-family: var(--srs-font-body);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--srs-ink);
+}
+
+.srs-checks li {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: 0.6rem;
+}
+
+.srs-checks__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.1rem;
+  color: var(--srs-accent);
+}
+
+/* What I did */
+.srs-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.srs-metric {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1rem;
+  background: var(--srs-tint);
+}
+
+.srs-metric__value {
+  font-family: var(--srs-font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--srs-accent);
+}
+
+.srs-metric__label {
+  margin-top: 0.25rem;
+  font-family: var(--srs-font-body);
+  font-size: 1rem;
+  color: var(--srs-muted);
+}
+
+.srs-did {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 960px) {
+  .srs-did {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.srs-did__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.srs-did__card .srs-checks {
+  margin-top: 0.25rem;
+}
+
+.srs-did__card--built {
+  border-color: var(--srs-line-strong);
+  background: var(--srs-tint);
+}
+
+.srs-did__step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--srs-font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--srs-copper);
+}
+
+.srs-did__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--srs-accent);
+}
+
+/* Key features */
+.srs-features {
+  display: grid;
+  gap: 3.5rem;
+}
+
+.srs-feature {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.srs-feature__title {
+  margin-top: 0.35rem;
+  margin-bottom: 0.75rem;
+  font-family: var(--srs-font-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--srs-ink);
+}
+
+@media (min-width: 960px) {
+  .srs-features {
+    gap: 5rem;
+  }
+
+  .srs-feature {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3.5rem;
+  }
+
+  .srs-feature--flip {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+
+  .srs-feature--flip .srs-feature__copy {
+    order: 2;
+  }
+}
+
+.srs-modules {
+  margin-top: 4rem;
+}
+
+.srs-modules__title {
+  font-size: 1.5rem;
+}
+
+.srs-modules__lead {
+  margin-top: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Tech stack */
+.srs-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .srs-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.srs-stack__title {
+  margin-bottom: 1rem;
+  font-family: var(--srs-font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--srs-copper);
+}
+
+.srs-stack__list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.srs-stack__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--srs-font-body);
+  font-size: 1.0625rem;
+  color: var(--srs-ink);
+}
+
+.srs-stack__logo {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--srs-line);
+  background: #fffcf7;
+  color: var(--srs-teal);
+}
+
+.srs-stack__icon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+/* Buttons */
 .srs-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
   min-height: 2.75rem;
-  padding: 0.75rem 1.15rem;
+  padding: 0.75rem 1.2rem;
   border-radius: 0.65rem;
   font-family: var(--srs-font-body);
   font-size: 1rem;
@@ -383,43 +746,12 @@ const techStack = [
   transition:
     background-color 150ms ease-out,
     border-color 150ms ease-out,
-    color 150ms ease-out,
-    transform 120ms ease-out;
-}
-
-.srs-cta--primary {
-  background: var(--srs-teal);
-  color: #f8f6f1;
-}
-
-.srs-cta--primary:hover {
-  background: color-mix(in srgb, var(--srs-teal) 88%, black);
-}
-
-.srs-cta--ghost {
-  border: 1px solid color-mix(in srgb, var(--srs-teal) 30%, transparent);
-  color: var(--srs-teal);
-  background: transparent;
-}
-
-.srs-cta--ghost:hover {
-  border-color: var(--srs-teal);
-  background: color-mix(in srgb, var(--srs-teal) 8%, transparent);
+    color 150ms ease-out;
 }
 
 .srs-cta:focus-visible {
-  outline: 2px solid var(--srs-copper);
+  outline: 2px solid var(--srs-copper-soft);
   outline-offset: 2px;
-}
-
-.srs-cta:active {
-  transform: scale(0.97);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .srs-cta:active {
-    transform: none;
-  }
 }
 
 .srs-cta__icon {
@@ -427,256 +759,114 @@ const techStack = [
   height: 1.1rem;
 }
 
-.srs-metric {
-  padding: 1rem;
-  border-radius: 0.85rem;
-  border: 1px solid color-mix(in srgb, var(--srs-teal) 20%, transparent);
-  background: var(--srs-panel);
+.srs-cta--primary {
+  background: var(--srs-button-bg);
+  color: var(--srs-button-fg);
 }
 
-.srs-metric__value {
-  font-family: var(--srs-font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--srs-teal);
+.srs-cta--primary:hover {
+  background: color-mix(in srgb, var(--srs-button-bg) 86%, var(--srs-ink));
 }
 
-.srs-metric__label {
-  font-family: var(--srs-font-body);
-  font-size: 1rem;
-  color: var(--srs-muted);
-  margin-top: 0.25rem;
+.srs-cta--ghost {
+  border: 1px solid var(--srs-line-strong);
+  color: var(--srs-accent);
 }
 
-.srs-overview {
-  margin-bottom: 3rem;
-}
-
-.srs-section-title {
-  font-family: var(--srs-font-display);
-  font-size: 1.85rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--srs-ink);
-  margin-bottom: 1.25rem;
-}
-
-.srs-overview__grid {
-  display: grid;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.srs-overview__copy {
-  display: grid;
-  gap: 1.25rem;
-  min-width: 0;
-}
-
-.srs-overview__art {
-  width: min(100%, 22rem);
-  justify-self: center;
-}
-
-@media (min-width: 768px) {
-  .srs-overview__grid {
-    grid-template-columns: minmax(0, 1.15fr) minmax(12rem, 0.85fr);
-    gap: 2.5rem;
-  }
-
-  .srs-overview__art {
-    width: 100%;
-    justify-self: stretch;
-  }
-}
-
-.srs-overview__text {
-  color: var(--srs-muted);
-}
-
-.srs-overview__points {
-  display: grid;
-  gap: 0.65rem;
-  padding-left: 1.1rem;
-  border-left: 2px solid color-mix(in srgb, var(--srs-copper) 50%, transparent);
-}
-
-.srs-block {
-  margin-bottom: 3rem;
-}
-
-.srs-stack {
-  margin-bottom: 2rem;
-}
-
-.srs-stack__header {
-  display: grid;
-  gap: 1.25rem;
-  margin-bottom: 1.5rem;
-  align-items: center;
-}
-
-.srs-stack__intro {
-  color: var(--srs-muted);
-  max-width: 38rem;
-}
-
-.srs-stack__art {
-  width: min(100%, 16rem);
-  justify-self: center;
-}
-
-.srs-stack__grid {
-  display: grid;
-  gap: 1rem;
-}
-
-@media (min-width: 768px) {
-  .srs-stack__header {
-    grid-template-columns: minmax(0, 1fr) minmax(10rem, 16rem);
-    gap: 2rem;
-  }
-
-  .srs-stack__art {
-    width: 100%;
-    justify-self: end;
-  }
-
-  .srs-stack__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.srs-stack__group {
-  padding: 1.25rem;
-  border-radius: 0.85rem;
-  border: 1px solid color-mix(in srgb, var(--srs-teal) 18%, transparent);
-  background: var(--srs-panel);
-}
-
-.srs-stack__group-title {
-  font-family: var(--srs-font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--srs-copper);
-  margin-bottom: 0.75rem;
-}
-
-.srs-stack__list {
-  display: grid;
-  gap: 0.4rem;
-  color: var(--srs-ink);
-}
-
-.srs-footer {
-  width: 100vw;
-  margin-top: 2.75rem;
-  margin-left: calc(50% - 50vw);
-  padding: 2.5rem 0 2.75rem;
-  background: var(--srs-teal);
-  color: #f8f6f1;
-}
-
-.srs-footer__inner {
-  max-width: 68rem;
-  margin-inline: auto;
-  padding-inline: 1.25rem;
-  display: grid;
-  gap: 1.25rem;
-  align-items: center;
-}
-
-.srs-footer__copy {
-  min-width: 0;
-}
-
-.srs-footer__title {
-  font-family: var(--srs-font-display);
-  font-size: clamp(1.85rem, 4vw, 2.35rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-  color: #fffcf7;
-  margin-bottom: 0.7rem;
-}
-
-.srs-footer__lead {
-  max-width: 36rem;
-  color: color-mix(in srgb, #f8f6f1 82%, var(--srs-teal));
-}
-
-.srs-footer__actions {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.75rem;
-  margin-top: 1.35rem;
+.srs-cta--ghost:hover {
+  border-color: var(--srs-accent);
+  background: var(--srs-tint);
 }
 
 .srs-cta--on-teal {
   background: #fffcf7;
-  color: var(--srs-teal);
+  color: #0d5c63;
 }
 
 .srs-cta--on-teal:hover {
-  background: color-mix(in srgb, #fffcf7 88%, var(--srs-copper));
+  background: color-mix(in srgb, #fffcf7 85%, #c47b3a);
 }
 
 .srs-cta--ghost-on-teal {
-  border: 1px solid color-mix(in srgb, #f8f6f1 45%, transparent);
+  border: 1px solid rgb(248 246 241 / 0.45);
   color: #f8f6f1;
-  background: transparent;
 }
 
 .srs-cta--ghost-on-teal:hover {
   border-color: #f8f6f1;
-  background: color-mix(in srgb, #f8f6f1 10%, transparent);
+  background: rgb(248 246 241 / 0.1);
+}
+
+/* Footer band */
+.srs-footer {
+  padding-block: 3.5rem;
+  background: var(--srs-band);
+  color: #f8f6f1;
+}
+
+.srs-footer__inner {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.srs-footer__title {
+  font-family: var(--srs-font-display);
+  font-size: clamp(1.85rem, 4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fffcf7;
+}
+
+.srs-footer__lead {
+  max-width: 34rem;
+  margin-top: 0.75rem;
+  color: rgb(248 246 241 / 0.82);
 }
 
 .srs-footer__hint {
+  margin-top: 0.85rem;
   font-family: var(--srs-font-body);
   font-size: 1rem;
-  color: color-mix(in srgb, #f8f6f1 72%, var(--srs-teal));
-  margin-top: 0.85rem;
+  color: rgb(248 246 241 / 0.72);
 }
 
-.srs-footer__art {
-  width: min(100%, 16rem);
-  justify-self: center;
-  order: 3;
+.srs-footer__screen {
+  --srs-line: rgb(255 255 255 / 0.18);
+  --srs-chrome: #f1ebe0;
+  --srs-page-solid: #fffcf7;
+  --srs-muted: #55686c;
 }
 
-.srs-footer__art :deep(.srs-illus__frame) {
-  border: none;
-  background: transparent;
-  border-radius: 0;
-}
-
-.srs-footer__art :deep(.srs-illus__img) {
-  max-height: 16rem;
+.srs-footer__screen :deep(.screen__caption) {
+  color: rgb(248 246 241 / 0.72);
 }
 
 .srs-footer__credit {
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(248 246 241 / 0.18);
   font-family: var(--srs-font-body);
   font-size: 1rem;
-  color: color-mix(in srgb, #f8f6f1 68%, var(--srs-teal));
-  padding-top: 0.25rem;
-  order: 4;
+  color: rgb(248 246 241 / 0.72);
 }
 
-.srs-footer__credit-link {
-  color: #fffcf7;
-  text-underline-offset: 0.18em;
-}
+@media (min-width: 768px) {
+  .srs-footer {
+    padding-block: 4.5rem;
+  }
 
-.srs-footer__credit-link:hover {
-  color: color-mix(in srgb, #fffcf7 80%, var(--srs-copper));
-}
+  .srs-footer__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 2.5rem 4rem;
+    padding-inline: 2rem;
+  }
 
-.srs-footer__credit-link:focus-visible {
-  outline: 2px solid var(--srs-copper);
-  outline-offset: 3px;
-  border-radius: 0.2rem;
+  .srs-footer__credit {
+    grid-column: 1 / -1;
+  }
 }
 
 .srs-sr-only {
@@ -689,56 +879,5 @@ const techStack = [
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-@media (min-width: 768px) {
-  .srs-footer {
-    padding: 3rem 0 3.25rem;
-  }
-
-  .srs-footer__inner {
-    padding-inline: 2rem;
-    grid-template-columns: minmax(0, 1fr) minmax(14rem, 20rem);
-    grid-template-rows: auto auto;
-    gap: 1.5rem 2.5rem;
-  }
-
-  .srs-footer__copy {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .srs-footer__art {
-    width: 100%;
-    justify-self: end;
-    order: unset;
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: center;
-  }
-
-  .srs-footer__art :deep(.srs-illus__img) {
-    max-height: 20rem;
-  }
-
-  .srs-footer__actions {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .srs-footer__credit {
-    grid-column: 1;
-    grid-row: 2;
-    order: unset;
-    padding-top: 1.15rem;
-    border-top: 1px solid color-mix(in srgb, #f8f6f1 18%, transparent);
-  }
-}
-
-.srs-body {
-  font-family: var(--srs-font-body);
-  font-size: 1rem;
-  line-height: 1.6;
 }
 </style>
