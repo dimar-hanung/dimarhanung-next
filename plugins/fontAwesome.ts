@@ -11,6 +11,7 @@ import {
   faSun,
   faFire,
   faTerminal,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -37,7 +38,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     faCloud,
     faSun,
     faFire,
-    faTerminal
+    faTerminal,
+    faStar
   );
   nuxtApp.vueApp.component("font-awesome-icon", FontAwesomeIcon as any);
 });
