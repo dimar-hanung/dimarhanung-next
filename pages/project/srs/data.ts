@@ -13,6 +13,17 @@ export interface SrsScreen {
   mock?: SrsMock;
 }
 
+// One illustration slot. Every illustration on this page comes from the same
+// IconScout pack (see `illustrationCredit`), recoloured to the page palette.
+// An empty `alt` marks the art as decorative; width and height are the SVG's
+// aspect ratio so the slot reserves its space before the file loads.
+export interface SrsIllustration {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface SrsFact {
   label: string;
   value: string;
@@ -83,13 +94,30 @@ export const facts: SrsFact[] = [
   { label: "Status", value: "In daily use" },
 ];
 
+export const illustrationCredit = {
+  contributor: "Andinur Studio",
+  url: "https://iconscout.com/illustration-pack/education-2496",
+};
+
 export const problem = {
   title: "Problem",
+  illustration: {
+    src: "/project/srs/student-records-review.svg",
+    alt: "",
+    width: 382,
+    height: 301,
+  } satisfies SrsIllustration,
   body: "Universitas Terbuka is Indonesia's open and distance learning university. Staff have to keep student academic data accurate and coordinate registrations for undergraduate, graduate, and specialized programs, across each student's entire study journey.",
 };
 
 export const built = {
   title: "What I built",
+  illustration: {
+    src: "/project/srs/progress-checklist.svg",
+    alt: "",
+    width: 385,
+    height: 322,
+  } satisfies SrsIllustration,
   points: [
     "A Vue.js staff frontend with Vuex and Tailwind CSS, shipped as a Progressive Web App",
     "A NestJS and TypeORM backend on PostgreSQL and MySQL",
@@ -101,6 +129,12 @@ export const built = {
 
 export const outcome = {
   title: "Outcome",
+  illustration: {
+    src: "/project/srs/shared-student-data.svg",
+    alt: "",
+    width: 381,
+    height: 333,
+  } satisfies SrsIllustration,
   points: [
     "Student academic data lives in one trusted system",
     "Registration, course enrollment, reporting, and graduation prep in one place",
@@ -266,6 +300,13 @@ export const stages: SrsStage[] = [
   },
 ];
 
+export const lifecycleIllustration: SrsIllustration = {
+  src: "/project/srs/distance-learning-student.svg",
+  alt: "Illustration of a distance-learning student studying from books and a tablet",
+  width: 382,
+  height: 263,
+};
+
 export const techStack: SrsStackGroup[] = [
   {
     title: "Frontend",
@@ -301,4 +342,12 @@ export const loginScreen: SrsScreen = {
   url: "srs5g.ut.ac.id",
   alt: "SRS5G sign-in page on srs5g.ut.ac.id",
   image: "/project/srs/banner.png",
+};
+
+// Closes the story at graduation, next to the "See the live system" call to action.
+export const footerIllustration: SrsIllustration = {
+  src: "/project/srs/graduate-with-diploma.svg",
+  alt: "Illustration of a graduate raising a diploma",
+  width: 376,
+  height: 365,
 };
