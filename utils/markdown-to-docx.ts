@@ -14,6 +14,7 @@ import {
   TableCell,
   TableRow,
   TextRun,
+  WidthType,
   convertInchesToTwip,
   type IParagraphOptions,
   type IStylesOptions,
@@ -58,6 +59,7 @@ interface FetchedImage {
 interface BuildContext {
   template: DocxTemplateConfig;
   imageCache: Map<string, FetchedImage | null>;
+  mermaidCache: Map<string, FetchedImage | null>;
 }
 
 interface InlineRun {
@@ -72,11 +74,13 @@ interface InlineRun {
 
 const DEFAULT_MAX_IMAGE_WIDTH_PX = 580;
 
+function getContentWidthTwip(template: DocxTemplateConfig): number {
+  if (!template.page) return 9360;
+  return template.page.size.width - template.page.margin.left - template.page.margin.right;
+}
+
 function getMaxImageWidthPx(template: DocxTemplateConfig): number {
-  if (!template.page) return DEFAULT_MAX_IMAGE_WIDTH_PX;
-  const contentTwip =
-    template.page.size.width - template.page.margin.left - template.page.margin.right;
-  return Math.max(120, Math.round(contentTwip / 15));
+  return Math.max(120, Math.round(getContentWidthTwip(template) / 15));
 }
 
 function scaleImageDimensions(
@@ -122,7 +126,9 @@ function parseSvgDimensions(svgText: string): { width: number; height: number } 
   const defaultSize = 300;
   const parseLength = (value: string | undefined): number | null => {
     if (!value) return null;
-    const normalized = value.trim().replace(/(px|pt|cm|mm|in|%)$/i, '');
+    const trimmed = value.trim();
+    if (/%$/.test(trimmed)) return null;
+    const normalized = trimmed.replace(/(px|pt|cm|mm|in)$/i, '');
     const num = Number.parseFloat(normalized);
     return Number.isFinite(num) && num > 0 ? num : null;
   };
@@ -313,30 +319,54 @@ async function rasterizeBlobToPngBytes(
   }
 }
 
-async function rasterizeSvgToPngBytes(svgText: string, maxWidth: number): Promise<Uint8Array> {
-  const sanitized = sanitizeSvgText(svgText);
+async function canvasToPngBytes(
+  image: CanvasImageSource,
+  drawSize: { width: number; height: number },
+  background?: string,
+): Promise<Uint8Array> {
+  const canvas = document.createElement('canvas');
+  canvas.width = drawSize.width;
+  canvas.height = drawSize.height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Canvas unavailable');
+  if (background) {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, drawSize.width, drawSize.height);
+  }
+  ctx.drawImage(image, 0, 0, drawSize.width, drawSize.height);
+  const pngBlob = await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((result) => {
+      if (!result) reject(new Error('PNG conversion failed'));
+      else resolve(result);
+    }, 'image/png');
+  });
+  return new Uint8Array(await pngBlob.arrayBuffer());
+}
+
+async function rasterizeSvgToPngBytes(
+  svgText: string,
+  maxWidth: number,
+  background?: string,
+  options?: { sanitize?: boolean },
+): Promise<Uint8Array> {
+  const sanitized = options?.sanitize === false ? svgText.replace(/^\uFEFF/, '') : sanitizeSvgText(svgText);
   const nativeDims = parseSvgDimensions(sanitized);
   const drawSize = scaleImageDimensions(nativeDims.width, nativeDims.height, maxWidth);
+  const canvasSize = drawSize;
 
   const blob = new Blob([sanitized], { type: 'image/svg+xml;charset=utf-8' });
   try {
-    return await rasterizeBlobToPngBytes(blob, drawSize);
+    const objectUrl = URL.createObjectURL(blob);
+    try {
+      const image = await loadImageElement(objectUrl);
+      return await canvasToPngBytes(image, canvasSize, background);
+    } finally {
+      URL.revokeObjectURL(objectUrl);
+    }
   } catch {
     const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(sanitized)}`;
     const image = await loadImageElement(dataUrl);
-    const canvas = document.createElement('canvas');
-    canvas.width = drawSize.width;
-    canvas.height = drawSize.height;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('Canvas unavailable');
-    ctx.drawImage(image, 0, 0, drawSize.width, drawSize.height);
-    const pngBlob = await new Promise<Blob>((resolve, reject) => {
-      canvas.toBlob((result) => {
-        if (!result) reject(new Error('PNG conversion failed'));
-        else resolve(result);
-      }, 'image/png');
-    });
-    return new Uint8Array(await pngBlob.arrayBuffer());
+    return await canvasToPngBytes(image, canvasSize, background);
   }
 }
 
@@ -352,7 +382,7 @@ async function finalizeFetchedImage(
   data: Uint8Array,
   maxWidth: number,
 ): Promise<FetchedImage> {
-  const blob = new Blob([data], { type: `image/${type === 'jpg' ? 'jpeg' : type}` });
+  const blob = new Blob([data as BlobPart], { type: `image/${type === 'jpg' ? 'jpeg' : type}` });
   const dimensions = await readImageDimensions(blob);
   const scaled = scaleImageDimensions(dimensions.width, dimensions.height, maxWidth);
   return {
@@ -436,6 +466,149 @@ async function prefetchImages(
   return cache;
 }
 
+let mermaidRenderCount = 0;
+
+function isMermaidLang(lang: string | undefined): boolean {
+  return (lang ?? '').trim().toLowerCase() === 'mermaid';
+}
+
+async function waitForPaint(): Promise<void> {
+  await new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  });
+}
+
+async function getMermaid() {
+  const mermaid = (await import('mermaid')).default;
+  // Re-apply every call so a prior htmlLabels:true init cannot stick.
+  mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'loose',
+    theme: 'neutral',
+    fontFamily: 'Arial, sans-serif',
+    htmlLabels: false,
+    flowchart: { htmlLabels: false, useMaxWidth: false },
+    sequence: { useMaxWidth: false },
+    gantt: { useMaxWidth: false },
+    class: { htmlLabels: false, useMaxWidth: false },
+  });
+  return mermaid;
+}
+
+async function isMostlyBlankPng(bytes: Uint8Array): Promise<boolean> {
+  const blob = new Blob([bytes as BlobPart], { type: 'image/png' });
+  const objectUrl = URL.createObjectURL(blob);
+  try {
+    const image = await loadImageElement(objectUrl);
+    const width = Math.min(image.naturalWidth || 1, 96);
+    const height = Math.min(image.naturalHeight || 1, 96);
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return false;
+    ctx.drawImage(image, 0, 0, width, height);
+    const pixels = ctx.getImageData(0, 0, width, height).data;
+    let ink = 0;
+    for (let i = 0; i < pixels.length; i += 4) {
+      const red = pixels[i] ?? 255;
+      const green = pixels[i + 1] ?? 255;
+      const blue = pixels[i + 2] ?? 255;
+      const alpha = pixels[i + 3] ?? 0;
+      if (alpha > 20 && (red < 250 || green < 250 || blue < 250)) ink += 1;
+    }
+    return ink < Math.max(8, width * height * 0.005);
+  } catch {
+    return true;
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
+async function renderMermaidToImage(
+  source: string,
+  maxWidth: number,
+): Promise<FetchedImage | null> {
+  if (typeof document === 'undefined') return null;
+  const definition = source.trim();
+  if (!definition) return null;
+
+  // Wrapper is off-screen. Host stays a normal layout box so a screenshot
+  // clone does not inherit left:-12000 / opacity:0 and come back blank.
+  const wrapper = document.createElement('div');
+  wrapper.setAttribute('aria-hidden', 'true');
+  wrapper.style.cssText = 'position:fixed;left:-12000px;top:0;pointer-events:none;';
+
+  const host = document.createElement('div');
+  host.style.cssText = [
+    `width:${maxWidth}px`,
+    'padding:16px',
+    'background:#ffffff',
+    'opacity:1',
+  ].join(';');
+  wrapper.appendChild(host);
+  document.body.appendChild(wrapper);
+
+  try {
+    const mermaid = await getMermaid();
+    mermaidRenderCount += 1;
+    const { svg } = await mermaid.render(`md2docxMermaid${mermaidRenderCount}`, definition);
+    host.innerHTML = svg;
+    const svgEl = host.querySelector('svg');
+    if (!(svgEl instanceof SVGSVGElement)) return null;
+
+    svgEl.style.display = 'block';
+    svgEl.style.width = '100%';
+    svgEl.style.height = 'auto';
+    svgEl.style.maxWidth = '100%';
+    svgEl.style.background = '#ffffff';
+
+    if (document.fonts?.ready) {
+      await document.fonts.ready;
+    }
+    await waitForPaint();
+
+    try {
+      const { domToBlob } = await import('modern-screenshot');
+      const blob = await domToBlob(host, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+      });
+      if (blob && blob.size > 500) {
+        const pngBytes = new Uint8Array(await blob.arrayBuffer());
+        if (!(await isMostlyBlankPng(pngBytes))) {
+          return finalizeFetchedImage('png', pngBytes, maxWidth);
+        }
+      }
+    } catch {
+      // Fall through to SVG rasterize — labels are SVG text.
+    }
+
+    const serialized = new XMLSerializer().serializeToString(svgEl);
+    const pngBytes = await rasterizeSvgToPngBytes(serialized, maxWidth, '#ffffff', {
+      sanitize: false,
+    });
+    if (await isMostlyBlankPng(pngBytes)) return null;
+    return finalizeFetchedImage('png', pngBytes, maxWidth);
+  } catch {
+    return null;
+  } finally {
+    wrapper.remove();
+  }
+}
+
+async function prefetchMermaid(
+  sources: string[],
+  maxWidth: number,
+): Promise<Map<string, FetchedImage | null>> {
+  const unique = [...new Set(sources.map((source) => source.trim()).filter(Boolean))];
+  const cache = new Map<string, FetchedImage | null>();
+  for (const source of unique) {
+    cache.set(source, await renderMermaidToImage(source, maxWidth));
+  }
+  return cache;
+}
+
 function walkTokens(tokens: Tokens.Generic[] | undefined, visit: (token: Tokens.Generic) => void): void {
   if (!tokens) return;
   for (const token of tokens) {
@@ -475,7 +648,20 @@ function collectImageUrls(tokens: Tokens.Generic[]): string[] {
   return urls;
 }
 
+function collectMermaidSources(tokens: Tokens.Generic[]): string[] {
+  const sources: string[] = [];
+  walkTokens(tokens, (token) => {
+    if (token.type !== 'code') return;
+    const code = token as unknown as Tokens.Code;
+    if (!isMermaidLang(code.lang)) return;
+    const source = (code.text ?? '').trim();
+    if (source) sources.push(source);
+  });
+  return sources;
+}
+
 function createImageRun(image: FetchedImage, alt: string): ImageRun {
+  const label = alt.trim() || 'Embedded image';
   return new ImageRun({
     type: image.type,
     data: image.data,
@@ -483,15 +669,11 @@ function createImageRun(image: FetchedImage, alt: string): ImageRun {
       width: image.displayWidth,
       height: image.displayHeight,
     },
-    ...(alt
-      ? {
-          altText: {
-            title: alt,
-            description: alt,
-            name: alt,
-          },
-        }
-      : {}),
+    altText: {
+      title: label,
+      description: label,
+      name: label,
+    },
   });
 }
 
@@ -513,15 +695,25 @@ function imageFallbackChildren(href: string, alt: string, ctx: BuildContext): Pa
   ];
 }
 
+function flushImageParagraphProps(ctx: BuildContext): IParagraphOptions {
+  return {
+    alignment: AlignmentType.CENTER,
+    indent: { firstLine: 0, left: 0, right: 0 },
+    spacing: {
+      before: ctx.template.imageSpacingBefore,
+      after: ctx.template.imageSpacingAfter,
+    },
+  };
+}
+
 function imageToParagraph(href: string, alt: string, ctx: BuildContext): Paragraph {
   const fetched = ctx.imageCache.get(href);
   const children = fetched
     ? [createImageRun(fetched, alt)]
     : imageFallbackChildren(href, alt, ctx);
   return new Paragraph({
-    ...bodyParagraphProps(ctx, false),
+    ...flushImageParagraphProps(ctx),
     children,
-    spacing: { after: 120, line: ctx.template.lineSpacing },
   });
 }
 
@@ -699,14 +891,18 @@ function bodyParagraphProps(ctx: BuildContext, includeFirstLineIndent = true): I
   };
 }
 
-function paragraphFromInline(tokens: Tokens.Generic[] | undefined, ctx: BuildContext): Paragraph {
+function paragraphFromInline(
+  tokens: Tokens.Generic[] | undefined,
+  ctx: BuildContext,
+  includeFirstLineIndent = true,
+): Paragraph {
   return new Paragraph({
-    ...bodyParagraphProps(ctx),
+    ...bodyParagraphProps(ctx, includeFirstLineIndent),
     children: inlineRunsToParagraphChildren(collectInlineTokens(tokens), ctx),
   });
 }
 
-function codeBlockToParagraphs(token: Tokens.Code, ctx: BuildContext): Paragraph[] {
+function codeLinesToParagraphs(token: Tokens.Code, ctx: BuildContext): Paragraph[] {
   const { template } = ctx;
   const lines = (token.text ?? '').replace(/\n$/, '').split('\n');
   return lines.map(
@@ -719,10 +915,29 @@ function codeBlockToParagraphs(token: Tokens.Code, ctx: BuildContext): Paragraph
           }),
         ],
         spacing: { line: template.lineSpacing },
-        shading: { type: ShadingType.SOLID, color: 'F4F4F4' },
+        shading: { type: ShadingType.CLEAR, fill: 'F4F4F4' },
         indent: { left: convertInchesToTwip(0.2), right: convertInchesToTwip(0.2) },
       }),
   );
+}
+
+function mermaidBlockToParagraphs(token: Tokens.Code, ctx: BuildContext): Paragraph[] {
+  const source = (token.text ?? '').trim();
+  const fetched = source ? ctx.mermaidCache.get(source) : null;
+  if (fetched) {
+    return [
+      new Paragraph({
+        ...flushImageParagraphProps(ctx),
+        children: [createImageRun(fetched, 'Mermaid diagram')],
+      }),
+    ];
+  }
+  return codeLinesToParagraphs(token, ctx);
+}
+
+function codeBlockToParagraphs(token: Tokens.Code, ctx: BuildContext): Paragraph[] {
+  if (isMermaidLang(token.lang)) return mermaidBlockToParagraphs(token, ctx);
+  return codeLinesToParagraphs(token, ctx);
 }
 
 function headingToParagraph(token: Tokens.Heading, ctx: BuildContext): Paragraph {
@@ -745,7 +960,6 @@ function headingToParagraph(token: Tokens.Heading, ctx: BuildContext): Paragraph
           spacing: {
             before: headingConfig.spacingBefore,
             after: headingConfig.spacingAfter,
-            line: template.lineSpacing,
           },
         }
       : {}),
@@ -777,7 +991,6 @@ function blockquoteToParagraphs(token: Tokens.Blockquote, ctx: BuildContext): Pa
 }
 
 function listToParagraphs(token: Tokens.List, ctx: BuildContext, level: number = 0): Paragraph[] {
-  const { template } = ctx;
   const out: Paragraph[] = [];
   const ordered = Boolean(token.ordered);
   for (const item of token.items ?? []) {
@@ -823,33 +1036,54 @@ function listToParagraphs(token: Tokens.List, ctx: BuildContext, level: number =
 }
 
 function tableToTable(token: Tokens.Table, ctx: BuildContext): Table {
+  const columnCount = Math.max(token.header?.length ?? 0, 1);
+  const tableWidth = getContentWidthTwip(ctx.template);
+  const columnWidth = Math.floor(tableWidth / columnCount);
+  const columnWidths = Array.from({ length: columnCount }, (_, index) =>
+    index === columnCount - 1 ? tableWidth - columnWidth * (columnCount - 1) : columnWidth,
+  );
+  const border = { style: BorderStyle.SINGLE, size: 1, color: 'CCCCCC' };
+  const borders = { top: border, bottom: border, left: border, right: border };
+  const cellMargins = { top: 80, bottom: 80, left: 120, right: 120 };
+
   const rows: TableRow[] = [];
   const headerCells = (token.header ?? []).map(
-    (cell) =>
+    (cell, index) =>
       new TableCell({
-        children: [paragraphFromInline(cell.tokens, ctx)],
-        shading: { type: ShadingType.SOLID, color: 'F4F4F4' },
+        borders,
+        width: { size: columnWidths[index] ?? columnWidth, type: WidthType.DXA },
+        shading: { type: ShadingType.CLEAR, fill: 'F4F4F4' },
+        margins: cellMargins,
+        children: [paragraphFromInline(cell.tokens, ctx, false)],
       }),
   );
   rows.push(new TableRow({ children: headerCells, tableHeader: true }));
 
   for (const row of token.rows ?? []) {
     const cells = row.map(
-      (cell) => new TableCell({ children: [paragraphFromInline(cell.tokens, ctx)] }),
+      (cell, index) =>
+        new TableCell({
+          borders,
+          width: { size: columnWidths[index] ?? columnWidth, type: WidthType.DXA },
+          shading: { type: ShadingType.CLEAR, fill: 'FFFFFF' },
+          margins: cellMargins,
+          children: [paragraphFromInline(cell.tokens, ctx, false)],
+        }),
     );
     rows.push(new TableRow({ children: cells }));
   }
 
   return new Table({
     rows,
-    width: { size: 100, type: 'pct' },
+    width: { size: tableWidth, type: WidthType.DXA },
+    columnWidths,
     borders: {
-      top: { style: BorderStyle.SINGLE, size: 4, color: 'DDDDDD' },
-      bottom: { style: BorderStyle.SINGLE, size: 4, color: 'DDDDDD' },
-      left: { style: BorderStyle.SINGLE, size: 4, color: 'DDDDDD' },
-      right: { style: BorderStyle.SINGLE, size: 4, color: 'DDDDDD' },
-      insideHorizontal: { style: BorderStyle.SINGLE, size: 4, color: 'DDDDDD' },
-      insideVertical: { style: BorderStyle.SINGLE, size: 4, color: 'DDDDDD' },
+      top: border,
+      bottom: border,
+      left: border,
+      right: border,
+      insideHorizontal: border,
+      insideVertical: border,
     },
   });
 }
@@ -953,7 +1187,6 @@ function buildDocumentStyles(template: DocxTemplateConfig): IStylesOptions | und
             spacing: {
               before: heading.spacingBefore,
               after: heading.spacingAfter,
-              line: template.lineSpacing,
             },
             outlineLevel: heading.outlineLevel,
           },
@@ -987,9 +1220,13 @@ export async function markdownToDocxBlob(
   const template = getDocxTemplate(templateId);
   const tokens = marked.lexer(trimmed) as unknown as Tokens.Generic[];
   const imageUrls = collectImageUrls(tokens);
+  const mermaidSources = collectMermaidSources(tokens);
   const maxImageWidth = getMaxImageWidthPx(template);
-  const imageCache = await prefetchImages(imageUrls, maxImageWidth);
-  const ctx: BuildContext = { template, imageCache };
+  const [imageCache, mermaidCache] = await Promise.all([
+    prefetchImages(imageUrls, maxImageWidth),
+    prefetchMermaid(mermaidSources, maxImageWidth),
+  ]);
+  const ctx: BuildContext = { template, imageCache, mermaidCache };
   const sectionChildren = buildSectionChildren(tokens, ctx);
 
   if (sectionChildren.length === 0) {
@@ -1015,8 +1252,8 @@ export async function markdownToDocxBlob(
             style: {
               paragraph: {
                 indent: {
-                  left: convertInchesToTwip(0.5 * (level + 1)),
-                  hanging: convertInchesToTwip(0.25),
+                  left: 720 * (level + 1),
+                  hanging: 360,
                 },
               },
             },
@@ -1032,8 +1269,8 @@ export async function markdownToDocxBlob(
             style: {
               paragraph: {
                 indent: {
-                  left: convertInchesToTwip(0.5 * (level + 1)),
-                  hanging: convertInchesToTwip(0.25),
+                  left: 720 * (level + 1),
+                  hanging: 360,
                 },
               },
             },
