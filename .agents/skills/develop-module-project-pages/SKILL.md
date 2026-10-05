@@ -5,12 +5,13 @@ Building or changing public project case-study pages under `pages/project/*` (SR
 ## Key locations
 
 - `pages/project/srs/` — SRS5G staff record case study (teal/copper serif, dark mode via `:global(.dark .srs-page)` variables). Reference layout for the static-story direction: hero with facts row + one framed visual → What I did (Problem → What I built → Outcome) → key features as alternating screen rows + module card grid → static lifecycle timeline → tech stack → footer band
-- `pages/project/srs/data.ts` — every SRS fact, feature, module, stage, stack item and screen slot; edit content here, not in the layout
+- `pages/project/srs/data.ts` — every SRS fact, feature, module, stage, stack item, screen slot and illustration slot (`illustration` on problem/built/outcome, `lifecycleIllustration`, `footerIllustration`, `illustrationCredit`); edit content here, not in the layout
+- `pages/project/srs/components/SrsIllustration.vue` — lazy `<img>` for an illustration slot (fixed width/height, empty `alt` ⇒ `aria-hidden`); backdrops and dark-mode dimming live with each placement in `index.vue` (`.srs-illo-panel`)
 - `pages/project/srs/components/SrsScreen.vue` — CSS browser frame; shows `screen.image` when set, otherwise a stylised CSS mock (`dashboard` / `registration` / `record` / `report`) with obviously dummy data
 - `pages/project/myut/` — MyUT Mahasiswa student portal case study (kraft/navy/vermillion)
 - `pages/project/admisi-ut/` — SIA Admisi UT new-student onboarding (separate product from MyUT). Theme: admission lobby — campus green `#0d7a4d` on mint paper, Space Grotesk + Instrument Sans + Space Mono; interactives: `QueueHall.vue` (LED now-serving board + thermal ticket dispenser) and `ApplicantPaths.vue` (applicant-type tabs)
 - `components/home/project.vue` — listing cards; set `detailPath` when a case study exists
-- `public/project/<slug>/` — login-screen banners and real screenshots (dummy data only); MyUT and Admisi UT still hold IconScout illustrations
+- `public/project/<slug>/` — login-screen banners and real screenshots (dummy data only), plus each page's illustrations. SRS uses five SVGs from Andinur Studio's IconScout "Education" pack (`iconscout.com/illustration-pack/education-2496`), recoloured to the SRS palette; MyUT and Admisi UT still hold older mixed IconScout illustrations
 
 ## References
 
@@ -21,7 +22,8 @@ Building or changing public project case-study pages under `pages/project/*` (SR
 - Each product gets its own theme. Do not reuse `pages/project/detail/index.vue` or copy another case study's palette or type.
 - Copy stays general and public-safe: no deep business rules, no internal workflows, no production data.
 - Favour static storytelling over interactives: visitors come to see what Dimar built, so lead with role, problem, what I built and outcome, and show features with screens that need no clicks. No tabs, carousels, demos or forms that hide content; keep hover states and at most a CSS fade-in behind `prefers-reduced-motion: no-preference`. (MyUT and Admisi UT still carry older interactives — postmarks/e-KTM, queue hall/ticket — until they are redone.)
-- One consistent icon set: `mdi:*` line icons for UI and features, `logos:*` for tech-stack logos. No mixed illustration styles; drop IconScout art when a page is redone and update the footer credit.
+- One consistent icon set: `mdi:*` line icons for UI and features, `logos:*` for tech-stack logos.
+- Illustrations are allowed when the whole page uses ONE set: same IconScout pack (same contributor and art style), compared by preview thumbnails before choosing. Recolour the SVG fills to the page palette (map the pack's few flat colours once and apply the same map to every file), crop the viewBox to the art, `svgo` them (aim < 60 KB), and keep 3–5 placements that add meaning (e.g. Problem / What I built / Outcome cards, lifecycle head, footer CTA). Never replace product mock screens with illustrations. Handle dark mode explicitly (SRS: dimmed warm-sand panel behind ink-on-cream art). Credit the contributor with a link to the pack in the footer credit line; drop the art and the credit together if the page is redone without it.
 - Never invent facts (numbers, years, team size, user counts). Use only what the repo already states; phrase unknowns qualitatively or leave the item out.
 - Keep facts and screenshot slots data-driven (one typed data file per page, e.g. `facts`, `outcomeMetrics`, `screen.image`) so the PM can drop in real values and images later. Empty `outcomeMetrics` hides its row; a screen without `image` falls back to the CSS mock captioned "Illustrative mock with sample data".
 - Case-study body copy is English to match the portfolio `html lang`.

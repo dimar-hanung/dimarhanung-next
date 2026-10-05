@@ -77,6 +77,7 @@
 
         <div class="srs-did" data-reveal="group">
           <article class="srs-card srs-lift srs-did__card" style="--i: 0">
+            <SrsIllustration class="srs-did__illo srs-illo-panel" :illustration="problem.illustration" />
             <p class="srs-did__step">
               <Icon name="mdi:help-circle-outline" class="srs-did__icon" aria-hidden="true" />
               01
@@ -86,6 +87,7 @@
           </article>
 
           <article class="srs-card srs-lift srs-did__card srs-did__card--built" style="--i: 1">
+            <SrsIllustration class="srs-did__illo srs-illo-panel" :illustration="built.illustration" />
             <p class="srs-did__step">
               <Icon name="mdi:hammer-wrench" class="srs-did__icon" aria-hidden="true" />
               02
@@ -100,6 +102,7 @@
           </article>
 
           <article class="srs-card srs-lift srs-did__card" style="--i: 2">
+            <SrsIllustration class="srs-did__illo srs-illo-panel" :illustration="outcome.illustration" />
             <p class="srs-did__step">
               <Icon name="mdi:flag-checkered" class="srs-did__icon" aria-hidden="true" />
               03
@@ -168,13 +171,20 @@
       </section>
 
       <section class="srs-section" aria-labelledby="lifecycle-heading">
-        <div class="srs-section__head" data-reveal="up">
-          <p class="srs-kicker">Student lifecycle</p>
-          <h2 id="lifecycle-heading" class="srs-h2">From enrollment to graduation</h2>
-          <p class="srs-lead">
-            Where SRS supports each stage of a student's journey. A simplified
-            view, not every workflow or rule.
-          </p>
+        <div class="srs-section__head srs-lifecycle__head">
+          <div data-reveal="up">
+            <p class="srs-kicker">Student lifecycle</p>
+            <h2 id="lifecycle-heading" class="srs-h2">From enrollment to graduation</h2>
+            <p class="srs-lead">
+              Where SRS supports each stage of a student's journey. A simplified
+              view, not every workflow or rule.
+            </p>
+          </div>
+          <SrsIllustration
+            class="srs-lifecycle__illo srs-illo-panel"
+            :illustration="lifecycleIllustration"
+            data-reveal="from-right"
+          />
         </div>
         <LifecycleTimeline :stages="stages" />
       </section>
@@ -212,6 +222,7 @@
     <footer class="srs-footer">
       <div class="srs-footer__inner">
         <div class="srs-footer__copy" data-reveal="from-left">
+          <SrsIllustration class="srs-footer__illo" :illustration="footerIllustration" />
           <h2 class="srs-footer__title">See the live system</h2>
           <p class="srs-body srs-footer__lead">
             SRS5G is in daily use by university staff at Universitas Terbuka.
@@ -244,7 +255,14 @@
         />
         <p class="srs-footer__credit">
           Product screens on this page are illustrative mocks with sample data.
-          Icons from Material Design Icons and SVG Logos.
+          Illustrations by
+          <a
+            :href="illustrationCredit.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="srs-footer__link"
+          >{{ illustrationCredit.contributor }}<span class="srs-sr-only"> (opens in a new tab)</span></a>
+          on IconScout. Icons from Material Design Icons and SVG Logos.
         </p>
       </div>
     </footer>
@@ -254,12 +272,16 @@
 <script setup lang="ts">
 import LifecycleTimeline from "./components/LifecycleTimeline.vue";
 import ModuleGrid from "./components/ModuleGrid.vue";
+import SrsIllustration from "./components/SrsIllustration.vue";
 import SrsScreen from "./components/SrsScreen.vue";
 import {
   built,
   facts,
   features,
+  footerIllustration,
   hero,
+  illustrationCredit,
+  lifecycleIllustration,
   liveUrl,
   loginScreen,
   modules,
@@ -785,6 +807,26 @@ useHead({
   background: var(--srs-tint);
 }
 
+/* Illustrations on the cream page sit on a figure panel. The art is cream
+   and dark ink, so in dark mode the panel turns to dimmed warm sand to keep
+   the outlines readable without glare. The footer art needs no panel. */
+.srs-illo-panel {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: var(--srs-chrome);
+}
+
+:root.dark .srs-illo-panel {
+  background: #eadcc6;
+  filter: brightness(0.8);
+}
+
+.srs-did__illo {
+  --illo-height: 9rem;
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
+
 .srs-did__step {
   display: flex;
   align-items: center;
@@ -854,6 +896,28 @@ useHead({
 .srs-modules__lead {
   margin-top: 0.35rem;
   margin-bottom: 1.5rem;
+}
+
+/* Student lifecycle */
+.srs-lifecycle__head {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.srs-lifecycle__illo {
+  --illo-height: 9rem;
+}
+
+@media (min-width: 768px) {
+  .srs-lifecycle__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 2.5rem;
+  }
+
+  .srs-lifecycle__illo {
+    --illo-height: 11rem;
+  }
 }
 
 /* Tech stack */
@@ -1005,6 +1069,22 @@ useHead({
   padding-inline: 1.25rem;
 }
 
+.srs-footer__illo {
+  --illo-height: 7rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .srs-footer__illo {
+    --illo-height: 8.5rem;
+  }
+}
+
+/* The teal band already frames the art, so dark mode only dims it a touch. */
+:root.dark .srs-footer__illo {
+  filter: brightness(0.92);
+}
+
 .srs-footer__title {
   font-family: var(--srs-font-display);
   font-size: clamp(1.85rem, 4vw, 2.5rem);
@@ -1043,6 +1123,24 @@ useHead({
   font-family: var(--srs-font-body);
   font-size: 1rem;
   color: rgb(248 246 241 / 0.72);
+}
+
+.srs-footer__link {
+  color: #fffcf7;
+  text-decoration: underline;
+  text-decoration-color: rgb(248 246 241 / 0.45);
+  text-underline-offset: 0.18em;
+  transition: text-decoration-color 200ms ease-out;
+}
+
+.srs-footer__link:hover {
+  text-decoration-color: #fffcf7;
+}
+
+.srs-footer__link:focus-visible {
+  outline: 2px solid var(--srs-copper-soft);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 @media (min-width: 768px) {
