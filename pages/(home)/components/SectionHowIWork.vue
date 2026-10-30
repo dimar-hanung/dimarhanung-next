@@ -8,16 +8,32 @@
     >
       <!-- The claim -->
       <div class="lg:col-span-5">
-        <p class="text-base text-muted-500">How I work</p>
-        <h2
-          id="how-i-work-heading"
-          class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
-        >
-          Fast, and
-          <span class="text-primary-600 dark:text-primary-400"
-            >not&nbsp;AI&nbsp;slop.</span
-          >
-        </h2>
+        <div class="flex items-center justify-between gap-3 sm:gap-6 lg:gap-3">
+          <div class="min-w-0">
+            <p class="text-base text-muted-500">How I work</p>
+            <h2
+              id="how-i-work-heading"
+              class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
+            >
+              Fast, and
+              <span class="text-primary-600 dark:text-primary-400"
+                >not&nbsp;AI&nbsp;slop.</span
+              >
+            </h2>
+          </div>
+          <NuxtImg
+            src="/images/how-i-work/coding-folder.png"
+            width="3200"
+            height="3200"
+            sizes="64px sm:160px lg:96px xl:112px"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+            alt=""
+            aria-hidden="true"
+            class="h-auto w-16 shrink-0 sm:w-40 lg:w-24 xl:w-28"
+          />
+        </div>
         <p class="mt-6 max-w-md text-lg text-muted-600 dark:text-muted-400">
           I vibe code. AI writes a lot of the first draft, so an idea becomes
           working software not in
@@ -119,4 +135,3 @@ const points: { title: string; body: BodyPart[] }[] = [
   },
 ];
 </script>
-
