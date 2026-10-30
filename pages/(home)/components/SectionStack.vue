@@ -11,6 +11,9 @@
       >
         Tools I ship with
       </h2>
+      <p class="mt-6 text-base text-muted-600 dark:text-muted-400">
+        I adapt to the stack the project needs, not the other way around.
+      </p>
 
       <dl
         class="mt-10 divide-y divide-muted-300 dark:divide-muted-800"
