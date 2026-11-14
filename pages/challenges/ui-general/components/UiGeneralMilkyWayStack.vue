@@ -537,8 +537,7 @@ function initSky() {
   return true;
 }
 
-// Theme presets swap --app-primary-950 at runtime and may use any CSS color
-// syntax, so let a 1px canvas resolve it to sRGB.
+// Resolve the CSS primary shade to sRGB for the WebGL sky color.
 function readSkyBottom() {
   const probe = document.createElement("canvas");
   probe.width = 1;
