@@ -9,7 +9,7 @@
 @source "~/layouts/**/*.{vue,js,ts}";
 @source "~/app.vue";
 
-/* Import your runtime-modifiable color variables first */
+/* Import the fixed rose-and-slate palette first. */
 @import "./colors.css";
 
 /* Reference external variables with @theme inline */
@@ -47,6 +47,17 @@
 
   /* Border radius */
   --radius: 0.5rem;
+}
+
+@layer base {
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--app-primary-600);
+    outline-offset: 3px;
+  }
+
+  :where(.dark) :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline-color: var(--app-primary-400);
+  }
 }
 
 /* Grid background patterns - replaces @inspira-ui/plugins addBackgrounds */

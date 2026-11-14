@@ -14,9 +14,9 @@
         </p>
       </blockquote>
       <div aria-hidden="true" class="mt-6 flex items-center gap-2">
-        <div class="rounded-full h-2 w-12 bg-red-500"></div>
-        <div class="rounded-full h-2 w-12 bg-green-500"></div>
-        <div class="rounded-full h-2 w-12 bg-blue-500"></div>
+        <div class="rounded-full h-2 w-12 bg-primary-300"></div>
+        <div class="rounded-full h-2 w-12 bg-primary-500"></div>
+        <div class="rounded-full h-2 w-12 bg-primary-700"></div>
       </div>
     </figure>
   </section>
@@ -26,12 +26,10 @@
 .gradient-text {
   background: linear-gradient(
     270deg,
-    /* Changed to 270deg for right-to-left direction */ #3b82f6,
-    /* Blue */ #4171ed,
-    /* Blue-Purple */ #6934c9,
-    /* Purple */ #8828b4,
-    /* Pink-Purple */ #ef4444,
-    /* Red */ #3b82f6 /* Back to Blue */
+    var(--app-primary-700),
+    var(--app-primary-600),
+    var(--app-primary-500),
+    var(--app-primary-700)
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -40,6 +38,16 @@
   animation: gradient 8s linear infinite;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dark .gradient-text {
+  background-image: linear-gradient(
+    270deg,
+    var(--app-primary-400),
+    var(--app-primary-300),
+    var(--app-primary-200),
+    var(--app-primary-400)
+  );
 }
 
 @keyframes gradient {
@@ -56,8 +64,8 @@
 }
 
 .gradient-text:hover {
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.2),
-    0 0 20px rgba(104, 52, 201, 0.2);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--app-primary-500) 20%, transparent),
+    0 0 20px color-mix(in srgb, var(--app-primary-600) 20%, transparent);
 }
 
 @media (max-width: 768px) {

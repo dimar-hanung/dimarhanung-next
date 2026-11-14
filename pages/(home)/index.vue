@@ -4,7 +4,7 @@
   >
     <t-nav overlay class="relative z-50"></t-nav>
 
-    <div class="py-28 border-b border-gray-200 bg-white relative overflow-hidden">
+    <div class="py-28 border-b border-muted-200 dark:border-muted-800 bg-white dark:bg-muted-900 relative overflow-hidden">
       <HeroGrid />
 
       <header class="flex flex-wrap container mx-auto relative z-10">
@@ -12,17 +12,17 @@
           <section>
             <grid-background class="h-96 py-12 flex items-center">
               <HeroDraggable data-grid-hole class="w-fit">
-                <p class="mb-2 text-base font-medium text-indigo-600 dark:text-indigo-400">
+                <p class="mb-2 text-base font-medium text-primary-600 dark:text-primary-400">
                   Software Engineer · 6+ years
                 </p>
-                <h1 class="mt-4 text-5xl font-bold text-gray-900 dark:text-white">
-                  Dimar <span class="text-indigo-600 dark:text-indigo-400">Hanung</span>
+                <h1 class="mt-4 text-5xl font-bold text-muted-900 dark:text-white">
+                  Dimar <span class="text-primary-600 dark:text-primary-400">Hanung</span>
                 </h1>
-                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-md">
+                <p class="mt-4 text-lg text-muted-600 dark:text-muted-300 max-w-md">
                   I build fast with AI, and it holds up. Speed comes from vibe coding; stability comes from 6+ years of shipping software professionally.
                 </p>
                 <div class="mt-6 flex flex-wrap gap-3">
-                  <a href="https://github.com/dimar-hanung" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
+                  <a href="https://github.com/dimar-hanung" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-muted-900 dark:bg-white text-white dark:text-muted-900 rounded-lg font-medium hover:bg-muted-800 dark:hover:bg-muted-100 transition-colors">
                     <Icon name="uil:github" class="text-xl" />
                     GitHub
                   </a>
@@ -30,12 +30,12 @@
                     <Icon name="uil:linkedin" class="text-xl" />
                     LinkedIn
                   </a>
-                  <a href="mailto:dimarhanung@gmail.com" class="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-medium hover:border-indigo-500 hover:text-indigo-600 dark:hover:border-indigo-400 dark:hover:text-indigo-400 transition-colors">
+                  <a href="mailto:dimarhanung@gmail.com" class="flex items-center gap-2 px-4 py-2 border-2 border-muted-300 dark:border-muted-600 rounded-lg font-medium hover:border-primary-500 hover:text-primary-600 dark:hover:border-primary-400 dark:hover:text-primary-400 transition-colors">
                     <Icon name="uil:envelope" class="text-xl" />
                     Email
                   </a>
                 </div>
-                <div class="mt-6 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <div class="mt-6 flex items-center gap-4 text-sm text-muted-500 dark:text-muted-400">
                   <span class="flex items-center gap-1">
                     <Icon name="uil:map-marker" class="text-lg" />
                     Tangerang Selatan, Indonesia

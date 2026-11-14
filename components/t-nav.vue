@@ -22,7 +22,7 @@
         aria-label="Dimar Hanung, home"
       >
         <span
-          class="grid h-8 w-8 place-items-center rounded-lg bg-primary-500 font-bold tracking-tight text-white"
+          class="grid h-8 w-8 place-items-center rounded-lg bg-primary-600 font-bold tracking-tight text-white"
           >DH</span
         >
         <span class="hidden font-semibold tracking-tight sm:inline"
@@ -45,7 +45,6 @@
 
       <!-- Actions -->
       <div class="flex items-center gap-1">
-        <t-switch-color></t-switch-color>
         <t-switch-dark-mode></t-switch-dark-mode>
 
         <span
