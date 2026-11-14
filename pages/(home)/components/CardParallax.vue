@@ -36,7 +36,7 @@
         <div
           class="absolute inset-0 pointer-events-none transition-opacity duration-300"
           :style="{
-            background: `radial-gradient(500px circle at ${lightPosition}, rgba(59, 130, 246, 0.15), transparent 80%)`,
+            background: `radial-gradient(500px circle at ${lightPosition}, color-mix(in srgb, var(--app-primary-500) 15%, transparent), transparent 80%)`,
             opacity: isHovering ? 1 : 0.5,
           }"
         ></div>
@@ -71,7 +71,7 @@
               <p
                 class="text-lg text-slate-600 dark:text-slate-300 font-medium leading-relaxed"
               >
-                <span class="text-blue-600 dark:text-blue-400 font-bold"
+                <span class="text-primary-600 dark:text-primary-400 font-bold"
                   >{{ yearsOfExperience }} years</span
                 >
                 of professional experience as a full stack engineer.
@@ -86,7 +86,7 @@
             <a
               href="https://api.whatsapp.com/send?phone=6287837092992&text=%20"
               target="_blank"
-              class="group relative inline-flex items-center gap-3 px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-blue-500/20"
+              class="group relative inline-flex items-center gap-3 px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-primary-500/20"
             >
               <span>Contact Me</span>
               <Icon

@@ -3,7 +3,7 @@
     <!-- First paint only; the canvas draws the same lines once it is ready. -->
     <div
       v-if="!canvasReady"
-      class="absolute inset-0 bg-[linear-gradient(to_right,#80808029_1px,transparent_1px),linear-gradient(to_bottom,#80808029_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff1f_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1f_1px,transparent_1px)] bg-[size:24px_24px]"
+      class="absolute inset-0 bg-[linear-gradient(to_right,#64748b29_1px,transparent_1px),linear-gradient(to_bottom,#64748b29_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff1f_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1f_1px,transparent_1px)] bg-[size:24px_24px]"
     ></div>
     <canvas ref="canvas" class="absolute inset-0 h-full w-full"></canvas>
   </div>
@@ -172,19 +172,19 @@ function blinkOn(key: number, step: number) {
 }
 let width = 0;
 let height = 0;
-let accent = "rgb(14 165 233)";
-let lineColor = "rgba(128, 128, 128, 0.16)";
+let accent = "rgb(244 63 94)";
+let lineColor = "rgba(100, 116, 139, 0.16)";
 let reducedMotion = false;
 
 function readTheme() {
   const root = document.documentElement;
-  // The theme switcher rewrites --app-primary-* at runtime.
+  // Match the canvas accent to the fixed CSS palette.
   const value = getComputedStyle(root).getPropertyValue("--app-primary-500").trim();
   if (value) accent = value;
-  // Same colors as the CSS lines: #80808029 light, #ffffff1f dark.
+  // Same colors as the CSS lines: #64748b29 light, #ffffff1f dark.
   lineColor = root.classList.contains("dark")
     ? "rgba(255, 255, 255, 0.12)"
-    : "rgba(128, 128, 128, 0.16)";
+    : "rgba(100, 116, 139, 0.16)";
 }
 
 function resize() {
