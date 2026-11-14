@@ -40,7 +40,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-:global(.dark) .gradient-text {
+.dark .gradient-text {
   background-image: linear-gradient(
     270deg,
     var(--app-primary-400),
