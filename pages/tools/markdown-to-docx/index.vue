@@ -16,7 +16,7 @@
               Markdown to Docx
             </h1>
             <p class="text-muted-500 dark:text-muted-400 text-sm mt-0.5">
-              Convert Markdown into a downloadable Microsoft Word .docx file
+              Convert Markdown into a downloadable Word file, including Mermaid diagrams
             </p>
           </div>
         </div>
@@ -334,6 +334,15 @@ function greet(name) {
 | Tables       | ✅     |
 | Code blocks  | ✅     |
 | Images       | ✅     |
+| Mermaid      | ✅     |
+
+## Mermaid
+
+\`\`\`mermaid
+flowchart LR
+  Markdown --> Converter
+  Converter --> Word
+\`\`\`
 
 ![Sample diagram](https://picsum.photos/seed/md2docx/640/360)
 
