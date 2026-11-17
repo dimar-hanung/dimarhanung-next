@@ -122,7 +122,9 @@ const en = {
       pixel: {},
 
       // ---- theme: lab ----
-      lab: {},
+      // The sign-off under the footer (themes/lab/page-end.vue). A line from
+      // the show, so it stays the same in both languages.
+      lab: { signoff: "El Psy Kongroo." },
     },
   },
   work: {

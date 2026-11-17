@@ -88,7 +88,15 @@ export const HOME_THEMES: Record<HomeThemeId, HomeTheme> = {
   ancient: stub("ancient"),
 
   // ---- theme: terminal (edit only inside this block) ----
-  terminal: stub("terminal"),
+  // IBM 3270 is self-hosted (@font-face in terminal.css), so no font sheet.
+  terminal: {
+    id: "terminal",
+    css: "/home/themes/terminal.css",
+    fonts: [],
+    fontFaces: ['400 1em "IBM 3270"'],
+    scheme: "dark",
+    thumbnail: "/home/themes/terminal.webp",
+  },
 
   // ---- theme: swiss (edit only inside this block) ----
   swiss: stub("swiss"),
@@ -103,7 +111,16 @@ export const HOME_THEMES: Record<HomeThemeId, HomeTheme> = {
   pixel: stub("pixel"),
 
   // ---- theme: lab (edit only inside this block) ----
-  lab: stub("lab"),
+  lab: {
+    id: "lab",
+    css: "/home/themes/lab.css",
+    fonts: [
+      "https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:ital,wght@0,600;1,500&family=Quicksand:wght@300&family=Caveat:wght@500&display=swap",
+    ],
+    fontFaces: ['600 1em "Barlow Condensed"', 'italic 500 1em "Barlow Condensed"', '400 1em "Barlow"', '300 1em "Quicksand"'],
+    scheme: "dark",
+    thumbnail: "/home/themes/lab.webp",
+  },
 };
 
 export function isHomeThemeId(value: unknown): value is HomeThemeId {
