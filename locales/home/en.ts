@@ -54,10 +54,6 @@ const en = {
     caption:
       "Software Engineer at Universitas Terbuka. Based in Tangerang Selatan, working remote.",
     photoToggle: "Show my real photo",
-    photoHintClick: "That's Hououin Kyouma. Click the photo to see the real me.",
-    photoHintClickBack: "Click the photo again to bring Kyouma back.",
-    photoHintTap: "Tap the photo to see the real me",
-    photoHintTapBack: "Tap again to bring Kyouma back",
     proof: [
       { value: "6+ yrs", label: "shipping production software" },
       { value: "7", label: "systems built for Universitas Terbuka" },
