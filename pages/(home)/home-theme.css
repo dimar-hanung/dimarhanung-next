@@ -12,7 +12,12 @@
   selector specificity. Guide: .agents/skills/develop-module-home/SKILL.md.
 */
 
-/* Same order as tailwind.css, repeated in case this file is first in the head. */
+/* Layer order: the first stylesheet in the page that names a layer fixes that
+   layer's place, and in a production build Nuxt inlines this file and the
+   home components' <style> blocks in <style> tags before tailwind.css. So
+   every file that uses `@layer home` starts with this full statement (here,
+   tailwind.css, HeroGrid.vue, HeroPhotoFlip.vue). Without it `home` lands
+   below Tailwind's base, and preflight (`a { color: inherit }` …) beats it. */
 @layer theme, base, components, home, utilities;
 
 @layer home {
