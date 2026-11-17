@@ -1,3 +1,1037 @@
-/* ancient theme: not designed yet, so it inherits modern.
-   Scope every rule to .home-page[data-theme="ancient"].
-   Guide: .agents/skills/develop-module-home/SKILL.md, "Home themes". */
+/*
+  Illuminated theme ("ancient"): the page as a leaf from a Gothic book of
+  hours, c. 1300-1450.
+
+  References: the Hours of Jeanne d'Evreux (Pucelle, c. 1325), the Luttrell
+  Psalter (c. 1330), the Très Riches Heures (Limbourg brothers, c. 1412), and
+  the scribal habits described in Christopher de Hamel's "Meetings with
+  Remarkable Manuscripts" and the British Library's Catalogue of Illuminated
+  Manuscripts glossary (rubric, versal, pen-flourished initial, diaper).
+
+  - Ground: vellum, a warm cream with faint grain and darker handled edges,
+    made in CSS (an inline SVG noise tile and two radial washes), no images.
+    The hero carries the scribe's ruling: faint drypoint lines and the
+    vertical bounding lines of the text block.
+  - Type: Grenze Gotisch, a textura (the formal book hand of the period), for
+    headings. EB Garamond for reading text: a print face, not a hand, but the
+    task asks for a fine old-style serif and it reads well at length. Uncial
+    Antiqua for versals (the coloured capitals that open a section), since
+    Gothic versals (Lombardic capitals) grew out of uncial forms.
+  - Inks: iron-gall brown-black for text; vermilion for rubrics. Red was the
+    book's wayfinding ink: titles, versals, paragraph marks (the pilcrow) and
+    pointing hands. Here it keeps that one job: everything you can press, the
+    current choice, and the rubrics that tell you where a section starts.
+    Ultramarine (lapis) and shell gold are the illuminator's colours: the
+    gilded initial, the alternate blue versals, the miniature frame and the
+    contact panel. They are never used for a control.
+  - Signature: the hero lead opens with a gilded initial (a lapis letter on
+    a burnished gold square). The portrait is framed like a miniature under a
+    round arch with gold and vermilion rules. Steps use Roman numerals. The
+    contact panel is a lapis field with a gold diaper lattice, the patterned
+    ground behind Gothic miniatures. The message box is ruled like a page.
+  - Small marks from real manuscripts: the pilcrow on the current work filter,
+    the hedera (ivy leaf) as the list bullet, the manicule pointing at case
+    studies, a fleuron on the ornamental rules between sections.
+
+  Rule note: the hero intro line sits above the heading in red italic. That
+  is the incipit ("here begins"), the rubric that opened a text; it is set in
+  italic lowercase, not tracked capitals.
+
+  Scheme: light only. Every rule is scoped to .home-page[data-theme="ancient"].
+*/
+
+.home-page[data-theme="ancient"] {
+  --vellum: #efe3c6;
+  --vellum-light: #f6edd8;
+  --iron-gall: #2a1d12;
+  --vermilion: #a42a17;
+  --vermilion-dark: #82200f;
+  --lapis: #1d3270;
+  --lapis-deep: #172856;
+  --gold: #b8892c;
+  --gold-light: #e2c26a;
+  --gold-dark: #7a5814;
+
+  --bg: var(--vellum);
+  --surface: rgb(250 243 226 / 0.55);
+  --surface-2: rgb(250 243 226 / 0.7);
+  --field-bg: rgb(252 247 234 / 0.75);
+  --nav-bg: var(--vellum);
+  --nav-blur: 0px;
+
+  --ink: var(--iron-gall);
+  --ink-2: #3a2a1b;
+  --ink-3: #5a4430;
+  --option-ink: var(--iron-gall);
+
+  --line: rgb(90 68 48 / 0.45);
+  --line-strong: var(--ink-3);
+  --border: 1px;
+  --border-control: 1px;
+
+  --accent: var(--vermilion);
+  --accent-hover: var(--vermilion-dark);
+  --accent-ink: var(--vellum-light);
+  --accent-text: var(--vermilion);
+  --accent-line: var(--vermilion);
+  --accent-soft: rgb(164 42 23 / 0.1);
+  --accent-soft-ink: var(--vermilion-dark);
+  --focus: var(--lapis);
+  --selection: rgb(226 194 106 / 0.55);
+
+  --success: #3c5a1e;
+  --danger: var(--vermilion);
+
+  --inverse-bg: var(--lapis);
+  --inverse-ink: var(--vellum-light);
+  --inverse-ink-2: #e6dcc4;
+  --inverse-ink-3: #d8ccb0;
+  --inverse-line: var(--gold-light);
+  --inverse-border: 3px solid var(--gold);
+  --inverse-accent: var(--gold-light);
+
+  --font-body: "EB Garamond", Garamond, "Times New Roman", serif;
+  --font-display: "Grenze Gotisch", "EB Garamond", serif;
+  --font-mono: "EB Garamond", serif;
+  --font-versal: "Uncial Antiqua", "Grenze Gotisch", serif;
+
+  --radius-control: 2px;
+  --radius-tile: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-block: 0;
+
+  --shadow-button: none;
+  --shadow-card-hover: 0 1px 0 var(--gold);
+  --shadow-nav: 0 6px 14px -12px rgb(42 29 18 / 0.6);
+  --shadow-pop: none;
+  --shadow-bar: 0 8px 20px -10px rgb(23 40 86 / 0.7);
+
+  --gap: 28px;
+  --lift: 0px;
+
+  /* The hero ruling is drawn on [data-part="hero-grid"] below. */
+  --grid-mode: none;
+  --grid-bg: transparent;
+  --grid-line: transparent;
+  --grid-accent: var(--vermilion);
+  --grid-cell: 32px;
+
+  /* A round-arched miniature (semicircle on a 4:5 frame). */
+  --photo-fx: off;
+  --photo-radius: 50% 50% 0 0 / 40% 40% 0 0;
+  --photo-bg: var(--lapis);
+  --photo-border: 2px solid var(--iron-gall);
+  --photo-shadow: none;
+  --photo-filter: sepia(0.18) saturate(0.88) contrast(1.04);
+  --avatar-border: 2px solid var(--iron-gall);
+  --avatar-shadow: 0 0 0 3px var(--gold-light), 0 0 0 6px var(--gold), 0 0 0 7px var(--gold-dark);
+  --fx-arc: var(--gold-light);
+  --fx-arc-core: #fff;
+  --fx-spark: var(--gold-light);
+  --fx-flash: var(--vellum-light);
+  --fx-tear: var(--vellum-light);
+  --fx-scan: var(--iron-gall);
+  --fx-meter-bg: var(--lapis);
+  --fx-meter-ink: var(--gold-light);
+  --fx-meter-glow: transparent;
+
+  /* EB Garamond has a small x-height; match it to a normal text face so the
+     rem sizes in the markup still read comfortably. Headings opt out. */
+  font-size-adjust: ex-height 0.47;
+  font-variant-numeric: oldstyle-nums;
+  line-height: 1.55;
+
+  background-color: var(--vellum);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.24 0 0 0 0 0.12 0.55 0 0 0 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.4 0 0 0 0 0.2 0.5 0 0 0 -0.18'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 120% 80% at 50% 30%, transparent 55%, rgb(150 110 60 / 0.16) 100%);
+  background-size: 220px 220px, 900px 900px, 100% 100%;
+}
+
+.home-page[data-theme="ancient"] ::selection {
+  color: var(--iron-gall);
+}
+
+.home-page[data-theme="ancient"] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="ancient"] :is(h1, h2, h3, [data-part="proof-value"], [data-part="more-count"], [data-part="nav-name"], [data-part="hero-caption-name"], [data-part="hero-id-name"]) {
+  font-family: var(--font-display);
+  font-size-adjust: none;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.home-page[data-theme="ancient"] .section-title {
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  line-height: 1.02;
+}
+
+/* Rubricated capital: the first letter of every heading is a red versal. */
+.home-page[data-theme="ancient"] :is(.section-title, [data-part="more-title"], [data-part="form-title"])::first-letter {
+  font-family: var(--font-versal);
+  font-weight: 400;
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] .section-sub {
+  max-width: 600px;
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* Two-line versals on the section openers, alternating red and blue as the
+   pen-flourished initials do. */
+.home-page[data-theme="ancient"] .section-sub::first-letter {
+  float: left;
+  margin: 0.06em 0.1em 0 0;
+  font-family: var(--font-versal);
+  font-size-adjust: none;
+  font-size: 3.05em;
+  line-height: 0.86;
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="work"] .section-sub::first-letter {
+  color: var(--lapis);
+}
+
+.home-page[data-theme="ancient"] :is(p, li) {
+  text-wrap: pretty;
+}
+
+/* ---------- Ornamental rule between sections ---------- */
+
+.home-page[data-theme="ancient"] :is([data-part="themes"], [data-part="work"], [data-part="process"], [data-part="more"]) > div::before,
+.home-page[data-theme="ancient"] [data-part="services"] > div::before {
+  content: "❦" / "";
+  display: block;
+  margin: 0 auto 44px;
+  max-width: 540px;
+  color: var(--vermilion);
+  font-family: "EB Garamond", "DejaVu Serif", serif;
+  font-size: 1.375rem;
+  line-height: 1;
+  text-align: center;
+  background:
+    linear-gradient(var(--vermilion), var(--vermilion)) left calc(50% - 2px) / calc(50% - 26px) 1px no-repeat,
+    linear-gradient(var(--vermilion), var(--vermilion)) right calc(50% - 2px) / calc(50% - 26px) 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) left calc(50% + 2px) / calc(50% - 26px) 1px no-repeat,
+    linear-gradient(var(--ink-3), var(--ink-3)) right calc(50% + 2px) / calc(50% - 26px) 1px no-repeat;
+}
+
+.home-page[data-theme="ancient"] [data-part="themes"] > div::before {
+  margin-top: 8px;
+}
+
+/* ---------- Buttons and links ---------- */
+
+.home-page[data-theme="ancient"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"]) {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.03em;
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out,
+    border-color 150ms ease-out;
+}
+
+/* A red seal with a fine inner rule. */
+.home-page[data-theme="ancient"] :is(.btn-primary, [data-part="nav-cta"]) {
+  border: 1px solid var(--vermilion-dark);
+  box-shadow:
+    inset 0 0 0 2px var(--vermilion),
+    inset 0 0 0 3px rgb(246 237 216 / 0.55);
+}
+
+.home-page[data-theme="ancient"] .btn-primary:hover {
+  transform: none;
+}
+
+.home-page[data-theme="ancient"] .btn-ghost {
+  border: 3px double var(--ink-3);
+  color: var(--iron-gall);
+}
+
+.home-page[data-theme="ancient"] .btn-ghost:hover {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] .text-link {
+  color: var(--vermilion);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="ancient"] .text-link:hover {
+  color: var(--vermilion-dark);
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Nav ---------- */
+
+.home-page[data-theme="ancient"] [data-part="nav"] {
+  border-bottom: 3px double var(--vermilion);
+  background-color: var(--vellum);
+  background-image: inherit;
+  background-size: 220px 220px, 900px 900px, 100% 100vh;
+}
+
+.home-page[data-theme="ancient"] [data-part="nav-logo"] {
+  border-radius: 0;
+  border: 1px solid var(--gold-dark);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold) 48%, #d6b25c 62%, var(--gold-dark));
+  color: var(--lapis);
+  font-family: var(--font-versal);
+  font-size-adjust: none;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.home-page[data-theme="ancient"] [data-part="nav-name"] {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.home-page[data-theme="ancient"] [data-part="nav-links"] {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.02em;
+}
+
+.home-page[data-theme="ancient"] [data-part="nav-link"]:hover {
+  color: var(--vermilion);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.home-page[data-theme="ancient"] [data-part="nav-lang"] {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+}
+
+.home-page[data-theme="ancient"] [data-part="nav-lang-option"] {
+  border-radius: 1px;
+  color: var(--ink-2);
+  font-variant-caps: small-caps;
+}
+
+.home-page[data-theme="ancient"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--vermilion);
+  color: var(--vellum-light);
+}
+
+/* ---------- Hero ---------- */
+
+.home-page[data-theme="ancient"] [data-part="hero"] {
+  border-bottom: 0;
+}
+
+/* The scribe's ruling: faint horizontal lines every 32px. */
+.home-page[data-theme="ancient"] [data-part="hero-grid"] {
+  background: repeating-linear-gradient(180deg, transparent 0 31px, rgb(120 82 40 / 0.11) 31px 32px);
+}
+
+/* Vertical bounding lines of the text block, just outside the content. */
+.home-page[data-theme="ancient"] [data-part="hero-inner"] {
+  background:
+    linear-gradient(rgb(120 82 40 / 0.22), rgb(120 82 40 / 0.22)) left 8px top / 1px 100% no-repeat,
+    linear-gradient(rgb(120 82 40 / 0.22), rgb(120 82 40 / 0.22)) right 8px top / 1px 100% no-repeat;
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="ancient"] [data-part="hero-layout"] {
+    grid-template-columns: 1.35fr 0.65fr;
+    align-items: start;
+    column-gap: 80px;
+  }
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-intro"] {
+  color: var(--vermilion);
+  font-style: italic;
+  font-size: 1.1875rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-title"] {
+  max-width: 760px;
+  margin-top: 10px;
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height: 1.02;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-title-accent"] {
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-lead"] {
+  max-width: 610px;
+  margin-top: 26px;
+  color: var(--ink-2);
+  font-size: 1.25rem;
+  line-height: 1.55;
+}
+
+/* The gilded initial: a lapis uncial on a burnished gold square. */
+.home-page[data-theme="ancient"] [data-part="hero-lead"]::first-letter {
+  float: left;
+  margin: 0.1em 0.16em 0 0;
+  padding: 0.1em 0.14em 0.04em;
+  border: 1px solid var(--gold-dark);
+  background:
+    linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 42%, #dcbb67 58%, var(--gold) 72%, var(--gold-dark) 100%);
+  box-shadow: inset 0 0 0 2px rgb(255 240 190 / 0.45);
+  color: var(--lapis);
+  font-family: var(--font-versal);
+  font-size-adjust: none;
+  font-size: 3.2em;
+  line-height: 0.92;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-actions"] {
+  margin-top: 34px;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-cta-cv"] {
+  font-style: italic;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-meta"] {
+  color: var(--ink-3);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-id-role"] {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-id-name"] {
+  font-size: 1.375rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-figure"] {
+  max-width: 330px;
+  padding: 16px 16px 0;
+}
+
+/* The miniature's frame: gold leaf, a dark keyline and a vermilion fillet,
+   following the arch. */
+.home-page[data-theme="ancient"] [data-part="photo"][data-variant="portrait"] {
+  box-shadow:
+    0 0 0 3px var(--gold-light),
+    0 0 0 8px var(--gold),
+    0 0 0 9px var(--gold-dark),
+    0 0 0 13px var(--vermilion),
+    0 0 0 14px var(--iron-gall);
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-caption"] {
+  margin-top: 30px;
+  color: var(--ink-3);
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.home-page[data-theme="ancient"] [data-part="hero-caption-name"] {
+  margin-bottom: 2px;
+  color: var(--vermilion);
+  font-style: normal;
+  font-size: 1.5rem;
+}
+
+/* Proof: four entries between red double rules. */
+.home-page[data-theme="ancient"] [data-part="proof"] {
+  margin-bottom: 36px;
+  border-top: 3px double var(--vermilion);
+  border-bottom: 3px double var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="proof-item"] {
+  border-color: rgb(164 42 23 / 0.45);
+}
+
+.home-page[data-theme="ancient"] [data-part="proof-value"] {
+  color: var(--iron-gall);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.05;
+}
+
+.home-page[data-theme="ancient"] [data-part="proof-label"] {
+  color: var(--ink-3);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+/* ---------- Themes ---------- */
+
+.home-page[data-theme="ancient"] [data-part="theme-option"] {
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.home-page[data-theme="ancient"] [data-part="theme-option"]:hover {
+  border-color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="theme-option"][aria-pressed="true"] {
+  border-color: var(--vermilion);
+  box-shadow: inset 0 0 0 1px var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="theme-thumb"] {
+  border-radius: 0;
+  box-shadow: 0 0 0 1px var(--gold-dark);
+}
+
+.home-page[data-theme="ancient"] [data-part="theme-check"] {
+  border-radius: 0;
+  background: var(--vermilion);
+  color: var(--vellum-light);
+}
+
+.home-page[data-theme="ancient"] [data-part="theme-name"] {
+  font-size: 1.0625rem;
+  font-weight: 500;
+}
+
+.home-page[data-theme="ancient"] [data-part="theme-option"][aria-pressed="true"] [data-part="theme-name"] {
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="themes-current"] {
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+/* ---------- Work ---------- */
+
+.home-page[data-theme="ancient"] [data-part="work-filters"] {
+  gap: 22px;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-filter"] {
+  border-bottom: 0;
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+  font-variant-caps: small-caps;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-filter"]:hover {
+  color: var(--vermilion);
+}
+
+/* The current filter is marked with a red pilcrow. */
+.home-page[data-theme="ancient"] [data-part="work-filter"][aria-pressed="true"] {
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="work-filter"][aria-pressed="true"]::before {
+  content: "¶" / "";
+  margin-right: 0.2em;
+  font-variant-caps: normal;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-card"] {
+  border: 3px double rgb(90 68 48 / 0.55);
+  background: var(--surface);
+}
+
+.home-page[data-theme="ancient"] [data-part="work-card"]:hover {
+  border-color: var(--vermilion);
+  box-shadow: none;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-media"] {
+  margin: 10px 10px 0;
+  border: 1px solid var(--gold-dark);
+  box-shadow: 0 0 0 3px rgb(226 194 106 / 0.6);
+}
+
+.home-page[data-theme="ancient"] [data-part="work-image"] {
+  filter: sepia(0.12) saturate(0.9);
+}
+
+.home-page[data-theme="ancient"] [data-part="work-card"]:hover [data-part="work-image"] {
+  transform: none;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-card-title"] {
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-card-title"]::first-letter {
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="work-link"] {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-link"]:hover {
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="work-desc"] {
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-role"] {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-footer"] {
+  border-top: 1px solid var(--line);
+}
+
+/* A manicule points at the case study instead of an arrow. */
+.home-page[data-theme="ancient"] [data-part="work-case-link"] {
+  color: var(--vermilion);
+  font-variant-caps: small-caps;
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-case-link"]::before {
+  content: "☞" / "";
+  margin-right: 0.35em;
+  font-variant-caps: normal;
+  font-size: 1.15em;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-case-arrow"] {
+  display: none;
+}
+
+.home-page[data-theme="ancient"] [data-part="work-card"]:hover [data-part="work-case-link"] {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Services ---------- */
+
+.home-page[data-theme="ancient"] [data-part="services"] {
+  border-block: 0;
+  background: transparent;
+}
+
+.home-page[data-theme="ancient"] [data-part="service-card"] {
+  border: 3px double rgb(90 68 48 / 0.55);
+  background: var(--surface-2);
+}
+
+.home-page[data-theme="ancient"] [data-part="service-card"]:hover {
+  border-color: var(--vermilion);
+}
+
+/* The featured service is framed in gold with a red fillet. */
+.home-page[data-theme="ancient"] [data-part="service-card"][data-featured] {
+  border: 3px solid var(--gold);
+  box-shadow:
+    inset 0 0 0 1px var(--gold-light),
+    inset 0 0 0 5px var(--surface-2),
+    inset 0 0 0 6px var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="service-icon"] {
+  border: 1px solid var(--vermilion);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="service-title"] {
+  font-size: 1.875rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="ancient"] [data-part="service-body"] {
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="service-points"] {
+  font-size: 1.0625rem;
+}
+
+/* The hedera (ivy leaf) as the bullet. */
+.home-page[data-theme="ancient"] [data-part="service-check"] {
+  display: none;
+}
+
+.home-page[data-theme="ancient"] [data-part="service-point"]::before {
+  content: "❧" / "";
+  flex: none;
+  color: var(--vermilion);
+  font-family: "EB Garamond", "DejaVu Serif", serif;
+  line-height: 1.45;
+}
+
+.home-page[data-theme="ancient"] [data-part="service-footer"] {
+  border-top: 1px solid var(--line);
+}
+
+.home-page[data-theme="ancient"] [data-part="service-timeline"] {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.home-page[data-theme="ancient"] [data-part="service-timeline-value"] {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.home-page[data-theme="ancient"] [data-part="services-price"] {
+  font-style: italic;
+  font-size: 1.1875rem;
+  text-align: center;
+}
+
+/* ---------- Process ---------- */
+
+/* Roman numerals in red uncials; the digits in the markup are hidden. */
+.home-page[data-theme="ancient"] [data-part="steps"] {
+  counter-reset: ancient-step;
+}
+
+.home-page[data-theme="ancient"] [data-part="step"] {
+  counter-increment: ancient-step;
+}
+
+.home-page[data-theme="ancient"] [data-part="step-number"] {
+  width: 60px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: transparent;
+}
+
+.home-page[data-theme="ancient"] [data-part="step-number"]::before {
+  content: counter(ancient-step, upper-roman) ".";
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--vermilion);
+  font-family: var(--font-versal);
+  font-size-adjust: none;
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 46px;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="ancient"] [data-part="step-number"] {
+    width: 90px;
+  }
+
+  .home-page[data-theme="ancient"] [data-part="step-number"]::before {
+    font-size: 2.25rem;
+  }
+}
+
+/* A red hairline instead of the dashed connector. */
+.home-page[data-theme="ancient"] [data-part="step"] {
+  --step-connector: rgb(164 42 23 / 0.5);
+}
+
+.home-page[data-theme="ancient"] [data-part="step"]::before {
+  background: var(--step-connector);
+  width: 1px;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="ancient"] [data-part="step"]::before {
+    left: 96px;
+    width: auto;
+    height: 1px;
+  }
+}
+
+.home-page[data-theme="ancient"] [data-part="step-title"] {
+  font-size: 1.625rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="ancient"] [data-part="step-body"] {
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+}
+
+/* ---------- Contact ---------- */
+
+/* Lapis ground with a gold diaper lattice, framed in gold. */
+.home-page[data-theme="ancient"] [data-part="contact-panel"] {
+  background-color: var(--lapis);
+  background-image:
+    repeating-linear-gradient(45deg, rgb(226 194 106 / 0.13) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(-45deg, rgb(226 194 106 / 0.13) 0 1px, transparent 1px 26px);
+  box-shadow:
+    inset 0 0 0 2px var(--lapis-deep),
+    inset 0 0 0 3px var(--gold-light);
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-panel"] :focus-visible {
+  outline-color: var(--gold-light);
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-intro"] .section-title {
+  color: var(--vellum-light);
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-intro"] .section-title::first-letter {
+  color: var(--gold-light);
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-lead"] {
+  color: var(--inverse-ink-2);
+  font-size: 1.1875rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-lead"]::first-letter {
+  float: left;
+  margin: 0.08em 0.12em 0 0;
+  color: var(--gold-light);
+  font-family: var(--font-versal);
+  font-size-adjust: none;
+  font-size: 3.1em;
+  line-height: 0.86;
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-email"] {
+  color: var(--gold-light);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-button"] {
+  border: 1px solid var(--gold-light);
+  border-radius: var(--radius-control);
+  font-size: 1rem;
+  font-variant-caps: small-caps;
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-button"]:hover {
+  background: var(--gold-light);
+  color: var(--lapis-deep);
+}
+
+.home-page[data-theme="ancient"] [data-part="contact-facts"] {
+  color: var(--inverse-ink-3);
+  font-style: italic;
+  font-size: 1.0625rem;
+}
+
+/* The form is a sheet of vellum laid on the panel. */
+.home-page[data-theme="ancient"] [data-part="form-card"] {
+  border: 1px solid var(--gold-dark);
+  background-color: var(--vellum-light);
+  box-shadow:
+    inset 0 0 0 4px var(--vellum-light),
+    inset 0 0 0 5px rgb(164 42 23 / 0.55);
+}
+
+.home-page[data-theme="ancient"] [data-part="form-title"] {
+  font-size: 1.875rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="ancient"] :is([data-part="form-sub"], [data-part="form-note"], [data-part="field-optional"]) {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.home-page[data-theme="ancient"] [data-part="field-label"] {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Inputs are lines to write on. */
+.home-page[data-theme="ancient"] [data-part="field-input"] {
+  border: 0;
+  border-bottom: 1px solid var(--ink-3);
+  border-radius: 0;
+  background: rgb(239 227 198 / 0.45);
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="ancient"] textarea[data-part="field-input"] {
+  --rule: 1.75rem;
+  padding-top: 0.3rem;
+  line-height: var(--rule);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 calc(var(--rule) - 1px), rgb(90 68 48 / 0.3) calc(var(--rule) - 1px) var(--rule))
+      0 0.3rem / 100% var(--rule) local,
+    rgb(239 227 198 / 0.45);
+}
+
+.home-page[data-theme="ancient"] [data-part="field-input"]:focus {
+  border-bottom-color: var(--vermilion);
+  box-shadow: 0 2px 0 var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="field-input"][aria-invalid="true"] {
+  border-bottom: 2px solid var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="field-error"] {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.home-page[data-theme="ancient"] [data-part="option"] {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="option"]:hover {
+  border-color: var(--vermilion);
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="option"][aria-pressed="true"] {
+  border-color: var(--vermilion);
+  background: var(--vermilion);
+  color: var(--vellum-light);
+}
+
+.home-page[data-theme="ancient"] [data-part="option"][data-flash] {
+  animation-name: ancient-option-flash;
+}
+
+@keyframes ancient-option-flash {
+  50% {
+    box-shadow: 0 0 0 4px var(--gold-light);
+  }
+}
+
+.home-page[data-theme="ancient"] [data-part="success-icon"] {
+  border: 1px solid var(--gold-dark);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold) 50%, var(--gold-dark));
+  color: var(--lapis);
+}
+
+.home-page[data-theme="ancient"] [data-part="success-summary"] {
+  border: 3px double var(--line-strong);
+  border-radius: 0;
+  background: transparent;
+}
+
+/* ---------- Beyond client work ---------- */
+
+.home-page[data-theme="ancient"] [data-part="more-title"] {
+  font-size: 2.25rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="more-item"] {
+  border: 3px double rgb(90 68 48 / 0.55);
+  background: var(--surface);
+}
+
+.home-page[data-theme="ancient"] a[data-part="more-item"]:hover {
+  border-color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="more-source"] {
+  color: var(--ink-3);
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="more-name"] {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.home-page[data-theme="ancient"] [data-part="more-count"] {
+  color: var(--vermilion);
+  font-size: 1.75rem;
+  white-space: nowrap;
+}
+
+.home-page[data-theme="ancient"] [data-part="more-arrow"] {
+  color: var(--vermilion);
+}
+
+/* ---------- Footer and phone bar ---------- */
+
+/* A colophon: centred, italic, under a hedera. */
+.home-page[data-theme="ancient"] [data-part="footer"] {
+  border-top: 3px double var(--vermilion);
+  color: var(--ink-2);
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.home-page[data-theme="ancient"] [data-part="footer"] > div::before {
+  content: "❧" / "";
+  color: var(--vermilion);
+  font-family: "EB Garamond", "DejaVu Serif", serif;
+  font-size: 1.5rem;
+  font-style: normal;
+  line-height: 1;
+}
+
+.home-page[data-theme="ancient"] [data-part="footer"] :is(div, ul) {
+  justify-content: center;
+}
+
+.home-page[data-theme="ancient"] [data-part="footer-link"] {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgb(164 42 23 / 0.5);
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="ancient"] [data-part="footer-link"]:hover {
+  color: var(--vermilion);
+}
+
+.home-page[data-theme="ancient"] [data-part="phone-bar"] {
+  border: 2px solid var(--gold);
+  border-radius: 0;
+}
+
+.home-page[data-theme="ancient"] [data-part="phone-bar-note"] {
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="ancient"] [data-part="phone-bar-cta"] {
+  box-shadow: inset 0 0 0 1px var(--gold-light);
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="ancient"] * {
+    transition: none !important;
+  }
+
+  .home-page[data-theme="ancient"] [data-part="option"][data-flash] {
+    animation: none;
+  }
+}

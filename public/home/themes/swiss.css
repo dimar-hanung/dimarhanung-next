@@ -1,3 +1,1036 @@
-/* swiss theme: not designed yet, so it inherits modern.
-   Scope every rule to .home-page[data-theme="swiss"].
-   Guide: .agents/skills/develop-module-home/SKILL.md, "Home themes". */
+/*
+  Swiss theme: the International Typographic Style.
+
+  References: Josef Müller-Brockmann, "Grid Systems in Graphic Design"
+  (1981) and his Zürich Tonhalle concert posters; Massimo Vignelli's
+  "The Vignelli Canon" (2010) and the 1972 New York subway diagram; Emil
+  Ruder, "Typographie" (1967); the Neue Grafik journal (1958-65).
+
+  - Grid: a 12-column grid (6 on tablets, 4 on phones) drawn as faint
+    hairlines down the whole page, so the structure is visible, the way
+    Müller-Brockmann printed his grids in the book. Everything starts on a
+    column line: no gutters inside the grid, the gutter is padding on the
+    right of each block.
+  - Layout: asymmetric. From 1024px every section puts its heading in the
+    left three columns and its content in the right nine, under a black
+    rule. The hero headline spans nine columns; the lead, buttons and meta
+    are indented to column four, with the intro line set small in the
+    left column beside them; the portrait takes the last three columns.
+    Steps are a table: number, title, text, each on its own column line.
+  - Type: Switzer (Indian Type Foundry, free licence from Fontshare,
+    self-hosted in fonts/swiss/), a neo-grotesk in the Akzidenz / Helvetica
+    line, in two weights. Flush left, ragged right, no justification, tight
+    headings, big jumps in scale (an ~84px headline over 16px text).
+  - Colour: white, black and one red (#e30613). The red only marks what you
+    can press and the current choice. Headings and data stay black.
+  - No decoration: no icons in the services, no shadows, no radii, no
+    texture. The rules are structure, not ornament. Numbers appear only
+    where they are a real sequence (the four steps) or data (the proof).
+
+  Scheme: light only. Every rule is scoped to .home-page[data-theme="swiss"].
+*/
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/home/themes/fonts/swiss/switzer-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/home/themes/fonts/swiss/switzer-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/home/themes/fonts/swiss/switzer-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.home-page[data-theme="swiss"] {
+  --white: #fff;
+  --black: #0a0a0a;
+  --red: #e30613;
+  --red-dark: #b8000b;
+  --grid-ink: rgb(0 0 0 / 0.075);
+  /* Content width and column count of the visible grid. */
+  --swiss-gutter: 20px;
+  --swiss-cols: 4;
+
+  --bg: var(--white);
+  --surface: transparent;
+  --surface-2: transparent;
+  --field-bg: var(--white);
+  --nav-bg: var(--white);
+  --nav-blur: 0px;
+
+  --ink: var(--black);
+  --ink-2: #1f1f1f;
+  --ink-3: #595959;
+  --option-ink: var(--black);
+
+  --line: var(--black);
+  --line-strong: var(--black);
+  --border: 1px;
+  --border-control: 1px;
+
+  --accent: var(--red);
+  --accent-hover: var(--red-dark);
+  --accent-ink: var(--white);
+  --accent-text: var(--red);
+  --accent-line: var(--red);
+  --accent-soft: var(--red);
+  --accent-soft-ink: var(--white);
+  --focus: var(--black);
+  --selection: rgb(227 6 19 / 0.2);
+
+  --success: var(--black);
+  --danger: var(--red);
+
+  --inverse-bg: var(--black);
+  --inverse-ink: var(--white);
+  --inverse-ink-2: #d6d6d6;
+  --inverse-ink-3: #b8b8b8;
+  --inverse-line: var(--white);
+  --inverse-border: 0 solid transparent;
+  --inverse-accent: var(--white);
+
+  --font-body: "Switzer", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Switzer", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Switzer", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --radius-control: 0;
+  --radius-tile: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-block: 0;
+
+  --shadow-button: none;
+  --shadow-card-hover: none;
+  --shadow-nav: none;
+  --shadow-pop: none;
+  --shadow-bar: none;
+
+  --gap: 0px;
+  --lift: 0px;
+
+  --grid-mode: none;
+  --grid-bg: transparent;
+  --grid-line: transparent;
+  --grid-accent: var(--red);
+  --grid-cell: 24px;
+
+  --photo-fx: off;
+  --photo-radius: 0;
+  --photo-bg: #e6e6e6;
+  --photo-border: 0 solid transparent;
+  --photo-shadow: none;
+  --photo-filter: grayscale(1) contrast(1.08);
+  --avatar-border: 0 solid transparent;
+  --avatar-shadow: none;
+  --fx-arc: var(--red);
+  --fx-arc-core: var(--white);
+  --fx-spark: var(--red);
+  --fx-flash: var(--white);
+  --fx-tear: var(--white);
+  --fx-scan: var(--black);
+  --fx-meter-bg: var(--black);
+  --fx-meter-ink: var(--white);
+  --fx-meter-glow: transparent;
+
+  font-size: 16px;
+  line-height: 1.45;
+
+  /* The visible grid: column lines across the content width, plus the
+     closing line on the right. */
+  background-color: var(--white);
+  background-image:
+    repeating-linear-gradient(90deg, var(--grid-ink) 0 1px, transparent 1px calc(100% / var(--swiss-cols))),
+    linear-gradient(var(--grid-ink), var(--grid-ink));
+  background-size:
+    min(100% - 2 * var(--swiss-gutter), 80rem - 48px) 100%,
+    1px 100%;
+  background-position:
+    center top,
+    right max(var(--swiss-gutter), 50% - 40rem + 24px) top;
+  background-repeat: no-repeat;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="swiss"] {
+    --swiss-gutter: 24px;
+    --swiss-cols: 6;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="swiss"] {
+    --swiss-cols: 12;
+  }
+}
+
+.home-page[data-theme="swiss"] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Containers: the side padding becomes margin, so content edges sit exactly
+   on the first and last grid lines. */
+.home-page[data-theme="swiss"] :is([data-part="nav-inner"], [data-part="hero-inner"]),
+.home-page[data-theme="swiss"] :is([data-part="themes"], [data-part="work"], [data-part="services"], [data-part="process"], [data-part="contact"], [data-part="more"], [data-part="footer"]) > div {
+  width: calc(100% - 2 * var(--swiss-gutter));
+  max-width: calc(80rem - 48px);
+  padding-inline: 0;
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="swiss"] :is(h1, h2, h3, [data-part="proof-value"], [data-part="more-count"]) {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.home-page[data-theme="swiss"] .section-title {
+  font-size: clamp(2.125rem, 3.2vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.home-page[data-theme="swiss"] .section-sub {
+  max-width: 34rem;
+  margin-top: 16px;
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+}
+
+.home-page[data-theme="swiss"] :is(p, li, h1, h2, h3) {
+  text-align: left;
+  hyphens: manual;
+}
+
+/* ---------- Buttons and links ---------- */
+
+.home-page[data-theme="swiss"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"]) {
+  font-weight: 500;
+  letter-spacing: 0;
+  transition:
+    background-color 120ms linear,
+    color 120ms linear,
+    border-color 120ms linear;
+}
+
+.home-page[data-theme="swiss"] .btn-primary:hover {
+  transform: none;
+}
+
+.home-page[data-theme="swiss"] .btn-ghost {
+  border: 1px solid var(--black);
+  color: var(--black);
+}
+
+.home-page[data-theme="swiss"] .btn-ghost:hover {
+  border-color: var(--black);
+  background: var(--black);
+  color: var(--white);
+}
+
+.home-page[data-theme="swiss"] .text-link {
+  color: var(--black);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="swiss"] .text-link:hover {
+  color: var(--red);
+}
+
+/* ---------- Nav ---------- */
+
+.home-page[data-theme="swiss"] [data-part="nav"] {
+  border-bottom: 1px solid var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-logo"] {
+  display: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-name"] {
+  display: inline;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-links"] {
+  color: var(--black);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-link"]:hover {
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-lang"] {
+  border: 0;
+  border-radius: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-lang-option"] {
+  border-radius: 0;
+  color: var(--black);
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-lang-option"]:hover {
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--black);
+  color: var(--white);
+}
+
+@media (min-width: 1024px) {
+  /* Brand in the first three columns, links from column four. */
+  .home-page[data-theme="swiss"] [data-part="nav-inner"] {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="nav-brand"] {
+    grid-column: 1 / 4;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="nav-links"] {
+    grid-column: 4 / 10;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="nav-actions"] {
+    grid-column: 10 / 13;
+    justify-self: end;
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.home-page[data-theme="swiss"] [data-part="hero"] {
+  border-bottom: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-title"] {
+  max-width: none;
+  font-size: clamp(2.625rem, 5.85vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+/* The second clause starts a new line instead of a new colour. */
+.home-page[data-theme="swiss"] [data-part="hero-title-accent"] {
+  display: block;
+  color: var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-intro"] {
+  color: var(--black);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-lead"] {
+  color: var(--ink-2);
+  font-size: 1.25rem;
+  line-height: 1.38;
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-meta"] {
+  color: var(--ink-3);
+  font-size: 0.875rem;
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-id-name"] {
+  font-weight: 700;
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-id-role"] {
+  color: var(--ink-3);
+}
+
+.home-page[data-theme="swiss"] [data-part="photo"][data-variant="avatar"] {
+  border-radius: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-caption"] {
+  margin-top: 12px;
+  color: var(--ink-3);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.home-page[data-theme="swiss"] [data-part="hero-caption-name"] {
+  color: var(--black);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="swiss"] [data-part="hero-layout"] {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0;
+    align-items: start;
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  /* Nine columns of text, laid out on the same column lines. */
+  .home-page[data-theme="swiss"] [data-part="hero-text"] {
+    grid-column: 1 / 10;
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    max-width: none;
+    padding-right: 24px;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="hero-title"] {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    margin-top: 0;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="hero-intro"] {
+    grid-column: 1 / 4;
+    grid-row: 2;
+    margin-top: 48px;
+    padding-right: 24px;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="hero-lead"] {
+    grid-column: 4 / 9;
+    grid-row: 2;
+    max-width: none;
+    margin-top: 44px;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="hero-actions"] {
+    grid-column: 4 / -1;
+    grid-row: 3;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="hero-meta"] {
+    grid-column: 4 / -1;
+    grid-row: 4;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="hero-figure"] {
+    grid-column: 10 / 13;
+    grid-row: 1;
+    justify-self: stretch;
+    max-width: none;
+    margin-top: 8px;
+  }
+}
+
+/* Proof: four columns of data under a black rule. */
+.home-page[data-theme="swiss"] [data-part="proof"] {
+  margin-bottom: 0;
+  border-top: 2px solid var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="proof-item"] {
+  border: 0;
+  padding: 18px 24px 40px 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="proof-value"] {
+  font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.home-page[data-theme="swiss"] [data-part="proof-label"] {
+  margin-top: 8px;
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+/* ---------- Sections: rule, heading left, content right ---------- */
+
+.home-page[data-theme="swiss"] :is([data-part="themes"], [data-part="work"], [data-part="services"], [data-part="process"], [data-part="more"]) > div {
+  padding-top: 20px;
+  border-top: 2px solid var(--black);
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="swiss"] :is([data-part="themes"], [data-part="work"], [data-part="services"], [data-part="process"], [data-part="more"]) > div {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 0;
+    align-items: start;
+  }
+
+  .home-page[data-theme="swiss"] :is([data-part="themes"], [data-part="work"], [data-part="services"], [data-part="process"], [data-part="more"]) > div > * {
+    grid-column: 4 / 13;
+  }
+
+  .home-page[data-theme="swiss"] :is([data-part="themes-head"], [data-part="work-head"], [data-part="services-head"], [data-part="process"] .section-title, [data-part="more-title"]) {
+    grid-column: 1 / 4;
+    grid-row: 1 / span 3;
+    margin-bottom: 0;
+    padding-right: 24px;
+  }
+}
+
+/* ---------- Themes ---------- */
+
+.home-page[data-theme="swiss"] [data-part="themes"] {
+  padding-top: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="themes-list"] {
+  column-gap: 16px;
+  row-gap: 20px;
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-option"] {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-thumb"] {
+  border-radius: 0;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.2);
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-option"]:hover [data-part="theme-thumb"] {
+  box-shadow: 0 0 0 1px var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-option"][aria-pressed="true"] {
+  box-shadow: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-option"][aria-pressed="true"] [data-part="theme-thumb"] {
+  box-shadow: 0 0 0 3px var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-check"] {
+  border-radius: 0;
+  background: var(--red);
+  color: var(--white);
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-name"] {
+  padding: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="theme-option"][aria-pressed="true"] [data-part="theme-name"] {
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="themes-current"] {
+  color: var(--ink-2);
+}
+
+/* ---------- Work ---------- */
+
+.home-page[data-theme="swiss"] [data-part="work-filters"] {
+  gap: 4px 20px;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-filter"] {
+  height: 32px;
+  padding: 0;
+  border-bottom: 0;
+  color: var(--ink-3);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-filter"]:hover {
+  color: var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="work-filter"][aria-pressed="true"] {
+  color: var(--red);
+}
+
+@media (min-width: 1024px) {
+  /* In the left column the filters become a vertical list. */
+  .home-page[data-theme="swiss"] [data-part="work-head"] {
+    display: block;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="work-filters"] {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 32px;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="work-filter"] {
+    height: 28px;
+  }
+}
+
+.home-page[data-theme="swiss"] [data-part="work-list"] {
+  row-gap: 48px;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-card"] {
+  padding-right: 24px;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+@media (max-width: 639px) {
+  .home-page[data-theme="swiss"] [data-part="work-card"] {
+    padding-right: 0;
+  }
+}
+
+.home-page[data-theme="swiss"] [data-part="work-card"]:hover {
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-media"] {
+  border: 1px solid rgb(0 0 0 / 0.2);
+}
+
+.home-page[data-theme="swiss"] [data-part="work-card"]:hover [data-part="work-image"] {
+  transform: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-body"] {
+  padding: 16px 0 0;
+  gap: 6px;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-card-title"] {
+  font-size: 1.375rem;
+  line-height: 1.1;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-link"] {
+  margin-top: 0;
+  color: var(--ink-3);
+  font-size: 0.875rem;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-link"]:hover {
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="work-desc"] {
+  margin-top: 4px;
+  color: var(--ink-2);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-role"] {
+  color: var(--ink-3);
+  font-size: 0.875rem;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-footer"] {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-case-link"] {
+  color: var(--black);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="swiss"] [data-part="work-case-link"]:hover {
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="work-see-all"] {
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="work"] > div > div:last-child {
+  justify-content: flex-start;
+  margin-top: 48px;
+}
+
+/* ---------- Services ---------- */
+
+.home-page[data-theme="swiss"] [data-part="services"] {
+  border-block: 0;
+  background: transparent;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-list"] {
+  row-gap: 40px;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-card"] {
+  padding: 16px 24px 0 0;
+  border: 0;
+  border-top: 1px solid var(--black);
+  background: transparent;
+  gap: 12px;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-card"]:hover {
+  border-color: var(--black);
+}
+
+/* The featured service is marked by weight, a heavier rule. */
+.home-page[data-theme="swiss"] [data-part="service-card"][data-featured] {
+  border-top: 6px solid var(--black);
+  padding-top: 11px;
+  box-shadow: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-icon"] {
+  display: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-title"] {
+  font-size: 1.5rem;
+  line-height: 1.08;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-body"] {
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-points"] {
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-check"] {
+  display: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-point"]::before {
+  content: "–" / "";
+  flex: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-footer"] {
+  border-top: 0;
+  align-items: flex-end;
+}
+
+.home-page[data-theme="swiss"] [data-part="service-timeline"] {
+  color: var(--ink-3);
+}
+
+.home-page[data-theme="swiss"] [data-part="service-timeline-value"] {
+  font-weight: 700;
+}
+
+.home-page[data-theme="swiss"] [data-part="services-price"] {
+  margin-top: 40px;
+  font-size: 1.0625rem;
+  font-weight: 500;
+}
+
+/* ---------- Process: a table of four rows ---------- */
+
+.home-page[data-theme="swiss"] [data-part="step"]::before {
+  display: none;
+}
+
+.home-page[data-theme="swiss"] [data-part="steps"] {
+  gap: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="step"] {
+  padding: 16px 0 24px 64px;
+  border-top: 1px solid var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="step-number"] {
+  top: 12px;
+  width: auto;
+  height: auto;
+  place-items: start;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--black);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.home-page[data-theme="swiss"] [data-part="step-title"] {
+  margin-top: 0;
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+
+.home-page[data-theme="swiss"] [data-part="step-body"] {
+  color: var(--ink-2);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="swiss"] [data-part="steps"] {
+    grid-template-columns: 1fr;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="step"] {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    padding: 16px 0 28px;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="step-number"] {
+    position: static;
+    grid-column: 1 / 2;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="step-title"] {
+    grid-column: 2 / 4;
+    padding-right: 24px;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="step-body"] {
+    grid-column: 4 / 7;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="swiss"] [data-part="steps"] {
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+  }
+
+  .home-page[data-theme="swiss"] [data-part="step"] {
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="step-title"] {
+    grid-column: 2 / 5;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="step-body"] {
+    grid-column: 5 / 9;
+  }
+}
+
+/* ---------- Contact ---------- */
+
+.home-page[data-theme="swiss"] [data-part="contact-panel"] :focus-visible {
+  outline-color: var(--white);
+}
+
+.home-page[data-theme="swiss"] [data-part="contact-panel"] [data-part="form-card"] :focus-visible {
+  outline-color: var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="contact-lead"] {
+  font-size: 1.125rem;
+  line-height: 1.45;
+}
+
+.home-page[data-theme="swiss"] [data-part="contact-email"] {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.home-page[data-theme="swiss"] [data-part="contact-button"] {
+  border: 1px solid var(--white);
+}
+
+.home-page[data-theme="swiss"] [data-part="contact-button"]:hover {
+  border-color: var(--white);
+  background: var(--white);
+  color: var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="contact-fact-icon"] {
+  color: var(--white);
+}
+
+.home-page[data-theme="swiss"] [data-part="form-card"] {
+  background: var(--white);
+}
+
+.home-page[data-theme="swiss"] [data-part="form-title"] {
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.home-page[data-theme="swiss"] [data-part="field-label"] {
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="field-input"] {
+  border: 1px solid var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="field-input"]:focus {
+  border-color: var(--black);
+  box-shadow: 0 0 0 1px var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="field-input"][aria-invalid="true"] {
+  border: 2px solid var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="field-error"] {
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="option"] {
+  border: 1px solid var(--black);
+  background: var(--white);
+  font-weight: 500;
+}
+
+.home-page[data-theme="swiss"] [data-part="option"]:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="option"][aria-pressed="true"] {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--white);
+}
+
+.home-page[data-theme="swiss"] [data-part="option"][data-flash] {
+  animation-name: swiss-option-flash;
+}
+
+@keyframes swiss-option-flash {
+  50% {
+    box-shadow: 0 0 0 3px var(--black);
+  }
+}
+
+.home-page[data-theme="swiss"] [data-part="success-icon"] {
+  border-radius: 0;
+  background: var(--black);
+  color: var(--white);
+}
+
+.home-page[data-theme="swiss"] [data-part="success-summary"] {
+  border-top: 1px solid var(--black);
+  border-radius: 0;
+  background: transparent;
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="swiss"] [data-part="contact-panel"] {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- Beyond client work ---------- */
+
+.home-page[data-theme="swiss"] [data-part="more-title"] {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.home-page[data-theme="swiss"] [data-part="more-list"] {
+  gap: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="more-item"] {
+  padding: 14px 24px 18px 0;
+  border: 0;
+  border-top: 1px solid var(--black);
+  background: transparent;
+  align-items: flex-start;
+}
+
+.home-page[data-theme="swiss"] a[data-part="more-item"]:hover {
+  border-color: var(--black);
+}
+
+.home-page[data-theme="swiss"] a[data-part="more-item"]:hover [data-part="more-name"] {
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="more-source"] {
+  color: var(--ink-3);
+}
+
+.home-page[data-theme="swiss"] [data-part="more-name"] {
+  font-weight: 700;
+}
+
+.home-page[data-theme="swiss"] [data-part="more-count"] {
+  font-size: 1.375rem;
+  white-space: nowrap;
+}
+
+.home-page[data-theme="swiss"] [data-part="more-arrow"] {
+  color: var(--black);
+}
+
+/* ---------- Footer and phone bar ---------- */
+
+.home-page[data-theme="swiss"] [data-part="footer"] {
+  border-top: 0;
+  color: var(--ink-2);
+  font-size: 0.875rem;
+}
+
+.home-page[data-theme="swiss"] [data-part="footer"] > div {
+  padding-top: 20px;
+  border-top: 2px solid var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="footer-link"] {
+  color: var(--black);
+}
+
+.home-page[data-theme="swiss"] [data-part="footer-link"]:hover {
+  color: var(--red);
+}
+
+.home-page[data-theme="swiss"] [data-part="phone-bar"] {
+  border-radius: 0;
+}
+
+.home-page[data-theme="swiss"] [data-part="phone-bar"] :focus-visible {
+  outline-color: var(--white);
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="swiss"] * {
+    transition: none !important;
+  }
+
+  .home-page[data-theme="swiss"] [data-part="option"][data-flash] {
+    animation: none;
+  }
+}

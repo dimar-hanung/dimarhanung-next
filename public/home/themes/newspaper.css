@@ -1,3 +1,1087 @@
-/* newspaper theme: not designed yet, so it inherits modern.
-   Scope every rule to .home-page[data-theme="newspaper"].
-   Guide: .agents/skills/develop-module-home/SKILL.md, "Home themes". */
+/*
+  Broadsheet theme ("newspaper"): the home page as a front page.
+
+  References: the front pages of The New York Times and The Washington Post
+  in print, the Guardian's pre-2005 broadsheet, and the anatomy most papers
+  share: nameplate with ears, folio line (volume, date, place), banner
+  headline, deck, byline, dateline, column rules, boxed fact panels, the
+  classifieds page and the cut-out coupon.
+
+  - Paper and ink: newsprint (#f1ede4, a faint grain) and one black ink. No
+    spot colour: the page reads as black on grey-cream, and the accent is the
+    ink itself (filled black for what you press, a black underline or a black
+    box for the current choice). The portrait is printed through a halftone
+    screen.
+  - Type, one face per job, like a newspaper style book:
+    UnifrakturMaguntia for the nameplate only (mastheads are one-off
+    blackletter lettering, not the headline face). Newsreader (Production
+    Type, drawn for news reading, optical sizes 6-72) for headlines at its
+    display size and for body text at its text size. Libre Franklin (an open
+    Franklin Gothic, the American newspaper sans) for the furniture: nav,
+    byline, dateline, captions, labels, buttons.
+  - Layout habits: hairline and double rules everywhere, a 2/3 + 1/3 lead
+    story with a column rule, the lead set in two justified columns opening
+    with a dateline, the byline under the headline (not a kicker above it),
+    work items as articles flowing down ruled columns, the featured service
+    boxed like a fact panel, the contact block as a classified box with the
+    inquiry form as a dashed coupon.
+  - Extra markup: components/themes/newspaper/hero-start.vue renders the
+    nameplate, ears and folio line with today's date (copy in
+    themes.extras.newspaper). The small nav brand appears once you scroll
+    past the nameplate, as news sites do.
+
+  Scheme: light only. Every rule is scoped to .home-page[data-theme="newspaper"].
+*/
+
+.home-page[data-theme="newspaper"] {
+  --newsprint: #f1ede4;
+  --newsprint-light: #f8f6f0;
+  --news-ink: #151515;
+  --rule: #b9b2a2;
+
+  --bg: var(--newsprint);
+  --surface: transparent;
+  --surface-2: transparent;
+  --field-bg: var(--newsprint-light);
+  --nav-bg: var(--newsprint);
+  --nav-blur: 0px;
+
+  --ink: var(--news-ink);
+  --ink-2: #2b2a27;
+  --ink-3: #56524a;
+  --option-ink: var(--news-ink);
+
+  --line: var(--rule);
+  --line-strong: var(--news-ink);
+  --border: 1px;
+  --border-control: 1px;
+
+  --accent: var(--news-ink);
+  --accent-hover: #3a3936;
+  --accent-ink: var(--newsprint-light);
+  --accent-text: var(--news-ink);
+  --accent-line: var(--news-ink);
+  --accent-soft: var(--news-ink);
+  --accent-soft-ink: var(--newsprint-light);
+  --focus: var(--news-ink);
+  --selection: #d6cfbd;
+
+  --success: var(--news-ink);
+  --danger: #a3160f;
+
+  --inverse-bg: var(--news-ink);
+  --inverse-ink: var(--newsprint-light);
+  --inverse-ink-2: #dcd7cc;
+  --inverse-ink-3: #c4beb1;
+  --inverse-line: var(--newsprint);
+  --inverse-border: 0 solid transparent;
+  --inverse-accent: var(--newsprint);
+
+  --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;
+  --font-sans: "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;
+  --font-nameplate: "UnifrakturMaguntia", "Old English Text MT", serif;
+
+  --radius-control: 0;
+  --radius-tile: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-block: 0;
+
+  --shadow-button: none;
+  --shadow-card-hover: none;
+  --shadow-nav: 0 1px 0 var(--news-ink);
+  --shadow-pop: none;
+  --shadow-bar: 0 0 0 1px var(--newsprint);
+
+  --gap: 32px;
+  --lift: 0px;
+
+  --grid-mode: none;
+  --grid-bg: transparent;
+  --grid-line: transparent;
+  --grid-accent: var(--news-ink);
+  --grid-cell: 24px;
+
+  --photo-fx: off;
+  --photo-radius: 0;
+  --photo-bg: #d9d4c8;
+  --photo-border: 1px solid var(--news-ink);
+  --photo-shadow: none;
+  --photo-filter: grayscale(1) contrast(1.18) brightness(1.04);
+  --avatar-border: 1px solid var(--news-ink);
+  --avatar-shadow: none;
+  --fx-arc: var(--news-ink);
+  --fx-arc-core: #fff;
+  --fx-spark: var(--news-ink);
+  --fx-flash: var(--newsprint);
+  --fx-tear: var(--newsprint);
+  --fx-scan: var(--news-ink);
+  --fx-meter-bg: var(--news-ink);
+  --fx-meter-ink: var(--newsprint);
+  --fx-meter-glow: transparent;
+
+  font-optical-sizing: auto;
+  line-height: 1.5;
+
+  background-color: var(--newsprint);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.28 0 0 0 0 0.24 0.4 0 0 0 -0.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+.home-page[data-theme="newspaper"] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="newspaper"] :is(h1, h2, h3, [data-part="proof-value"], [data-part="more-count"]) {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.home-page[data-theme="newspaper"] .section-title {
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+/* The line under a headline is its deck: italic, a size down. */
+.home-page[data-theme="newspaper"] .section-sub {
+  max-width: 620px;
+  margin-top: 10px;
+  color: var(--ink-2);
+  font-size: 1.1875rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.home-page[data-theme="newspaper"] :is(p, li) {
+  text-wrap: pretty;
+}
+
+/* Every section opens under a heavy double rule. */
+.home-page[data-theme="newspaper"] :is([data-part="themes"], [data-part="work"], [data-part="services"], [data-part="process"], [data-part="more"]) > div {
+  border-top: 4px double var(--news-ink);
+  padding-top: 18px;
+}
+
+/* Section containers: the side padding becomes margin, so the rules stop at
+   the text edge instead of running into the gutter. */
+.home-page[data-theme="newspaper"] :is([data-part="themes"], [data-part="work"], [data-part="services"], [data-part="process"], [data-part="contact"], [data-part="more"]) > div {
+  width: calc(100% - 40px);
+  max-width: calc(80rem - 48px);
+  padding-inline: 0;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="newspaper"] :is([data-part="themes"], [data-part="work"], [data-part="services"], [data-part="process"], [data-part="contact"], [data-part="more"]) > div {
+    width: calc(100% - 48px);
+  }
+}
+
+/* ---------- Buttons and links ---------- */
+
+.home-page[data-theme="newspaper"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"]) {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0;
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out;
+}
+
+.home-page[data-theme="newspaper"] .btn-primary:hover {
+  transform: none;
+}
+
+.home-page[data-theme="newspaper"] .btn-ghost {
+  border: 1px solid var(--news-ink);
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] .btn-ghost:hover {
+  border-color: var(--news-ink);
+  background: var(--news-ink);
+  color: var(--newsprint-light);
+}
+
+.home-page[data-theme="newspaper"] .text-link {
+  color: var(--news-ink);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.home-page[data-theme="newspaper"] .text-link:hover {
+  color: var(--news-ink);
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Nav ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="nav"] {
+  border-bottom: 1px solid var(--news-ink);
+  background-image: inherit;
+  background-size: 200px 200px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav-logo"] {
+  display: none;
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav-name"] {
+  display: inline;
+  font-family: var(--font-nameplate);
+  font-weight: 400;
+  font-size: 1.625rem;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+/* The small nameplate shows once the big one has scrolled away. */
+.home-page[data-theme="newspaper"] [data-part="nav-brand"] {
+  transition: opacity 160ms ease-out;
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav"]:not([data-scrolled]) [data-part="nav-brand"]:not(:focus-visible) {
+  opacity: 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav-links"] {
+  color: var(--news-ink);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav-link"]:hover {
+  color: var(--news-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav-lang"] {
+  border: 1px solid var(--news-ink);
+  border-radius: 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav-lang-option"] {
+  border-radius: 0;
+  color: var(--news-ink);
+  font-family: var(--font-sans);
+}
+
+.home-page[data-theme="newspaper"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--news-ink);
+  color: var(--newsprint-light);
+}
+
+/* ---------- Nameplate (hero-start slot) ---------- */
+
+.home-page[data-theme="newspaper"] .np-masthead {
+  padding-top: 26px;
+}
+
+.home-page[data-theme="newspaper"] .np-nameplate-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+}
+
+.home-page[data-theme="newspaper"] .np-nameplate {
+  grid-column: 2;
+  font-family: var(--font-nameplate);
+  font-size: clamp(2.75rem, 8.6vw, 7.25rem);
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.home-page[data-theme="newspaper"] .np-ear {
+  max-width: 190px;
+  padding: 8px 12px;
+  border: 1px solid var(--news-ink);
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+  font-style: italic;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.home-page[data-theme="newspaper"] .np-ear-left {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.home-page[data-theme="newspaper"] .np-ear-right {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.home-page[data-theme="newspaper"] .np-folio {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  padding: 6px 0;
+  border-top: 1px solid var(--news-ink);
+  border-bottom: 4px double var(--news-ink);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+@media (max-width: 899px) {
+  .home-page[data-theme="newspaper"] .np-ear,
+  .home-page[data-theme="newspaper"] .np-folio-place {
+    display: none;
+  }
+
+  .home-page[data-theme="newspaper"] .np-nameplate-row {
+    display: block;
+  }
+
+  .home-page[data-theme="newspaper"] .np-masthead {
+    padding-top: 18px;
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="hero"] {
+  border-bottom: 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-layout"] {
+  padding-top: 26px;
+  padding-bottom: 32px;
+  row-gap: 32px;
+}
+
+/* Lead story: two thirds text, one third photo, a column rule between. */
+@media (min-width: 1024px) {
+  .home-page[data-theme="newspaper"] [data-part="hero-layout"] {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+    gap: 0;
+  }
+
+  .home-page[data-theme="newspaper"] [data-part="hero-text"] {
+    padding-right: 36px;
+  }
+
+  .home-page[data-theme="newspaper"] [data-part="hero-figure"] {
+    align-self: stretch;
+    justify-self: stretch;
+    max-width: none;
+    padding-left: 36px;
+    border-left: 1px solid var(--news-ink);
+  }
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-text"] {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-title"] {
+  order: 1;
+  max-width: none;
+  margin-top: 0;
+  font-size: clamp(2.375rem, 5.2vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-title-accent"] {
+  color: var(--news-ink);
+  font-style: italic;
+  font-weight: 700;
+}
+
+/* The intro line becomes the byline, under the headline. */
+.home-page[data-theme="newspaper"] :is([data-part="hero-intro"], [data-part="hero-id"]) {
+  order: 2;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-intro"] {
+  margin-top: 18px;
+  color: var(--news-ink);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-intro"]::before {
+  content: "By ";
+  font-weight: 400;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-intro"]:lang(id)::before {
+  content: "Oleh ";
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-id"] {
+  margin: 18px 0 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-id-name"] {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 800;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-id-role"] {
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="photo"][data-variant="avatar"] {
+  border-radius: 0;
+}
+
+/* The lead, set in two justified columns, opens with a dateline. */
+.home-page[data-theme="newspaper"] [data-part="hero-lead"] {
+  order: 3;
+  max-width: none;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-size: 1.125rem;
+  line-height: 1.5;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-lead"]::before {
+  content: "TANGERANG SELATAN \2014  ";
+  color: var(--news-ink);
+  font-family: var(--font-sans);
+  font-size: 0.8em;
+  font-weight: 800;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-lead"]:lang(id)::before {
+  content: "TANGERANG SELATAN - ";
+}
+
+@media (min-width: 768px) {
+  .home-page[data-theme="newspaper"] [data-part="hero-lead"] {
+    column-count: 2;
+    column-gap: 32px;
+    column-rule: 1px solid var(--rule);
+  }
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-actions"] {
+  order: 4;
+  margin-top: 26px;
+}
+
+.home-page[data-theme="newspaper"] :is([data-part="hero-cta-primary"], [data-part="hero-cta-secondary"]) {
+  height: 48px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-meta"] {
+  order: 5;
+  margin-top: 22px;
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+
+/* Halftone: the photo is printed through a dot screen. */
+.home-page[data-theme="newspaper"] [data-part="photo-face"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 0 0.9px, rgb(241 237 228 / 0.5) 1.5px);
+  background-size: 4px 4px;
+  pointer-events: none;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-caption"] {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.home-page[data-theme="newspaper"] [data-part="hero-caption-name"] {
+  display: inline;
+  margin-right: 0.35em;
+  font-size: inherit;
+  font-weight: 800;
+}
+
+/* Proof: an index box, heavy rule on top, hairlines between. */
+.home-page[data-theme="newspaper"] [data-part="proof"] {
+  margin-bottom: 44px;
+  border-top: 3px solid var(--news-ink);
+  border-bottom: 1px solid var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="proof-item"] {
+  border-color: var(--rule);
+  padding-top: 16px;
+  padding-bottom: 18px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="proof-value"] {
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  line-height: 1;
+}
+
+.home-page[data-theme="newspaper"] [data-part="proof-label"] {
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+
+/* ---------- Themes ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="theme-option"] {
+  border: 1px solid var(--rule);
+  background: var(--newsprint-light);
+}
+
+.home-page[data-theme="newspaper"] [data-part="theme-option"]:hover {
+  border-color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="theme-option"][aria-pressed="true"] {
+  border-color: var(--news-ink);
+  box-shadow: inset 0 0 0 1px var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="theme-thumb"] {
+  border-radius: 0;
+  box-shadow: 0 0 0 1px var(--rule);
+}
+
+.home-page[data-theme="newspaper"] [data-part="theme-check"] {
+  border-radius: 0;
+  background: var(--news-ink);
+  color: var(--newsprint-light);
+}
+
+.home-page[data-theme="newspaper"] [data-part="theme-name"] {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.home-page[data-theme="newspaper"] [data-part="themes-current"] {
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+/* ---------- Work: articles in ruled columns ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="work-filters"] {
+  gap: 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-filter"] {
+  height: 32px;
+  padding: 0 12px;
+  border-bottom: 0;
+  border-left: 1px solid var(--rule);
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-filter"]:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-filter"]:hover {
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-filter"][aria-pressed="true"] {
+  color: var(--news-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 7px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-list"] {
+  display: block;
+  column-count: 1;
+  column-gap: 48px;
+  column-rule: 1px solid var(--rule);
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="newspaper"] [data-part="work-list"] {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="newspaper"] [data-part="work-list"] {
+    column-count: 3;
+  }
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-card"] {
+  display: block;
+  margin-bottom: 30px;
+  padding-bottom: 26px;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  overflow: visible;
+  break-inside: avoid;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-card"]:hover {
+  border-color: var(--rule);
+  box-shadow: none;
+  transform: none;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-media"] {
+  border: 1px solid var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-card"]:hover [data-part="work-image"] {
+  transform: none;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-body"] {
+  padding: 14px 0 0;
+  gap: 8px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-card-title"] {
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-card"]:hover [data-part="work-card-title"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-link"] {
+  margin-top: 0;
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-link"]:hover {
+  color: var(--news-ink);
+  text-decoration: underline;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-desc"] {
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-role"] {
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-footer"] {
+  margin-top: 4px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-case-link"] {
+  color: var(--news-ink);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="work-see-all"] {
+  font-weight: 600;
+}
+
+/* ---------- Services ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="services"] {
+  border-block: 0;
+  background: transparent;
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-card"] {
+  padding: 18px 0 0;
+  border: 0;
+  border-top: 1px solid var(--news-ink);
+  background: transparent;
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-card"]:hover {
+  border-color: var(--news-ink);
+}
+
+/* The featured service is boxed like a fact panel, with a double frame. */
+.home-page[data-theme="newspaper"] [data-part="service-card"][data-featured] {
+  padding: 22px 24px 24px;
+  border: 1px solid var(--news-ink);
+  background: var(--newsprint-light);
+  box-shadow:
+    inset 0 0 0 3px var(--newsprint-light),
+    inset 0 0 0 4px var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-icon"] {
+  display: none;
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-title"] {
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-body"] {
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+  font-style: italic;
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-points"] {
+  font-size: 1rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-check"] {
+  display: none;
+}
+
+/* Square bullets, as in a fact box. */
+.home-page[data-theme="newspaper"] [data-part="service-point"]::before {
+  content: "" / "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.6em;
+  background: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-footer"] {
+  border-top: 1px solid var(--rule);
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-timeline"] {
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+}
+
+.home-page[data-theme="newspaper"] [data-part="service-timeline-value"] {
+  font-weight: 800;
+}
+
+.home-page[data-theme="newspaper"] [data-part="services-price"] {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* ---------- Process ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="step"]::before {
+  display: none;
+}
+
+.home-page[data-theme="newspaper"] [data-part="step-number"] {
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--news-ink);
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="newspaper"] [data-part="step"] + [data-part="step"] {
+    padding-left: 24px;
+    border-left: 1px solid var(--rule);
+  }
+}
+
+.home-page[data-theme="newspaper"] [data-part="step-title"] {
+  margin-top: 6px;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.home-page[data-theme="newspaper"] [data-part="step-body"] {
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+}
+
+/* ---------- Contact: a classified box with a coupon ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="contact-panel"] {
+  border: 5px double var(--news-ink);
+  background: var(--newsprint-light);
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="contact-lead"] {
+  color: var(--ink-2);
+  font-size: 1.1875rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="contact-email"] {
+  color: var(--news-ink);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.home-page[data-theme="newspaper"] [data-part="contact-button"] {
+  border: 1px solid var(--news-ink);
+  border-radius: 0;
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="contact-button"]:hover {
+  border-color: var(--news-ink);
+  background: var(--news-ink);
+  color: var(--newsprint-light);
+}
+
+.home-page[data-theme="newspaper"] [data-part="contact-facts"] {
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="contact-fact-icon"] {
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="form-card"] {
+  position: relative;
+  border: 2px dashed var(--news-ink);
+  background: var(--newsprint);
+}
+
+/* Scissors on the cut line. */
+.home-page[data-theme="newspaper"] [data-part="form-card"]::before {
+  content: "✂" / "";
+  position: absolute;
+  top: -0.85em;
+  left: 18px;
+  padding: 0 6px;
+  background: var(--newsprint-light);
+  color: var(--news-ink);
+  font-family: "DejaVu Sans", "Segoe UI Symbol", sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.home-page[data-theme="newspaper"] [data-part="form-title"] {
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="newspaper"] :is([data-part="form-sub"], [data-part="form-note"], [data-part="field-optional"]) {
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.home-page[data-theme="newspaper"] [data-part="field-label"] {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 800;
+}
+
+.home-page[data-theme="newspaper"] [data-part="field-input"] {
+  border: 1px solid var(--ink-3);
+  background: var(--newsprint-light);
+  font-size: 1rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="field-input"]:focus {
+  border-color: var(--news-ink);
+  box-shadow: 0 0 0 1px var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="field-input"][aria-invalid="true"] {
+  border: 2px solid var(--danger);
+}
+
+.home-page[data-theme="newspaper"] [data-part="field-error"] {
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.home-page[data-theme="newspaper"] [data-part="option"] {
+  border: 1px solid var(--ink-3);
+  background: var(--newsprint-light);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.home-page[data-theme="newspaper"] [data-part="option"]:hover {
+  border-color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="option"][aria-pressed="true"] {
+  border-color: var(--news-ink);
+  background: var(--news-ink);
+  color: var(--newsprint-light);
+}
+
+.home-page[data-theme="newspaper"] [data-part="option"][data-flash] {
+  animation-name: newspaper-option-flash;
+}
+
+@keyframes newspaper-option-flash {
+  50% {
+    box-shadow: 0 0 0 3px var(--rule);
+  }
+}
+
+.home-page[data-theme="newspaper"] [data-part="success-icon"] {
+  border-radius: 0;
+  border: 1px solid var(--news-ink);
+  background: transparent;
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="success-summary"] {
+  border-top: 1px solid var(--news-ink);
+  border-bottom: 1px solid var(--news-ink);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+}
+
+/* ---------- Beyond client work ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="more-title"] {
+  font-size: 1.75rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="more-list"] {
+  column-gap: 32px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="more-item"] {
+  padding-inline: 0;
+  border: 0;
+  border-top: 1px solid var(--news-ink);
+  background: transparent;
+}
+
+.home-page[data-theme="newspaper"] a[data-part="more-item"]:hover {
+  border-color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] a[data-part="more-item"]:hover [data-part="more-name"] {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="more-source"] {
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="more-name"] {
+  font-size: 1.1875rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="more-count"] {
+  font-size: 1.625rem;
+  white-space: nowrap;
+}
+
+.home-page[data-theme="newspaper"] [data-part="more-arrow"] {
+  color: var(--news-ink);
+}
+
+/* ---------- Footer and phone bar ---------- */
+
+.home-page[data-theme="newspaper"] [data-part="footer"] {
+  border-top: 4px double var(--news-ink);
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+
+.home-page[data-theme="newspaper"] [data-part="footer-link"] {
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="footer-link"]:hover {
+  color: var(--news-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-page[data-theme="newspaper"] [data-part="phone-bar"] {
+  border-radius: 0;
+}
+
+.home-page[data-theme="newspaper"] [data-part="phone-bar"] :focus-visible {
+  outline-color: var(--newsprint);
+}
+
+.home-page[data-theme="newspaper"] [data-part="phone-bar-note"] {
+  font-family: var(--font-sans);
+}
+
+.home-page[data-theme="newspaper"] [data-part="phone-bar-cta"] {
+  background: var(--newsprint-light);
+  color: var(--news-ink);
+}
+
+.home-page[data-theme="newspaper"] [data-part="phone-bar-cta"]:hover {
+  background: var(--newsprint);
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="newspaper"] * {
+    transition: none !important;
+  }
+
+  .home-page[data-theme="newspaper"] [data-part="option"][data-flash] {
+    animation: none;
+  }
+}
