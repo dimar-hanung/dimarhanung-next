@@ -59,7 +59,7 @@
               {{ project.home.description[locale] }}
             </p>
             <p class="text-[0.84375rem] text-muted-500 dark:text-muted-400">
-              {{ [project.home.role, ...project.home.stack].join(" · ") }}
+              {{ project.home.role }}
             </p>
 
             <div

@@ -73,10 +73,6 @@
               <Icon name="mdi:earth" class="text-base" aria-hidden="true" />
               {{ t.hero.remote }}
             </li>
-            <li class="inline-flex items-center gap-1.5">
-              <Icon name="mdi:code-tags" class="text-base" aria-hidden="true" />
-              {{ t.hero.stack }}
-            </li>
           </ul>
         </div>
 

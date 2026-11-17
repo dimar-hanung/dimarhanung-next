@@ -29,13 +29,12 @@ const id: HomeMessages = {
     role: "Software Engineer, 6+ tahun",
     titleStart: "Aplikasi web selesai cepat dengan AI,",
     titleAccent: "tetap stabil saat dipakai ribuan orang.",
-    lead: "Dari ide awal sampai rilis yang stabil: frontend, backend, database, dan deploy, dikerjakan satu orang yang tetap bisa dihubungi setelah rilis.",
+    lead: "Fondasi yang kuat dan cara pakai AI yang aman: saya bisa langsung bekerja dengan stack apa pun yang dipakai produk Anda, dari ide awal sampai rilis yang stabil.",
     discuss: "Diskusikan proyek Anda",
     seeWork: "Lihat proyek",
     downloadCv: "Unduh CV",
     location: "Tangerang Selatan · WIB (UTC+7)",
     remote: "Remote, dari mana saja",
-    stack: "Vue · Nuxt · NestJS · PostgreSQL",
     caption:
       "Software Engineer di Universitas Terbuka. Tinggal di Tangerang Selatan, bekerja remote.",
     photoToggle: "Tampilkan foto asli saya",
@@ -73,7 +72,7 @@ const id: HomeMessages = {
         title: "Aplikasi web baru, dari nol",
         body: "Dari ide sampai produk yang sudah online: frontend, backend, database, dan halaman admin.",
         points: [
-          "Frontend Vue / Nuxt, backend NestJS + PostgreSQL",
+          "Frontend, backend, dan database, dengan stack yang cocok untuk tim Anda",
           "Login, role, pembayaran, upload file",
           "Sudah deploy, dipantau, dan terdokumentasi",
         ],
@@ -123,15 +122,6 @@ const id: HomeMessages = {
         body: "Kode, dokumentasi, dan walkthrough, supaya tim Anda bisa melanjutkan sendiri.",
       },
     ],
-  },
-  stack: {
-    title: "Teknologi yang saya pakai",
-    note: "Saya ikut stack yang dibutuhkan proyek, bukan sebaliknya.",
-    groups: {
-      frontend: "Frontend",
-      backend: "Backend dan data",
-      ai: "AI dan tools",
-    },
   },
   contact: {
     title: "Punya proyek yang ingin dibangun?",

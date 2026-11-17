@@ -38,13 +38,12 @@ const en = {
     role: "Software Engineer, 6+ years",
     titleStart: "I ship web apps fast with AI,",
     titleAccent: "and they hold up in production.",
-    lead: "From first idea to a stable release: frontend, backend, database and deployment, handled by one person who stays reachable after launch.",
+    lead: "Strong fundamentals and a safe way of working with AI: I pick up whatever stack your product needs and take it from first idea to a stable release.",
     discuss: "Discuss your project",
     seeWork: "See my work",
     downloadCv: "Download CV",
     location: "Tangerang Selatan · WIB (UTC+7)",
     remote: "Remote, worldwide",
-    stack: "Vue · Nuxt · NestJS · PostgreSQL",
     caption:
       "Software Engineer at Universitas Terbuka. Based in Tangerang Selatan, working remote.",
     photoToggle: "Show my real photo",
@@ -82,7 +81,7 @@ const en = {
         title: "New web app, end to end",
         body: "From idea to a deployed product: frontend, backend, database and the admin side.",
         points: [
-          "Vue / Nuxt frontend, NestJS + PostgreSQL backend",
+          "Frontend, backend and database, in the stack that fits your team",
           "Login, roles, payments, file uploads",
           "Deployed, monitored and documented",
         ],
@@ -132,15 +131,6 @@ const en = {
         body: "Code, docs and a walkthrough, so your team can carry it on.",
       },
     ],
-  },
-  stack: {
-    title: "Tools I ship with",
-    note: "I adapt to the stack the project needs, not the other way around.",
-    groups: {
-      frontend: "Frontend",
-      backend: "Backend & Data",
-      ai: "AI & Tooling",
-    },
   },
   contact: {
     title: "Have a project in mind?",
