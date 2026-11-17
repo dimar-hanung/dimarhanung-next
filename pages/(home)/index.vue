@@ -7,7 +7,6 @@
       <SectionWork />
       <SectionServices @ask="askAbout" />
       <SectionProcess />
-      <SectionStack />
       <SectionContact ref="contactSection" />
       <SectionMore />
     </main>
@@ -41,7 +40,6 @@ import SectionHero from "./components/SectionHero.vue";
 import SectionWork from "./components/SectionWork.vue";
 import SectionServices from "./components/SectionServices.vue";
 import SectionProcess from "./components/SectionProcess.vue";
-import SectionStack from "./components/SectionStack.vue";
 import SectionContact from "./components/SectionContact.vue";
 import SectionMore from "./components/SectionMore.vue";
 import SectionFooter from "./components/SectionFooter.vue";
