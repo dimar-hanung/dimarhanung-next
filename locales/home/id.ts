@@ -109,7 +109,9 @@ const id: HomeMessages = {
       },
 
       // ---- theme: retro-os ----
-      "retro-os": {},
+      "retro-os": {
+        heroTitle: "Selamat datang",
+      },
 
       // ---- theme: pixel ----
       pixel: {},

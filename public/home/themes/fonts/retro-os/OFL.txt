@@ -1,0 +1,6 @@
+W95FA, by Alina Sava (FontsArena), 2019.
+https://fontsarena.com/w95fa-by-alina-sava/
+File: w95fa-400.woff2 (Latin subset, from the Fontsource package "win95fa").
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+The license text and FAQ are at https://openfontlicense.org/

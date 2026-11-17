@@ -1,3 +1,961 @@
-/* cartoon theme: not designed yet, so it inherits modern.
-   Scope every rule to .home-page[data-theme="cartoon"].
-   Guide: .agents/skills/develop-module-home/SKILL.md, "Home themes". */
+/*
+  Cartoon theme.
+
+  Direction: the Sunday-morning cartoon and the Sunday funnies page. Two
+  references carry it. Saturday/Sunday TV cartoon graphics (UPA and the
+  90s cable-cartoon title cards): flat saturated fills, no gradients, every
+  shape closed by a thick ink line, a hard offset "cel" shadow instead of a
+  soft one. And the colour comic supplement: Ben-Day halftone dots, caption
+  boxes, speech balloons with a tail.
+
+  Type: Luckiest Guy (Astigmatic, a 1950s cartoon-lettering face: chunky,
+  bouncy, all caps) for headings, proof numbers and counts only. Body in
+  Nunito, whose rounded terminals match the rounded shapes and stay easy to
+  read at body size. Headings get an offset "drop" in sun yellow, like
+  hand-lettered comic titles.
+
+  Palette: newsprint cream, purple-black ink, sky blue (the hero is a
+  halftone sky), sun yellow (surfaces, the drop on headings) and one tomato
+  red. Tomato is the accent: it fills what you can press and the current
+  choice, nothing else. The contact block is night-time grape.
+
+  Signature moves: the photo caption is a speech balloon pointing at the
+  photo; the hero intro is a yellow comic caption box; the inquiry form is
+  a second balloon "said" by the contact panel; buttons sit on a hard ink
+  shadow and squash into it when pressed.
+
+  Rule breaks: the hero intro line sits in a box above the heading. That is
+  the comic caption box, mixed case and untracked, not an eyebrow label.
+
+  Scheme: light only (data/home-themes.ts).
+  Every rule is scoped to .home-page[data-theme="cartoon"].
+*/
+
+.home-page[data-theme="cartoon"] {
+  --paper: #fff6e0;
+  --ink-line: #1b1530;
+  --tomato: #ff5b3a;
+  --sun: #ffd23f;
+  --sky: #7fd1f7;
+  --grape: #2b1f5c;
+  --halftone: radial-gradient(circle, rgb(27 21 48 / 0.16) 1.7px, transparent 2.2px);
+
+  --bg: var(--paper);
+  --surface: #fff;
+  --surface-2: #fff;
+  --field-bg: #fff;
+  --nav-bg: var(--paper);
+  --nav-blur: 0px;
+
+  --ink: var(--ink-line);
+  --ink-2: #3a3150;
+  --ink-3: #5a5070;
+  --option-ink: var(--ink-line);
+
+  --line: var(--ink-line);
+  --line-strong: var(--ink-line);
+  --border: 3px;
+  --border-control: 3px;
+
+  --accent: var(--tomato);
+  --accent-hover: #ff7a5c;
+  --accent-ink: var(--ink-line);
+  --accent-text: #c4361a;
+  --accent-line: var(--ink-line);
+  --accent-soft: var(--tomato);
+  --accent-soft-ink: var(--ink-line);
+  --focus: #1450ff;
+  --selection: var(--sun);
+
+  --success: #1d7a3e;
+  --danger: #c4241a;
+
+  --inverse-bg: var(--grape);
+  --inverse-ink: #fff;
+  --inverse-ink-2: #e2dcff;
+  --inverse-ink-3: #cfc7f2;
+  --inverse-line: #fff;
+  --inverse-border: 4px solid var(--ink-line);
+  --inverse-accent: var(--sun);
+
+  --font-body: "Nunito", ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif;
+  --font-display: "Luckiest Guy", "Arial Black", Impact, sans-serif;
+  --font-mono: ui-monospace, Menlo, monospace;
+
+  --radius-control: 12px;
+  --radius-tile: 16px;
+  --radius-card: 22px;
+  --radius-panel: 24px;
+  --radius-block: 32px;
+
+  --shadow-button: 4px 4px 0 var(--ink-line);
+  --shadow-card-hover: 9px 9px 0 var(--ink-line);
+  --shadow-nav: 0 4px 0 var(--ink-line);
+  --shadow-pop: 8px 8px 0 var(--ink-line);
+  --shadow-bar: 4px 4px 0 var(--ink-line);
+
+  --gap: 28px;
+  --lift: -3px;
+
+  --grid-mode: none;
+  --grid-bg: var(--sky);
+  --grid-line: transparent;
+  --grid-accent: var(--sun);
+  --grid-cell: 24px;
+
+  --photo-fx: calm;
+  --photo-radius: 28px;
+  --photo-bg: var(--sun);
+  --photo-border: 4px solid var(--ink-line);
+  --photo-shadow: none;
+  --photo-filter: saturate(1.15) contrast(1.05);
+  --avatar-border: 3px solid var(--ink-line);
+  --avatar-shadow: 3px 3px 0 var(--ink-line);
+  --fx-arc: var(--sun);
+  --fx-arc-core: #fff;
+  --fx-spark: var(--tomato);
+  --fx-flash: #fff;
+  --fx-tear: var(--sun);
+  --fx-scan: var(--ink-line);
+  --fx-meter-bg: var(--ink-line);
+  --fx-meter-ink: var(--sun);
+  --fx-meter-glow: transparent;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.home-page[data-theme="cartoon"] :focus-visible {
+  outline-width: 3px;
+  outline-style: solid;
+  outline-offset: 3px;
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="cartoon"] :is(h1, h2, h3, [data-part="proof-value"], [data-part="more-count"], [data-part="contact-email"]) {
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  /* Luckiest Guy's lowercase is a set of alternate capitals that mixes
+     badly with the real ones; comic lettering is all caps anyway. */
+  text-transform: uppercase;
+}
+
+.home-page[data-theme="cartoon"] .section-title {
+  font-size: clamp(2.375rem, 5.5vw, 3.75rem);
+  line-height: 1.02;
+  text-shadow: 3px 3px 0 var(--sun);
+}
+
+.home-page[data-theme="cartoon"] .section-sub {
+  max-width: 600px;
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="cartoon"] :is(b, strong, [data-part="field-label"], [data-part="nav-link"]) {
+  font-weight: 800;
+}
+
+/* ---------- Buttons and links ---------- */
+
+.home-page[data-theme="cartoon"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"]) {
+  border: 3px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  box-shadow: 4px 4px 0 var(--ink-line);
+  font-weight: 800;
+  transition:
+    transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 120ms ease-out,
+    background-color 120ms ease-out;
+}
+
+.home-page[data-theme="cartoon"] .btn-ghost {
+  background: #fff;
+  color: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"]):hover {
+  border-color: var(--ink-line);
+  color: var(--ink-line);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] .btn-ghost:hover {
+  background: var(--sun);
+}
+
+/* Pressed: the button squashes down onto its shadow. */
+.home-page[data-theme="cartoon"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"]):active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] .text-link {
+  color: var(--ink-line);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="cartoon"] :is(.text-link, [data-part="work-link"], [data-part="footer-link"], [data-part="nav-link"]):hover {
+  color: var(--ink-line);
+  text-decoration: underline wavy var(--tomato);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+/* ---------- Nav ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="nav"] {
+  border-bottom: 4px solid var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav"][data-scrolled] {
+  box-shadow: none;
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav-logo"] {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--ink-line);
+  border-radius: 50%;
+  background: var(--sun);
+  color: var(--ink-line);
+  box-shadow: 2px 2px 0 var(--ink-line);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1;
+  padding-top: 3px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav-name"] {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 1.375rem;
+  letter-spacing: 0.02em;
+  padding-top: 4px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav-links"] {
+  color: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav-lang"] {
+  border: 3px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background: #fff;
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav-lang-option"] {
+  border-radius: 7px;
+  color: var(--ink-line);
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav-lang-option"]:hover {
+  color: var(--ink-line);
+  background: var(--sun);
+}
+
+.home-page[data-theme="cartoon"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--tomato);
+  color: var(--ink-line);
+}
+
+/* ---------- Hero: a halftone sky ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="hero"] {
+  border-bottom: 4px solid var(--ink-line);
+}
+
+/* Ben-Day dots, densest at the top right and fading out, the way a comic
+   colourist shades a sky. Static. */
+.home-page[data-theme="cartoon"] [data-part="hero-grid"] {
+  background-color: var(--sky);
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-grid"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--halftone);
+  background-size: 11px 11px;
+  -webkit-mask-image: linear-gradient(205deg, #000 0%, rgb(0 0 0 / 0.55) 35%, transparent 70%);
+  mask-image: linear-gradient(205deg, #000 0%, rgb(0 0 0 / 0.55) 35%, transparent 70%);
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-grid-lines"] {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="cartoon"] [data-part="hero-layout"] {
+    grid-template-columns: 1.3fr 0.7fr;
+    align-items: start;
+  }
+}
+
+/* Caption box: the yellow narration box of a comic panel. */
+.home-page[data-theme="cartoon"] [data-part="hero-intro"] {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="cartoon"] [data-part="hero-intro"] {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 3px solid var(--ink-line);
+    background: var(--sun);
+    color: var(--ink-line);
+    box-shadow: 3px 3px 0 var(--ink-line);
+    font-weight: 800;
+    font-size: 1rem;
+  }
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-title"] {
+  max-width: 760px;
+  margin-top: 22px;
+  color: var(--ink-line);
+  font-size: clamp(2.5rem, 5.6vw, 4.5rem);
+  line-height: 1.04;
+  letter-spacing: 0.01em;
+}
+
+/* The punchline gets cartoon-logo lettering: white fill, ink outline,
+   hard drop. Ink stroke keeps it readable on the sky. */
+.home-page[data-theme="cartoon"] [data-part="hero-title-accent"] {
+  color: #fff;
+  -webkit-text-stroke: 0.09em var(--ink-line);
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.07em 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-lead"] {
+  max-width: 600px;
+  color: var(--ink-line);
+  font-weight: 600;
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-meta"] {
+  color: var(--ink-line);
+  font-weight: 700;
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-id-name"] {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 1.375rem;
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-id-role"] {
+  color: var(--ink-line);
+  font-weight: 700;
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-figure"] {
+  max-width: 360px;
+  padding: 4px 12px 0 0;
+}
+
+.home-page[data-theme="cartoon"] [data-part="photo"][data-variant="portrait"] {
+  box-shadow: 10px 10px 0 var(--ink-line);
+  transform: rotate(-2deg);
+}
+
+/* Speech balloon pointing up at the photo. */
+.home-page[data-theme="cartoon"] [data-part="hero-caption"] {
+  margin-top: 34px;
+  padding: 14px 18px 16px;
+  border: 3px solid var(--ink-line);
+  border-radius: 24px;
+  background: #fff;
+  color: var(--ink-2);
+  box-shadow: 4px 4px 0 var(--ink-line);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-caption"]::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 44px;
+  width: 20px;
+  height: 20px;
+  border-top: 3px solid var(--ink-line);
+  border-left: 3px solid var(--ink-line);
+  background: #fff;
+  transform: rotate(45deg) skew(8deg, 8deg);
+}
+
+.home-page[data-theme="cartoon"] [data-part="hero-caption-name"] {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+/* Proof strip: four comic panels with gutters. */
+.home-page[data-theme="cartoon"] [data-part="proof"] {
+  gap: 14px;
+  margin-bottom: 44px;
+  border: 0;
+}
+
+.home-page[data-theme="cartoon"] [data-part="proof-item"] {
+  padding: 16px 18px 18px;
+  border: 3px solid var(--ink-line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="proof-value"] {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1;
+  padding-top: 4px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="proof-label"] {
+  margin-top: 4px;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+/* ---------- Themes ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="theme-option"] {
+  border: 3px solid var(--ink-line);
+  border-radius: var(--radius-tile);
+  box-shadow: 3px 3px 0 var(--ink-line);
+  transition:
+    transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 120ms ease-out;
+}
+
+.home-page[data-theme="cartoon"] [data-part="themes-list"] {
+  padding-bottom: 16px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="theme-option"]:hover {
+  border-color: var(--ink-line);
+  box-shadow: 6px 6px 0 var(--ink-line);
+  transform: translate(-2px, -2px);
+}
+
+.home-page[data-theme="cartoon"] [data-part="theme-option"][aria-pressed="true"] {
+  border-color: var(--ink-line);
+  background: var(--tomato);
+  box-shadow: 6px 6px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="theme-thumb"] {
+  border: 2px solid var(--ink-line);
+  border-radius: 10px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="theme-check"] {
+  border: 2px solid var(--ink-line);
+  background: var(--sun);
+  color: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="theme-name"] {
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="themes-current"] {
+  color: var(--ink-2);
+}
+
+/* ---------- Work ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="work-filters"] {
+  gap: 10px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-filter"] {
+  height: 40px;
+  padding: 0 16px;
+  border: 3px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background: #fff;
+  color: var(--ink-line);
+  box-shadow: 3px 3px 0 var(--ink-line);
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-filter"]:hover {
+  color: var(--ink-line);
+  background: var(--sun);
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-filter"][aria-pressed="true"] {
+  border-color: var(--ink-line);
+  background: var(--tomato);
+  color: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-filter"]:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-card"] {
+  box-shadow: 6px 6px 0 var(--ink-line);
+  transition:
+    transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 160ms ease-out;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-card"]:hover {
+  border-color: var(--ink-line);
+  box-shadow: 9px 9px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-media"] {
+  border-bottom: 3px solid var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-card-title"] {
+  font-size: 1.625rem;
+  line-height: 1.05;
+  padding-top: 2px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-link"] {
+  color: var(--ink-3);
+  font-weight: 700;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-desc"] {
+  color: var(--ink-2);
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-role"] {
+  color: var(--ink-3);
+  font-weight: 700;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-footer"] {
+  border-top: 2px dashed var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-case-link"] {
+  color: var(--ink-line);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="work-case-link"]:hover {
+  text-decoration: underline wavy var(--tomato);
+}
+
+/* ---------- Services: a sun-yellow halftone band ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="services"] {
+  position: relative;
+  border-block: 4px solid var(--ink-line);
+  background-color: var(--sun);
+  background-image: var(--halftone);
+  background-size: 12px 12px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="services"] .section-title {
+  text-shadow: 3px 3px 0 #fff;
+}
+
+.home-page[data-theme="cartoon"] [data-part="services"] .section-sub {
+  color: var(--ink-line);
+  font-weight: 600;
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-card"] {
+  border: 3px solid var(--ink-line);
+  background: #fff;
+  box-shadow: 6px 6px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-card"]:hover {
+  border-color: var(--ink-line);
+}
+
+/* The featured card is tilted like a panel pinned on top of the others. */
+.home-page[data-theme="cartoon"] [data-part="service-card"][data-featured] {
+  border-color: var(--ink-line);
+  box-shadow: 10px 10px 0 var(--ink-line);
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="cartoon"] [data-part="service-card"][data-featured] {
+    transform: rotate(-1.5deg) translateY(-6px);
+  }
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-icon"] {
+  border: 3px solid var(--ink-line);
+  border-radius: 50%;
+  background: var(--sky);
+  color: var(--ink-line);
+  box-shadow: 2px 2px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-card"][data-featured] [data-part="service-icon"] {
+  background: var(--sun);
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-title"] {
+  font-size: 1.625rem;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-body"] {
+  color: var(--ink-2);
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-check"] {
+  color: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-footer"] {
+  border-top: 2px dashed var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-timeline"] {
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+.home-page[data-theme="cartoon"] [data-part="service-timeline-value"] {
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="services-price"] {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 3px solid var(--ink-line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--ink-line);
+  font-weight: 800;
+}
+
+/* ---------- Process ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="step"] {
+  --step-connector: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="step-number"] {
+  border: 3px solid var(--ink-line);
+  border-radius: 50%;
+  background: var(--sun);
+  color: var(--ink-line);
+  box-shadow: 3px 3px 0 var(--ink-line);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.375rem;
+  line-height: 1;
+  padding-top: 3px;
+}
+
+/* Motion dots instead of a dashed line, like the speed trail behind a
+   running cartoon character. */
+.home-page[data-theme="cartoon"] [data-part="step"]::before {
+  width: 6px;
+  left: 20px;
+  background: radial-gradient(circle, var(--ink-line) 2.6px, transparent 3px) center top / 6px 14px repeat-y;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="cartoon"] [data-part="step"]::before {
+    top: 20px;
+    left: 54px;
+    right: 8px;
+    width: auto;
+    height: 6px;
+    background: radial-gradient(circle, var(--ink-line) 2.6px, transparent 3px) left center / 14px 6px repeat-x;
+  }
+}
+
+.home-page[data-theme="cartoon"] [data-part="step-title"] {
+  font-size: 1.5rem;
+  line-height: 1.08;
+}
+
+.home-page[data-theme="cartoon"] [data-part="step-body"] {
+  color: var(--ink-2);
+}
+
+/* ---------- Contact: night-time grape panel ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="contact-panel"] {
+  --focus: var(--sun);
+  background-color: var(--grape);
+  background-image: radial-gradient(circle, rgb(255 255 255 / 0.09) 1.7px, transparent 2.2px);
+  background-size: 12px 12px;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="cartoon"] [data-part="contact-panel"] {
+    box-shadow: 10px 10px 0 var(--ink-line);
+  }
+}
+
+.home-page[data-theme="cartoon"] [data-part="contact-panel"] .section-title {
+  color: #fff;
+  text-shadow: 3px 3px 0 var(--tomato);
+}
+
+.home-page[data-theme="cartoon"] [data-part="contact-email"] {
+  text-transform: none;
+  color: var(--sun);
+  font-size: clamp(1.5rem, 3.6vw, 2.25rem);
+  letter-spacing: 0.02em;
+}
+
+.home-page[data-theme="cartoon"] [data-part="contact-button"] {
+  border: 3px solid var(--ink-line);
+  border-radius: var(--radius-control);
+  background: #fff;
+  color: var(--ink-line);
+  box-shadow: 3px 3px 0 var(--ink-line);
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="contact-button"]:hover {
+  border-color: var(--ink-line);
+  background: var(--sun);
+  color: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="contact-facts"] {
+  font-weight: 600;
+}
+
+/* The form is a big speech balloon; on wide screens its tail points back
+   at the contact copy. */
+.home-page[data-theme="cartoon"] [data-part="form-card"] {
+  --focus: #1450ff;
+  position: relative;
+  border: 4px solid var(--ink-line);
+  border-radius: 28px;
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="cartoon"] [data-part="form-card"]::before {
+    content: "";
+    position: absolute;
+    top: 86px;
+    left: -19px;
+    width: 30px;
+    height: 30px;
+    border-bottom: 4px solid var(--ink-line);
+    border-left: 4px solid var(--ink-line);
+    background: #fff;
+    transform: rotate(45deg) skew(10deg, 10deg);
+  }
+}
+
+.home-page[data-theme="cartoon"] [data-part="form-title"] {
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="cartoon"] [data-part="form-sub"] {
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+.home-page[data-theme="cartoon"] [data-part="field-optional"] {
+  color: var(--ink-3);
+}
+
+.home-page[data-theme="cartoon"] [data-part="field-input"] {
+  border: 3px solid var(--ink-line);
+  font-weight: 600;
+}
+
+.home-page[data-theme="cartoon"] [data-part="field-input"]::placeholder {
+  color: #776d8c;
+}
+
+.home-page[data-theme="cartoon"] [data-part="field-input"]:focus {
+  border-color: var(--ink-line);
+  box-shadow: 4px 4px 0 var(--sky);
+}
+
+.home-page[data-theme="cartoon"] [data-part="field-input"][aria-invalid="true"] {
+  border-color: var(--danger);
+  box-shadow: 4px 4px 0 var(--danger);
+}
+
+.home-page[data-theme="cartoon"] [data-part="field-error"] {
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="field-error"]::before {
+  content: "! ";
+}
+
+.home-page[data-theme="cartoon"] [data-part="option"] {
+  height: 40px;
+  border: 3px solid var(--ink-line);
+  color: var(--ink-line);
+  box-shadow: 2px 2px 0 var(--ink-line);
+  font-weight: 700;
+}
+
+.home-page[data-theme="cartoon"] [data-part="option"]:hover {
+  border-color: var(--ink-line);
+  background: var(--sun);
+}
+
+.home-page[data-theme="cartoon"] [data-part="option"][aria-pressed="true"] {
+  border-color: var(--ink-line);
+  background: var(--tomato);
+  color: var(--ink-line);
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="option"][data-flash] {
+  animation-name: cartoon-option-flash;
+}
+
+@keyframes cartoon-option-flash {
+  50% {
+    box-shadow: 5px 5px 0 var(--ink-line);
+    transform: translate(-2px, -2px);
+  }
+}
+
+.home-page[data-theme="cartoon"] [data-part="form-note"] {
+  color: var(--ink-3);
+}
+
+.home-page[data-theme="cartoon"] [data-part="success-icon"] {
+  border: 3px solid var(--ink-line);
+  background: var(--sun);
+  color: var(--ink-line);
+  box-shadow: 3px 3px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="success-title"] {
+  font-weight: 400;
+}
+
+.home-page[data-theme="cartoon"] [data-part="success-summary"] {
+  border: 3px solid var(--ink-line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+/* ---------- Beyond client work ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="more-title"] {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 2rem;
+  text-shadow: 2px 2px 0 var(--sun);
+}
+
+.home-page[data-theme="cartoon"] [data-part="more-item"] {
+  border: 3px solid var(--ink-line);
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] a[data-part="more-item"] {
+  transition:
+    transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 120ms ease-out,
+    background-color 120ms ease-out;
+}
+
+.home-page[data-theme="cartoon"] a[data-part="more-item"]:hover {
+  border-color: var(--ink-line);
+  background: var(--sun);
+  box-shadow: 7px 7px 0 var(--ink-line);
+  transform: translate(-3px, -3px);
+}
+
+.home-page[data-theme="cartoon"] :is([data-part="more-source"], [data-part="more-arrow"]) {
+  color: var(--ink-3);
+  font-weight: 700;
+}
+
+.home-page[data-theme="cartoon"] a[data-part="more-item"]:hover [data-part="more-arrow"] {
+  color: var(--ink-line);
+}
+
+.home-page[data-theme="cartoon"] [data-part="more-name"] {
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="more-count"] {
+  font-size: 1.75rem;
+  white-space: nowrap;
+}
+
+/* ---------- Footer and phone bar ---------- */
+
+.home-page[data-theme="cartoon"] [data-part="footer"] {
+  border-top: 4px solid var(--ink-line);
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.home-page[data-theme="cartoon"] [data-part="footer-link"] {
+  color: var(--ink-line);
+  font-weight: 800;
+}
+
+.home-page[data-theme="cartoon"] [data-part="phone-bar"] {
+  --focus: var(--sun);
+  border: 3px solid var(--ink-line);
+  border-radius: 18px;
+}
+
+.home-page[data-theme="cartoon"] [data-part="phone-bar-note"] {
+  font-weight: 700;
+}
+
+.home-page[data-theme="cartoon"] [data-part="phone-bar-cta"] {
+  box-shadow: 3px 3px 0 #000;
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="cartoon"] :is(
+      .btn-primary,
+      .btn-ghost,
+      [data-part="nav-cta"],
+      [data-part="theme-option"],
+      [data-part="work-card"],
+      [data-part="work-filter"],
+      a[data-part="more-item"]
+    ):is(:hover, :active) {
+    transform: none;
+  }
+
+  .home-page[data-theme="cartoon"] [data-part="option"][data-flash] {
+    animation: none;
+  }
+
+  .home-page[data-theme="cartoon"] * {
+    transition: none !important;
+  }
+}
