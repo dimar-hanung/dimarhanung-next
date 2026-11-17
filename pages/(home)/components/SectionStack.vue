@@ -1,29 +1,21 @@
 <template>
   <section
     aria-labelledby="stack-heading"
-    class="container mx-auto px-2 text-muted-900 dark:text-muted-100"
+    class="mx-auto max-w-7xl px-5 pb-[72px] sm:px-6 md:pb-[100px]"
   >
-    <div class="border-t border-primary-500/25 pt-12">
-      <p class="text-base text-muted-500">Stack</p>
-      <h2
-        id="stack-heading"
-        class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl"
-      >
-        Tools I ship with
-      </h2>
-      <p class="mt-6 text-base text-muted-600 dark:text-muted-400">
-        I adapt to the stack the project needs, not the other way around.
-      </p>
+    <div class="border-t border-muted-200 pt-[72px] dark:border-muted-700 md:pt-[100px]">
+      <h2 id="stack-heading" class="section-title">{{ t.stack.title }}</h2>
+      <p class="section-sub">{{ t.stack.note }}</p>
 
       <dl
         class="mt-10 divide-y divide-muted-300 dark:divide-muted-800"
       >
         <div
           v-for="group in groups"
-          :key="group.title"
+          :key="group.key"
           class="grid grid-cols-1 gap-4 py-6 first:pt-0 last:pb-0 lg:grid-cols-12"
         >
-          <dt class="text-xl font-bold lg:col-span-3 lg:pt-1.5">{{ group.title }}</dt>
+          <dt class="text-xl font-bold lg:col-span-3 lg:pt-1.5">{{ t.stack.groups[group.key] }}</dt>
           <dd class="flex flex-wrap gap-2 lg:col-span-9">
             <span
               v-for="tool in group.tools"
@@ -46,12 +38,14 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useHomeI18n();
+
 // darkInvert: black monochrome marks that would vanish on the dark chip.
 type Tool = { name: string; icon: string; darkInvert?: boolean };
 
-const groups: { title: string; tools: Tool[] }[] = [
+const groups: { key: "frontend" | "backend" | "ai"; tools: Tool[] }[] = [
   {
-    title: "Frontend",
+    key: "frontend",
     tools: [
       { name: "Vue", icon: "logos:vue" },
       { name: "Nuxt", icon: "logos:nuxt-icon" },
@@ -62,7 +56,7 @@ const groups: { title: string; tools: Tool[] }[] = [
     ],
   },
   {
-    title: "Backend & Data",
+    key: "backend",
     tools: [
       { name: "NestJS", icon: "logos:nestjs" },
       { name: "PostgreSQL", icon: "logos:postgresql" },
@@ -75,7 +69,7 @@ const groups: { title: string; tools: Tool[] }[] = [
     ],
   },
   {
-    title: "AI & Tooling",
+    key: "ai",
     tools: [
       { name: "Cursor", icon: "logos:cursor-icon", darkInvert: true },
       { name: "OpenCode", icon: "material-icon-theme:opencode" },
