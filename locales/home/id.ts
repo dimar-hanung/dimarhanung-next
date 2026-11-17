@@ -2,9 +2,6 @@
 // Voice: saya/Anda, no em/en dashes.
 import type { HomeMessages, NeedKey, WhatsAppFields } from "./en";
 
-// Update each quarter: the month new projects can start.
-const availableFrom = "Januari 2027";
-
 // Inquiry form budget options and the starting price under "Yang bisa saya bantu".
 const budgets = ["Rp300 rb-1 jt", "Rp1-5 jt", "Rp5-10 jt", "Di atas Rp10 jt", "Belum tahu"];
 const startingPrice = "Proyek mulai dari Rp300 rb.";
@@ -13,9 +10,7 @@ const id: HomeMessages = {
   seo: {
     title: "Dimar Hanung | Software Engineer Freelance",
     description:
-      "Saya membangun aplikasi web dengan cepat berkat AI, dan tetap stabil di production. Pengalaman 6+ tahun, termasuk portal yang dipakai mahasiswa Universitas Terbuka setiap hari. Menerima proyek baru mulai " +
-      availableFrom +
-      ".",
+      "Saya membangun aplikasi web dengan cepat berkat AI, dan tetap stabil di production. Pengalaman 6+ tahun, termasuk portal yang dipakai mahasiswa Universitas Terbuka setiap hari.",
     ogLocale: "id_ID",
   },
   nav: {
@@ -38,7 +33,6 @@ const id: HomeMessages = {
     discuss: "Diskusikan proyek Anda",
     seeWork: "Lihat proyek",
     downloadCv: "Unduh CV",
-    availability: `Menerima proyek baru mulai ${availableFrom}. Saya balas dalam satu hari kerja.`,
     location: "Tangerang Selatan · WIB (UTC+7)",
     remote: "Remote, dari mana saja",
     stack: "Vue · Nuxt · NestJS · PostgreSQL",
@@ -140,7 +134,7 @@ const id: HomeMessages = {
   },
   contact: {
     title: "Punya proyek yang ingin dibangun?",
-    lead: `Ceritakan apa yang sedang Anda bangun. Saya balas dalam satu hari kerja dengan pertanyaan atau rencana awal. Obrolan pertama gratis, dan saya menerima proyek baru mulai ${availableFrom}.`,
+    lead: `Ceritakan apa yang sedang Anda bangun. Saya balas dalam satu hari kerja dengan pertanyaan atau rencana awal, dan obrolan pertama gratis.`,
     emailLabel: "Email",
     copyEmail: "Salin email",
     copied: "Tersalin",

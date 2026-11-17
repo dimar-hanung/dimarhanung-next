@@ -62,9 +62,8 @@
             </a>
           </div>
 
-          <p class="mt-7 font-medium">{{ t.hero.availability }}</p>
           <ul
-            class="mt-2.5 flex flex-wrap gap-x-6 gap-y-2.5 text-sm text-muted-500 dark:text-muted-400"
+            class="mt-7 flex flex-wrap gap-x-6 gap-y-2.5 text-sm text-muted-500 dark:text-muted-400"
           >
             <li class="inline-flex items-center gap-1.5">
               <Icon name="mdi:map-marker-outline" class="text-base" aria-hidden="true" />

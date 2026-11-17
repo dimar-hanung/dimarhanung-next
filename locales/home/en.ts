@@ -1,9 +1,6 @@
 // English copy for the home page (/). The Indonesian twin is ./id.ts and must
 // keep the same shape.
 
-// Update each quarter: the month new projects can start.
-const availableFrom = "January 2027";
-
 // Inquiry form budget options and the starting price under "How I can help".
 const budgets = ["$20-60", "$60-300", "$300-600", "$600+", "Not sure yet"];
 const startingPrice = "Projects start from about $20.";
@@ -22,9 +19,7 @@ const en = {
   seo: {
     title: "Dimar Hanung | Freelance Software Engineer",
     description:
-      "I build web apps fast with AI, and they hold up in production. 6+ years of experience, including the portals Universitas Terbuka students use every day. Booking new projects from " +
-      availableFrom +
-      ".",
+      "I build web apps fast with AI, and they hold up in production. 6+ years of experience, including the portals Universitas Terbuka students use every day.",
     ogLocale: "en_US",
   },
   nav: {
@@ -47,7 +42,6 @@ const en = {
     discuss: "Discuss your project",
     seeWork: "See my work",
     downloadCv: "Download CV",
-    availability: `Booking new projects from ${availableFrom}. I reply within one working day.`,
     location: "Tangerang Selatan · WIB (UTC+7)",
     remote: "Remote, worldwide",
     stack: "Vue · Nuxt · NestJS · PostgreSQL",
@@ -149,7 +143,7 @@ const en = {
   },
   contact: {
     title: "Have a project in mind?",
-    lead: `Tell me what you're building. I reply within one working day with questions or a first plan. The first call is free, and I'm booking new projects from ${availableFrom}.`,
+    lead: `Tell me what you're building. I reply within one working day with questions or a first plan, and the first call is free.`,
     emailLabel: "Email",
     copyEmail: "Copy email",
     copied: "Copied",
