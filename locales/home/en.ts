@@ -94,15 +94,34 @@ const en = {
     // Copy for a theme's slot components (pages/(home)/components/themes/<id>/).
     // Each theme owns its block; add the same keys to id.ts.
     extras: {
+      // ---- theme: modern ----
       modern: {},
+
+      // ---- theme: brutalist ----
       brutalist: {},
+
+      // ---- theme: cartoon ----
       cartoon: {},
+
+      // ---- theme: ancient ----
       ancient: {},
+
+      // ---- theme: terminal ----
       terminal: {},
+
+      // ---- theme: swiss ----
       swiss: {},
+
+      // ---- theme: newspaper ----
       newspaper: {},
+
+      // ---- theme: retro-os ----
       "retro-os": {},
+
+      // ---- theme: pixel ----
       pixel: {},
+
+      // ---- theme: lab ----
       lab: {},
     },
   },

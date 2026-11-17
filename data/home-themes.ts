@@ -81,13 +81,28 @@ export const HOME_THEMES: Record<HomeThemeId, HomeTheme> = {
     scheme: "light",
     thumbnail: "/home/themes/brutalist.webp",
   },
+  // ---- theme: cartoon (edit only inside this block) ----
   cartoon: stub("cartoon"),
+
+  // ---- theme: ancient (edit only inside this block) ----
   ancient: stub("ancient"),
+
+  // ---- theme: terminal (edit only inside this block) ----
   terminal: stub("terminal"),
+
+  // ---- theme: swiss (edit only inside this block) ----
   swiss: stub("swiss"),
+
+  // ---- theme: newspaper (edit only inside this block) ----
   newspaper: stub("newspaper"),
+
+  // ---- theme: retro-os (edit only inside this block) ----
   "retro-os": stub("retro-os"),
+
+  // ---- theme: pixel (edit only inside this block) ----
   pixel: stub("pixel"),
+
+  // ---- theme: lab (edit only inside this block) ----
   lab: stub("lab"),
 };
 

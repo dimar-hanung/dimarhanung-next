@@ -81,15 +81,34 @@ const id: HomeMessages = {
       },
     },
     extras: {
+      // ---- theme: modern ----
       modern: {},
+
+      // ---- theme: brutalist ----
       brutalist: {},
+
+      // ---- theme: cartoon ----
       cartoon: {},
+
+      // ---- theme: ancient ----
       ancient: {},
+
+      // ---- theme: terminal ----
       terminal: {},
+
+      // ---- theme: swiss ----
       swiss: {},
+
+      // ---- theme: newspaper ----
       newspaper: {},
+
+      // ---- theme: retro-os ----
       "retro-os": {},
+
+      // ---- theme: pixel ----
       pixel: {},
+
+      // ---- theme: lab ----
       lab: {},
     },
   },
