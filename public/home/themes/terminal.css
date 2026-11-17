@@ -1,0 +1,1037 @@
+/*
+  Terminal theme: a green phosphor CRT session.
+
+  Direction: the page reads like a shell session on a green-screen terminal,
+  the kind of monitor that sat on IBM 3270 / DEC VT100 desks (P1 green
+  phosphor on a near-black tube) and that cool-retro-term imitates today.
+  - Type: one family, IBM 3270 (Ricardo Banffy's OFL font, hand-copied from
+    the 3270 terminal's character ROM), self-hosted and subset to Latin, box
+    drawing and arrows (fonts/terminal/, the Semi-Condensed cut for tighter lines, 10 KB). It has one weight, so there
+    is no bold anywhere: hierarchy comes from size and brightness, as on the
+    real screen (font-synthesis is off so the browser never fakes a bold).
+  - Palette: tube black #050a06, three phosphor intensities for text (bright
+    for headings, normal for body, dim for meta), all above 7:1. The accent
+    is reverse video (a solid green block with black text): it marks what you
+    can press and the current choice, nothing else. Errors use the one other
+    colour a 3279 colour terminal had, red, plus the error text.
+  - Structure: TUI conventions instead of cards. Panels have double rules
+    (the ╔═╗ box of curses and DOS dialogs), section headings start with a
+    `$` prompt, links and buttons sit in [ brackets ], single choices are
+    radio rows ( ) / (*), form fields are prompt lines (`>` then an
+    underline, block caret), the steps run as a numbered log.
+  - Texture: static scanlines and a faint glow on bright text; the hero grid
+    stays as character cells lighting under the pointer. The cursor after the
+    hero title blinks five times and then stays solid.
+  - Photo: phosphor monochrome through --photo-filter, double frame, no idle
+    glitch (--photo-fx: calm), effect colours in phosphor green.
+
+  Scheme: dark only (data/home-themes.ts), so there are no .dark rules here.
+  Every rule is scoped to .home-page[data-theme="terminal"].
+*/
+
+@font-face {
+  font-family: "IBM 3270";
+  src: url("fonts/terminal/3270SemiCondensed-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.home-page[data-theme="terminal"] {
+  --tube: #050a06;
+  --phosphor: #3dff6e;
+  --bright: #c9ffd5;
+  --normal: #8fe6a1;
+  --dim: #64b875;
+  --rule: #1d5a2b;
+  --rule-strong: #3a9d52;
+  --glow: 0 0 1px rgb(61 255 110 / 0.5), 0 0 8px rgb(61 255 110 / 0.28);
+
+  --bg: var(--tube);
+  --surface: var(--tube);
+  --surface-2: #07100a;
+  --field-bg: transparent;
+  --nav-bg: var(--tube);
+  --nav-blur: 0px;
+
+  --ink: var(--bright);
+  --ink-2: var(--normal);
+  --ink-3: var(--dim);
+  --option-ink: var(--normal);
+
+  --line: var(--rule);
+  --line-strong: var(--rule-strong);
+  --border: 1px;
+  --border-control: 1px;
+
+  --accent: var(--phosphor);
+  --accent-hover: var(--bright);
+  --accent-ink: #021407;
+  --accent-text: var(--phosphor);
+  --accent-line: var(--phosphor);
+  --accent-soft: var(--phosphor);
+  --accent-soft-ink: #021407;
+  --focus: #e6ffe9;
+  --selection: rgb(61 255 110 / 0.35);
+
+  --success: var(--phosphor);
+  --danger: #ff7262;
+
+  --inverse-bg: var(--tube);
+  --inverse-ink: var(--bright);
+  --inverse-ink-2: var(--normal);
+  --inverse-ink-3: var(--dim);
+  --inverse-line: var(--rule-strong);
+  --inverse-border: 3px double var(--rule-strong);
+  --inverse-accent: var(--phosphor);
+
+  --font-body: "IBM 3270", ui-monospace, Menlo, monospace;
+  --font-display: "IBM 3270", ui-monospace, Menlo, monospace;
+  --font-mono: "IBM 3270", ui-monospace, Menlo, monospace;
+
+  --radius-control: 0;
+  --radius-tile: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-block: 0;
+
+  --shadow-button: none;
+  --shadow-card-hover: none;
+  --shadow-nav: none;
+  --shadow-pop: none;
+  --shadow-bar: none;
+
+  --gap: 20px;
+  --lift: 0px;
+
+  --grid-mode: interactive;
+  --grid-bg: var(--tube);
+  --grid-line: rgb(61 255 110 / 0.07);
+  --grid-accent: var(--phosphor);
+  --grid-cell: 24px;
+
+  --photo-fx: calm;
+  --photo-radius: 0;
+  --photo-bg: #0b1a0f;
+  --photo-border: 3px double var(--rule-strong);
+  --photo-shadow: none;
+  --photo-filter: grayscale(1) sepia(1) hue-rotate(68deg) saturate(2.2) brightness(0.92) contrast(1.08);
+  --avatar-border: 3px double var(--rule-strong);
+  --avatar-shadow: none;
+  --fx-arc: var(--phosphor);
+  --fx-arc-core: var(--bright);
+  --fx-spark: var(--phosphor);
+  --fx-flash: rgb(61 255 110);
+  --fx-tear: var(--bright);
+  --fx-scan: #000;
+  --fx-meter-bg: rgb(2 8 4 / 0.9);
+  --fx-meter-ink: var(--phosphor);
+  --fx-meter-glow: rgb(61 255 110);
+
+  font-size: 17px;
+  line-height: 1.55;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* One weight in the font: nothing is bold, nothing is tracked. */
+.home-page[data-theme="terminal"] *,
+.home-page[data-theme="terminal"] *::before,
+.home-page[data-theme="terminal"] *::after {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Scanlines over the whole screen, fixed like the tube, no motion. A dark
+   line every 3px at 16%: about 5% darker on average, so text contrast stays
+   well above AA. */
+.home-page[data-theme="terminal"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(180deg, rgb(0 0 0 / 0.16) 0 1px, transparent 1px 3px),
+    radial-gradient(120% 90% at 50% 45%, transparent 60%, rgb(0 0 0 / 0.35) 100%);
+}
+
+.home-page[data-theme="terminal"] :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="terminal"] :is(h1, h2, h3, [data-part="proof-value"], [data-part="contact-email"]) {
+  color: var(--bright);
+  text-shadow: var(--glow);
+}
+
+.home-page[data-theme="terminal"] .section-title {
+  font-size: clamp(1.75rem, 4.2vw, 2.5rem);
+  line-height: 1.15;
+}
+
+/* The prompt before every section heading. */
+.home-page[data-theme="terminal"] :is(.section-title, [data-part="more-title"])::before {
+  content: "$ ";
+  color: var(--dim);
+  text-shadow: none;
+}
+
+.home-page[data-theme="terminal"] .section-sub {
+  max-width: 64ch;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.home-page[data-theme="terminal"] .section-sub::before {
+  content: "# ";
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] h3 {
+  line-height: 1.2;
+}
+
+/* ---------- Buttons and links ---------- */
+
+/* Buttons are bracketed commands. Primary is reverse video; ghost is the
+   same command in plain text with a rule around it. */
+.home-page[data-theme="terminal"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"]) {
+  border-radius: 0;
+  box-shadow: none;
+  transition:
+    background-color 80ms linear,
+    color 80ms linear;
+}
+
+.home-page[data-theme="terminal"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"])::before {
+  content: "[";
+  margin-right: 0.25ch;
+}
+
+.home-page[data-theme="terminal"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"])::after {
+  content: "]";
+  margin-left: 0.25ch;
+}
+
+.home-page[data-theme="terminal"] .btn-primary {
+  border: 1px solid var(--phosphor);
+}
+
+.home-page[data-theme="terminal"] .btn-primary:hover {
+  border-color: var(--bright);
+  transform: none;
+}
+
+.home-page[data-theme="terminal"] .btn-ghost {
+  border: 1px solid var(--rule-strong);
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] :is(.btn-ghost, [data-part="contact-button"]):hover {
+  border-color: var(--phosphor);
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] :is(.text-link, [data-part="work-link"], [data-part="footer-link"], [data-part="work-case-link"]) {
+  color: var(--normal);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="terminal"] :is(.text-link, [data-part="work-link"], [data-part="footer-link"], [data-part="work-case-link"]):hover {
+  background: var(--phosphor);
+  color: var(--accent-ink);
+  text-decoration: none;
+}
+
+/* ---------- Nav: a status line ---------- */
+
+.home-page[data-theme="terminal"] [data-part="nav"] {
+  border-bottom: 3px double var(--rule-strong);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-brand"] {
+  border-radius: 0;
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-logo"] {
+  width: auto;
+  height: auto;
+  padding: 2px 6px;
+  border-radius: 0;
+  background: var(--phosphor);
+  color: var(--accent-ink);
+  font-size: 1rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-name"] {
+  color: var(--bright);
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-name"]::after {
+  content: ":~$";
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-links"] {
+  gap: 1.25rem;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-link"] {
+  padding: 0 2px;
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-link"]::before {
+  content: "[";
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-link"]::after {
+  content: "]";
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-link"]:hover {
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-link"]:hover::before,
+.home-page[data-theme="terminal"] [data-part="nav-link"]:hover::after {
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-lang"] {
+  height: 34px;
+  padding: 2px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-lang-option"] {
+  border-radius: 0;
+  color: var(--dim);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-cta"] {
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--phosphor);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="nav-cta"]:hover {
+  background: var(--bright);
+}
+
+/* ---------- Hero: a session ---------- */
+
+.home-page[data-theme="terminal"] [data-part="hero"] {
+  border-bottom: 3px double var(--rule-strong);
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="terminal"] [data-part="hero-layout"] {
+    grid-template-columns: 1.5fr 0.6fr;
+    align-items: start;
+  }
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-text"] {
+  max-width: 50rem;
+}
+
+/* `$ whoami`, then the intro as its output. */
+.home-page[data-theme="terminal"] [data-part="hero-intro"] {
+  color: var(--normal);
+  font-size: 1rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-intro"]::before {
+  content: "$ whoami";
+  display: block;
+  margin-bottom: 4px;
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-title"] {
+  max-width: 24ch;
+  margin-top: 22px;
+  font-size: clamp(2.125rem, 5.4vw, 3.75rem);
+  line-height: 1.08;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-title-accent"] {
+  color: var(--phosphor);
+}
+
+/* Block cursor after the title: five blinks, then it stays lit. */
+.home-page[data-theme="terminal"] [data-part="hero-title"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.9em;
+  margin-left: 0.15em;
+  vertical-align: -0.08em;
+  background: var(--phosphor);
+  box-shadow: var(--glow);
+  animation: terminal-cursor 1s steps(1, end) 5;
+}
+
+@keyframes terminal-cursor {
+  50% {
+    opacity: 0;
+  }
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-lead"] {
+  max-width: 60ch;
+  color: var(--normal);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-actions"] {
+  gap: 12px 14px;
+}
+
+.home-page[data-theme="terminal"] :is([data-part="hero-cta-primary"], [data-part="hero-cta-secondary"]) {
+  height: 48px;
+  padding: 0 16px;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-meta"] {
+  gap: 4px 28px;
+  color: var(--dim);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-meta-item"] :is(svg, .iconify) {
+  display: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-meta-item"]::before {
+  content: "--";
+  margin-right: 0.5ch;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-id-name"] {
+  color: var(--bright);
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-id-role"] {
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-figure"] {
+  max-width: 320px;
+}
+
+.home-page[data-theme="terminal"] [data-part="photo"][data-variant="avatar"] {
+  border-radius: 0;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-caption"] {
+  margin-top: 12px;
+  color: var(--dim);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-caption-name"] {
+  color: var(--bright);
+  font-size: 1rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="hero-caption-name"]::before {
+  content: "> ";
+  color: var(--dim);
+}
+
+/* Proof strip: one boxed table, dashed rules between cells. */
+.home-page[data-theme="terminal"] [data-part="proof"] {
+  margin-bottom: 44px;
+  border: 3px double var(--rule-strong);
+}
+
+.home-page[data-theme="terminal"] [data-part="proof-item"] {
+  justify-content: flex-end;
+  padding: 16px 18px 18px;
+  border-style: dashed;
+  border-color: var(--rule-strong);
+}
+
+.home-page[data-theme="terminal"] [data-part="proof-value"] {
+  font-size: clamp(1.875rem, 4vw, 2.75rem);
+  line-height: 1.1;
+}
+
+.home-page[data-theme="terminal"] [data-part="proof-label"] {
+  margin-top: 4px;
+  color: var(--normal);
+  font-size: 0.9375rem;
+}
+
+/* ---------- Themes: a radio list ---------- */
+
+.home-page[data-theme="terminal"] [data-part="theme-option"] {
+  border: 1px solid var(--rule);
+  padding: 6px 6px 8px;
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-option"]:hover {
+  border-color: var(--phosphor);
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-option"][aria-pressed="true"] {
+  border-color: var(--phosphor);
+  box-shadow: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-thumb"] {
+  border-radius: 0;
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-check"] {
+  display: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-name"] {
+  color: var(--normal);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-name"]::before {
+  content: "( ) ";
+  color: var(--dim);
+  white-space: pre;
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-option"][aria-pressed="true"] [data-part="theme-name"] {
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="theme-option"][aria-pressed="true"] [data-part="theme-name"]::before {
+  content: "(*) ";
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="themes-current"] {
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-part="themes-current"]::before {
+  content: "> ";
+  color: var(--dim);
+}
+
+/* ---------- Work ---------- */
+
+.home-page[data-theme="terminal"] [data-part="work-filters"] {
+  gap: 4px 14px;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-filter"] {
+  height: 32px;
+  padding: 0 4px;
+  border: 0;
+  color: var(--normal);
+  font-size: 1rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-filter"]::before {
+  content: "( ) ";
+  color: var(--dim);
+  white-space: pre;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-filter"]:hover {
+  color: var(--bright);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-filter"][aria-pressed="true"] {
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-filter"][aria-pressed="true"]::before {
+  content: "(*) ";
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-card"] {
+  border: 3px double var(--rule);
+  transition: border-color 80ms linear;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-card"]:hover {
+  border-color: var(--phosphor);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-media"] {
+  border-bottom: 1px dashed var(--rule-strong);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-card"]:hover [data-part="work-image"] {
+  transform: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-card-title"] {
+  font-size: 1.375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-link"] {
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-desc"] {
+  color: var(--normal);
+  font-size: 0.96875rem;
+  line-height: 1.55;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-role"] {
+  color: var(--dim);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="work-role"]::before {
+  content: "role: ";
+}
+
+.home-page[data-theme="terminal"] [data-part="work-footer"] {
+  border-top: 1px dashed var(--rule);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-case-link"] {
+  color: var(--phosphor);
+}
+
+.home-page[data-theme="terminal"] [data-part="work-card"]:hover [data-part="work-case-arrow"] {
+  transform: none;
+}
+
+/* ---------- Services: three dialogs ---------- */
+
+.home-page[data-theme="terminal"] [data-part="services"] {
+  border-block: 3px double var(--rule-strong);
+  background: var(--surface-2);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-card"] {
+  border: 3px double var(--rule);
+  background: var(--tube);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-card"]:hover {
+  border-color: var(--rule-strong);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-card"][data-featured] {
+  border-color: var(--phosphor);
+  box-shadow: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="service-icon"] {
+  width: auto;
+  height: auto;
+  place-items: start;
+  border-radius: 0;
+  background: none;
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-icon"] :is(svg, .iconify) {
+  display: none;
+}
+
+/* The icon slot becomes the dialog's index line: [1/3], [2/3], [3/3]. */
+.home-page[data-theme="terminal"] [data-part="service-list"] {
+  counter-reset: terminal-service;
+}
+
+.home-page[data-theme="terminal"] [data-part="service-card"] {
+  counter-increment: terminal-service;
+}
+
+.home-page[data-theme="terminal"] [data-part="service-icon"]::before {
+  content: "[" counter(terminal-service) "/3]";
+}
+
+.home-page[data-theme="terminal"] [data-part="service-title"] {
+  font-size: 1.5rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="service-body"] {
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-points"] {
+  color: var(--normal);
+  font-size: 0.96875rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="service-check"] {
+  display: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="service-point"]::before {
+  content: "+";
+  flex: none;
+  color: var(--phosphor);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-footer"] {
+  border-top: 1px dashed var(--rule);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-timeline"] {
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-timeline-value"] {
+  color: var(--bright);
+}
+
+.home-page[data-theme="terminal"] [data-part="service-cta"] {
+  padding: 0 10px;
+}
+
+.home-page[data-theme="terminal"] [data-part="services-price"] {
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-part="services-price"]::before {
+  content: "> ";
+  color: var(--dim);
+}
+
+/* ---------- Process: a numbered log ---------- */
+
+.home-page[data-theme="terminal"] [data-part="step-number"] {
+  width: auto;
+  height: auto;
+  display: inline-block;
+  min-width: 46px;
+  padding: 2px 0;
+  white-space: nowrap;
+  border: 0;
+  border-radius: 0;
+  background: var(--tube);
+  color: var(--phosphor);
+  font-size: 1.25rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="step-number"]::before {
+  content: "[0";
+}
+
+.home-page[data-theme="terminal"] [data-part="step-number"]::after {
+  content: "]";
+}
+
+/* The connector is a run of dashes, like ---- typed between the steps. */
+.home-page[data-theme="terminal"] [data-part="step"]::before {
+  --step-connector: var(--rule-strong);
+  width: 1px;
+  background: repeating-linear-gradient(180deg, var(--rule-strong) 0 4px, transparent 4px 8px);
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="terminal"] [data-part="step"]::before {
+    top: 15px;
+    left: 58px;
+    right: 14px;
+    width: auto;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--rule-strong) 0 8px, transparent 8px 12px);
+  }
+}
+
+.home-page[data-theme="terminal"] [data-part="step-title"] {
+  font-size: 1.25rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="step-body"] {
+  color: var(--normal);
+  font-size: 0.96875rem;
+}
+
+/* ---------- Contact: a framed window, the form as prompts ---------- */
+
+.home-page[data-theme="terminal"] [data-part="contact-lead"] {
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-part="contact-email"] {
+  color: var(--phosphor);
+  font-size: clamp(1.25rem, 3.4vw, 2rem);
+}
+
+.home-page[data-theme="terminal"] [data-part="contact-button"] {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--rule-strong);
+  color: var(--normal);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="contact-facts"] {
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-part="contact-fact-icon"] {
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="form-card"] {
+  border: 3px double var(--rule-strong);
+  background: var(--tube);
+}
+
+.home-page[data-theme="terminal"] [data-part="form-title"] {
+  font-size: 1.375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="form-sub"] {
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="field-label"] {
+  margin-bottom: 4px;
+  color: var(--normal);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="field-label"]::after {
+  content: ":";
+}
+
+.home-page[data-theme="terminal"] legend[data-part="field-label"]::after {
+  content: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="field-optional"] {
+  color: var(--dim);
+}
+
+/* A prompt line: `>` drawn at the left, an underline, a block caret. */
+.home-page[data-theme="terminal"] [data-part="field-input"] {
+  padding: 8px 4px 8px 26px;
+  border: 0;
+  border-bottom: 1px dashed var(--rule-strong);
+  background: transparent
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14'%3E%3Cpath d='M1 1.5 8 7l-7 5.5' fill='none' stroke='%233dff6e' stroke-width='1.6'/%3E%3C/svg%3E")
+    no-repeat 6px 17px / 9px 13px;
+  color: var(--bright);
+  caret-color: var(--phosphor);
+  caret-shape: block;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="terminal"] textarea[data-part="field-input"] {
+  border: 1px dashed var(--rule-strong);
+}
+
+.home-page[data-theme="terminal"] [data-part="field-input"]::placeholder {
+  color: var(--dim);
+  opacity: 1;
+}
+
+.home-page[data-theme="terminal"] [data-part="field-input"]:focus {
+  border-color: var(--phosphor);
+  border-bottom-style: solid;
+  background-color: rgb(61 255 110 / 0.07);
+  box-shadow: 0 2px 0 var(--phosphor);
+}
+
+.home-page[data-theme="terminal"] [data-part="field-input"][aria-invalid="true"] {
+  border-color: var(--danger);
+  border-bottom-style: solid;
+}
+
+.home-page[data-theme="terminal"] [data-part="field-error"] {
+  color: var(--danger);
+}
+
+.home-page[data-theme="terminal"] [data-part="field-error"]::before {
+  content: "! ";
+}
+
+.home-page[data-theme="terminal"] [data-part="option-group"] {
+  gap: 4px 6px;
+}
+
+.home-page[data-theme="terminal"] [data-part="option"] {
+  height: 32px;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  color: var(--normal);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="option"]::before {
+  content: "( ) ";
+  color: var(--dim);
+  white-space: pre;
+}
+
+.home-page[data-theme="terminal"] [data-part="option"]:hover {
+  color: var(--bright);
+}
+
+.home-page[data-theme="terminal"] [data-part="option"][aria-pressed="true"] {
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="option"][aria-pressed="true"]::before {
+  content: "(*) ";
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="option"][data-flash] {
+  animation-name: terminal-option-flash;
+}
+
+@keyframes terminal-option-flash {
+  50% {
+    background: var(--bright);
+  }
+}
+
+.home-page[data-theme="terminal"] [data-part="form-note"] {
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="success-icon"] {
+  width: auto;
+  height: auto;
+  padding: 2px 10px;
+  border-radius: 0;
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="success-icon"] :is(svg, .iconify) {
+  display: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="success-icon"]::before {
+  content: "OK";
+  font-size: 1.25rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="success-text"] {
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-part="success-summary"] {
+  border: 1px dashed var(--rule-strong);
+  border-radius: 0;
+  background: transparent;
+}
+
+/* ---------- Beyond client work: a directory listing ---------- */
+
+.home-page[data-theme="terminal"] [data-part="more-title"] {
+  font-size: 1.5rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="more-item"] {
+  border: 1px solid var(--rule);
+  background: transparent;
+}
+
+.home-page[data-theme="terminal"] a[data-part="more-item"]:hover {
+  border-color: var(--phosphor);
+  background: var(--phosphor);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] a[data-part="more-item"]:hover :is([data-part="more-source"], [data-part="more-name"], [data-part="more-count"], [data-part="more-arrow"]) {
+  color: var(--accent-ink);
+  text-shadow: none;
+}
+
+.home-page[data-theme="terminal"] [data-part="more-source"] {
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] [data-part="more-name"] {
+  color: var(--bright);
+}
+
+.home-page[data-theme="terminal"] [data-part="more-name"]::after {
+  content: "/";
+  color: var(--dim);
+}
+
+.home-page[data-theme="terminal"] a[data-part="more-item"]:hover [data-part="more-name"]::after {
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="terminal"] [data-part="more-count"] {
+  color: var(--bright);
+  font-size: 1.375rem;
+  white-space: nowrap;
+}
+
+.home-page[data-theme="terminal"] a[data-part="more-item"]:hover [data-part="more-arrow"] {
+  transform: none;
+}
+
+/* ---------- Footer and phone bar ---------- */
+
+.home-page[data-theme="terminal"] [data-part="footer"] {
+  border-top: 3px double var(--rule-strong);
+  color: var(--dim);
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="terminal"] [data-part="footer-link"] {
+  color: var(--normal);
+}
+
+.home-page[data-theme="terminal"] [data-footer-source] {
+  text-decoration-color: currentColor;
+}
+
+/* The phone bar is the screen's bottom status line. */
+.home-page[data-theme="terminal"] [data-part="phone-bar"] {
+  border: 3px double var(--phosphor);
+  border-radius: 0;
+  background: var(--tube);
+}
+
+.home-page[data-theme="terminal"] [data-part="phone-bar-note"] {
+  color: var(--normal);
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="terminal"] [data-part="hero-title"]::after {
+    animation: none;
+  }
+
+  .home-page[data-theme="terminal"] * {
+    transition: none !important;
+  }
+}

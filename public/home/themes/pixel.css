@@ -1,0 +1,1015 @@
+/*
+  Pixel theme.
+
+  Direction: an 8-bit arcade / home-console game screen. References: the
+  PICO-8 fantasy console (its fixed 16-colour palette is the only palette
+  used here), NES-era menus and Dragon Quest-style text windows (a black box
+  with a light double frame), and the arcade HUD (small coloured labels over
+  big white score digits).
+
+  Type: Press Start 2P (codeman38, after the 1980s Namco arcade font) for
+  headings, proof numbers and counts only, set in caps at whole multiples of
+  its 8px grid (16, 24, 32, 40px) so the pixels stay sharp. Everything you
+  read at length is Atkinson Hyperlegible Next, a face built for legibility,
+  so the page stays easy to read.
+
+  Palette (PICO-8): black #000 page, dark blue #1d2b53 panels, light grey
+  #c2c3c7 frames and body text, off-white #fff1e8 headings. Yellow #ffec27
+  is the accent: buttons, links and the current choice, nothing else. Pink
+  #ff77a8 marks the HUD labels, green #00e436 the step blocks and checks,
+  blue #29adff the second half of the title.
+
+  Signature moves: stepped pixel corners on every frame (four hard box
+  shadows, no radius, the NES.css technique); the hero photo is re-drawn as
+  8-bit art by an SVG filter (light blur, 6px tiles, 6 levels per channel; see
+  pages/(home)/components/themes/pixel/hero-start.vue); the proof strip is
+  a HUD; the current theme, filter and form option get a game-menu cursor
+  (a right-pointing triangle).
+
+  Scheme: dark only.
+  Every rule is scoped to .home-page[data-theme="pixel"].
+*/
+
+.home-page[data-theme="pixel"] {
+  --p8-black: #000;
+  --p8-navy: #1d2b53;
+  --p8-plum: #7e2553;
+  --p8-grey: #5f574f;
+  --p8-silver: #c2c3c7;
+  --p8-white: #fff1e8;
+  --p8-red: #ff004d;
+  --p8-orange: #ffa300;
+  --p8-yellow: #ffec27;
+  --p8-green: #00e436;
+  --p8-blue: #29adff;
+  --p8-pink: #ff77a8;
+
+  /* One frame colour per element; .pixel frames read it. */
+  --frame: var(--p8-silver);
+
+  --bg: var(--p8-black);
+  --surface: var(--p8-navy);
+  --surface-2: var(--p8-navy);
+  --field-bg: var(--p8-black);
+  --nav-bg: var(--p8-black);
+  --nav-blur: 0px;
+
+  --ink: var(--p8-white);
+  --ink-2: var(--p8-silver);
+  --ink-3: var(--p8-silver);
+  --option-ink: var(--p8-white);
+
+  --line: var(--p8-silver);
+  --line-strong: var(--p8-silver);
+  --border: 0px;
+  --border-control: 4px;
+
+  --accent: var(--p8-yellow);
+  --accent-hover: var(--p8-yellow);
+  --accent-ink: var(--p8-black);
+  --accent-text: var(--p8-yellow);
+  --accent-line: var(--p8-yellow);
+  --accent-soft: var(--p8-black);
+  --accent-soft-ink: var(--p8-yellow);
+  --focus: var(--p8-blue);
+  --selection: var(--p8-plum);
+
+  --success: var(--p8-green);
+  --danger: var(--p8-red);
+
+  --inverse-bg: var(--p8-navy);
+  --inverse-ink: var(--p8-white);
+  --inverse-ink-2: var(--p8-silver);
+  --inverse-ink-3: var(--p8-silver);
+  --inverse-line: var(--p8-silver);
+  --inverse-border: 0 solid transparent;
+  --inverse-accent: var(--p8-green);
+
+  --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font-display: "Press Start 2P", ui-monospace, monospace;
+  --font-mono: "Press Start 2P", ui-monospace, monospace;
+
+  --radius-control: 0;
+  --radius-tile: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-block: 0;
+
+  --shadow-button: none;
+  --shadow-card-hover: none;
+  --shadow-nav: none;
+  --shadow-pop: none;
+  --shadow-bar: none;
+
+  --gap: 32px;
+  --lift: 0px;
+
+  --grid-mode: interactive;
+  --grid-bg: var(--p8-black);
+  --grid-line: rgb(29 43 83 / 0.9);
+  --grid-accent: var(--p8-blue);
+  --grid-cell: 32px;
+
+  --photo-fx: calm;
+  --photo-radius: 0;
+  --photo-bg: var(--p8-navy);
+  --photo-border: 0 solid transparent;
+  --photo-shadow: none;
+  --photo-filter: url(#pixel-photo-lg);
+  --avatar-border: 0 solid transparent;
+  --avatar-shadow: none;
+  --fx-arc: var(--p8-blue);
+  --fx-arc-core: var(--p8-white);
+  --fx-spark: var(--p8-yellow);
+  --fx-flash: var(--p8-white);
+  --fx-tear: var(--p8-pink);
+  --fx-scan: var(--p8-black);
+  --fx-meter-bg: var(--p8-black);
+  --fx-meter-ink: var(--p8-yellow);
+  --fx-meter-glow: transparent;
+
+  color-scheme: dark;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.home-page[data-theme="pixel"] :focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 6px;
+}
+
+/* ---------- Pixel frames ----------
+   Four hard shadows draw a 4px frame with the corner pixels left out. */
+
+.home-page[data-theme="pixel"] :is(
+    .btn-primary,
+    .btn-ghost,
+    [data-part="nav-cta"],
+    [data-part="nav-lang"],
+    [data-part="proof"],
+    [data-part="photo"],
+    [data-part="theme-option"],
+    [data-part="work-filter"],
+    [data-part="work-card"],
+    [data-part="service-card"],
+    [data-part="services-price"],
+    [data-part="contact-panel"],
+    [data-part="contact-button"],
+    [data-part="option"],
+    [data-part="success-summary"],
+    [data-part="more-item"],
+    [data-part="phone-bar"]
+  ) {
+  border: 0;
+  border-radius: 0;
+  box-shadow:
+    0 -4px 0 0 var(--frame),
+    0 4px 0 0 var(--frame),
+    -4px 0 0 0 var(--frame),
+    4px 0 0 0 var(--frame);
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="pixel"] :is(h1, h2, h3, [data-part="proof-value"], [data-part="more-count"], [data-part="step-number"], [data-part="nav-logo"], [data-part="nav-name"]) {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  /* Press Start 2P is monospaced, so its word space is a full cell. */
+  word-spacing: -0.35em;
+  text-transform: uppercase;
+}
+
+.home-page[data-theme="pixel"] .section-title {
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--p8-white);
+  text-shadow: 4px 4px 0 var(--p8-plum);
+}
+
+@media (min-width: 768px) {
+  .home-page[data-theme="pixel"] .section-title {
+    font-size: 32px;
+    line-height: 1.4;
+  }
+}
+
+.home-page[data-theme="pixel"] .section-sub {
+  max-width: 620px;
+  margin-top: 18px;
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="pixel"] h3 {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ---------- Buttons and links ---------- */
+
+.home-page[data-theme="pixel"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"]) {
+  --frame: var(--p8-white);
+  margin: 4px;
+  font-weight: 700;
+  transition: none;
+}
+
+/* NES-style buttons: a shade along the bottom and right edge. */
+.home-page[data-theme="pixel"] :is(.btn-primary, [data-part="nav-cta"]) {
+  background: var(--p8-yellow);
+  color: var(--p8-black);
+  box-shadow:
+    inset -4px -4px 0 0 var(--p8-orange),
+    0 -4px 0 0 var(--frame),
+    0 4px 0 0 var(--frame),
+    -4px 0 0 0 var(--frame),
+    4px 0 0 0 var(--frame);
+}
+
+.home-page[data-theme="pixel"] .btn-ghost {
+  background: var(--p8-navy);
+  color: var(--p8-white);
+  box-shadow:
+    inset -4px -4px 0 0 var(--p8-black),
+    0 -4px 0 0 var(--frame),
+    0 4px 0 0 var(--frame),
+    -4px 0 0 0 var(--frame),
+    4px 0 0 0 var(--frame);
+}
+
+.home-page[data-theme="pixel"] :is(.btn-primary, [data-part="nav-cta"]):hover {
+  background: var(--p8-yellow);
+  color: var(--p8-black);
+  transform: none;
+  box-shadow:
+    inset -4px -4px 0 0 var(--p8-orange),
+    inset 4px 4px 0 0 var(--p8-white),
+    0 -4px 0 0 var(--frame),
+    0 4px 0 0 var(--frame),
+    -4px 0 0 0 var(--frame),
+    4px 0 0 0 var(--frame);
+}
+
+.home-page[data-theme="pixel"] .btn-ghost:hover {
+  --frame: var(--p8-yellow);
+  color: var(--p8-yellow);
+}
+
+/* Pressed: the shade moves to the top left, so the face sinks in. */
+.home-page[data-theme="pixel"] :is(.btn-primary, [data-part="nav-cta"]):active {
+  box-shadow:
+    inset 4px 4px 0 0 var(--p8-orange),
+    0 -4px 0 0 var(--frame),
+    0 4px 0 0 var(--frame),
+    -4px 0 0 0 var(--frame),
+    4px 0 0 0 var(--frame);
+}
+
+.home-page[data-theme="pixel"] .btn-ghost:active {
+  box-shadow:
+    inset 4px 4px 0 0 var(--p8-black),
+    0 -4px 0 0 var(--frame),
+    0 4px 0 0 var(--frame),
+    -4px 0 0 0 var(--frame),
+    4px 0 0 0 var(--frame);
+}
+
+.home-page[data-theme="pixel"] :is(.text-link, [data-part="work-link"], [data-part="work-case-link"], [data-part="footer-link"]) {
+  color: var(--p8-yellow);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] :is(.text-link, [data-part="work-link"], [data-part="work-case-link"], [data-part="footer-link"], [data-part="nav-link"]):hover {
+  background: var(--p8-yellow);
+  color: var(--p8-black);
+  text-decoration: none;
+}
+
+/* ---------- Nav ---------- */
+
+.home-page[data-theme="pixel"] [data-part="nav"] {
+  border-bottom: 4px solid var(--p8-navy);
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-logo"] {
+  border-radius: 0;
+  background: var(--p8-blue);
+  color: var(--p8-black);
+  font-size: 16px;
+  width: 40px;
+  height: 40px;
+  box-shadow: inset -4px -4px 0 0 var(--p8-navy);
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-name"] {
+  font-size: 16px;
+  color: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-links"] {
+  color: var(--p8-silver);
+  font-weight: 700;
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-link"] {
+  padding: 2px 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-lang"] {
+  --frame: var(--p8-grey);
+  height: 36px;
+  margin: 4px;
+  padding: 2px;
+  background: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-lang-option"] {
+  border-radius: 0;
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-lang-option"]:hover {
+  color: var(--p8-yellow);
+}
+
+.home-page[data-theme="pixel"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--p8-yellow);
+  color: var(--p8-black);
+}
+
+/* ---------- Hero ---------- */
+
+.home-page[data-theme="pixel"] [data-part="hero"] {
+  border-bottom: 4px solid var(--p8-navy);
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="pixel"] [data-part="hero-layout"] {
+    grid-template-columns: 1.4fr 0.6fr;
+    align-items: start;
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-text"] {
+  max-width: 50rem;
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-intro"] {
+  color: var(--p8-pink);
+  font-weight: 700;
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-title"] {
+  max-width: none;
+  margin-top: 20px;
+  color: var(--p8-white);
+  font-size: 24px;
+  line-height: 1.5;
+  text-shadow: 4px 4px 0 var(--p8-plum);
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="pixel"] [data-part="hero-title"] {
+    font-size: 32px;
+    line-height: 1.45;
+  }
+}
+
+@media (min-width: 1280px) {
+  .home-page[data-theme="pixel"] [data-part="hero-title"] {
+    font-size: 40px;
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-title-accent"] {
+  color: var(--p8-blue);
+  text-shadow: 4px 4px 0 var(--p8-navy);
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-lead"] {
+  max-width: 620px;
+  margin-top: 26px;
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-actions"] {
+  margin-top: 36px;
+}
+
+/* "Press start": a menu cursor in front of the main action. */
+.home-page[data-theme="pixel"] [data-part="hero-cta-primary"]::before {
+  content: "\25B6" / "";
+  font-size: 0.75em;
+}
+
+.home-page[data-theme="pixel"] :is([data-part="hero-meta"], [data-part="hero-id-role"], [data-part="hero-caption"]) {
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-id-name"] {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-figure"] {
+  max-width: 352px;
+  padding: 4px;
+}
+
+/* The photo: 8-bit art in a pixel frame (the filter lives in the hero-start
+   slot). image-rendering keeps the tiles sharp when the browser scales. */
+.home-page[data-theme="pixel"] [data-part="photo"] {
+  --frame: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="photo-image"] {
+  image-rendering: pixelated;
+}
+
+.home-page[data-theme="pixel"] [data-part="photo"][data-variant="avatar"] {
+  border-radius: 0;
+  margin: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="photo"][data-variant="avatar"] :is([data-part="photo-card"], [data-part="photo-face"]) {
+  border-radius: 0;
+}
+
+.home-page[data-theme="pixel"] [data-part="photo"][data-variant="avatar"] [data-part="photo-image"] {
+  filter: url(#pixel-photo-sm);
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-caption"] {
+  margin-top: 24px;
+}
+
+.home-page[data-theme="pixel"] [data-part="hero-caption-name"] {
+  margin-bottom: 6px;
+  color: var(--p8-white);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+/* Proof strip: an arcade HUD. Label on top (pink, like 1UP / HI-SCORE),
+   the number under it in white. */
+.home-page[data-theme="pixel"] [data-part="proof"] {
+  --frame: var(--p8-white);
+  margin: 4px 4px 48px;
+  border: 0;
+  background: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="proof-item"] {
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px 20px;
+  border: 0;
+}
+
+.home-page[data-theme="pixel"] [data-part="proof-item"] + [data-part="proof-item"] {
+  border-left: 4px dotted var(--p8-navy);
+}
+
+@media (max-width: 767px) {
+  .home-page[data-theme="pixel"] [data-part="proof-item"]:nth-child(3) {
+    border-left: 0;
+  }
+
+  .home-page[data-theme="pixel"] [data-part="proof-item"]:nth-child(n + 3) {
+    border-top: 4px dotted var(--p8-navy);
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="proof-label"] {
+  color: var(--p8-pink);
+  font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.home-page[data-theme="pixel"] [data-part="proof-value"] {
+  color: var(--p8-white);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="pixel"] [data-part="proof-value"] {
+    font-size: 24px;
+  }
+}
+
+/* ---------- Themes ---------- */
+
+.home-page[data-theme="pixel"] [data-part="themes-list"] {
+  padding-top: 8px;
+  padding-bottom: 12px;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="pixel"] [data-part="themes-list"] {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="theme-option"] {
+  --frame: var(--p8-grey);
+  background: var(--p8-navy);
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="theme-option"]:hover {
+  --frame: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="theme-option"][aria-pressed="true"] {
+  --frame: var(--p8-yellow);
+}
+
+.home-page[data-theme="pixel"] [data-part="theme-thumb"] {
+  border-radius: 0;
+  image-rendering: pixelated;
+}
+
+.home-page[data-theme="pixel"] [data-part="theme-check"] {
+  border-radius: 0;
+  background: var(--p8-yellow);
+  color: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="theme-name"] {
+  color: var(--p8-white);
+  font-weight: 700;
+}
+
+.home-page[data-theme="pixel"] :is([data-part="theme-option"][aria-pressed="true"] [data-part="theme-name"], [data-part="work-filter"][aria-pressed="true"], [data-part="option"][aria-pressed="true"]) {
+  color: var(--p8-yellow);
+}
+
+/* Game-menu cursor on the current choice. */
+.home-page[data-theme="pixel"] :is([data-part="theme-option"][aria-pressed="true"] [data-part="theme-name"], [data-part="work-filter"][aria-pressed="true"], [data-part="option"][aria-pressed="true"])::before {
+  content: "\25B6\00a0" / "";
+  font-size: 0.75em;
+  vertical-align: 0.1em;
+}
+
+.home-page[data-theme="pixel"] [data-part="themes-current"] {
+  color: var(--p8-silver);
+}
+
+/* ---------- Work ---------- */
+
+.home-page[data-theme="pixel"] [data-part="work-filters"] {
+  gap: 16px;
+  padding: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-filter"] {
+  --frame: var(--p8-grey);
+  height: 40px;
+  padding: 0 14px;
+  background: var(--p8-black);
+  color: var(--p8-white);
+  font-weight: 700;
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-filter"]:hover {
+  --frame: var(--p8-silver);
+  color: var(--p8-yellow);
+}
+
+.home-page[data-theme="pixel"] [data-part="work-filter"][aria-pressed="true"] {
+  --frame: var(--p8-yellow);
+  background: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="work-list"] {
+  padding: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-card"] {
+  --frame: var(--p8-silver);
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-card"]:hover {
+  --frame: var(--p8-yellow);
+  transform: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-media"] {
+  border-bottom: 4px solid var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="work-card"]:hover [data-part="work-media"] {
+  border-bottom-color: var(--p8-yellow);
+}
+
+.home-page[data-theme="pixel"] [data-part="work-card"]:hover [data-part="work-image"] {
+  transform: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-card-title"] {
+  color: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="work-desc"] {
+  color: var(--p8-silver);
+  font-size: 1rem;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-role"] {
+  color: var(--p8-silver);
+  font-weight: 700;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-footer"] {
+  border-top: 4px dotted var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="work-case-arrow"] {
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="work-card"]:hover [data-part="work-case-arrow"] {
+  transform: none;
+}
+
+/* ---------- Services: a navy stage with a stepped top edge ---------- */
+
+.home-page[data-theme="pixel"] [data-part="services"] {
+  position: relative;
+  border: 0;
+  background: var(--p8-navy);
+}
+
+.home-page[data-theme="pixel"] [data-part="services"]::before,
+.home-page[data-theme="pixel"] [data-part="services"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--p8-navy) 0 16px, transparent 16px 32px);
+}
+
+.home-page[data-theme="pixel"] [data-part="services"]::before {
+  top: -8px;
+}
+
+.home-page[data-theme="pixel"] [data-part="services"]::after {
+  bottom: -8px;
+}
+
+.home-page[data-theme="pixel"] [data-part="service-list"] {
+  padding: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="service-card"] {
+  --frame: var(--p8-silver);
+  background: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="service-card"]:hover {
+  --frame: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="service-card"][data-featured] {
+  --frame: var(--p8-yellow);
+}
+
+.home-page[data-theme="pixel"] [data-part="service-icon"] {
+  border-radius: 0;
+  background: var(--p8-plum);
+  color: var(--p8-white);
+  box-shadow: inset -4px -4px 0 0 #4f1735;
+}
+
+.home-page[data-theme="pixel"] [data-part="service-title"] {
+  color: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="service-body"] {
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="service-check"] {
+  color: var(--p8-green);
+}
+
+.home-page[data-theme="pixel"] [data-part="service-footer"] {
+  border-top: 4px dotted var(--p8-navy);
+}
+
+.home-page[data-theme="pixel"] :is([data-part="service-timeline"], [data-part="service-timeline-value"]) {
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="service-timeline-value"] {
+  color: var(--p8-white);
+  font-weight: 700;
+}
+
+.home-page[data-theme="pixel"] [data-part="services-price"] {
+  --frame: var(--p8-grey);
+  display: inline-block;
+  margin-left: 4px;
+  padding: 10px 16px;
+  background: var(--p8-black);
+  color: var(--p8-white);
+  font-weight: 700;
+}
+
+/* ---------- Process: four stage blocks ---------- */
+
+.home-page[data-theme="pixel"] [data-part="step"] {
+  --step-connector: var(--p8-grey);
+}
+
+.home-page[data-theme="pixel"] [data-part="step-number"] {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 0;
+  background: var(--p8-green);
+  color: var(--p8-black);
+  box-shadow: inset -4px -4px 0 0 #008751;
+  font-size: 16px;
+}
+
+.home-page[data-theme="pixel"] [data-part="step"]::before {
+  top: 56px;
+  left: 22px;
+  width: 4px;
+  background: repeating-linear-gradient(180deg, var(--step-connector) 0 8px, transparent 8px 16px);
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="pixel"] [data-part="step"]::before {
+    top: 22px;
+    left: 56px;
+    right: 8px;
+    width: auto;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, var(--step-connector) 0 8px, transparent 8px 16px);
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="step-title"] {
+  color: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="step-body"] {
+  color: var(--p8-silver);
+}
+
+/* ---------- Contact ---------- */
+
+.home-page[data-theme="pixel"] [data-part="contact"] .mx-auto {
+  padding-top: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="contact-panel"] {
+  --frame: var(--p8-white);
+}
+
+@media (max-width: 639px) {
+  .home-page[data-theme="pixel"] [data-part="contact-panel"] {
+    margin-inline: 0;
+    padding-inline: 18px;
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="contact-email"] {
+  color: var(--p8-white);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .home-page[data-theme="pixel"] [data-part="contact-email"] {
+    font-size: 24px;
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="contact-actions"] {
+  gap: 16px;
+  padding: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="contact-button"] {
+  --frame: var(--p8-silver);
+  background: var(--p8-black);
+  color: var(--p8-white);
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="contact-button"]:hover {
+  --frame: var(--p8-yellow);
+  color: var(--p8-yellow);
+}
+
+/* The form is an RPG text window: black, with a light double frame. */
+.home-page[data-theme="pixel"] [data-part="form-card"] {
+  border: 0;
+  border-radius: 0;
+  background: var(--p8-black);
+  box-shadow:
+    inset 0 0 0 4px var(--p8-black),
+    inset 0 0 0 8px var(--p8-silver),
+    0 -4px 0 0 var(--p8-white),
+    0 4px 0 0 var(--p8-white),
+    -4px 0 0 0 var(--p8-white),
+    4px 0 0 0 var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="form-title"] {
+  color: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] :is([data-part="form-sub"], [data-part="form-note"], [data-part="field-optional"]) {
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="field-label"] {
+  color: var(--p8-white);
+  font-weight: 700;
+}
+
+.home-page[data-theme="pixel"] [data-part="field-input"] {
+  border: 4px solid var(--p8-grey);
+  border-radius: 0;
+  background: var(--p8-black);
+  color: var(--p8-white);
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="field-input"]::placeholder {
+  color: #9d9ea3;
+}
+
+.home-page[data-theme="pixel"] [data-part="field-input"]:focus {
+  border-color: var(--p8-yellow);
+  box-shadow: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="field-input"][aria-invalid="true"] {
+  border-color: var(--p8-red);
+}
+
+.home-page[data-theme="pixel"] [data-part="field-error"] {
+  color: var(--p8-red);
+  font-weight: 700;
+}
+
+.home-page[data-theme="pixel"] [data-part="field-error"]::before {
+  content: "! ";
+}
+
+.home-page[data-theme="pixel"] [data-part="option-group"] {
+  gap: 14px;
+  padding: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="option"] {
+  --frame: var(--p8-grey);
+  background: var(--p8-black);
+  color: var(--p8-white);
+  font-weight: 700;
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="option"]:hover {
+  --frame: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="option"][aria-pressed="true"] {
+  --frame: var(--p8-yellow);
+  background: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="option"][data-flash] {
+  animation: pixel-option-flash 0.6s steps(1, end) 2;
+}
+
+@keyframes pixel-option-flash {
+  50% {
+    background: var(--p8-yellow);
+    color: var(--p8-black);
+  }
+}
+
+.home-page[data-theme="pixel"] [data-part="form-submit"] {
+  width: calc(100% - 8px);
+}
+
+.home-page[data-theme="pixel"] [data-part="success-icon"] {
+  border-radius: 0;
+  background: var(--p8-green);
+  color: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] :is([data-part="success-title"]) {
+  color: var(--p8-white);
+  font-size: 16px;
+}
+
+.home-page[data-theme="pixel"] [data-part="success-text"] {
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="success-summary"] {
+  --frame: var(--p8-grey);
+  background: var(--p8-black);
+}
+
+.home-page[data-theme="pixel"] [data-part="success-summary"] dt {
+  color: var(--p8-silver);
+}
+
+/* ---------- Beyond client work ---------- */
+
+.home-page[data-theme="pixel"] [data-part="more-title"] {
+  font-size: 16px;
+  margin-bottom: 24px;
+  color: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] [data-part="more-list"] {
+  gap: 20px;
+  padding: 4px;
+}
+
+.home-page[data-theme="pixel"] [data-part="more-item"] {
+  --frame: var(--p8-grey);
+  background: var(--p8-navy);
+}
+
+.home-page[data-theme="pixel"] a[data-part="more-item"] {
+  --frame: var(--p8-silver);
+  transition: none;
+}
+
+.home-page[data-theme="pixel"] a[data-part="more-item"]:hover {
+  --frame: var(--p8-yellow);
+}
+
+.home-page[data-theme="pixel"] :is([data-part="more-source"], [data-part="more-arrow"]) {
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-part="more-name"] {
+  color: var(--p8-white);
+}
+
+.home-page[data-theme="pixel"] a[data-part="more-item"]:hover [data-part="more-arrow"] {
+  color: var(--p8-yellow);
+  transform: none;
+}
+
+.home-page[data-theme="pixel"] [data-part="more-count"] {
+  color: var(--p8-white);
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+/* ---------- Footer and phone bar ---------- */
+
+.home-page[data-theme="pixel"] [data-part="footer"] {
+  border-top: 4px solid var(--p8-navy);
+  color: var(--p8-silver);
+}
+
+.home-page[data-theme="pixel"] [data-footer-source] {
+  text-decoration-color: currentColor;
+}
+
+.home-page[data-theme="pixel"] [data-part="phone-bar"] {
+  --frame: var(--p8-white);
+  inset-inline: 16px;
+  bottom: 16px;
+  background: var(--p8-navy);
+}
+
+.home-page[data-theme="pixel"] [data-part="phone-bar-note"] {
+  font-weight: 700;
+}
+
+/* ---------- Motion ----------
+   Hover and press already change colour only, with no transitions. */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="pixel"] [data-part="option"][data-flash] {
+    animation: none;
+  }
+}

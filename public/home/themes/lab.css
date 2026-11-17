@@ -1,0 +1,836 @@
+/*
+  Lab theme: "Future Gadget Lab", a fan wink to Steins;Gate.
+
+  Direction: a cheap rented lab above a shop in Akihabara, at night. Pages of
+  a quad-ruled lab notebook lie on a dark wooden desk, a lab-member ID card
+  sits next to them, and the only light colour in the room is the orange of
+  nixie tubes, the cold-cathode digits of the show's divergence meter. It is
+  a hire page first: the references are physical objects (paper, glass tubes,
+  copper wire, an ID card), never artwork from the show.
+  - Type: Barlow Condensed for headings and Barlow for text, a DIN-like
+    family that reads like the printing on lab equipment and instrument
+    panels. Nixie digits are Quicksand Light: uniform thin strokes and round
+    counters are the closest free match to IN-14 tube numerals. Caveat only
+    for the handwritten sign-off in the footer.
+  - Palette: desk #15110d with cream ink, notebook paper #f1e8d4 with
+    blue-black pen ink and faint blue quad ruling, and nixie orange. Orange
+    is the accent: it fills what you can press and marks the current choice;
+    on paper it darkens to #9e3f08 so it still reads as text. The glow is
+    kept to text-shadow on the tube digits (two layers, no blur halos on
+    boxes), so it looks like neon behind glass, not a UI glow.
+  - Signature moves: the proof strip and the step numbers are nixie tubes
+    (dark glass, a fine anode mesh, an orange digit) joined by copper wire;
+    the hero photo is framed as a lab-member ID card with a lanyard slot;
+    the contact form is a "D-Mail" with a header band; work cards are
+    notebook pages with the screenshot taped in; work filters are index tabs.
+  - Photo: --photo-fx calm (the teaser and the 1.048596 meter run once, no
+    idle loop), arcs and meter in nixie orange, the meter set in the tube
+    face.
+  - Not used on purpose: a big divergence-meter graphic, gears, glow orbs.
+
+  Scheme: dark only (data/home-themes.ts), so there are no .dark rules here.
+  Paper surfaces (cards, the ID card, the form) set their own ink, line and
+  accent-text values, so the contract rules underneath pick up dark ink on
+  paper and cream ink on the desk. Every rule is scoped to
+  .home-page[data-theme="lab"].
+*/
+
+.home-page[data-theme="lab"] {
+  --desk: #15110d;
+  --desk-2: #1c1711;
+  --cream: #efe4cc;
+  --cream-2: #d2c5a8;
+  --cream-3: #ab9d82;
+  --paper: #f1e8d4;
+  --pen: #1d2433;
+  --pen-2: #363c4a;
+  --pen-3: #555a66;
+  --nixie: #ff8a3d;
+  --nixie-core: #ffc08a;
+  --nixie-text: #9e3f08;
+  --copper: #b8743a;
+  --rule-blue: rgb(52 82 140 / 0.13);
+  --glass:
+    repeating-linear-gradient(60deg, rgb(255 236 210 / 0.035) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(-60deg, rgb(255 236 210 / 0.035) 0 1px, transparent 1px 7px),
+    radial-gradient(120% 70% at 50% 0%, rgb(255 170 110 / 0.09), transparent 70%),
+    linear-gradient(180deg, #1d1611, #0d0a07);
+  --nixie-glow: 0 0 1px #ff6a10, 0 0 8px rgb(255 98 16 / 0.55);
+  --quad-paper:
+    linear-gradient(var(--rule-blue) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(90deg, var(--rule-blue) 1px, transparent 1px) 0 0 / 18px 18px,
+    var(--paper);
+
+  --bg: var(--desk);
+  --surface: var(--desk-2);
+  --surface-2: var(--desk);
+  --field-bg: rgb(255 255 255 / 0.55);
+  --nav-bg: rgb(21 17 13 / 0.92);
+  --nav-blur: 8px;
+
+  --ink: var(--cream);
+  --ink-2: var(--cream-2);
+  --ink-3: var(--cream-3);
+  --option-ink: var(--pen);
+
+  --line: rgb(239 228 204 / 0.14);
+  --line-strong: rgb(239 228 204 / 0.4);
+  --border: 1px;
+  --border-control: 1.5px;
+
+  --accent: var(--nixie);
+  --accent-hover: #ffa05f;
+  --accent-ink: #1a0d04;
+  --accent-text: var(--nixie);
+  --accent-line: var(--nixie);
+  --accent-soft: var(--nixie);
+  --accent-soft-ink: #1a0d04;
+  --focus: #ffc08a;
+  --selection: rgb(255 138 61 / 0.35);
+
+  --success: #2f6b3a;
+  --danger: #ff8a7a;
+
+  --inverse-bg: #0e0b08;
+  --inverse-ink: var(--cream);
+  --inverse-ink-2: var(--cream-2);
+  --inverse-ink-3: var(--cream-3);
+  --inverse-line: rgb(239 228 204 / 0.4);
+  --inverse-border: 1px solid rgb(239 228 204 / 0.12);
+  --inverse-accent: var(--nixie);
+
+  --font-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --font-mono: "Quicksand", "Barlow", sans-serif;
+
+  --radius-control: 4px;
+  --radius-tile: 4px;
+  --radius-card: 3px;
+  --radius-panel: 3px;
+  --radius-block: 10px;
+
+  --shadow-button: 0 1px 0 rgb(0 0 0 / 0.4);
+  --shadow-card-hover: 0 22px 40px -20px rgb(0 0 0 / 0.9);
+  --shadow-nav: 0 10px 24px -18px rgb(0 0 0 / 0.9);
+  --shadow-pop: 0 26px 50px -24px rgb(0 0 0 / 0.9);
+  --shadow-bar: 0 14px 30px -10px rgb(0 0 0 / 0.8);
+
+  --gap: 24px;
+  --lift: -3px;
+
+  /* The hero grid becomes the faint grid of a cutting mat on the desk. */
+  --grid-mode: static;
+  --grid-bg: var(--desk);
+  --grid-line: rgb(239 228 204 / 0.045);
+  --grid-accent: var(--nixie);
+  --grid-cell: 32px;
+
+  --photo-fx: calm;
+  --photo-radius: 3px;
+  --photo-bg: #d9cfba;
+  --photo-border: 1px solid rgb(29 36 51 / 0.35);
+  --photo-shadow: none;
+  --photo-filter: sepia(0.12) contrast(1.03);
+  --avatar-border: 3px solid var(--paper);
+  --avatar-shadow: 0 8px 18px -8px rgb(0 0 0 / 0.8);
+  --fx-arc: #ff7b2e;
+  --fx-arc-core: #fff1e0;
+  --fx-spark: #ffb36b;
+  --fx-flash: #ffd9b0;
+  --fx-tear: #ffe6cc;
+  --fx-scan: #0d0906;
+  --fx-meter-bg: rgb(14 10 7 / 0.92);
+  --fx-meter-ink: var(--nixie-core);
+  --fx-meter-glow: #ff6a10;
+
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* Paper: dark ink, blue ruling, darker orange for text. */
+.home-page[data-theme="lab"] :is(
+    [data-part="work-card"],
+    [data-part="service-card"],
+    [data-part="form-card"],
+    [data-part="more-item"],
+    [data-part="theme-option"],
+    [data-part="hero-figure"]
+  ) {
+  --ink: var(--pen);
+  --ink-2: var(--pen-2);
+  --ink-3: var(--pen-3);
+  --line: rgb(29 36 51 / 0.18);
+  --line-strong: rgb(29 36 51 / 0.55);
+  --accent-text: var(--nixie-text);
+  --accent-line: var(--nixie-text);
+  --focus: var(--pen);
+  --surface: var(--paper);
+  --surface-2: var(--paper);
+  color: var(--pen);
+}
+
+.home-page[data-theme="lab"] :focus-visible {
+  outline-width: 2px;
+  outline-style: solid;
+  outline-offset: 3px;
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="lab"] :is(h1, h2, h3, [data-part="contact-email"], [data-part="more-count"]) {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.home-page[data-theme="lab"] .section-title {
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  line-height: 1;
+}
+
+.home-page[data-theme="lab"] .section-sub {
+  max-width: 600px;
+  font-size: 1.0625rem;
+}
+
+/* ---------- Buttons and links ---------- */
+
+.home-page[data-theme="lab"] .btn-primary {
+  border: 1px solid #c95f1c;
+  font-weight: 600;
+}
+
+.home-page[data-theme="lab"] .btn-primary:hover {
+  transform: none;
+}
+
+.home-page[data-theme="lab"] .btn-ghost {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.home-page[data-theme="lab"] .btn-ghost:hover {
+  border-color: var(--accent-line);
+  color: var(--accent-text);
+}
+
+.home-page[data-theme="lab"] :is(.text-link, [data-part="work-link"], [data-part="footer-link"]) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Nav ---------- */
+
+.home-page[data-theme="lab"] [data-part="nav-logo"] {
+  width: 30px;
+  height: 36px;
+  border: 1px solid rgb(255 236 210 / 0.16);
+  border-radius: 12px 12px 4px 4px;
+  background: var(--glass);
+  color: var(--nixie-core);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 0.875rem;
+  text-shadow: var(--nixie-glow);
+}
+
+.home-page[data-theme="lab"] [data-part="nav-name"] {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3125rem;
+  letter-spacing: 0;
+}
+
+.home-page[data-theme="lab"] [data-part="nav-links"] {
+  color: var(--cream-2);
+  font-weight: 500;
+}
+
+.home-page[data-theme="lab"] [data-part="nav-link"]:hover {
+  color: var(--nixie);
+}
+
+.home-page[data-theme="lab"] [data-part="nav-lang"] {
+  border-color: rgb(239 228 204 / 0.25);
+}
+
+.home-page[data-theme="lab"] [data-part="nav-lang-option"] {
+  border-radius: 3px;
+  color: var(--cream-3);
+}
+
+.home-page[data-theme="lab"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--cream);
+  color: var(--desk);
+}
+
+.home-page[data-theme="lab"] [data-part="nav-cta"] {
+  font-weight: 600;
+}
+
+/* ---------- Hero ---------- */
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="lab"] [data-part="hero-layout"] {
+    grid-template-columns: 1.35fr 0.65fr;
+  }
+}
+
+.home-page[data-theme="lab"] [data-part="hero-intro"] {
+  color: var(--cream-2);
+  font-weight: 500;
+}
+
+.home-page[data-theme="lab"] [data-part="hero-title"] {
+  max-width: 15em;
+  font-size: clamp(2.625rem, 5.6vw, 4.5rem);
+  line-height: 0.98;
+}
+
+/* The second half reads like a note added in the margin: italic, a tone
+   lower. Orange stays for what you can press. */
+.home-page[data-theme="lab"] [data-part="hero-title-accent"] {
+  color: var(--cream-2);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.home-page[data-theme="lab"] [data-part="hero-lead"] {
+  color: var(--cream-2);
+}
+
+.home-page[data-theme="lab"] [data-part="hero-meta"] {
+  color: var(--cream-3);
+}
+
+.home-page[data-theme="lab"] [data-part="hero-id-name"] {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+/* The portrait as a lab-member ID card: a lanyard slot, a header band, the
+   photo and the holder's name, printed on card stock. */
+.home-page[data-theme="lab"] [data-part="hero-figure"] {
+  position: relative;
+  max-width: 330px;
+  padding: 68px 16px 18px;
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    0 26px 44px -22px rgb(0 0 0 / 0.95);
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="lab"] [data-part="hero-figure"] {
+    transform: rotate(1.5deg);
+  }
+}
+
+.home-page[data-theme="lab"] [data-part="hero-figure"]::before {
+  content: "Future Gadget Lab  ·  Lab Mem";
+  position: absolute;
+  top: 28px;
+  left: 0;
+  right: 0;
+  padding: 6px 16px;
+  background: var(--pen);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  white-space: pre;
+}
+
+.home-page[data-theme="lab"] [data-part="hero-figure"]::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 46px;
+  height: 9px;
+  margin-left: -23px;
+  border-radius: 5px;
+  background: var(--desk);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.5);
+}
+
+.home-page[data-theme="lab"] [data-part="hero-caption"] {
+  margin-top: 14px;
+  color: var(--pen-2);
+  font-size: 0.875rem;
+}
+
+.home-page[data-theme="lab"] [data-part="hero-caption-name"] {
+  color: var(--pen);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.375rem;
+  line-height: 1.1;
+}
+
+.home-page[data-theme="lab"] [data-part="photo"][data-variant="avatar"] {
+  border-radius: 6px;
+}
+
+.home-page[data-theme="lab"] [data-part="photo-meter"] {
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 1.375rem;
+  letter-spacing: 0.08em;
+}
+
+/* Proof strip: four nixie tubes with their labels on a brass plate. */
+.home-page[data-theme="lab"] [data-part="proof"] {
+  gap: 14px;
+  margin-bottom: 48px;
+  border-top: 0;
+}
+
+.home-page[data-theme="lab"] [data-part="proof-item"] {
+  justify-content: flex-end;
+  padding: 18px 18px 16px;
+  border: 1px solid rgb(255 236 210 / 0.14);
+  border-radius: 22px 22px 6px 6px;
+  background: var(--glass);
+  box-shadow: inset 0 1px 0 rgb(255 236 210 / 0.08);
+}
+
+.home-page[data-theme="lab"] [data-part="proof-value"] {
+  color: var(--nixie-core);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: clamp(2.25rem, 4.6vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-shadow: var(--nixie-glow);
+}
+
+.home-page[data-theme="lab"] [data-part="proof-label"] {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgb(184 116 58 / 0.45);
+  color: var(--cream-2);
+  font-size: 0.875rem;
+}
+
+/* ---------- Themes: index cards ---------- */
+
+.home-page[data-theme="lab"] [data-part="theme-option"] {
+  border-color: transparent;
+  background: var(--paper);
+}
+
+.home-page[data-theme="lab"] [data-part="theme-option"]:hover {
+  border-color: var(--nixie);
+}
+
+.home-page[data-theme="lab"] [data-part="theme-option"][aria-pressed="true"] {
+  border-color: var(--nixie);
+  box-shadow: 0 0 0 2px var(--nixie);
+}
+
+.home-page[data-theme="lab"] [data-part="theme-thumb"] {
+  border-radius: 2px;
+}
+
+.home-page[data-theme="lab"] [data-part="theme-name"] {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="lab"] [data-part="themes-current"] {
+  color: var(--cream-2);
+}
+
+/* ---------- Work: notebook pages ---------- */
+
+/* Filters as index tabs along the top of a notebook. */
+.home-page[data-theme="lab"] [data-part="work-filters"] {
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.home-page[data-theme="lab"] [data-part="work-filter"] {
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px 8px 0 0;
+  background: var(--desk-2);
+  box-shadow: inset 0 -2px 0 rgb(239 228 204 / 0.18);
+  color: var(--cream-2);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+}
+
+.home-page[data-theme="lab"] [data-part="work-filter"]:hover {
+  color: var(--cream);
+}
+
+.home-page[data-theme="lab"] [data-part="work-filter"][aria-pressed="true"] {
+  background: var(--nixie);
+  box-shadow: none;
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="lab"] [data-part="work-card"] {
+  position: relative;
+  overflow: visible;
+  border: 0;
+  background: var(--quad-paper);
+  box-shadow: 0 16px 30px -20px rgb(0 0 0 / 0.95);
+}
+
+.home-page[data-theme="lab"] [data-part="work-card"]:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* The screenshot is taped in. */
+.home-page[data-theme="lab"] [data-part="work-media"] {
+  margin: 16px 16px 0;
+  border: 1px solid rgb(29 36 51 / 0.2);
+}
+
+.home-page[data-theme="lab"] [data-part="work-card"]::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  left: 50%;
+  width: 86px;
+  height: 22px;
+  margin-left: -43px;
+  background: rgb(236 224 190 / 0.72);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+  transform: rotate(-2deg);
+}
+
+.home-page[data-theme="lab"] [data-part="work-card"]:hover [data-part="work-image"] {
+  transform: none;
+}
+
+.home-page[data-theme="lab"] [data-part="work-body"] {
+  padding: 16px 18px 20px;
+}
+
+.home-page[data-theme="lab"] [data-part="work-card-title"] {
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.home-page[data-theme="lab"] [data-part="work-link"] {
+  color: var(--pen-3);
+}
+
+.home-page[data-theme="lab"] [data-part="work-link"]:hover {
+  color: var(--nixie-text);
+}
+
+.home-page[data-theme="lab"] [data-part="work-desc"] {
+  color: var(--pen-2);
+}
+
+.home-page[data-theme="lab"] [data-part="work-role"] {
+  color: var(--pen-3);
+  font-style: italic;
+}
+
+.home-page[data-theme="lab"] [data-part="work-footer"] {
+  border-top: 1px dashed rgb(29 36 51 / 0.3);
+}
+
+.home-page[data-theme="lab"] [data-part="work-case-link"] {
+  color: var(--nixie-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.home-page[data-theme="lab"] [data-part="work-see-all"] {
+  color: var(--cream-2);
+}
+
+.home-page[data-theme="lab"] [data-part="work-see-all"]:hover {
+  color: var(--nixie);
+}
+
+/* ---------- Services ---------- */
+
+.home-page[data-theme="lab"] [data-part="services"] {
+  border-color: rgb(239 228 204 / 0.08);
+  background: var(--desk-2);
+}
+
+.home-page[data-theme="lab"] [data-part="service-card"] {
+  border: 0;
+  background: var(--quad-paper);
+  box-shadow: 0 16px 30px -20px rgb(0 0 0 / 0.95);
+}
+
+.home-page[data-theme="lab"] [data-part="service-card"][data-featured] {
+  box-shadow:
+    0 0 0 2px var(--nixie),
+    0 16px 30px -20px rgb(0 0 0 / 0.95);
+}
+
+/* The icon as an ink stamp. */
+.home-page[data-theme="lab"] [data-part="service-icon"] {
+  border: 2px solid var(--pen);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pen);
+}
+
+.home-page[data-theme="lab"] [data-part="service-title"] {
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="lab"] [data-part="service-check"] {
+  color: var(--pen);
+}
+
+.home-page[data-theme="lab"] [data-part="service-footer"] {
+  border-top: 1px dashed rgb(29 36 51 / 0.3);
+}
+
+.home-page[data-theme="lab"] [data-part="service-timeline-value"] {
+  font-weight: 600;
+}
+
+.home-page[data-theme="lab"] [data-part="service-cta"].btn-ghost {
+  border-color: var(--pen);
+  color: var(--pen);
+}
+
+.home-page[data-theme="lab"] [data-part="service-cta"].btn-ghost:hover {
+  border-color: var(--nixie-text);
+  color: var(--nixie-text);
+}
+
+.home-page[data-theme="lab"] [data-part="services-price"] {
+  color: var(--cream-2);
+}
+
+/* ---------- Process: nixie tubes on a copper wire ---------- */
+
+.home-page[data-theme="lab"] [data-part="step-number"] {
+  width: 44px;
+  height: 62px;
+  border: 1px solid rgb(255 236 210 / 0.16);
+  border-radius: 20px 20px 6px 6px;
+  background: var(--glass);
+  color: var(--nixie-core);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  font-size: 2.125rem;
+  line-height: 1;
+  text-shadow: var(--nixie-glow);
+}
+
+.home-page[data-theme="lab"] [data-part="step"]::before {
+  top: 66px;
+  left: 21px;
+  width: 2px;
+  background: var(--copper);
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="lab"] [data-part="step"]::before {
+    top: 44px;
+    left: 44px;
+    right: 0;
+    width: auto;
+    height: 2px;
+    background: var(--copper);
+  }
+}
+
+.home-page[data-theme="lab"] [data-part="step-title"] {
+  font-size: 1.375rem;
+}
+
+.home-page[data-theme="lab"] [data-part="step-body"] {
+  color: var(--cream-2);
+}
+
+/* ---------- Contact: the D-Mail ---------- */
+
+.home-page[data-theme="lab"] [data-part="contact-email"] {
+  color: var(--cream);
+  font-size: clamp(1.625rem, 3.6vw, 2.375rem);
+}
+
+.home-page[data-theme="lab"] [data-part="contact-button"] {
+  border-color: rgb(239 228 204 / 0.35);
+  border-radius: 4px;
+}
+
+.home-page[data-theme="lab"] [data-part="contact-button"]:hover {
+  border-color: var(--nixie);
+  color: var(--nixie);
+}
+
+.home-page[data-theme="lab"] [data-part="form-card"] {
+  position: relative;
+  padding-top: 70px;
+  background: var(--quad-paper);
+}
+
+.home-page[data-theme="lab"] [data-part="form-card"]::before {
+  content: "D-Mail  \2192  Dimar Hanung";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 22px;
+  border-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: var(--pen);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  white-space: pre;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="lab"] [data-part="form-card"]::before {
+    padding-inline: 30px;
+  }
+}
+
+.home-page[data-theme="lab"] [data-part="form-title"] {
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.home-page[data-theme="lab"] [data-part="field-input"] {
+  border-color: rgb(29 36 51 / 0.3);
+  color: var(--pen);
+}
+
+.home-page[data-theme="lab"] [data-part="field-input"]::placeholder {
+  color: #6b6f78;
+}
+
+.home-page[data-theme="lab"] [data-part="field-input"]:focus {
+  border-color: var(--pen);
+  box-shadow: 0 0 0 3px rgb(255 138 61 / 0.45);
+}
+
+.home-page[data-theme="lab"] [data-part="field-input"][aria-invalid="true"] {
+  border-color: #b3261e;
+}
+
+.home-page[data-theme="lab"] [data-part="field-error"] {
+  color: #a3241b;
+  font-weight: 500;
+}
+
+.home-page[data-theme="lab"] [data-part="option"] {
+  border-color: rgb(29 36 51 / 0.45);
+  background: rgb(255 255 255 / 0.55);
+}
+
+.home-page[data-theme="lab"] [data-part="option"]:hover {
+  border-color: var(--pen);
+}
+
+.home-page[data-theme="lab"] [data-part="option"][aria-pressed="true"] {
+  border-color: #c95f1c;
+  background: var(--nixie);
+  color: var(--accent-ink);
+}
+
+.home-page[data-theme="lab"] [data-part="option"][data-flash] {
+  animation-name: lab-option-flash;
+}
+
+@keyframes lab-option-flash {
+  50% {
+    box-shadow: 0 0 0 5px rgb(255 138 61 / 0.4);
+  }
+}
+
+.home-page[data-theme="lab"] [data-part="success-icon"] {
+  background: rgb(47 107 58 / 0.14);
+}
+
+.home-page[data-theme="lab"] [data-part="success-summary"] {
+  border: 1px solid rgb(29 36 51 / 0.18);
+  border-radius: 3px;
+  background: rgb(255 255 255 / 0.5);
+}
+
+/* ---------- Beyond client work ---------- */
+
+.home-page[data-theme="lab"] [data-part="more-title"] {
+  font-size: 1.875rem;
+}
+
+.home-page[data-theme="lab"] [data-part="more-item"] {
+  border: 0;
+  background: var(--paper);
+  box-shadow: 0 12px 24px -18px rgb(0 0 0 / 0.95);
+}
+
+.home-page[data-theme="lab"] a[data-part="more-item"]:hover {
+  box-shadow:
+    0 0 0 2px var(--nixie),
+    0 12px 24px -18px rgb(0 0 0 / 0.95);
+}
+
+.home-page[data-theme="lab"] [data-part="more-name"] {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.home-page[data-theme="lab"] [data-part="more-count"] {
+  font-size: 1.625rem;
+  white-space: nowrap;
+}
+
+/* ---------- Footer, sign-off and phone bar ---------- */
+
+.home-page[data-theme="lab"] [data-part="footer"] {
+  color: var(--cream-3);
+}
+
+.home-page[data-theme="lab"] [data-part="footer-link"] {
+  color: var(--cream-2);
+}
+
+.home-page[data-theme="lab"] [data-part="footer-link"]:hover {
+  color: var(--nixie);
+}
+
+.home-page[data-theme="lab"] [data-footer-source] {
+  text-decoration-color: currentColor;
+}
+
+/* The sign-off (page-end slot) sits under the footer, so the footer's own
+   room for the phone bar moves below it. */
+@media (max-width: 639.98px) {
+  .home-page[data-theme="lab"] [data-part="footer"] {
+    padding-bottom: 8px;
+  }
+}
+
+.home-page[data-theme="lab"] [data-part="phone-bar"] {
+  border: 1px solid rgb(239 228 204 / 0.14);
+  border-radius: 8px;
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="lab"] * {
+    transition: none !important;
+  }
+}
