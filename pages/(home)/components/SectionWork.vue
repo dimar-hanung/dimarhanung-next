@@ -97,7 +97,7 @@ const { locale, t } = useHomeI18n();
 type HomeProject = Project & { home: NonNullable<Project["home"]> };
 type Filter = "all" | WorkCategory;
 
-const filters: Filter[] = ["all", "fullstack", "frontend", "ai"];
+const filters: Filter[] = ["all", "fullstack", "frontend", "backend", "ai"];
 const activeFilter = ref<Filter>("all");
 
 const homeProjects = projects

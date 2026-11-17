@@ -19,7 +19,7 @@ const en = {
   seo: {
     title: "Dimar Hanung | Freelance Software Engineer",
     description:
-      "I build web apps fast with AI, and they hold up in production. 6+ years of experience, including the portals Universitas Terbuka students use every day.",
+      "I build web apps fast with AI, and they hold up in production. 6+ years of experience, from first idea to a stable release.",
     ogLocale: "en_US",
   },
   nav: {
@@ -38,7 +38,7 @@ const en = {
     role: "Software Engineer, 6+ years",
     titleStart: "I ship web apps fast with AI,",
     titleAccent: "and they hold up in production.",
-    lead: "I built the portals Universitas Terbuka students use every day: My UT, admissions and the student record system. I can do the same for your product, from first idea to a stable release.",
+    lead: "From first idea to a stable release: frontend, backend, database and deployment, handled by one person who stays reachable after launch.",
     discuss: "Discuss your project",
     seeWork: "See my work",
     downloadCv: "Download CV",
@@ -62,6 +62,7 @@ const en = {
       all: "All",
       fullstack: "Full-stack",
       frontend: "Front-end",
+      backend: "Back-end",
       ai: "AI",
     },
     filterLabel: "Filter projects",
