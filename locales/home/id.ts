@@ -100,7 +100,13 @@ const id: HomeMessages = {
       swiss: {},
 
       // ---- theme: newspaper ----
-      newspaper: {},
+      newspaper: {
+        edition: "Edisi freelance",
+        motto: "Hanya kerja yang layak rilis",
+        volume: "Tahun VI",
+        place: "Tangerang Selatan, Indonesia",
+        dateLocale: "id-ID",
+      },
 
       // ---- theme: retro-os ----
       "retro-os": {},

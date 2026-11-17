@@ -113,7 +113,15 @@ const en = {
       swiss: {},
 
       // ---- theme: newspaper ----
-      newspaper: {},
+      newspaper: {
+        // Nameplate ears and folio line (components/themes/newspaper/hero-start.vue).
+        // "Vol. VI": six years of shipping, as a newspaper counts its years.
+        edition: "Freelance edition",
+        motto: "All the work that's fit to ship",
+        volume: "Vol. VI",
+        place: "Tangerang Selatan, Indonesia",
+        dateLocale: "en-GB",
+      },
 
       // ---- theme: retro-os ----
       "retro-os": {},

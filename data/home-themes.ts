@@ -85,7 +85,16 @@ export const HOME_THEMES: Record<HomeThemeId, HomeTheme> = {
   cartoon: stub("cartoon"),
 
   // ---- theme: ancient (edit only inside this block) ----
-  ancient: stub("ancient"),
+  ancient: {
+    id: "ancient",
+    css: "/home/themes/ancient.css",
+    fonts: [
+      "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Grenze+Gotisch:wght@700&family=Uncial+Antiqua&display=swap",
+    ],
+    fontFaces: ['700 1em "Grenze Gotisch"', '400 1em "EB Garamond"', 'italic 400 1em "EB Garamond"', '400 1em "Uncial Antiqua"'],
+    scheme: "light",
+    thumbnail: "/home/themes/ancient.webp",
+  },
 
   // ---- theme: terminal (edit only inside this block) ----
   // IBM 3270 is self-hosted (@font-face in terminal.css), so no font sheet.
@@ -99,10 +108,27 @@ export const HOME_THEMES: Record<HomeThemeId, HomeTheme> = {
   },
 
   // ---- theme: swiss (edit only inside this block) ----
-  swiss: stub("swiss"),
+  swiss: {
+    id: "swiss",
+    css: "/home/themes/swiss.css",
+    // Switzer is self-hosted (public/home/themes/fonts/swiss/), declared in swiss.css.
+    fonts: [],
+    fontFaces: ['400 1em "Switzer"', '700 1em "Switzer"'],
+    scheme: "light",
+    thumbnail: "/home/themes/swiss.webp",
+  },
 
   // ---- theme: newspaper (edit only inside this block) ----
-  newspaper: stub("newspaper"),
+  newspaper: {
+    id: "newspaper",
+    css: "/home/themes/newspaper.css",
+    fonts: [
+      "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,700;0,6..72,800;1,6..72,400&family=UnifrakturMaguntia&display=swap",
+    ],
+    fontFaces: ['400 1em "UnifrakturMaguntia"', '800 1em "Newsreader"', '400 1em "Newsreader"', '400 1em "Libre Franklin"'],
+    scheme: "light",
+    thumbnail: "/home/themes/newspaper.webp",
+  },
 
   // ---- theme: retro-os (edit only inside this block) ----
   "retro-os": stub("retro-os"),
