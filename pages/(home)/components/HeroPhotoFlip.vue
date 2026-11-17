@@ -4,10 +4,11 @@
     type="button"
     :aria-label="t.hero.photoToggle"
     :aria-pressed="revealed"
+    data-part="photo"
+    :data-variant="variant"
     :class="[
       'photo-flip relative block shrink-0 cursor-pointer select-none',
-      'focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-muted-100 focus-visible:outline-none dark:focus-visible:ring-offset-muted-900',
-      variant === 'portrait' ? 'is-portrait aspect-[4/5] w-full rounded-[20px]' : 'is-avatar h-16 w-16 rounded-full',
+      variant === 'portrait' ? 'is-portrait aspect-[4/5] w-full' : 'is-avatar h-16 w-16',
     ]"
     @click="toggle"
     @pointerenter="onPointerEnter"
@@ -15,14 +16,13 @@
   >
     <span
       ref="cardEl"
-      :class="[
-        'photo-flip-card',
-        variant === 'avatar' && 'shadow-[0_12px_28px_-12px_rgb(15_23_42/0.55)]',
-      ]"
+      data-part="photo-card"
+      class="photo-flip-card"
       :style="{ transform: revealed ? 'rotateY(180deg)' : 'rotateY(0deg)' }"
     >
-      <span :class="['photo-flip-face', faceClass]">
+      <span data-part="photo-face" data-face="front" class="photo-flip-face">
         <img
+          data-part="photo-image"
           :src="KYOUMA_IMAGE"
           alt=""
           draggable="false"
@@ -71,8 +71,9 @@
           <span class="idle-tear" :style="{ top: `${idle.tearY}%` }" />
         </span>
       </span>
-      <span :class="['photo-flip-face is-back', faceClass, revealed && 'is-shown']">
+      <span data-part="photo-face" data-face="back" :class="['photo-flip-face is-back', revealed && 'is-shown']">
         <img
+          data-part="photo-image"
           :src="photoSrc"
           alt=""
           draggable="false"
@@ -129,7 +130,12 @@
     </svg>
 
     <!-- Divergence meter: a short nod to the source, portrait only -->
-    <span v-if="meterText" :class="['photo-flip-meter', meterFading && 'is-fading']" aria-hidden="true">
+    <span
+      v-if="meterText"
+      data-part="photo-meter"
+      :class="['photo-flip-meter', meterFading && 'is-fading']"
+      aria-hidden="true"
+    >
       {{ meterText }}
     </span>
   </button>
@@ -171,11 +177,6 @@ const photoSrc = computed(() =>
     : img(PROFILE_PHOTO, { width: 128, height: 128, fit: "cover", format: "webp" }),
 );
 
-const faceClass = computed(() =>
-  props.variant === "portrait"
-    ? "bg-muted-200 dark:bg-muted-700"
-    : "border-[3px] border-white bg-muted-200 dark:border-muted-700",
-);
 const imagePosition = computed(() =>
   props.variant === "portrait" ? "object-[50%_35%]" : "object-[50%_30%]",
 );
@@ -184,6 +185,16 @@ const buttonEl = ref<HTMLButtonElement | null>(null);
 const cardEl = ref<HTMLElement | null>(null);
 
 const filterId = `photo-flip-${useId()}`;
+
+// How much effect the theme allows (--photo-fx in the theme contract):
+// full = teaser, idle glitch and arcs; calm = no idle glitch; off = a plain
+// flip with no effects. Read when an effect is about to play, so a theme
+// switch takes effect at once.
+function fxLevel(): "full" | "calm" | "off" {
+  if (!buttonEl.value) return "full";
+  const value = getComputedStyle(buttonEl.value).getPropertyValue("--photo-fx").trim();
+  return value === "calm" || value === "off" ? value : "full";
+}
 
 let teases = 0;
 let everRevealed = revealed.value;
@@ -231,7 +242,7 @@ function onFocus() {
 
 function tease() {
   const card = cardEl.value;
-  if (!card || reducedMotion.value) return;
+  if (!card || reducedMotion.value || fxLevel() === "off") return;
   if (everRevealed || revealed.value || teases >= MAX_TEASES) return;
   if (teaseAnim?.playState === "running" || flipAnim?.playState === "running") return;
   // The phone avatar and the desktop portrait are both mounted; only tease
@@ -307,6 +318,7 @@ function idleGlitch() {
   scheduleIdle();
   // A hover teaser or a flip is already showing something; wait for the next one.
   if (teaseAnim?.playState === "running" || flipAnim?.playState === "running") return;
+  if (fxLevel() !== "full") return;
 
   const small = props.variant === "avatar";
   const sign = () => (Math.random() < 0.5 ? -1 : 1);
@@ -381,6 +393,7 @@ function toggle() {
     ],
     { duration: FLIP_MS },
   );
+  if (fxLevel() === "off") return;
   playEffect(next ? "reveal" : "back");
   if (next && props.variant === "portrait") runMeter();
 }
@@ -603,378 +616,405 @@ function runMeter() {
 </script>
 
 <style scoped>
-.photo-flip {
-  perspective: 1100px;
-  -webkit-tap-highlight-color: transparent;
-}
-.photo-flip.is-avatar {
-  perspective: 320px;
-}
+/* In the `home` layer so a theme file can override any of it. Colors and
+   the frame come from the theme contract (--photo-*, --fx-*). */
+@layer home {
+  .photo-flip {
+    perspective: 1100px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .photo-flip.is-portrait {
+    border-radius: var(--photo-radius);
+  }
+  .photo-flip.is-avatar {
+    perspective: 320px;
+    border-radius: 999px;
+  }
+  .photo-flip:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
 
-.photo-flip-card {
-  position: absolute;
-  inset: 0;
-  display: block;
-  border-radius: inherit;
-  transform-style: preserve-3d;
-}
-
-.photo-flip-face {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: inherit;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-.photo-flip-face.is-back {
-  transform: rotateY(180deg);
-}
-
-/* Reduced motion: no turning, the real photo just fades in over Kyouma.
-   A media query rather than a class, so it holds from the first paint
-   (the server can't know the preference). */
-@media (prefers-reduced-motion: reduce) {
   .photo-flip-card {
-    transform: none !important;
+    position: absolute;
+    inset: 0;
+    display: block;
+    border-radius: inherit;
+    transform-style: preserve-3d;
+  }
+
+  .photo-flip-face {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .is-portrait .photo-flip-face {
+    border: var(--photo-border);
+    background: var(--photo-bg);
+    box-shadow: var(--photo-shadow);
+  }
+  .is-avatar .photo-flip-card {
+    box-shadow: var(--avatar-shadow);
+  }
+  .is-avatar .photo-flip-face {
+    border: var(--avatar-border);
+    background: var(--photo-bg);
+  }
+  .photo-flip-face img {
+    filter: var(--photo-filter);
   }
   .photo-flip-face.is-back {
-    transform: none;
+    transform: rotateY(180deg);
+  }
+
+  /* Reduced motion: no turning, the real photo just fades in over Kyouma.
+     A media query rather than a class, so it holds from the first paint
+     (the server can't know the preference). */
+  @media (prefers-reduced-motion: reduce) {
+    .photo-flip-card {
+      transform: none !important;
+    }
+    .photo-flip-face.is-back {
+      transform: none;
+      opacity: 0;
+      transition: opacity 350ms ease-out;
+    }
+    .photo-flip-face.is-back.is-shown {
+      opacity: 1;
+    }
+    .photo-flip-idle {
+      display: none;
+    }
+  }
+
+  .photo-flip-glitch img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     opacity: 0;
-    transition: opacity 350ms ease-out;
+    animation: photo-flip-glitch 950ms steps(1, end) both;
   }
-  .photo-flip-face.is-back.is-shown {
-    opacity: 1;
+  .photo-flip-glitch .slice-a {
+    clip-path: inset(31% 0 60% 0);
+    --glitch-x: -5px;
   }
+  .photo-flip-glitch .slice-b {
+    clip-path: inset(63% 0 29% 0);
+    --glitch-x: 7px;
+    animation-delay: 40ms;
+  }
+  @keyframes photo-flip-glitch {
+    0%,
+    36% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    40% {
+      opacity: 1;
+      transform: translateX(var(--glitch-x));
+    }
+    46% {
+      opacity: 0;
+    }
+    52% {
+      opacity: 1;
+      transform: translateX(calc(var(--glitch-x) * -0.6));
+    }
+    58%,
+    100% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+  }
+
+  .photo-flip-filters {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Idle glitch: hard steps, transform and opacity only. The clip-path and
+     filter on each layer are set once when it mounts, not animated. */
   .photo-flip-idle {
-    display: none;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
   }
-}
+  .photo-flip-idle img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+  }
+  .photo-flip-idle .idle-ghost {
+    mix-blend-mode: screen;
+    animation: photo-flip-idle-ghost 230ms steps(1, end) both;
+  }
+  @keyframes photo-flip-idle-ghost {
+    0% {
+      opacity: 0.75;
+      transform: translateX(var(--idle-dx));
+    }
+    22% {
+      opacity: 0.75;
+      transform: translateX(calc(var(--idle-dx) * -0.5));
+    }
+    40% {
+      opacity: 0;
+    }
+    58% {
+      opacity: 0.6;
+      transform: translateX(calc(var(--idle-dx) * 1.4));
+    }
+    76%,
+    100% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+  }
+  .photo-flip-idle .idle-slice {
+    animation: photo-flip-idle-slice 170ms steps(1, end) both;
+  }
+  @keyframes photo-flip-idle-slice {
+    0% {
+      opacity: 1;
+      transform: translateX(var(--idle-dx));
+    }
+    30% {
+      opacity: 1;
+      transform: translateX(calc(var(--idle-dx) * -0.5));
+    }
+    55% {
+      opacity: 0;
+    }
+    70% {
+      opacity: 1;
+      transform: translateX(calc(var(--idle-dx) * 0.3));
+    }
+    85%,
+    100% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+  }
+  .photo-flip-idle .idle-peek {
+    animation: photo-flip-idle-peek 120ms steps(1, end) both;
+  }
+  @keyframes photo-flip-idle-peek {
+    0% {
+      opacity: 1;
+      transform: translateX(var(--idle-dx));
+    }
+    45% {
+      opacity: 1;
+      transform: translateX(calc(var(--idle-dx) * -0.4));
+    }
+    75%,
+    100% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+  }
+  .idle-scan {
+    position: absolute;
+    inset: -3px 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--fx-scan) 32%, transparent) 0 1px,
+      transparent 1px 3px
+    );
+    opacity: 0;
+    animation: photo-flip-idle-scan 250ms steps(1, end) both;
+  }
+  .is-avatar .idle-scan {
+    background: repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--fx-scan) 18%, transparent) 0 1px,
+      transparent 1px 3px
+    );
+  }
+  @keyframes photo-flip-idle-scan {
+    0% {
+      opacity: 0.9;
+      transform: translateY(0);
+    }
+    20% {
+      opacity: 0.4;
+      transform: translateY(1px);
+    }
+    40% {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+    65%,
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+  }
+  .idle-tear {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: color-mix(in srgb, var(--fx-tear) 85%, transparent);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--fx-spark) 80%, transparent);
+    opacity: 0;
+    animation: photo-flip-idle-tear 200ms steps(1, end) 40ms both;
+  }
+  .is-avatar .idle-tear {
+    height: 1px;
+    box-shadow: 0 0 3px color-mix(in srgb, var(--fx-spark) 80%, transparent);
+  }
+  @keyframes photo-flip-idle-tear {
+    0% {
+      opacity: 1;
+      transform: translate(-6%, 0);
+    }
+    30% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.8;
+      transform: translate(4%, 3px);
+    }
+    70%,
+    100% {
+      opacity: 0;
+      transform: translate(0, 0);
+    }
+  }
 
-.photo-flip-glitch img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  animation: photo-flip-glitch 950ms steps(1, end) both;
-}
-.photo-flip-glitch .slice-a {
-  clip-path: inset(31% 0 60% 0);
-  --glitch-x: -5px;
-}
-.photo-flip-glitch .slice-b {
-  clip-path: inset(63% 0 29% 0);
-  --glitch-x: 7px;
-  animation-delay: 40ms;
-}
-@keyframes photo-flip-glitch {
-  0%,
-  36% {
+  .photo-flip-arcs {
+    position: absolute;
+    left: -12%;
+    top: -12%;
+    width: 124%;
+    height: 124%;
+    overflow: visible;
+    pointer-events: none;
+    filter: drop-shadow(0 0 3px color-mix(in srgb, var(--fx-arc) 90%, transparent));
+  }
+  .bolt {
     opacity: 0;
-    transform: translateX(0);
+    animation: photo-flip-bolt 300ms linear both;
   }
-  40% {
-    opacity: 1;
-    transform: translateX(var(--glitch-x));
+  .bolt-glow {
+    fill: none;
+    stroke: color-mix(in srgb, var(--fx-arc) 85%, transparent);
+    stroke-width: 4px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  46% {
-    opacity: 0;
+  .bolt-core {
+    fill: none;
+    stroke: var(--fx-arc-core);
+    stroke-width: 1.4px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  52% {
-    opacity: 1;
-    transform: translateX(calc(var(--glitch-x) * -0.6));
+  .is-avatar .bolt-glow {
+    stroke-width: 3px;
   }
-  58%,
-  100% {
-    opacity: 0;
-    transform: translateX(0);
+  .is-avatar .bolt-core {
+    stroke-width: 1px;
   }
-}
+  @keyframes photo-flip-bolt {
+    0% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    28% {
+      opacity: 0.2;
+    }
+    42% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 
-.photo-flip-filters {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
+  .spark {
+    stroke: var(--fx-spark);
+    stroke-width: 1.75px;
+    stroke-linecap: round;
+    opacity: 0;
+    animation: photo-flip-spark 420ms cubic-bezier(0.1, 0.7, 0.3, 1) both;
+  }
+  @keyframes photo-flip-spark {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--spark-dx), var(--spark-dy));
+    }
+  }
 
-/* Idle glitch: hard steps, transform and opacity only. The clip-path and
-   filter on each layer are set once when it mounts, not animated. */
-.photo-flip-idle {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: inherit;
-  pointer-events: none;
-}
-.photo-flip-idle img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-}
-.photo-flip-idle .idle-ghost {
-  mix-blend-mode: screen;
-  animation: photo-flip-idle-ghost 230ms steps(1, end) both;
-}
-@keyframes photo-flip-idle-ghost {
-  0% {
-    opacity: 0.75;
-    transform: translateX(var(--idle-dx));
-  }
-  22% {
-    opacity: 0.75;
-    transform: translateX(calc(var(--idle-dx) * -0.5));
-  }
-  40% {
+  .photo-flip-flash {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at 50% 45%,
+      color-mix(in srgb, var(--fx-arc-core) 95%, transparent),
+      color-mix(in srgb, var(--fx-flash) 50%, transparent) 30%,
+      transparent 62%
+    );
     opacity: 0;
+    animation: photo-flip-flash 340ms ease-out both;
   }
-  58% {
-    opacity: 0.6;
-    transform: translateX(calc(var(--idle-dx) * 1.4));
+  @keyframes photo-flip-flash {
+    0% {
+      opacity: 0;
+    }
+    18% {
+      opacity: var(--flash-peak);
+    }
+    100% {
+      opacity: 0;
+    }
   }
-  76%,
-  100% {
-    opacity: 0;
-    transform: translateX(0);
-  }
-}
-.photo-flip-idle .idle-slice {
-  animation: photo-flip-idle-slice 170ms steps(1, end) both;
-}
-@keyframes photo-flip-idle-slice {
-  0% {
-    opacity: 1;
-    transform: translateX(var(--idle-dx));
-  }
-  30% {
-    opacity: 1;
-    transform: translateX(calc(var(--idle-dx) * -0.5));
-  }
-  55% {
-    opacity: 0;
-  }
-  70% {
-    opacity: 1;
-    transform: translateX(calc(var(--idle-dx) * 0.3));
-  }
-  85%,
-  100% {
-    opacity: 0;
-    transform: translateX(0);
-  }
-}
-.photo-flip-idle .idle-peek {
-  animation: photo-flip-idle-peek 120ms steps(1, end) both;
-}
-@keyframes photo-flip-idle-peek {
-  0% {
-    opacity: 1;
-    transform: translateX(var(--idle-dx));
-  }
-  45% {
-    opacity: 1;
-    transform: translateX(calc(var(--idle-dx) * -0.4));
-  }
-  75%,
-  100% {
-    opacity: 0;
-    transform: translateX(0);
-  }
-}
-.idle-scan {
-  position: absolute;
-  inset: -3px 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgb(8 12 20 / 0.32) 0 1px,
-    rgb(8 12 20 / 0) 1px 3px
-  );
-  opacity: 0;
-  animation: photo-flip-idle-scan 250ms steps(1, end) both;
-}
-.is-avatar .idle-scan {
-  background: repeating-linear-gradient(
-    to bottom,
-    rgb(8 12 20 / 0.18) 0 1px,
-    rgb(8 12 20 / 0) 1px 3px
-  );
-}
-@keyframes photo-flip-idle-scan {
-  0% {
-    opacity: 0.9;
-    transform: translateY(0);
-  }
-  20% {
-    opacity: 0.4;
-    transform: translateY(1px);
-  }
-  40% {
-    opacity: 0.85;
-    transform: translateY(-1px);
-  }
-  65%,
-  100% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-}
-.idle-tear {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgb(224 242 254 / 0.85);
-  box-shadow: 0 0 6px rgb(56 189 248 / 0.8);
-  opacity: 0;
-  animation: photo-flip-idle-tear 200ms steps(1, end) 40ms both;
-}
-.is-avatar .idle-tear {
-  height: 1px;
-  box-shadow: 0 0 3px rgb(56 189 248 / 0.8);
-}
-@keyframes photo-flip-idle-tear {
-  0% {
-    opacity: 1;
-    transform: translate(-6%, 0);
-  }
-  30% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.8;
-    transform: translate(4%, 3px);
-  }
-  70%,
-  100% {
-    opacity: 0;
-    transform: translate(0, 0);
-  }
-}
 
-.photo-flip-arcs {
-  position: absolute;
-  left: -12%;
-  top: -12%;
-  width: 124%;
-  height: 124%;
-  overflow: visible;
-  pointer-events: none;
-  filter: drop-shadow(0 0 3px rgb(14 165 233 / 0.9));
-}
-.bolt {
-  opacity: 0;
-  animation: photo-flip-bolt 300ms linear both;
-}
-.bolt-glow {
-  fill: none;
-  stroke: rgb(14 165 233 / 0.85);
-  stroke-width: 4px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.bolt-core {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 1.4px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.is-avatar .bolt-glow {
-  stroke-width: 3px;
-}
-.is-avatar .bolt-core {
-  stroke-width: 1px;
-}
-@keyframes photo-flip-bolt {
-  0% {
+  .photo-flip-meter {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 6px;
+    background: var(--fx-meter-bg);
+    color: var(--fx-meter-ink);
+    font-family: var(--font-mono);
+    font-size: 1.0625rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+    text-shadow:
+      0 0 6px color-mix(in srgb, var(--fx-meter-glow) 85%, transparent),
+      0 0 14px color-mix(in srgb, var(--fx-meter-glow) 45%, transparent);
+    pointer-events: none;
+    transition: opacity 300ms ease-out;
+  }
+  .photo-flip-meter.is-fading {
     opacity: 0;
   }
-  8% {
-    opacity: 1;
-  }
-  28% {
-    opacity: 0.2;
-  }
-  42% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.spark {
-  stroke: #38bdf8;
-  stroke-width: 1.75px;
-  stroke-linecap: round;
-  opacity: 0;
-  animation: photo-flip-spark 420ms cubic-bezier(0.1, 0.7, 0.3, 1) both;
-}
-@keyframes photo-flip-spark {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--spark-dx), var(--spark-dy));
-  }
-}
-
-.photo-flip-flash {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at 50% 45%,
-    rgb(255 255 255 / 0.95),
-    rgb(186 230 253 / 0.5) 30%,
-    rgb(56 189 248 / 0) 62%
-  );
-  opacity: 0;
-  animation: photo-flip-flash 340ms ease-out both;
-}
-@keyframes photo-flip-flash {
-  0% {
-    opacity: 0;
-  }
-  18% {
-    opacity: var(--flash-peak);
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.photo-flip-meter {
-  position: absolute;
-  left: 0.75rem;
-  bottom: 0.75rem;
-  padding: 0.3rem 0.55rem;
-  border-radius: 6px;
-  background: rgb(12 10 9 / 0.78);
-  color: #ffb05c;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.0625rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.12em;
-  text-shadow:
-    0 0 6px rgb(255 140 40 / 0.85),
-    0 0 14px rgb(255 120 30 / 0.45);
-  pointer-events: none;
-  transition: opacity 300ms ease-out;
-}
-.photo-flip-meter.is-fading {
-  opacity: 0;
 }
 </style>

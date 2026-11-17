@@ -1,10 +1,9 @@
 <template>
-  <div class="pointer-events-none absolute inset-0 bg-muted-100 dark:bg-muted-900">
+  <!-- Colors, cell size and mode come from the theme: --grid-bg, --grid-line,
+       --grid-accent, --grid-cell, --grid-mode (pages/(home)/home-theme.css). -->
+  <div ref="root" data-part="hero-grid" class="hero-grid pointer-events-none absolute inset-0">
     <!-- First paint only; the canvas draws the same lines once it is ready. -->
-    <div
-      v-if="!canvasReady"
-      class="absolute inset-0 bg-[linear-gradient(to_right,#64748b29_1px,transparent_1px),linear-gradient(to_bottom,#64748b29_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff1f_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1f_1px,transparent_1px)] bg-[size:24px_24px]"
-    ></div>
+    <div v-if="!canvasReady" data-part="hero-grid-lines" class="hero-grid-lines absolute inset-0"></div>
     <canvas ref="canvas" class="absolute inset-0 h-full w-full"></canvas>
   </div>
 </template>
@@ -12,9 +11,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 
-// Must match bg-[size:24px_24px] above so the canvas lines sit where the
-// CSS lines were.
-const CELL = 24;
+// Cell size in px, from --grid-cell (24 in modern). Everything sized in cells
+// below is recomputed from it in readTheme().
+let CELL = 24;
 // A lit cell stays fully on for a random time in this range, then switches
 // off at once, so the trail breaks up at random instead of in order.
 const LIT_MIN_MS = 200;
@@ -24,14 +23,14 @@ const LIT_MAX_MS = 1200;
 // passes (a crest at the front, then decaying swells behind it) and lights the
 // cells on its front, followed by a weaker echo.
 const RIPPLE_MS = 1900;
-const RIPPLE_RADIUS = 44 * CELL;
-const RIPPLE_WIDTH = 1.2 * CELL;
+let RIPPLE_RADIUS = 44 * CELL;
+let RIPPLE_WIDTH = 1.2 * CELL;
 // Lit wake behind the front: fades out over this distance toward the center.
-const RIPPLE_WAKE = 16 * CELL;
+let RIPPLE_WAKE = 16 * CELL;
 // Bend: peak line swing (px) and swell wavelength. Keep
 // RIPPLE_PUSH * 2π / RIPPLE_WAVELENGTH under ~1 or neighboring lines cross.
 const RIPPLE_PUSH = 14;
-const RIPPLE_WAVELENGTH = 7 * CELL;
+let RIPPLE_WAVELENGTH = 7 * CELL;
 const ECHO_DELAY_MS = 180;
 const ECHO_STRENGTH = 0.45;
 // Hold: the grid is pulled toward the pointer like a gravity well, charging
@@ -39,7 +38,7 @@ const ECHO_STRENGTH = 0.45;
 // 1 + HOLD_BOOST times stronger. HOLD_PULL < 1 or the center folds over.
 const HOLD_CHARGE_MS = 1000;
 const HOLD_RELEASE_MS = 220;
-const HOLD_RADIUS = 5 * CELL;
+let HOLD_RADIUS = 5 * CELL;
 const HOLD_PULL = 0.45;
 const HOLD_BOOST = 0.8;
 // Line sample spacing while a wave bends the grid.
@@ -60,6 +59,7 @@ const BLINK_STEPS = 4;
 type Wave = { x: number; y: number; start: number; strength: number };
 type WaveFrame = { x: number; y: number; radius: number; push: number; glow: number };
 
+const root = ref<HTMLElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
 const canvasReady = ref(false);
 
@@ -72,6 +72,8 @@ let ctx: CanvasRenderingContext2D | null = null;
 let host: HTMLElement | null = null;
 let resizeObserver: ResizeObserver | null = null;
 let themeObserver: MutationObserver | null = null;
+// interactive: hover cells, hold and ripple; static: lines only; none: no canvas.
+let mode: "interactive" | "static" | "none" = "interactive";
 let rafId: number | null = null;
 let lastTime = 0;
 let lastCell: { col: number; row: number } | null = null;
@@ -176,15 +178,33 @@ let accent = "rgb(244 63 94)";
 let lineColor = "rgba(100, 116, 139, 0.16)";
 let reducedMotion = false;
 
+// Read the theme's grid properties. Returns true when the cell size changed.
 function readTheme() {
-  const root = document.documentElement;
-  // Match the canvas accent to the fixed CSS palette.
-  const value = getComputedStyle(root).getPropertyValue("--app-primary-500").trim();
-  if (value) accent = value;
-  // Same colors as the CSS lines: #64748b29 light, #ffffff1f dark.
-  lineColor = root.classList.contains("dark")
-    ? "rgba(255, 255, 255, 0.12)"
-    : "rgba(100, 116, 139, 0.16)";
+  if (!root.value) return false;
+  const style = getComputedStyle(root.value);
+  accent = style.getPropertyValue("--grid-accent").trim() || accent;
+  lineColor = style.getPropertyValue("--grid-line").trim() || lineColor;
+
+  const nextMode = style.getPropertyValue("--grid-mode").trim();
+  mode = nextMode === "static" || nextMode === "none" ? nextMode : "interactive";
+  if (mode !== "interactive") {
+    cells.clear();
+    waves.length = 0;
+    holdStart = null;
+    holdCharge = 0;
+  }
+
+  // Never below 4px: drawGrid steps by the cell size.
+  const cell = Math.max(parseFloat(style.getPropertyValue("--grid-cell")) || 24, 4);
+  if (cell === CELL) return false;
+  CELL = cell;
+  RIPPLE_RADIUS = 44 * CELL;
+  RIPPLE_WIDTH = 1.2 * CELL;
+  RIPPLE_WAKE = 16 * CELL;
+  RIPPLE_WAVELENGTH = 7 * CELL;
+  HOLD_RADIUS = 5 * CELL;
+  cells.clear();
+  return true;
 }
 
 function resize() {
@@ -323,6 +343,7 @@ function draw(now: number) {
   if (!canvas.value || !ctx) return;
   resolveWaves(now);
   ctx.clearRect(0, 0, width, height);
+  if (mode === "none") return;
   drawGrid();
 
   ctx.fillStyle = accent;
@@ -445,7 +466,7 @@ function light(col: number, row: number) {
 }
 
 function onPointerMove(event: PointerEvent) {
-  if (!canvas.value) return;
+  if (!canvas.value || mode !== "interactive") return;
   const rect = canvas.value.getBoundingClientRect();
   if (holdStart != null) {
     holdX = event.clientX - rect.left;
@@ -480,7 +501,7 @@ function onPointerMove(event: PointerEvent) {
 }
 
 function onPointerDown(event: PointerEvent) {
-  if (!canvas.value || reducedMotion || event.button !== 0) return;
+  if (!canvas.value || reducedMotion || mode !== "interactive" || event.button !== 0) return;
   // Pressing hero content (text, buttons, photo) doesn't charge the grid.
   if ((event.target as Element | null)?.closest("[data-grid-hole]")) return;
   const rect = canvas.value.getBoundingClientRect();
@@ -533,7 +554,8 @@ onMounted(() => {
   resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(canvas.value);
 
-  // Dark mode toggles the html class; the theme switcher rewrites its style.
+  // Dark mode toggles the html class; the home theme switch changes
+  // data-theme on the page root.
   themeObserver = new MutationObserver(() => {
     readTheme();
     if (rafId != null) return;
@@ -544,6 +566,10 @@ onMounted(() => {
     attributes: true,
     attributeFilter: ["class", "style"],
   });
+  const themeRoot = host.closest("[data-theme]");
+  if (themeRoot) {
+    themeObserver.observe(themeRoot, { attributes: true, attributeFilter: ["data-theme", "data-scheme"] });
+  }
 
   host.addEventListener("pointermove", onPointerMove);
   host.addEventListener("pointerdown", onPointerDown);
@@ -566,3 +592,20 @@ onUnmounted(() => {
   host?.removeEventListener("pointerleave", onPointerLeave);
 });
 </script>
+
+<style>
+@layer home {
+  .hero-grid {
+    background: var(--grid-bg);
+  }
+
+  /* With --grid-mode: none, a theme hides this too (or uses it as its own
+     background): [data-part="hero-grid-lines"] { display: none }. */
+  .hero-grid-lines {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--grid-cell) var(--grid-cell);
+  }
+}
+</style>
