@@ -82,7 +82,14 @@ export const HOME_THEMES: Record<HomeThemeId, HomeTheme> = {
     thumbnail: "/home/themes/brutalist.webp",
   },
   // ---- theme: cartoon (edit only inside this block) ----
-  cartoon: stub("cartoon"),
+  cartoon: {
+    id: "cartoon",
+    css: "/home/themes/cartoon.css",
+    fonts: ["https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@500;600;700;800&display=swap"],
+    fontFaces: ['400 1em "Luckiest Guy"', '500 1em "Nunito"', '800 1em "Nunito"'],
+    scheme: "light",
+    thumbnail: "/home/themes/cartoon.webp",
+  },
 
   // ---- theme: ancient (edit only inside this block) ----
   ancient: {
@@ -131,10 +138,28 @@ export const HOME_THEMES: Record<HomeThemeId, HomeTheme> = {
   },
 
   // ---- theme: retro-os (edit only inside this block) ----
-  "retro-os": stub("retro-os"),
+  // W95FA is self-hosted (@font-face in retro-os.css, files in
+  // public/home/themes/fonts/retro-os/).
+  "retro-os": {
+    id: "retro-os",
+    css: "/home/themes/retro-os.css",
+    fonts: ["https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@800&display=swap"],
+    fontFaces: ['400 1em "W95FA"', '800 1em "Libre Franklin"'],
+    scheme: "light",
+    thumbnail: "/home/themes/retro-os.webp",
+  },
 
   // ---- theme: pixel (edit only inside this block) ----
-  pixel: stub("pixel"),
+  pixel: {
+    id: "pixel",
+    css: "/home/themes/pixel.css",
+    fonts: [
+      "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&family=Press+Start+2P&display=swap",
+    ],
+    fontFaces: ['400 1em "Press Start 2P"', '400 1em "Atkinson Hyperlegible Next"', '700 1em "Atkinson Hyperlegible Next"'],
+    scheme: "dark",
+    thumbnail: "/home/themes/pixel.webp",
+  },
 
   // ---- theme: lab (edit only inside this block) ----
   lab: {

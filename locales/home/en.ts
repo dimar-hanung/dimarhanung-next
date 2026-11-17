@@ -124,7 +124,10 @@ const en = {
       },
 
       // ---- theme: retro-os ----
-      "retro-os": {},
+      "retro-os": {
+        // Title bar of the hero window (pages/(home)/components/themes/retro-os/hero-start.vue).
+        heroTitle: "Welcome",
+      },
 
       // ---- theme: pixel ----
       pixel: {},
