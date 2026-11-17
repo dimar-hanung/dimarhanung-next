@@ -1,11 +1,19 @@
 // English copy for the home page (/). The Indonesian twin is ./id.ts and must
 // keep the same shape.
 
+import type { HomeThemeId } from "~/data/home-themes";
+
 // Inquiry form budget options and the starting price under "How I can help".
 const budgets = ["$20-60", "$60-300", "$300-600", "$600+", "Not sure yet"];
 const startingPrice = "Projects start from about $20.";
 
 export type NeedKey = "web" | "ai" | "frontend" | "other";
+
+// Name and one line per theme in the theme picker (data/home-themes.ts).
+interface ThemeCopy {
+  name: string;
+  description: string;
+}
 
 export interface WhatsAppFields {
   name: string;
@@ -53,6 +61,50 @@ const en = {
       { value: "15+", label: "work & personal projects" },
       { value: "3 kyu", label: "Codewars rank" },
     ],
+  },
+  themes: {
+    title: "Change the look of this page",
+    sub: "Ten complete designs for this same page. I researched and built each one with AI, then checked and edited it by hand. Your pick is saved for your next visit.",
+    listLabel: "Themes",
+    current: (name: string, description: string) => `Now showing ${name}. ${description}`,
+    items: {
+      modern: { name: "Modern", description: "Clean sans-serif, soft rounded panels and one rose accent. The default." },
+      brutalist: { name: "Brutalist", description: "Raw structure: mono type, heavy black borders, no polish." },
+      cartoon: {
+        name: "Cartoon",
+        description: "Thick outlines, flat bright fills and bouncy shapes, like a Sunday-morning cartoon.",
+      },
+      ancient: { name: "Illuminated", description: "An illuminated manuscript: vellum, gilded initials, blackletter." },
+      terminal: { name: "Terminal", description: "Green phosphor on a CRT, everything in monospace." },
+      swiss: {
+        name: "Swiss",
+        description: "International Typographic Style: a strict grid, grotesk type, red and black.",
+      },
+      newspaper: { name: "Broadsheet", description: "A broadsheet front page: serif headlines, columns and rules." },
+      "retro-os": {
+        name: "Retro desktop",
+        description: "A late-90s desktop: bevelled grey windows, title bars, teal wallpaper.",
+      },
+      pixel: { name: "Pixel", description: "8-bit arcade: pixel type, chunky blocks, a small palette." },
+      lab: {
+        name: "Future Gadget Lab",
+        description: "The lab from Steins;Gate: nixie tubes, worn notebooks, divergence readouts.",
+      },
+    } satisfies Record<HomeThemeId, ThemeCopy>,
+    // Copy for a theme's slot components (pages/(home)/components/themes/<id>/).
+    // Each theme owns its block; add the same keys to id.ts.
+    extras: {
+      modern: {},
+      brutalist: {},
+      cartoon: {},
+      ancient: {},
+      terminal: {},
+      swiss: {},
+      newspaper: {},
+      "retro-os": {},
+      pixel: {},
+      lab: {},
+    },
   },
   work: {
     title: "Selected work",

@@ -17,11 +17,13 @@ export default defineNuxtRouteMiddleware((to) => {
   });
 
   if (saved.value === "en") return;
-  if (saved.value === "id") return navigateTo("/id");
+  // Keep ?theme= (a shared theme link) and the hash through the redirect.
+  const toIndonesian = { path: "/id", query: to.query, hash: to.hash };
+  if (saved.value === "id") return navigateTo(toIndonesian);
 
   const preferred = browserPrefersIndonesian() ? "id" : "en";
   saved.value = preferred;
-  if (preferred === "id") return navigateTo("/id");
+  if (preferred === "id") return navigateTo(toIndonesian);
 });
 
 function browserPrefersIndonesian() {

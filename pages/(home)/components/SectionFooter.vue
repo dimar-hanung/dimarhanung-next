@@ -1,25 +1,25 @@
 <template>
-  <footer class="border-t border-muted-200 pt-7 pb-24 text-sm text-muted-500 dark:border-muted-700 dark:text-muted-400 sm:pb-7">
+  <footer data-part="footer" class="pt-7 pb-24 text-sm sm:pb-7">
     <div class="mx-auto flex max-w-7xl flex-col gap-6 px-5 sm:px-6">
       <div class="flex flex-wrap justify-between gap-x-12 gap-y-5">
-        <nav :aria-label="t.footer.siteLabel">
+        <nav data-part="footer-links" :aria-label="t.footer.siteLabel">
           <ul class="flex flex-wrap gap-x-5 gap-y-2">
             <li v-for="link in siteLinks" :key="link.to">
-              <NuxtLink :to="link.to" class="footer-link">{{ link.label }}</NuxtLink>
+              <NuxtLink :to="link.to" data-part="footer-link">{{ link.label }}</NuxtLink>
             </li>
           </ul>
         </nav>
 
-        <nav :aria-label="t.footer.socialLabel">
+        <nav data-part="footer-links" :aria-label="t.footer.socialLabel">
           <ul class="flex flex-wrap gap-x-5 gap-y-2">
             <li v-for="link in socialLinks" :key="link.href">
-              <a :href="link.href" target="_blank" rel="noopener noreferrer" class="footer-link">{{ link.label }}</a>
+              <a :href="link.href" target="_blank" rel="noopener noreferrer" data-part="footer-link">{{ link.label }}</a>
             </li>
           </ul>
         </nav>
       </div>
 
-      <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+      <div data-part="footer-meta" class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
         <p>© {{ year }} Dimar Hanung</p>
         <p>
           {{ t.footer.builtWith }}
@@ -27,11 +27,13 @@
             href="https://github.com/dimar-hanung/dimarhanung-next"
             target="_blank"
             rel="noopener noreferrer"
-            class="footer-link underline decoration-muted-400 underline-offset-4"
+            data-part="footer-link"
+            data-footer-source
+            class="underline underline-offset-4"
             >{{ t.footer.source }}</a
           >
         </p>
-        <button type="button" class="footer-link inline-flex items-center gap-1" @click="scrollToTop">
+        <button type="button" data-part="footer-link" class="inline-flex items-center gap-1" @click="scrollToTop">
           {{ t.footer.backToTop }}
           <Icon name="mdi:arrow-up" aria-hidden="true" />
         </button>
@@ -69,17 +71,3 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior });
 }
 </script>
-
-<style scoped>
-.footer-link {
-  transition: color 150ms ease-out;
-}
-
-.footer-link:hover {
-  color: var(--app-primary-600);
-}
-
-.dark .footer-link:hover {
-  color: var(--app-primary-400);
-}
-</style>

@@ -45,6 +45,54 @@ const id: HomeMessages = {
       { value: "3 kyu", label: "peringkat Codewars" },
     ],
   },
+  themes: {
+    title: "Ganti tampilan halaman ini",
+    sub: "Sepuluh desain lengkap untuk halaman yang sama. Saya riset dan bangun tiap desain bersama AI, lalu saya periksa dan rapikan sendiri. Pilihan Anda tersimpan untuk kunjungan berikutnya.",
+    listLabel: "Tema",
+    current: (name: string, description: string) => `Sekarang: ${name}. ${description}`,
+    items: {
+      modern: {
+        name: "Modern",
+        description: "Huruf sans-serif yang bersih, panel bersudut lembut, satu warna aksen. Tampilan bawaan.",
+      },
+      brutalist: { name: "Brutalis", description: "Struktur mentah: huruf mono, garis hitam tebal, tanpa poles." },
+      cartoon: {
+        name: "Kartun",
+        description: "Garis tepi tebal, warna cerah yang rata, bentuk membulat seperti kartun Minggu pagi.",
+      },
+      ancient: {
+        name: "Manuskrip",
+        description: "Naskah kuno beriluminasi: kertas vellum, huruf awal berlapis emas, huruf gotik.",
+      },
+      terminal: { name: "Terminal", description: "Fosfor hijau di layar CRT, semua teks monospace." },
+      swiss: {
+        name: "Swiss",
+        description: "Gaya Tipografi Internasional: grid ketat, huruf grotesk, merah dan hitam.",
+      },
+      newspaper: { name: "Koran", description: "Halaman depan koran: judul serif, kolom, dan garis pemisah." },
+      "retro-os": {
+        name: "Desktop jadul",
+        description: "Desktop akhir 90-an: jendela abu-abu bertepi timbul, title bar, wallpaper hijau toska.",
+      },
+      pixel: { name: "Piksel", description: "Arkade 8-bit: font piksel, blok kotak besar, palet warna terbatas." },
+      lab: {
+        name: "Lab Gadget Masa Depan",
+        description: "Lab dari Steins;Gate: tabung nixie, buku catatan lusuh, angka divergence meter.",
+      },
+    },
+    extras: {
+      modern: {},
+      brutalist: {},
+      cartoon: {},
+      ancient: {},
+      terminal: {},
+      swiss: {},
+      newspaper: {},
+      "retro-os": {},
+      pixel: {},
+      lab: {},
+    },
+  },
   work: {
     title: "Proyek pilihan",
     sub: "Sistem yang saya rancang dan bangun dari awal sampai akhir, kini dipakai ribuan mahasiswa dan staf.",
