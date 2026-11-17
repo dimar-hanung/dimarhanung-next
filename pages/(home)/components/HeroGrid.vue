@@ -594,6 +594,11 @@ onUnmounted(() => {
 </script>
 
 <style>
+/* Full layer order first: in a production build Nuxt inlines this block in a
+   <style> tag before tailwind.css, and the first file to name a layer fixes
+   its place. See pages/(home)/home-theme.css. */
+@layer theme, base, components, home, utilities;
+
 @layer home {
   .hero-grid {
     background: var(--grid-bg);
