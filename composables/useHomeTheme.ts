@@ -64,8 +64,9 @@ export function useHomeTheme() {
       ]);
       await withTimeout(Promise.all(next.fontFaces.map((face) => document.fonts.load(face))), FONT_TIMEOUT_MS);
 
+      let before: number | undefined;
       const apply = async () => {
-        const before = anchor?.getBoundingClientRect().top;
+        before = anchor?.getBoundingClientRect().top;
         themeId.value = id;
         cookie.value = id;
         syncUrl(id);
@@ -78,15 +79,43 @@ export function useHomeTheme() {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (reduceMotion || !document.startViewTransition) {
         await apply();
-        return;
+      } else {
+        await document.startViewTransition(apply).updateCallbackDone;
       }
-      await document.startViewTransition(apply).updateCallbackDone;
+      if (anchor && before !== undefined) pinAnchor(anchor, before);
     } finally {
       switching = false;
     }
   }
 
   return { themeId, theme, setTheme, stylesheetsOf };
+}
+
+// Some themes keep growing for a moment after the swap (late fonts, slot
+// images, a taller masthead), which pushed the clicked thumbnail away. Keep it
+// pinned at the same spot for a short settle window, and let go as soon as
+// the visitor scrolls or presses a key.
+const PIN_SETTLE_MS = 1500;
+
+function pinAnchor(anchor: HTMLElement, top: number) {
+  const until = performance.now() + PIN_SETTLE_MS;
+  let frame = 0;
+  const stop = () => {
+    cancelAnimationFrame(frame);
+    for (const type of ["wheel", "touchstart", "keydown", "pointerdown"] as const) {
+      window.removeEventListener(type, stop);
+    }
+  };
+  for (const type of ["wheel", "touchstart", "keydown", "pointerdown"] as const) {
+    window.addEventListener(type, stop, { passive: true });
+  }
+  const tick = () => {
+    const drift = anchor.getBoundingClientRect().top - top;
+    if (Math.abs(drift) > 0.5) window.scrollBy(0, drift);
+    if (performance.now() < until && anchor.isConnected) frame = requestAnimationFrame(tick);
+    else stop();
+  };
+  frame = requestAnimationFrame(tick);
 }
 
 // Adds <link rel="stylesheet"> once and waits for it. The head entry in
