@@ -10,7 +10,7 @@ const id: HomeMessages = {
   seo: {
     title: "Dimar Hanung | Software Engineer Freelance",
     description:
-      "Saya membangun aplikasi web dengan cepat berkat AI, dan tetap stabil di production. Pengalaman 6+ tahun, termasuk portal yang dipakai mahasiswa Universitas Terbuka setiap hari.",
+      "Saya membangun aplikasi web dengan cepat berkat AI, dan tetap stabil di production. Pengalaman 6+ tahun, dari ide awal sampai rilis yang stabil.",
     ogLocale: "id_ID",
   },
   nav: {
@@ -29,7 +29,7 @@ const id: HomeMessages = {
     role: "Software Engineer, 6+ tahun",
     titleStart: "Aplikasi web selesai cepat dengan AI,",
     titleAccent: "tetap stabil saat dipakai ribuan orang.",
-    lead: "Saya membangun portal yang dipakai mahasiswa Universitas Terbuka setiap hari: My UT, pendaftaran mahasiswa baru, dan sistem data mahasiswa. Hal yang sama bisa saya kerjakan untuk produk Anda, dari ide awal sampai rilis yang stabil.",
+    lead: "Dari ide awal sampai rilis yang stabil: frontend, backend, database, dan deploy, dikerjakan satu orang yang tetap bisa dihubungi setelah rilis.",
     discuss: "Diskusikan proyek Anda",
     seeWork: "Lihat proyek",
     downloadCv: "Unduh CV",
@@ -53,6 +53,7 @@ const id: HomeMessages = {
       all: "Semua",
       fullstack: "Full-stack",
       frontend: "Front-end",
+      backend: "Back-end",
       ai: "AI",
     },
     filterLabel: "Filter proyek",

@@ -1,7 +1,8 @@
 // One list for the /project page (components/home/project.vue) and the
 // "Selected work" section on the home page.
 
-export type WorkCategory = "fullstack" | "frontend" | "ai";
+// "backend" marks every project where I built the server side (all full-stack ones).
+export type WorkCategory = "fullstack" | "frontend" | "backend" | "ai";
 
 export interface Project {
   // Listing on /project (Indonesian descriptions, kept as they were).
@@ -42,7 +43,7 @@ export const projects: Project[] = [
       title: "Student Record System",
       role: "Full-stack",
       stack: ["Vue", "Tailwind"],
-      categories: ["fullstack"],
+      categories: ["fullstack", "backend"],
       description: {
         en: "Manages student records across the university, from enrolment to graduation.",
         id: "Mengelola data mahasiswa satu universitas, dari pendaftaran sampai lulus.",
@@ -65,7 +66,7 @@ export const projects: Project[] = [
       title: "SIA Admissions",
       role: "Full-stack",
       stack: ["Vue", "NestJS"],
-      categories: ["fullstack"],
+      categories: ["fullstack", "backend"],
       description: {
         en: "New-student admissions: sign up, choose a program and upload documents, all online.",
         id: "Pendaftaran mahasiswa baru: daftar, pilih program studi, dan upload berkas secara online.",
@@ -88,7 +89,7 @@ export const projects: Project[] = [
       title: "My UT",
       role: "Full-stack",
       stack: ["Vue", "NestJS", "PostgreSQL"],
-      categories: ["fullstack"],
+      categories: ["fullstack", "backend"],
       description: {
         en: "Academic portal for students: registration, payments, course modules, exams and a digital student ID.",
         id: "Portal akademik mahasiswa: registrasi, pembayaran, modul kuliah, ujian, dan e-KTM.",
@@ -142,7 +143,7 @@ export const projects: Project[] = [
       title: "HRIS",
       role: "Full-stack",
       stack: ["Vue"],
-      categories: ["fullstack"],
+      categories: ["fullstack", "backend"],
       description: {
         en: "Employee data and HR workflows for university staff.",
         id: "Data karyawan dan alur kerja HR untuk staf universitas.",
@@ -164,7 +165,7 @@ export const projects: Project[] = [
       title: "AI Tutor E-Learning",
       role: "Full-stack",
       stack: ["Vue", "AI"],
-      categories: ["fullstack", "ai"],
+      categories: ["fullstack", "backend", "ai"],
       description: {
         en: "An AI tutor that helps students learn inside their own course material.",
         id: "Tutor AI yang membantu mahasiswa belajar langsung dari materi kuliahnya.",
