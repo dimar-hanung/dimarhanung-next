@@ -46,9 +46,11 @@ import SectionContact from "./components/SectionContact.vue";
 import SectionMore from "./components/SectionMore.vue";
 import SectionFooter from "./components/SectionFooter.vue";
 
-// English lives at /, Indonesian at /id (same page, locale read from the path).
+// English lives at /, Indonesian at /id. /id is its own route record pointing at
+// this same file (added in nuxt.config.ts `pages:extend`), not an alias: Vue
+// Router treats an alias as the same location, so the EN/ID switch would be
+// dropped as a redundant navigation.
 definePageMeta({
-  alias: ["/id"],
   middleware: ["home-language"],
   // Switching EN <-> ID keeps the scroll position; arriving from another page
   // still starts at the top.
