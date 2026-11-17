@@ -1,4 +1,12 @@
+import { realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
+
+// In a git worktree node_modules can be a link to the main checkout, outside
+// the folders Vite may serve. Then a package stylesheet the page <link>s
+// (floating-vue's) got a 403 and a 404 on the first load. Allow the real
+// folder too (the same folder when node_modules is not a link).
+const realNodeModules = realpathSync(fileURLToPath(new URL("./node_modules", import.meta.url)));
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -107,6 +115,9 @@ export default defineNuxtConfig({
       include: ['mermaid'],
     },
     server: {
+      fs: {
+        allow: [realNodeModules],
+      },
       watch: {
         ignored: [
           "!**/pages/**/components/**", // Jangan abaikan file dalam folder ini
