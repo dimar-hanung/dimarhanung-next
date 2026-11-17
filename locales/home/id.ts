@@ -44,6 +44,11 @@ const id: HomeMessages = {
     stack: "Vue · Nuxt · NestJS · PostgreSQL",
     caption:
       "Software Engineer di Universitas Terbuka. Tinggal di Tangerang Selatan, bekerja remote.",
+    photoToggle: "Tampilkan foto asli saya",
+    photoHintClick: "Itu Hououin Kyouma. Klik fotonya untuk melihat saya yang asli.",
+    photoHintClickBack: "Klik fotonya lagi untuk memanggil Kyouma kembali.",
+    photoHintTap: "Ketuk foto untuk melihat saya yang asli",
+    photoHintTapBack: "Ketuk lagi untuk memanggil Kyouma kembali",
     proof: [
       { value: "6+ tahun", label: "merilis software ke production" },
       { value: "7", label: "sistem untuk Universitas Terbuka" },
