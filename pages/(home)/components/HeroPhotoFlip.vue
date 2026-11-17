@@ -33,6 +33,43 @@
           <img :src="photoSrc" alt="" draggable="false" :class="['slice-a', imagePosition]" />
           <img :src="photoSrc" alt="" draggable="false" :class="['slice-b', imagePosition]" />
         </span>
+        <!-- Idle glitch: every few seconds, a short signal from another world line -->
+        <span v-if="idle" :key="idle.key" class="photo-flip-idle" aria-hidden="true">
+          <img
+            :src="KYOUMA_IMAGE"
+            alt=""
+            draggable="false"
+            :class="['idle-ghost', imagePosition]"
+            :style="{ filter: `url(#${filterId}-red)`, '--idle-dx': `${idle.split}px` }"
+          />
+          <img
+            :src="KYOUMA_IMAGE"
+            alt=""
+            draggable="false"
+            :class="['idle-ghost', imagePosition]"
+            :style="{ filter: `url(#${filterId}-cyan)`, '--idle-dx': `${-idle.split}px` }"
+          />
+          <img
+            v-for="band in idle.slices"
+            :key="band.id"
+            :src="KYOUMA_IMAGE"
+            alt=""
+            draggable="false"
+            :class="['idle-slice', imagePosition]"
+            :style="bandStyle(band)"
+          />
+          <img
+            v-for="band in idle.peeks"
+            :key="band.id"
+            :src="photoSrc"
+            alt=""
+            draggable="false"
+            :class="['idle-peek', imagePosition]"
+            :style="bandStyle(band)"
+          />
+          <span class="idle-scan" />
+          <span class="idle-tear" :style="{ top: `${idle.tearY}%` }" />
+        </span>
       </span>
       <span :class="['photo-flip-face is-back', faceClass, revealed && 'is-shown']">
         <img
@@ -81,6 +118,16 @@
       aria-hidden="true"
     />
 
+    <!-- Channel filters for the idle glitch's RGB split -->
+    <svg class="photo-flip-filters" width="0" height="0" aria-hidden="true" focusable="false">
+      <filter :id="`${filterId}-red`" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+      </filter>
+      <filter :id="`${filterId}-cyan`" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+      </filter>
+    </svg>
+
     <!-- Divergence meter: a short nod to the source, portrait only -->
     <span v-if="meterText" :class="['photo-flip-meter', meterFading && 'is-fading']" aria-hidden="true">
       {{ meterText }}
@@ -102,6 +149,13 @@ const TEASE_MS = 950;
 const FLIP_MS = 1000;
 const EFFECT_CLEAR_MS = 1300;
 const DIVERGENCE = "1.048596";
+
+// The idle glitch is not capped: it repeats every few seconds while Kyouma
+// shows, the photo is on screen and the tab is visible.
+const IDLE_MIN_MS = 3000;
+const IDLE_MAX_MS = 6000;
+const IDLE_MS = 320;
+const IDLE_EFFECT_CLEAR_MS = 520;
 
 const props = defineProps<{ variant: "portrait" | "avatar" }>();
 const revealed = defineModel<boolean>("revealed", { default: false });
@@ -129,6 +183,8 @@ const imagePosition = computed(() =>
 const buttonEl = ref<HTMLButtonElement | null>(null);
 const cardEl = ref<HTMLElement | null>(null);
 
+const filterId = `photo-flip-${useId()}`;
+
 let teases = 0;
 let everRevealed = revealed.value;
 let teaseAnim: Animation | null = null;
@@ -155,6 +211,7 @@ onBeforeUnmount(() => {
   for (const id of timers) clearTimeout(id);
   timers.clear();
   if (meterInterval) clearInterval(meterInterval);
+  if (idleTimer) clearTimeout(idleTimer);
   teaseAnim?.cancel();
   flipAnim?.cancel();
 });
@@ -182,6 +239,7 @@ function tease() {
   if (!buttonEl.value || buttonEl.value.offsetParent === null) return;
 
   teases++;
+  idle.value = null;
   teaseAnim = card.animate(
     [
       { transform: "rotateY(0deg)", easing: "cubic-bezier(0.3, 0, 0.2, 1)" },
@@ -194,6 +252,101 @@ function tease() {
   );
   glitchKey.value++;
   playEffect("tease");
+}
+
+// ---------- Idle glitch: a short signal, no hover needed ----------
+
+interface Band {
+  id: number;
+  top: number;
+  height: number;
+  dx: number;
+  delay: number;
+}
+interface IdleGlitch {
+  key: number;
+  split: number;
+  slices: Band[];
+  peeks: Band[];
+  tearY: number;
+}
+
+const idle = shallowRef<IdleGlitch | null>(null);
+let idleKey = 0;
+let idleTimer: ReturnType<typeof setTimeout> | null = null;
+
+const onScreen = ref(false);
+const documentVisibility = useDocumentVisibility();
+// The avatar is display:none on desktop and the portrait on phones, so the
+// observer also tells which of the two is the one in use.
+useIntersectionObserver(buttonEl, ([entry]) => {
+  onScreen.value = entry?.isIntersecting ?? false;
+});
+
+const idleOn = computed(
+  () => onScreen.value && documentVisibility.value === "visible" && !revealed.value && !reducedMotion.value,
+);
+
+watch(idleOn, (on) => {
+  if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = null;
+  if (!on) {
+    idle.value = null;
+    return;
+  }
+  scheduleIdle();
+});
+
+function scheduleIdle() {
+  idleTimer = setTimeout(idleGlitch, random(IDLE_MIN_MS, IDLE_MAX_MS));
+}
+
+function idleGlitch() {
+  idleTimer = null;
+  if (!idleOn.value) return;
+  scheduleIdle();
+  // A hover teaser or a flip is already showing something; wait for the next one.
+  if (teaseAnim?.playState === "running" || flipAnim?.playState === "running") return;
+
+  const small = props.variant === "avatar";
+  const sign = () => (Math.random() < 0.5 ? -1 : 1);
+  const band = (id: number, minHeight: number, maxHeight: number, reach: number, delay: number): Band => {
+    const height = random(minHeight, maxHeight);
+    return { id, top: random(4, 96 - height), height, dx: sign() * random(reach * 0.4, reach), delay };
+  };
+
+  const slices: Band[] = [];
+  const sliceCount = small ? 2 : 3;
+  for (let i = 0; i < sliceCount; i++) {
+    slices.push(small ? band(i, 10, 20, 5, random(0, 70)) : band(i, 3, 11, 22, random(0, 90)));
+  }
+  const peeks: Band[] = [];
+  const peekCount = small ? 1 : 2;
+  for (let i = 0; i < peekCount; i++) {
+    peeks.push(small ? band(10 + i, 14, 26, 3, random(70, 120)) : band(10 + i, 5, 12, 12, random(70, 140)));
+  }
+
+  idle.value = {
+    key: ++idleKey,
+    split: small ? random(1.5, 2.5) : random(4, 7),
+    slices,
+    peeks,
+    tearY: random(15, 85),
+  };
+  playEffect("idle");
+
+  const key = idleKey;
+  later(() => {
+    if (idle.value?.key === key) idle.value = null;
+  }, IDLE_MS);
+}
+
+function bandStyle(band: Band) {
+  return {
+    clipPath: `inset(${band.top}% 0 ${100 - band.top - band.height}% 0)`,
+    animationDelay: `${band.delay}ms`,
+    "--idle-dx": `${band.dx}px`,
+  };
 }
 
 // ---------- Click: full flip with a bigger burst ----------
@@ -212,6 +365,7 @@ function toggle() {
   teaseAnim?.cancel();
   flipAnim?.cancel();
   glitchKey.value = 0;
+  idle.value = null;
 
   const to = next ? 180 : 0;
   const direction = to > from ? 1 : -1;
@@ -365,12 +519,22 @@ function makeSparks(count: number, at: number, reach: number, startId: number) {
   return sparks;
 }
 
-function playEffect(kind: "tease" | "reveal" | "back") {
+function playEffect(kind: "idle" | "tease" | "reveal" | "back") {
   const small = props.variant === "avatar";
   const bolts: Bolt[] = [];
   let id = 0;
 
-  if (kind === "tease") {
+  if (kind === "idle") {
+    // One short arc on the edge and a faint flicker.
+    bolts.push({ id: id++, d: edgeBolt(random(0.05, 0.1)), delay: random(20, 110) });
+    effect.value = {
+      key: ++effectKey,
+      bolts,
+      sparks: makeSparks(small ? 1 : 2, 60, small ? 5 : 7, 100),
+      flashDelay: 30,
+      flashPeak: 0.12,
+    };
+  } else if (kind === "tease") {
     // Two short arcs as the card turns away, one at the peak.
     for (let i = 0; i < 3; i++) {
       bolts.push({ id: id++, d: edgeBolt(random(0.08, 0.16)), delay: 300 + i * 90 });
@@ -406,7 +570,7 @@ function playEffect(kind: "tease" | "reveal" | "back") {
   later(() => {
     if (effect.value?.key === key) effect.value = null;
     if (kind === "tease") glitchKey.value = 0;
-  }, EFFECT_CLEAR_MS);
+  }, kind === "idle" ? IDLE_EFFECT_CLEAR_MS : EFFECT_CLEAR_MS);
 }
 
 // ---------- Divergence meter ----------
@@ -482,6 +646,9 @@ function runMeter() {
   .photo-flip-face.is-back.is-shown {
     opacity: 1;
   }
+  .photo-flip-idle {
+    display: none;
+  }
 }
 
 .photo-flip-glitch img {
@@ -523,6 +690,170 @@ function runMeter() {
   100% {
     opacity: 0;
     transform: translateX(0);
+  }
+}
+
+.photo-flip-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Idle glitch: hard steps, transform and opacity only. The clip-path and
+   filter on each layer are set once when it mounts, not animated. */
+.photo-flip-idle {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.photo-flip-idle img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+.photo-flip-idle .idle-ghost {
+  mix-blend-mode: screen;
+  animation: photo-flip-idle-ghost 230ms steps(1, end) both;
+}
+@keyframes photo-flip-idle-ghost {
+  0% {
+    opacity: 0.75;
+    transform: translateX(var(--idle-dx));
+  }
+  22% {
+    opacity: 0.75;
+    transform: translateX(calc(var(--idle-dx) * -0.5));
+  }
+  40% {
+    opacity: 0;
+  }
+  58% {
+    opacity: 0.6;
+    transform: translateX(calc(var(--idle-dx) * 1.4));
+  }
+  76%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+.photo-flip-idle .idle-slice {
+  animation: photo-flip-idle-slice 170ms steps(1, end) both;
+}
+@keyframes photo-flip-idle-slice {
+  0% {
+    opacity: 1;
+    transform: translateX(var(--idle-dx));
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(calc(var(--idle-dx) * -0.5));
+  }
+  55% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(calc(var(--idle-dx) * 0.3));
+  }
+  85%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+.photo-flip-idle .idle-peek {
+  animation: photo-flip-idle-peek 120ms steps(1, end) both;
+}
+@keyframes photo-flip-idle-peek {
+  0% {
+    opacity: 1;
+    transform: translateX(var(--idle-dx));
+  }
+  45% {
+    opacity: 1;
+    transform: translateX(calc(var(--idle-dx) * -0.4));
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+.idle-scan {
+  position: absolute;
+  inset: -3px 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(8 12 20 / 0.32) 0 1px,
+    rgb(8 12 20 / 0) 1px 3px
+  );
+  opacity: 0;
+  animation: photo-flip-idle-scan 250ms steps(1, end) both;
+}
+.is-avatar .idle-scan {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(8 12 20 / 0.18) 0 1px,
+    rgb(8 12 20 / 0) 1px 3px
+  );
+}
+@keyframes photo-flip-idle-scan {
+  0% {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 0.4;
+    transform: translateY(1px);
+  }
+  40% {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+  65%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+.idle-tear {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgb(224 242 254 / 0.85);
+  box-shadow: 0 0 6px rgb(56 189 248 / 0.8);
+  opacity: 0;
+  animation: photo-flip-idle-tear 200ms steps(1, end) 40ms both;
+}
+.is-avatar .idle-tear {
+  height: 1px;
+  box-shadow: 0 0 3px rgb(56 189 248 / 0.8);
+}
+@keyframes photo-flip-idle-tear {
+  0% {
+    opacity: 1;
+    transform: translate(-6%, 0);
+  }
+  30% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(4%, 3px);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
   }
 }
 
