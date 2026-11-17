@@ -17,9 +17,6 @@
             <div>
               <p class="text-lg font-semibold">Dimar Hanung</p>
               <p class="text-sm text-muted-500 dark:text-muted-400">{{ t.hero.role }}</p>
-              <p class="text-xs text-muted-500 dark:text-muted-400">
-                {{ photoRevealed ? t.hero.photoHintTapBack : t.hero.photoHintTap }}
-              </p>
             </div>
           </div>
 
@@ -89,9 +86,6 @@
           <figcaption class="relative mt-3.5 text-sm leading-normal text-muted-500 dark:text-muted-400">
             <span class="block text-base font-semibold text-muted-900 dark:text-white">Dimar Hanung</span>
             {{ t.hero.caption }}
-            <span class="mt-1.5 block">
-              {{ photoRevealed ? t.hero.photoHintClickBack : t.hero.photoHintClick }}
-            </span>
           </figcaption>
         </figure>
       </div>
