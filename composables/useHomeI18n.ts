@@ -1,9 +1,9 @@
 import en from "~/locales/home/en";
 import id from "~/locales/home/id";
 
-// Only the home page is translated: English at /, Indonesian at /id (a route
-// alias of pages/(home)/index.vue). The locale comes from the path, so every
-// home section reads it the same way.
+// Only the home page is translated: English at /, Indonesian at /id (its own
+// route for pages/(home)/index.vue, added in nuxt.config.ts). The locale comes
+// from the path, so every home section reads it the same way.
 
 export type HomeLocale = "en" | "id";
 

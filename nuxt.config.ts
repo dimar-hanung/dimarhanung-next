@@ -47,6 +47,13 @@ export default defineNuxtConfig({
         const index = pages.indexOf(page);
         if (index !== -1) pages.splice(index, 1);
       }
+
+      // Indonesian home page: /id renders pages/(home)/index.vue as its own
+      // route (not an alias, so switching EN <-> ID is a real navigation).
+      const home = pages.find((page) => page.path === "/");
+      if (home && !pages.some((page) => page.path === "/id")) {
+        pages.push({ name: "index-id", path: "/id", file: home.file });
+      }
     },
   },
 
