@@ -13,17 +13,13 @@
         <div data-grid-hole class="max-w-[44rem]">
           <!-- Phones: the photo sits next to the name instead of in its own column -->
           <div class="mt-1 mb-6 flex items-center gap-3.5 sm:hidden">
-            <NuxtImg
-              src="/profile/profile.jpeg"
-              width="128"
-              height="128"
-              format="webp"
-              alt="Dimar Hanung"
-              class="h-16 w-16 shrink-0 rounded-full border-[3px] border-white bg-muted-200 object-cover object-[50%_30%] shadow-[0_12px_28px_-12px_rgb(15_23_42/0.55)] dark:border-muted-700"
-            />
+            <HeroPhotoFlip v-model:revealed="photoRevealed" variant="avatar" />
             <div>
               <p class="text-lg font-semibold">Dimar Hanung</p>
               <p class="text-sm text-muted-500 dark:text-muted-400">{{ t.hero.role }}</p>
+              <p class="text-xs text-muted-500 dark:text-muted-400">
+                {{ photoRevealed ? t.hero.photoHintTapBack : t.hero.photoHintTap }}
+              </p>
             </div>
           </div>
 
@@ -89,18 +85,13 @@
         </div>
 
         <figure data-grid-hole class="hidden w-full max-w-[360px] justify-self-start sm:block lg:max-w-[420px] lg:justify-self-end">
-          <NuxtImg
-            src="/profile/profile.jpeg"
-            width="800"
-            height="1000"
-            fit="cover"
-            format="webp"
-            alt="Dimar Hanung"
-            class="block aspect-[4/5] w-full rounded-[20px] bg-muted-200 object-cover object-[50%_35%]"
-          />
-          <figcaption class="mt-3.5 text-sm leading-normal text-muted-500 dark:text-muted-400">
+          <HeroPhotoFlip v-model:revealed="photoRevealed" variant="portrait" />
+          <figcaption class="relative mt-3.5 text-sm leading-normal text-muted-500 dark:text-muted-400">
             <span class="block text-base font-semibold text-muted-900 dark:text-white">Dimar Hanung</span>
             {{ t.hero.caption }}
+            <span class="mt-1.5 block">
+              {{ photoRevealed ? t.hero.photoHintClickBack : t.hero.photoHintClick }}
+            </span>
           </figcaption>
         </figure>
       </div>
@@ -128,6 +119,7 @@
 
 <script setup lang="ts">
 import HeroGrid from "./HeroGrid.vue";
+import HeroPhotoFlip from "./HeroPhotoFlip.vue";
 
 // The PM adds this PDF to public/cv/.
 const CV_PATH = "/cv/dimar-hanung-cv.pdf";
@@ -135,6 +127,10 @@ const CV_PATH = "/cv/dimar-hanung-cv.pdf";
 const emit = defineEmits<{ go: [id: string] }>();
 
 const { locale, t } = useHomeI18n();
+
+// Shared by the phone avatar and the desktop portrait: both start as
+// Hououin Kyouma and flip to the real photo on click.
+const photoRevealed = ref(false);
 
 function onGo(event: MouseEvent, id: string) {
   event.preventDefault();
