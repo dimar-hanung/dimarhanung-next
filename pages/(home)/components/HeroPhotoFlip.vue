@@ -616,6 +616,11 @@ function runMeter() {
 </script>
 
 <style scoped>
+/* Full layer order first: in a production build Nuxt inlines this block in a
+   <style> tag before tailwind.css, and the first file to name a layer fixes
+   its place. See pages/(home)/home-theme.css. */
+@layer theme, base, components, home, utilities;
+
 /* In the `home` layer so a theme file can override any of it. Colors and
    the frame come from the theme contract (--photo-*, --fx-*). */
 @layer home {
