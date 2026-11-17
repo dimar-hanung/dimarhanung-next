@@ -81,8 +81,8 @@ let holdX = 0;
 let holdY = 0;
 // Current well strength, 0..1. Rises while held, drops fast after release.
 let holdCharge = 0;
-// HeroDraggable fires `hero-grid-wake` while a block moves; keep redrawing
-// until shortly after the last one so the holes follow it.
+// `hero-grid-wake` (e.g. SectionHero after a language switch resizes the text)
+// keeps redrawing until shortly after the last one so the holes follow.
 let holesMovingUntil = 0;
 // Cells switched off this frame: under a hole, or in its trail.
 let offCells = new Set<number>();
@@ -451,9 +451,8 @@ function onPointerMove(event: PointerEvent) {
     holdX = event.clientX - rect.left;
     holdY = event.clientY - rect.top;
   }
-  // Over (or dragging) a block: its cells are hidden, and lighting them would
-  // flash blue once the block moves away.
-  if ((event.target as Element | null)?.closest("[data-hero-drag]")) {
+  // Over hero content (a grid hole): its cells are hidden, so don't light them.
+  if ((event.target as Element | null)?.closest("[data-grid-hole]")) {
     lastCell = null;
     return;
   }
@@ -482,8 +481,8 @@ function onPointerMove(event: PointerEvent) {
 
 function onPointerDown(event: PointerEvent) {
   if (!canvas.value || reducedMotion || event.button !== 0) return;
-  // Pressing a draggable block grabs it; it doesn't charge the grid.
-  if ((event.target as Element | null)?.closest("[data-hero-drag]")) return;
+  // Pressing hero content (text, buttons, photo) doesn't charge the grid.
+  if ((event.target as Element | null)?.closest("[data-grid-hole]")) return;
   const rect = canvas.value.getBoundingClientRect();
   holdStart = performance.now();
   holdX = event.clientX - rect.left;
