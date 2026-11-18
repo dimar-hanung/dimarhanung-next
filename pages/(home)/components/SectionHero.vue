@@ -56,6 +56,7 @@
               <Icon name="mdi:arrow-down" class="text-lg" aria-hidden="true" />
             </a>
             <a
+              v-if="CV_PATH"
               data-part="hero-cta-cv"
               :href="CV_PATH"
               download
@@ -114,8 +115,10 @@ import HeroGrid from "./HeroGrid.vue";
 import HeroPhotoFlip from "./HeroPhotoFlip.vue";
 import HomeThemeSlot from "./HomeThemeSlot.vue";
 
-// The PM adds this PDF to public/cv/.
-const CV_PATH = "/cv/dimar-hanung-cv.pdf";
+// The "Download CV" button shows only when this is set. Hidden for now (PM,
+// 2026-11-18) until the PDF exists: put it in public/cv/ and set this to
+// "/cv/dimar-hanung-cv.pdf" to bring the button back.
+const CV_PATH: string | null = null;
 
 const emit = defineEmits<{ go: [id: string] }>();
 
