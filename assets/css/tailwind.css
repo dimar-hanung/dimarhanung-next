@@ -1,3 +1,9 @@
+/* Layer order. `home` holds the home page theme defaults
+   (pages/(home)/home-theme.css): above Tailwind's base and components, below
+   its utilities, so classes in the markup still win over the defaults. Every
+   file that uses `@layer home` repeats this line first (see home-theme.css). */
+@layer theme, base, components, home, utilities;
+
 @import "tailwindcss";
 
 /* Configure dark mode to work with class-based toggling */

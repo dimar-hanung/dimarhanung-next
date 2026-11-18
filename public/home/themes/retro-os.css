@@ -1,0 +1,1300 @@
+/*
+  Retro desktop theme.
+
+  Direction: the Windows 95 desktop (1995, kept almost unchanged in 98).
+  References: the default teal wallpaper (#008080), the 3D-look window
+  chrome of that UI (a light grey #c0c0c0 face; every edge a two-pixel
+  bevel from white/#dfdfdf highlight to #808080/#0a0a0a shadow), solid
+  navy title bars with the minimise/maximise/close buttons, the taskbar
+  and Start button, tabbed property sheets, radio buttons, sunken text
+  fields, and "selected" shown as navy with white text. The bevel recipe is
+  the one 98.css and the Windows 95 UI guidelines use.
+
+  Type: W95FA (Alina Sava, SIL OFL), a scalable recreation of the MS Sans
+  Serif bitmap font of Windows 95, for all interface text and body copy,
+  self-hosted in fonts/retro-os/. It has one weight; bold text is drawn
+  the way a bitmap font does it, by doubling each stroke one pixel to the
+  right (text-shadow). Large display lines (the hero heading, proof numbers,
+  counts) use Libre Franklin Extra Bold, a revival of Franklin Gothic, the
+  face of the Windows 95 wordmark and its welcome screens.
+
+  Layout: every section is a window on the desktop and its heading is the
+  window's title bar. The hero is a "Welcome" window (its title bar comes
+  from the hero-start slot), the theme picker is a sunken icon view, the
+  work filters are property-sheet tabs, each service is a small window,
+  the contact block is two windows side by side (the form is a dialog box
+  with radio buttons), "Beyond client work" is a list view, the nav is the
+  taskbar and the footer is a status bar.
+
+  Colour: teal desktop, grey chrome, black text. Navy #000080 is the
+  period's selection colour: title bars, the selected theme name, hovered
+  list rows. Links are the period's #0000ee blue, underlined.
+
+  Rule breaks: title bars carry the section names in a coloured band. That
+  is what a window title is, not a decorative kicker.
+
+  Scheme: light only. Every rule is scoped to .home-page[data-theme="retro-os"].
+*/
+
+@font-face {
+  font-family: "W95FA";
+  src: url("/home/themes/fonts/retro-os/w95fa-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.home-page[data-theme="retro-os"] {
+  --desk: #008080;
+  --face: #c0c0c0;
+  --hi: #fff;
+  --lite: #dfdfdf;
+  --lo: #808080;
+  --dark: #0a0a0a;
+  --navy: #000080;
+  --link: #0000ee;
+
+  /* Bevels (inset box shadows). */
+  --bevel-window: inset -1px -1px var(--dark), inset 1px 1px var(--lite), inset -2px -2px var(--lo), inset 2px 2px var(--hi);
+  --bevel-button: inset -1px -1px var(--dark), inset 1px 1px var(--hi), inset -2px -2px var(--lo), inset 2px 2px var(--lite);
+  --bevel-pressed: inset -1px -1px var(--hi), inset 1px 1px var(--dark), inset -2px -2px var(--lite), inset 2px 2px var(--lo);
+  --bevel-default: inset -2px -2px var(--dark), inset 1px 1px var(--dark), inset 2px 2px var(--hi), inset -3px -3px var(--lo), inset 3px 3px var(--lite);
+  --bevel-field: inset -1px -1px var(--hi), inset 1px 1px var(--lo), inset -2px -2px var(--lite), inset 2px 2px var(--dark);
+  --bevel-status: inset -1px -1px var(--hi), inset 1px 1px var(--lo);
+  --bevel-etched: inset -1px -1px var(--hi), inset 1px 1px var(--lo), inset -2px -2px var(--lo), inset 2px 2px var(--hi);
+  --title-controls: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='14' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='16' height='14' fill='%23c0c0c0'/%3E%3Crect x='0' y='0' width='15' height='1' fill='%23fff'/%3E%3Crect x='0' y='0' width='1' height='13' fill='%23fff'/%3E%3Crect x='0' y='13' width='16' height='1' fill='%230a0a0a'/%3E%3Crect x='15' y='0' width='1' height='14' fill='%230a0a0a'/%3E%3Crect x='1' y='12' width='14' height='1' fill='%23808080'/%3E%3Crect x='14' y='1' width='1' height='12' fill='%23808080'/%3E%3Crect x='4' y='9' width='6' height='2' fill='%23000'/%3E%3Crect x='16' y='0' width='16' height='14' fill='%23c0c0c0'/%3E%3Crect x='16' y='0' width='15' height='1' fill='%23fff'/%3E%3Crect x='16' y='0' width='1' height='13' fill='%23fff'/%3E%3Crect x='16' y='13' width='16' height='1' fill='%230a0a0a'/%3E%3Crect x='31' y='0' width='1' height='14' fill='%230a0a0a'/%3E%3Crect x='17' y='12' width='14' height='1' fill='%23808080'/%3E%3Crect x='30' y='1' width='1' height='12' fill='%23808080'/%3E%3Crect x='19' y='2' width='9' height='2' fill='%23000'/%3E%3Crect x='19' y='2' width='1' height='9' fill='%23000'/%3E%3Crect x='27' y='2' width='1' height='9' fill='%23000'/%3E%3Crect x='19' y='10' width='9' height='1' fill='%23000'/%3E%3Crect x='34' y='0' width='16' height='14' fill='%23c0c0c0'/%3E%3Crect x='34' y='0' width='15' height='1' fill='%23fff'/%3E%3Crect x='34' y='0' width='1' height='13' fill='%23fff'/%3E%3Crect x='34' y='13' width='16' height='1' fill='%230a0a0a'/%3E%3Crect x='49' y='0' width='1' height='14' fill='%230a0a0a'/%3E%3Crect x='35' y='12' width='14' height='1' fill='%23808080'/%3E%3Crect x='48' y='1' width='1' height='12' fill='%23808080'/%3E%3Crect x='38' y='3' width='2' height='1' fill='%23000'/%3E%3Crect x='44' y='3' width='2' height='1' fill='%23000'/%3E%3Crect x='39' y='4' width='2' height='1' fill='%23000'/%3E%3Crect x='43' y='4' width='2' height='1' fill='%23000'/%3E%3Crect x='40' y='5' width='2' height='1' fill='%23000'/%3E%3Crect x='42' y='5' width='2' height='1' fill='%23000'/%3E%3Crect x='41' y='6' width='2' height='1' fill='%23000'/%3E%3Crect x='41' y='6' width='2' height='1' fill='%23000'/%3E%3Crect x='42' y='7' width='2' height='1' fill='%23000'/%3E%3Crect x='40' y='7' width='2' height='1' fill='%23000'/%3E%3Crect x='43' y='8' width='2' height='1' fill='%23000'/%3E%3Crect x='39' y='8' width='2' height='1' fill='%23000'/%3E%3Crect x='44' y='9' width='2' height='1' fill='%23000'/%3E%3Crect x='38' y='9' width='2' height='1' fill='%23000'/%3E%3C/svg%3E");
+  --faux-bold: 1px 0 0 currentColor;
+
+  --bg: var(--desk);
+  --surface: var(--face);
+  --surface-2: var(--face);
+  --field-bg: #fff;
+  --nav-bg: var(--face);
+  --nav-blur: 0px;
+
+  --ink: #000;
+  --ink-2: #000;
+  --ink-3: #222;
+  --option-ink: #000;
+
+  --line: var(--lo);
+  --line-strong: var(--dark);
+  --border: 0px;
+  --border-control: 0px;
+
+  --accent: var(--face);
+  --accent-hover: var(--face);
+  --accent-ink: #000;
+  --accent-text: var(--navy);
+  --accent-line: var(--dark);
+  --accent-soft: var(--navy);
+  --accent-soft-ink: #fff;
+  --focus: #000;
+  --selection: var(--navy);
+
+  --success: #006400;
+  --danger: #800000;
+
+  --inverse-bg: var(--face);
+  --inverse-ink: #000;
+  --inverse-ink-2: #000;
+  --inverse-ink-3: #000;
+  --inverse-line: var(--lo);
+  --inverse-border: 0 solid transparent;
+  --inverse-accent: var(--navy);
+
+  --font-body: "W95FA", Tahoma, Verdana, "Segoe UI", sans-serif;
+  --font-display: "Libre Franklin", "Franklin Gothic Medium", Arial, sans-serif;
+  --font-mono: "W95FA", "Courier New", monospace;
+
+  --radius-control: 0;
+  --radius-tile: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-block: 0;
+
+  --shadow-button: var(--bevel-button);
+  --shadow-card-hover: var(--bevel-window);
+  --shadow-nav: none;
+  --shadow-pop: var(--bevel-window);
+  --shadow-bar: var(--bevel-window);
+
+  --section-y: 40px;
+  --gap: 16px;
+  --lift: 0px;
+
+  --grid-mode: none;
+  --grid-bg: transparent;
+  --grid-line: transparent;
+  --grid-accent: var(--navy);
+  --grid-cell: 24px;
+
+  --photo-fx: off;
+  --photo-radius: 0;
+  --photo-bg: #fff;
+  --photo-border: 2px solid var(--lo);
+  --photo-shadow: none;
+  --photo-filter: none;
+  --avatar-border: 2px solid var(--lo);
+  --avatar-shadow: none;
+  --fx-arc: var(--navy);
+  --fx-arc-core: #fff;
+  --fx-spark: var(--navy);
+  --fx-flash: #fff;
+  --fx-tear: var(--face);
+  --fx-scan: #000;
+  --fx-meter-bg: var(--navy);
+  --fx-meter-ink: #fff;
+  --fx-meter-glow: transparent;
+
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: none;
+}
+
+@media (min-width: 768px) {
+  .home-page[data-theme="retro-os"] {
+    --section-y: 56px;
+  }
+}
+
+.home-page[data-theme="retro-os"] ::selection {
+  color: #fff;
+}
+
+/* Focus: the period's dotted rectangle, two pixels wide so it is easy to see. */
+.home-page[data-theme="retro-os"] :focus-visible {
+  outline: 2px dotted #000;
+  outline-offset: 2px;
+}
+
+.home-page[data-theme="retro-os"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="nav-link"], [data-part="nav-brand"], [data-part="contact-button"], [data-part="nav-lang-option"]):focus-visible {
+  outline-offset: -6px;
+}
+
+/* ---------- Type ---------- */
+
+.home-page[data-theme="retro-os"] :is(h1, [data-part="proof-value"], [data-part="more-count"]) {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.home-page[data-theme="retro-os"] :is(h2, h3, [data-part="hero-caption-name"], [data-part="hero-id-name"], [data-part="field-label"], [data-part="service-timeline-value"], [data-part="more-name"]) {
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-shadow: var(--faux-bold);
+}
+
+.home-page[data-theme="retro-os"] .section-sub {
+  max-width: 640px;
+  color: #000;
+  font-size: 1rem;
+}
+
+/* ---------- Windows ----------
+   The hero container and each section container become a window on the
+   desktop: grey face, raised bevel, 3px frame. */
+
+.home-page[data-theme="retro-os"] :is(
+    [data-part="hero-inner"],
+    [data-part="themes"] > div,
+    [data-part="work"] > div,
+    [data-part="services"] > div,
+    [data-part="process"] > div,
+    [data-part="more"] > div,
+    [data-part="contact-intro"],
+    [data-part="form-card"],
+    [data-part="service-card"]
+  ) {
+  padding: 3px 3px 18px;
+  background: var(--face);
+  color: #000;
+  box-shadow: var(--bevel-window);
+}
+
+.home-page[data-theme="retro-os"] :is(
+    [data-part="hero-inner"],
+    [data-part="themes"] > div,
+    [data-part="work"] > div,
+    [data-part="services"] > div,
+    [data-part="process"] > div,
+    [data-part="more"] > div,
+    [data-part="contact"] > div
+  ) {
+  width: calc(100% - 32px);
+  max-width: calc(80rem - 48px);
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="retro-os"] :is(
+      [data-part="hero-inner"],
+      [data-part="themes"] > div,
+      [data-part="work"] > div,
+      [data-part="services"] > div,
+      [data-part="process"] > div,
+      [data-part="more"] > div,
+      [data-part="contact"] > div
+    ) {
+    width: calc(100% - 48px);
+  }
+}
+
+.home-page[data-theme="retro-os"] [data-part="contact"] > div {
+  padding: 0;
+}
+
+/* Title bars: the section heading itself, or the hero slot. Solid navy,
+   white bold text, the three caption buttons on the right. */
+.home-page[data-theme="retro-os"] :is(
+    [data-retro-titlebar],
+    .section-title,
+    [data-part="more-title"],
+    [data-part="form-title"],
+    [data-part="service-title"]
+  ) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 26px;
+  margin: 0;
+  padding: 2px 3px 2px 6px;
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-shadow: var(--faux-bold);
+}
+
+.home-page[data-theme="retro-os"] :is(
+    [data-retro-titlebar],
+    .section-title,
+    [data-part="more-title"],
+    [data-part="form-title"]
+  )::after {
+  content: "";
+  flex: none;
+  width: 50px;
+  height: 14px;
+  background: var(--title-controls) no-repeat;
+}
+
+/* Content inside a window keeps 16px off its frame. */
+.home-page[data-theme="retro-os"] :is(
+    [data-part="themes-head"],
+    [data-part="services-head"],
+    [data-part="work-head"],
+    [data-part="process"] > div > h2
+  ) {
+  margin-bottom: 18px;
+}
+
+.home-page[data-theme="retro-os"] :is([data-part="themes-head"], [data-part="services-head"], [data-part="work-head"] > div) .section-sub {
+  margin: 14px 16px 0;
+}
+
+/* ---------- Buttons and links ---------- */
+
+.home-page[data-theme="retro-os"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"]) {
+  border: 0;
+  border-radius: 0;
+  background: var(--face);
+  color: #000;
+  box-shadow: var(--bevel-button);
+  font-weight: 400;
+  transition: none;
+}
+
+/* The default button of a dialog: an extra black frame and bold text. */
+.home-page[data-theme="retro-os"] :is(.btn-primary, [data-part="nav-cta"]) {
+  box-shadow: var(--bevel-default);
+  text-shadow: var(--faux-bold);
+}
+
+.home-page[data-theme="retro-os"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"]):hover {
+  background: var(--face);
+  color: #000;
+  transform: none;
+}
+
+.home-page[data-theme="retro-os"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"], [data-part="nav-link"], [data-part="nav-brand"]):active {
+  box-shadow: var(--bevel-pressed);
+}
+
+.home-page[data-theme="retro-os"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"], [data-part="nav-link"], [data-part="nav-brand"]):active > * {
+  transform: translate(1px, 1px);
+}
+
+.home-page[data-theme="retro-os"] :is(.text-link, [data-part="work-link"], [data-part="work-case-link"], [data-part="footer-link"]) {
+  color: var(--link);
+  font-weight: 400;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: none;
+}
+
+.home-page[data-theme="retro-os"] :is(.text-link, [data-part="work-link"], [data-part="work-case-link"], [data-part="footer-link"]):hover {
+  color: var(--navy);
+}
+
+/* ---------- Nav: the taskbar ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="nav"] {
+  border: 0;
+  background: var(--face);
+  box-shadow:
+    inset 0 1px var(--lite),
+    inset 0 2px var(--hi),
+    inset 0 -1px var(--dark),
+    inset 0 -2px var(--lo);
+}
+
+/* A taskbar runs the full width of the screen: Start button hard left. */
+.home-page[data-theme="retro-os"] [data-part="nav-inner"] {
+  max-width: none;
+  height: 48px;
+  gap: 6px;
+  padding-inline: 4px;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="retro-os"] [data-part="nav-inner"] {
+    padding-inline: 6px;
+  }
+}
+
+/* Start button. */
+.home-page[data-theme="retro-os"] [data-part="nav-brand"] {
+  height: 36px;
+  gap: 6px;
+  padding: 0 10px 0 6px;
+  border-radius: 0;
+  box-shadow: var(--bevel-button);
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-logo"] {
+  width: 24px;
+  height: 22px;
+  border-radius: 0;
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  text-shadow: var(--faux-bold);
+  letter-spacing: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-name"] {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-shadow: var(--faux-bold);
+}
+
+/* Taskbar buttons. */
+.home-page[data-theme="retro-os"] [data-part="nav-links"] {
+  gap: 4px;
+  margin-left: 4px;
+  color: #000;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-link"] {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  min-width: 108px;
+  padding: 0 10px;
+  box-shadow: var(--bevel-button);
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-link"]:hover {
+  color: #000;
+}
+
+/* The tray: a shallow sunken area. The current language is a pressed key. */
+.home-page[data-theme="retro-os"] [data-part="nav-lang"] {
+  height: 36px;
+  padding: 3px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: var(--bevel-status);
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-lang-option"] {
+  border-radius: 0;
+  color: #000;
+  font-weight: 400;
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-lang-option"]:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-lang-option"][aria-current="page"] {
+  background: var(--navy);
+  color: #fff;
+  text-shadow: var(--faux-bold);
+}
+
+.home-page[data-theme="retro-os"] [data-part="nav-cta"] {
+  height: 36px;
+  padding: 0 14px;
+}
+
+/* ---------- Hero: the "Welcome" window ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="hero"] {
+  border: 0;
+  padding-top: 28px;
+  padding-bottom: 4px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-grid"] {
+  background: transparent;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-grid-lines"] {
+  display: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-layout"] {
+  gap: 32px;
+  padding: 26px 16px 24px;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="retro-os"] [data-part="hero-layout"] {
+    padding: 36px 28px 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="retro-os"] [data-part="hero-layout"] {
+    grid-template-columns: 1.45fr 0.55fr;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-intro"] {
+  color: #000;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-title"] {
+  max-width: 760px;
+  margin-top: 10px;
+  color: #000;
+  font-size: clamp(2.125rem, 4.6vw, 3.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-title-accent"] {
+  color: var(--navy);
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-lead"] {
+  max-width: 600px;
+  color: #000;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-actions"] {
+  gap: 10px 12px;
+}
+
+.home-page[data-theme="retro-os"] :is([data-part="hero-cta-primary"], [data-part="hero-cta-secondary"]) {
+  height: 44px;
+  padding: 0 20px;
+  font-size: 1rem;
+}
+
+/* Location and remote: sunken status-bar fields. */
+.home-page[data-theme="retro-os"] [data-part="hero-meta"] {
+  gap: 6px;
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-meta-item"] {
+  padding: 3px 10px 3px 8px;
+  box-shadow: var(--bevel-status);
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-id-role"] {
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-figure"] {
+  max-width: 300px;
+}
+
+/* The photo sits in a sunken frame, like a preview in a dialog. */
+.home-page[data-theme="retro-os"] [data-part="photo"] {
+  border-radius: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="photo"] :is([data-part="photo-card"], [data-part="photo-face"]) {
+  border-radius: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="photo-face"] {
+  border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+}
+
+.home-page[data-theme="retro-os"] [data-part="photo"][data-variant="portrait"] {
+  outline: 1px solid var(--dark);
+  outline-offset: -3px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="photo"][data-variant="portrait"]:focus-visible {
+  outline: 2px dotted #000;
+  outline-offset: 2px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="hero-caption"] {
+  color: #000;
+}
+
+/* Proof strip: four etched group boxes, the label sitting in the frame. */
+.home-page[data-theme="retro-os"] [data-part="proof"] {
+  gap: 22px 12px;
+  margin: 0 16px 6px;
+  padding-top: 10px;
+  border: 0;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="retro-os"] [data-part="proof"] {
+    margin-inline: 28px;
+  }
+}
+
+.home-page[data-theme="retro-os"] [data-part="proof-item"] {
+  position: relative;
+  display: block;
+  padding: 18px 12px 12px;
+  border: 0;
+  box-shadow: var(--bevel-etched);
+}
+
+.home-page[data-theme="retro-os"] [data-part="proof-label"] {
+  position: absolute;
+  top: -10px;
+  left: 8px;
+  right: 8px;
+  overflow: hidden;
+  width: fit-content;
+  max-width: calc(100% - 16px);
+  padding: 0 4px;
+  background: var(--face);
+  color: #000;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.home-page[data-theme="retro-os"] [data-part="proof-value"] {
+  font-size: clamp(1.625rem, 3.2vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Phones: the labels are too long for a single frame line, so they sit
+   inside the box under the number. */
+@media (max-width: 767px) {
+  .home-page[data-theme="retro-os"] [data-part="proof-item"] {
+    display: flex;
+    padding-top: 12px;
+  }
+
+  .home-page[data-theme="retro-os"] [data-part="proof-label"] {
+    position: static;
+    width: auto;
+    max-width: none;
+    padding: 0;
+    background: none;
+    white-space: normal;
+  }
+
+  .home-page[data-theme="retro-os"] [data-part="proof"] {
+    gap: 12px;
+  }
+}
+
+/* ---------- Themes: an icon view ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="themes-list"] {
+  margin: 0 16px;
+  padding: 14px 12px;
+  gap: 12px;
+  background: #fff;
+  box-shadow: var(--bevel-field);
+  scroll-padding-inline: 12px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-option"] {
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-align: center;
+  transition: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-option"]:hover {
+  border: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-option"][aria-pressed="true"] {
+  box-shadow: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-option"]:focus-visible {
+  outline-offset: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-thumb"] {
+  border-radius: 0;
+  outline: 1px solid var(--lo);
+}
+
+/* A selected icon: navy wash over the picture, navy label. */
+.home-page[data-theme="retro-os"] [data-part="theme-option"][aria-pressed="true"] [data-part="theme-thumb"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 128 / 0.35);
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-check"] {
+  z-index: 1;
+  border-radius: 0;
+  background: var(--face);
+  color: #000;
+  box-shadow: var(--bevel-button);
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-name"] {
+  padding: 0 4px;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.home-page[data-theme="retro-os"] [data-part="theme-option"][aria-pressed="true"] [data-part="theme-name"] {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* "Now showing": the window's status bar. */
+.home-page[data-theme="retro-os"] [data-part="themes-current"] {
+  margin: 10px 16px 0;
+  padding: 4px 8px;
+  color: #000;
+  box-shadow: var(--bevel-status);
+}
+
+.home-page[data-theme="retro-os"] [data-part="themes"] > div {
+  padding-bottom: 14px;
+}
+
+/* ---------- Work: a tabbed property sheet ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="work-head"] {
+  display: block;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-filters"] {
+  gap: 0;
+  margin: 20px 16px 0;
+  padding-left: 2px;
+  align-items: flex-end;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-filter"] {
+  position: relative;
+  height: 30px;
+  margin-top: 4px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 4px 4px 0 0;
+  background: var(--face);
+  color: #000;
+  font-size: 1rem;
+  font-weight: 400;
+  box-shadow:
+    inset 1px 1px var(--hi),
+    inset 2px 2px var(--lite),
+    inset -1px 0 var(--dark),
+    inset -2px 0 var(--lo);
+  transition: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-filter"]:hover {
+  color: #000;
+}
+
+/* The open tab stands taller and joins the sheet below it. */
+.home-page[data-theme="retro-os"] [data-part="work-filter"][aria-pressed="true"] {
+  z-index: 1;
+  height: 36px;
+  margin: 0 -2px -2px;
+  padding: 0 14px 2px;
+  text-shadow: var(--faux-bold);
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-filter"]:focus-visible {
+  outline-offset: -5px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-list"] {
+  margin: 0 16px;
+  padding: 18px 14px;
+  box-shadow:
+    inset 1px 1px var(--hi),
+    inset 2px 2px var(--lite),
+    inset -1px -1px var(--dark),
+    inset -2px -2px var(--lo);
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-card"] {
+  border: 0;
+  border-radius: 0;
+  padding: 3px;
+  box-shadow: var(--bevel-window);
+  transition: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-card"]:hover {
+  transform: none;
+  box-shadow: var(--bevel-window);
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-media"] {
+  margin: 6px 6px 0;
+  border: 2px solid;
+  border-color: var(--lo) var(--hi) var(--hi) var(--lo);
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-card"]:hover [data-part="work-image"] {
+  transform: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-body"] {
+  padding: 12px 10px 10px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-card-title"] {
+  font-size: 1.25rem;
+}
+
+.home-page[data-theme="retro-os"] :is([data-part="work-desc"], [data-part="work-role"]) {
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-desc"] {
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-role"] {
+  color: #333;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-footer"] {
+  border-top: 0;
+  box-shadow: inset 0 1px var(--lo), inset 0 2px var(--hi);
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-case-arrow"] {
+  transition: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work-card"]:hover [data-part="work-case-arrow"] {
+  transform: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="work"] > div > div:last-child {
+  margin-top: 18px;
+}
+
+/* ---------- Services: three small windows ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="services"] {
+  border: 0;
+  background: transparent;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-list"] {
+  margin: 0 16px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-card"] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 14px 0;
+  padding: 3px 3px 14px;
+  border: 0;
+  border-radius: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-card"]:hover {
+  border: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-card"][data-featured] {
+  box-shadow: var(--bevel-window), 0 0 0 1px var(--dark);
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-card"] > * {
+  grid-column: 1 / -1;
+  margin-inline: 14px;
+}
+
+/* The icon becomes the title bar's window icon. */
+.home-page[data-theme="retro-os"] [data-part="service-icon"] {
+  grid-column: 1;
+  width: 28px;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+  background: var(--navy);
+  color: #fff;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-icon"] svg {
+  font-size: 1.125rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-title"] {
+  grid-column: 2;
+  margin: 0;
+  padding-left: 2px;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] :is([data-part="service-body"], [data-part="service-points"], [data-part="service-timeline"]) {
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-points"] {
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-check"] {
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-footer"] {
+  margin-top: 0;
+  border-top: 0;
+  box-shadow: inset 0 1px var(--lo), inset 0 2px var(--hi);
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-timeline"] {
+  font-size: 0.9375rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="service-cta"] {
+  height: 34px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="services-price"] {
+  margin: 18px 16px 0;
+  padding: 4px 8px;
+  font-size: 1rem;
+  font-weight: 400;
+  box-shadow: var(--bevel-status);
+}
+
+/* ---------- Process ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="steps"] {
+  margin: 0 16px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="step"] {
+  --step-connector: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="step-number"] {
+  border: 0;
+  border-radius: 0;
+  background: var(--face);
+  color: #000;
+  box-shadow: var(--bevel-button);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="step"]::before {
+  width: 1px;
+  background: repeating-linear-gradient(180deg, var(--step-connector) 0 1px, transparent 1px 3px);
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="retro-os"] [data-part="step"]::before {
+    left: 54px;
+    right: 10px;
+    width: auto;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--step-connector) 0 1px, transparent 1px 3px);
+  }
+}
+
+.home-page[data-theme="retro-os"] [data-part="step-title"] {
+  font-size: 1.125rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="step-body"] {
+  color: #000;
+  font-size: 1rem;
+}
+
+/* ---------- Contact: two windows on the desktop ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="contact-panel"] {
+  margin-inline: 0;
+  padding: 0;
+  gap: 24px;
+  border: 0;
+  background: transparent;
+}
+
+@media (min-width: 1024px) {
+  .home-page[data-theme="retro-os"] [data-part="contact-panel"] {
+    gap: 28px;
+  }
+}
+
+.home-page[data-theme="retro-os"] [data-part="contact-intro"] {
+  align-self: start;
+}
+
+.home-page[data-theme="retro-os"] [data-part="contact-intro"] > :not(h2) {
+  margin-inline: 16px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="contact-lead"] {
+  max-width: none;
+  margin-top: 16px;
+  color: #000;
+}
+
+/* The email as a read-only text box. */
+.home-page[data-theme="retro-os"] [data-part="contact-email"] {
+  margin-top: 20px;
+  padding: 6px 10px;
+  background: #fff;
+  color: #000;
+  box-shadow: var(--bevel-field);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 2.6vw, 1.5rem);
+  letter-spacing: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="contact-button"] {
+  height: 36px;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="contact-facts"] {
+  color: #000;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="contact-fact-icon"] {
+  color: var(--navy);
+}
+
+/* The form: a dialog box. */
+.home-page[data-theme="retro-os"] [data-part="form-card"] {
+  padding: 3px;
+  border-radius: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="form"] {
+  padding: 0 16px 16px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="form-head"] {
+  margin: 0 -16px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="form-sub"] {
+  margin: 12px 16px 0;
+  color: #000;
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-label"] {
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-optional"] {
+  color: #000;
+  text-shadow: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-input"] {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  color: #000;
+  box-shadow: var(--bevel-field);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-input"]::placeholder {
+  color: #555;
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-input"]:focus {
+  border: 0;
+  box-shadow: var(--bevel-field);
+  outline: 2px dotted #000;
+  outline-offset: 2px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-input"][aria-invalid="true"] {
+  box-shadow: var(--bevel-field), 0 0 0 2px var(--danger);
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-error"] {
+  color: var(--danger);
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="field-error"]::before {
+  content: "\26A0\00a0" / "";
+}
+
+/* Need and budget: radio buttons. */
+.home-page[data-theme="retro-os"] [data-part="option-group"] {
+  gap: 8px 22px;
+  padding: 4px 2px 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="option"] {
+  position: relative;
+  height: auto;
+  padding: 2px 4px 2px 22px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="option"]:hover,
+.home-page[data-theme="retro-os"] [data-part="option"][aria-pressed="true"] {
+  border: 0;
+  background: transparent;
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="option"]::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--bevel-field);
+}
+
+.home-page[data-theme="retro-os"] [data-part="option"][aria-pressed="true"]::before {
+  background: radial-gradient(circle, #000 0 2.5px, #fff 3px);
+}
+
+.home-page[data-theme="retro-os"] [data-part="option"]:focus-visible {
+  outline-offset: 0;
+}
+
+.home-page[data-theme="retro-os"] [data-part="option"][data-flash] {
+  animation: retro-option-flash 0.8s steps(1, end) 2;
+}
+
+@keyframes retro-option-flash {
+  50% {
+    background: var(--navy);
+    color: #fff;
+  }
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="retro-os"] [data-part="form-submit"] {
+    align-self: flex-end;
+    width: auto;
+    min-width: 220px;
+  }
+}
+
+.home-page[data-theme="retro-os"] [data-part="form-submit"] {
+  height: 44px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="form-note"] {
+  color: #000;
+  font-size: 0.9375rem;
+  text-align: left;
+}
+
+@media (min-width: 640px) {
+  .home-page[data-theme="retro-os"] [data-part="form-note"] {
+    text-align: right;
+  }
+}
+
+.home-page[data-theme="retro-os"] [data-part="form-success"] {
+  padding: 24px 16px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="success-icon"] {
+  border-radius: 0;
+  background: var(--face);
+  color: var(--success);
+  box-shadow: var(--bevel-button);
+}
+
+.home-page[data-theme="retro-os"] [data-part="success-title"] {
+  font-size: 1.25rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="success-text"] {
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] [data-part="success-summary"] {
+  border-radius: 0;
+  background: #fff;
+  box-shadow: var(--bevel-field);
+}
+
+.home-page[data-theme="retro-os"] [data-part="success-summary"] dt {
+  color: #000;
+}
+
+/* ---------- Beyond client work: a list view ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="more"] {
+  padding-bottom: 40px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="more-title"] {
+  margin-bottom: 14px;
+}
+
+.home-page[data-theme="retro-os"] [data-part="more-list"] {
+  gap: 0;
+  margin: 0 16px;
+  padding: 4px;
+  background: #fff;
+  box-shadow: var(--bevel-field);
+}
+
+.home-page[data-theme="retro-os"] [data-part="more-item"] {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #000;
+}
+
+.home-page[data-theme="retro-os"] a[data-part="more-item"]:hover {
+  border: 0;
+  background: var(--navy);
+  color: #fff;
+}
+
+.home-page[data-theme="retro-os"] :is([data-part="more-source"], [data-part="more-arrow"]) {
+  color: #333;
+}
+
+.home-page[data-theme="retro-os"] a[data-part="more-item"]:hover :is([data-part="more-source"], [data-part="more-arrow"]) {
+  color: #fff;
+  transform: none;
+}
+
+.home-page[data-theme="retro-os"] [data-part="more-name"] {
+  font-size: 1rem;
+}
+
+.home-page[data-theme="retro-os"] [data-part="more-count"] {
+  font-size: 1.375rem;
+}
+
+.home-page[data-theme="retro-os"] a[data-part="more-item"]:focus-visible {
+  outline-offset: -3px;
+}
+
+/* ---------- Footer: a status bar ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="footer"] {
+  border: 0;
+  background: var(--face);
+  color: #000;
+  font-size: 0.9375rem;
+  box-shadow: inset 0 1px var(--lite), inset 0 2px var(--hi);
+}
+
+.home-page[data-theme="retro-os"] [data-part="footer-meta"] > * {
+  padding: 2px 8px;
+  box-shadow: var(--bevel-status);
+}
+
+.home-page[data-theme="retro-os"] [data-footer-source] {
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Phone bar: a mini taskbar ---------- */
+
+.home-page[data-theme="retro-os"] [data-part="phone-bar"] {
+  inset-inline: 8px;
+  bottom: 8px;
+  padding: 6px 6px 6px 12px;
+  border-radius: 0;
+  background: var(--face);
+  color: #000;
+  box-shadow: var(--bevel-window);
+}
+
+.home-page[data-theme="retro-os"] [data-part="phone-bar-note"] {
+  font-size: 1rem;
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page[data-theme="retro-os"] [data-part="option"][data-flash] {
+    animation: none;
+  }
+
+  .home-page[data-theme="retro-os"] :is(.btn-primary, .btn-ghost, [data-part="nav-cta"], [data-part="contact-button"], [data-part="nav-link"], [data-part="nav-brand"]):active > * {
+    transform: none;
+  }
+}

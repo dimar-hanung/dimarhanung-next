@@ -1,0 +1,826 @@
+/*
+  Home page theme contract, and the modern theme.
+
+  Every color, font, radius, border and shadow on the home page comes from the
+  custom properties below. The values here are the modern theme (light, then
+  dark under .dark); other themes override them, and restyle elements through
+  their data-part hooks, from public/home/themes/<id>.css.
+
+  Cascade: this file sits in the `home` layer, which tailwind.css orders after
+  `components` and before `utilities`. So Tailwind classes in the markup beat
+  these defaults, and a theme file (not in any layer) beats both, whatever the
+  selector specificity. Guide: .agents/skills/develop-module-home/SKILL.md.
+*/
+
+/* Layer order: the first stylesheet in the page that names a layer fixes that
+   layer's place, and in a production build Nuxt inlines this file and the
+   home components' <style> blocks in <style> tags before tailwind.css. So
+   every file that uses `@layer home` starts with this full statement (here,
+   tailwind.css, HeroGrid.vue, HeroPhotoFlip.vue). Without it `home` lands
+   below Tailwind's base, and preflight (`a { color: inherit }` …) beats it. */
+@layer theme, base, components, home, utilities;
+
+@layer home {
+  .home-page {
+    /* Surfaces */
+    --bg: var(--app-muted-100);
+    --surface: #fff;
+    --surface-2: var(--app-muted-100);
+    --field-bg: var(--app-muted-50);
+    --nav-bg: rgb(255 255 255 / 0.85);
+    --nav-blur: 12px;
+
+    /* Text */
+    --ink: var(--app-muted-900);
+    --ink-2: var(--app-muted-600);
+    --ink-3: var(--app-muted-500);
+    --option-ink: var(--app-muted-700);
+
+    /* Lines */
+    --line: var(--app-muted-200);
+    --line-strong: var(--app-muted-300);
+    --border: 1px;
+    --border-control: 1.5px;
+
+    /* Accent */
+    --accent: var(--app-primary-600);
+    --accent-hover: var(--app-primary-700);
+    --accent-ink: #fff;
+    --accent-text: var(--app-primary-600);
+    --accent-line: var(--app-primary-300);
+    --accent-soft: var(--app-primary-50);
+    --accent-soft-ink: var(--app-primary-700);
+    --focus: var(--app-primary-600);
+    --selection: var(--app-primary-200);
+
+    /* Status */
+    --success: #16a34a;
+    --danger: #dc2626;
+
+    /* Inverse block (contact panel, phone bar) */
+    --inverse-bg: var(--app-muted-900);
+    --inverse-ink: #fff;
+    --inverse-ink-2: var(--app-muted-300);
+    --inverse-ink-3: var(--app-muted-400);
+    --inverse-line: var(--app-muted-700);
+    --inverse-border: 0 solid transparent;
+    --inverse-accent: var(--app-primary-400);
+
+    /* Type */
+    --font-body: "Outfit", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+    /* Radii */
+    --radius-control: 10px;
+    --radius-tile: 14px;
+    --radius-card: 18px;
+    --radius-panel: 20px;
+    --radius-block: 28px;
+
+    /* Shadows */
+    --shadow-button: 0 8px 22px -8px rgb(225 29 72 / 0.6);
+    --shadow-card-hover: 0 22px 40px -24px rgb(15 23 42 / 0.45);
+    --shadow-nav: 0 10px 30px -20px rgb(15 23 42 / 0.35);
+    --shadow-pop: 0 30px 60px -30px rgb(0 0 0 / 0.6);
+    --shadow-bar: 0 16px 40px -12px rgb(15 23 42 / 0.6);
+
+    /* Spacing */
+    --section-y: 72px;
+    --gap: 22px;
+    --lift: -4px;
+
+    /* Hero grid (HeroGrid.vue reads these). --grid-mode: interactive (hover
+       cells, click ripple), static (lines only) or none (no canvas; style
+       [data-part="hero-grid"] yourself). */
+    --grid-mode: interactive;
+    --grid-bg: var(--bg);
+    --grid-line: rgb(100 116 139 / 0.16);
+    --grid-accent: var(--app-primary-500);
+    --grid-cell: 24px;
+
+    /* Hero photo (HeroPhotoFlip.vue). --photo-fx: full (teaser, idle glitch,
+       arcs), calm (no idle glitch) or off (plain flip, no effects). */
+    --photo-fx: full;
+    --photo-radius: 20px;
+    --photo-bg: var(--app-muted-200);
+    --photo-border: 0 solid transparent;
+    --photo-shadow: none;
+    --photo-filter: none;
+    --avatar-border: 3px solid #fff;
+    --avatar-shadow: 0 12px 28px -12px rgb(15 23 42 / 0.55);
+    --fx-arc: rgb(14 165 233);
+    --fx-arc-core: #fff;
+    --fx-spark: #38bdf8;
+    --fx-flash: rgb(186 230 253);
+    --fx-tear: rgb(224 242 254);
+    --fx-scan: rgb(8 12 20);
+    --fx-meter-bg: rgb(12 10 9 / 0.78);
+    --fx-meter-ink: #ffb05c;
+    --fx-meter-glow: rgb(255 140 40);
+
+    color-scheme: light;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+
+  @media (min-width: 768px) {
+    .home-page {
+      --section-y: 100px;
+    }
+  }
+
+  /* Dark mode, for themes with scheme "auto" (the dark toggle is shown). */
+  .dark .home-page[data-scheme="auto"] {
+    --bg: var(--app-muted-900);
+    --surface: var(--app-muted-800);
+    --surface-2: var(--app-muted-900);
+    --field-bg: var(--app-muted-900);
+    --nav-bg: rgb(30 41 59 / 0.85);
+    --ink: #fff;
+    --ink-2: var(--app-muted-300);
+    --ink-3: var(--app-muted-400);
+    --option-ink: var(--app-muted-200);
+    --line: var(--app-muted-700);
+    --line-strong: var(--app-muted-600);
+    --accent-text: var(--app-primary-400);
+    --accent-soft: rgb(136 19 55 / 0.35);
+    --accent-soft-ink: var(--app-primary-200);
+    --focus: var(--app-primary-400);
+    --selection: var(--app-primary-800);
+    --danger: #f87171;
+    --inverse-bg: var(--app-muted-950);
+    --inverse-border: 1px solid var(--app-muted-800);
+    --grid-line: rgb(255 255 255 / 0.12);
+    --photo-bg: var(--app-muted-700);
+    --avatar-border: 3px solid var(--app-muted-700);
+    color-scheme: dark;
+  }
+
+  .home-page ::selection {
+    background: var(--selection);
+  }
+
+  .home-page :focus-visible {
+    outline-color: var(--focus);
+  }
+
+  .home-page :is(h1, h2, h3),
+  .home-page :is([data-part="proof-value"], [data-part="contact-email"], [data-part="more-count"]) {
+    font-family: var(--font-display);
+  }
+
+  /* ---------- Shared classes ---------- */
+
+  .home-page .section-title {
+    font-size: 2.125rem;
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  @media (min-width: 768px) {
+    .home-page .section-title {
+      font-size: 2.75rem;
+    }
+  }
+
+  .home-page .section-sub {
+    margin-top: 14px;
+    max-width: 560px;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .home-page .btn-primary {
+    border-radius: var(--radius-control);
+    background: var(--accent);
+    color: var(--accent-ink);
+    box-shadow: var(--shadow-button);
+    transition:
+      background-color 150ms ease-out,
+      transform 150ms ease-out;
+  }
+
+  .home-page .btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+  }
+
+  .home-page .btn-ghost {
+    border-radius: var(--radius-control);
+    border: var(--border-control) solid var(--line-strong);
+    transition:
+      border-color 150ms ease-out,
+      color 150ms ease-out;
+  }
+
+  .home-page .btn-ghost:hover {
+    border-color: var(--accent-line);
+    color: var(--accent-text);
+  }
+
+  .home-page .text-link {
+    color: var(--ink-2);
+    transition: color 150ms ease-out;
+  }
+
+  .home-page .text-link:hover {
+    color: var(--accent-text);
+  }
+
+  /* ---------- Nav ---------- */
+
+  .home-page [data-part="nav"] {
+    border-bottom: var(--border) solid var(--line);
+    background: var(--nav-bg);
+    backdrop-filter: blur(var(--nav-blur));
+    transition: box-shadow 200ms ease-out;
+  }
+
+  .home-page [data-part="nav"][data-scrolled] {
+    box-shadow: var(--shadow-nav);
+  }
+
+  .home-page [data-part="nav-logo"] {
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .home-page [data-part="nav-links"] {
+    color: var(--ink-2);
+  }
+
+  .home-page :is([data-part="nav-link"], [data-part="footer-link"]) {
+    transition: color 150ms ease-out;
+  }
+
+  .home-page :is([data-part="nav-link"], [data-part="footer-link"]):hover {
+    color: var(--accent-text);
+  }
+
+  .home-page [data-part="nav-lang"] {
+    border: var(--border) solid var(--line);
+    border-radius: var(--radius-control);
+  }
+
+  .home-page [data-part="nav-lang-option"] {
+    border-radius: 7px;
+    color: var(--ink-3);
+    transition: color 150ms ease-out;
+  }
+
+  .home-page [data-part="nav-lang-option"]:hover {
+    color: var(--accent-text);
+  }
+
+  .home-page [data-part="nav-lang-option"][aria-current="page"] {
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  .home-page [data-part="nav-dark-toggle"] {
+    border: var(--border) solid var(--line);
+    border-radius: var(--radius-control);
+  }
+
+  .home-page [data-part="nav-cta"] {
+    border-radius: var(--radius-control);
+    background: var(--accent);
+    color: var(--accent-ink);
+    transition: background-color 150ms ease-out;
+  }
+
+  .home-page [data-part="nav-cta"]:hover {
+    background: var(--accent-hover);
+  }
+
+  /* ---------- Hero ---------- */
+
+  .home-page [data-part="hero"] {
+    border-bottom: var(--border) solid var(--line);
+  }
+
+  .home-page [data-part="hero-intro"],
+  .home-page [data-part="hero-lead"] {
+    color: var(--ink-2);
+  }
+
+  .home-page [data-part="hero-title-accent"] {
+    color: var(--accent-text);
+  }
+
+  .home-page :is([data-part="hero-meta"], [data-part="hero-id-role"], [data-part="hero-caption"]) {
+    color: var(--ink-3);
+  }
+
+  .home-page [data-part="hero-caption-name"] {
+    color: var(--ink);
+  }
+
+  .home-page [data-part="proof"] {
+    border-top: var(--border) solid var(--line);
+  }
+
+  .home-page [data-part="proof-item"] {
+    border-color: var(--line);
+  }
+
+  .home-page [data-part="proof-label"] {
+    color: var(--ink-3);
+  }
+
+  /* ---------- Themes ---------- */
+
+  .home-page [data-part="themes-current"] {
+    color: var(--ink-2);
+  }
+
+  .home-page [data-part="theme-option"] {
+    border: var(--border) solid var(--line);
+    border-radius: var(--radius-tile);
+    background: var(--surface);
+    color: var(--ink);
+    transition:
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out;
+  }
+
+  .home-page [data-part="theme-option"]:hover {
+    border-color: var(--accent-line);
+  }
+
+  .home-page [data-part="theme-option"][aria-pressed="true"] {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .home-page [data-part="theme-thumb"] {
+    border-radius: calc(var(--radius-tile) - 5px);
+    background: var(--surface-2);
+  }
+
+  .home-page [data-part="theme-check"] {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  /* ---------- Work ---------- */
+
+  .home-page [data-part="work-filter"] {
+    border-bottom: 2px solid transparent;
+    color: var(--ink-3);
+    transition: color 150ms ease-out;
+  }
+
+  .home-page [data-part="work-filter"]:hover,
+  .home-page [data-part="work-filter"][aria-pressed="true"] {
+    color: var(--ink);
+  }
+
+  .home-page [data-part="work-filter"][aria-pressed="true"] {
+    border-color: var(--accent-text);
+  }
+
+  .home-page [data-part="work-card"] {
+    border: var(--border) solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    transition:
+      transform 200ms ease-out,
+      box-shadow 200ms ease-out,
+      border-color 200ms ease-out;
+  }
+
+  .home-page [data-part="work-card"]:hover {
+    transform: translateY(var(--lift));
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--accent-line);
+  }
+
+  .home-page [data-part="work-media"] {
+    border-bottom: var(--border) solid var(--line);
+    background: var(--photo-bg);
+  }
+
+  .home-page [data-part="work-image"] {
+    transition: transform 400ms ease-out;
+  }
+
+  .home-page [data-part="work-card"]:hover [data-part="work-image"] {
+    transform: scale(1.03);
+  }
+
+  .home-page [data-part="work-link"],
+  .home-page [data-part="work-role"] {
+    color: var(--ink-3);
+  }
+
+  .home-page [data-part="work-link"] {
+    transition: color 150ms ease-out;
+  }
+
+  .home-page [data-part="work-link"]:hover {
+    color: var(--accent-text);
+  }
+
+  .home-page [data-part="work-desc"] {
+    color: var(--ink-2);
+  }
+
+  .home-page [data-part="work-footer"] {
+    border-top: var(--border) solid var(--line);
+  }
+
+  .home-page [data-part="work-case-link"] {
+    color: var(--accent-text);
+  }
+
+  .home-page [data-part="work-case-arrow"] {
+    transition: transform 150ms ease-out;
+  }
+
+  .home-page [data-part="work-card"]:hover [data-part="work-case-arrow"] {
+    transform: translateX(3px);
+  }
+
+  /* ---------- Services ---------- */
+
+  .home-page [data-part="services"] {
+    border-block: var(--border) solid var(--line);
+    background: var(--surface);
+  }
+
+  .home-page [data-part="service-card"] {
+    border: var(--border) solid var(--line);
+    border-radius: var(--radius-panel);
+    background: var(--surface-2);
+    transition: border-color 200ms ease-out;
+  }
+
+  .home-page [data-part="service-card"]:hover {
+    border-color: var(--accent-line);
+  }
+
+  .home-page [data-part="service-card"][data-featured] {
+    border-color: var(--app-primary-400);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  .home-page [data-part="service-icon"] {
+    border-radius: var(--radius-tile);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+  }
+
+  .home-page [data-part="service-body"] {
+    color: var(--ink-2);
+  }
+
+  .home-page [data-part="service-check"] {
+    color: var(--success);
+  }
+
+  .home-page [data-part="service-footer"] {
+    border-top: var(--border) solid var(--line);
+  }
+
+  .home-page [data-part="service-timeline"] {
+    color: var(--ink-3);
+  }
+
+  .home-page [data-part="service-timeline-value"] {
+    color: var(--ink);
+  }
+
+  /* ---------- Process ---------- */
+
+  .home-page [data-part="step-number"] {
+    border: 2px solid var(--app-primary-500);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--accent-text);
+  }
+
+  .home-page [data-part="step-body"] {
+    color: var(--ink-2);
+  }
+
+  /* Dashed connector from each number to the next step. Phones: one column,
+     number on the left, connector runs down. */
+  .home-page [data-part="step"] {
+    --step-connector: var(--accent-line);
+    padding-left: 64px;
+  }
+
+  .home-page [data-part="step-number"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .home-page [data-part="step"]::before {
+    content: "";
+    position: absolute;
+    top: 46px;
+    left: 22px;
+    bottom: -30px;
+    width: 2px;
+    background: repeating-linear-gradient(180deg, var(--step-connector) 0 6px, transparent 6px 12px);
+  }
+
+  .home-page [data-part="step"]:last-child::before {
+    display: none;
+  }
+
+  /* From sm: numbers sit above the text, connector runs right. */
+  @media (min-width: 640px) {
+    .home-page [data-part="step"] {
+      padding-left: 0;
+      padding-right: 28px;
+    }
+
+    .home-page [data-part="step-number"] {
+      position: relative;
+    }
+
+    .home-page [data-part="step"]::before {
+      top: 22px;
+      left: 46px;
+      right: 0;
+      bottom: auto;
+      width: auto;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, var(--step-connector) 0 6px, transparent 6px 12px);
+    }
+
+    /* Two columns: no connector out of the right-hand column. */
+    .home-page [data-part="step"]:nth-child(2n)::before {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .home-page [data-part="step"]:nth-child(2n)::before {
+      display: block;
+    }
+
+    .home-page [data-part="step"]:last-child::before {
+      display: none;
+    }
+  }
+
+  /* ---------- Contact ---------- */
+
+  .home-page [data-part="contact-panel"] {
+    border: var(--inverse-border);
+    background: var(--inverse-bg);
+    color: var(--inverse-ink);
+  }
+
+  /* Phones: the panel runs edge to edge, so no rounded corners. */
+  @media (min-width: 640px) {
+    .home-page [data-part="contact-panel"] {
+      border-radius: var(--radius-block);
+    }
+  }
+
+  .home-page [data-part="contact-lead"] {
+    color: var(--inverse-ink-2);
+  }
+
+  .home-page [data-part="contact-facts"] {
+    color: var(--inverse-ink-3);
+  }
+
+  .home-page [data-part="contact-fact-icon"] {
+    color: var(--inverse-accent);
+  }
+
+  .home-page [data-part="contact-button"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 38px;
+    padding: 0 0.875rem;
+    border-radius: var(--radius-control);
+    border: var(--border) solid var(--inverse-line);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--inverse-ink);
+    transition:
+      border-color 150ms ease-out,
+      color 150ms ease-out;
+  }
+
+  .home-page [data-part="contact-button"]:hover {
+    border-color: var(--inverse-accent);
+    color: var(--app-primary-300);
+  }
+
+  .home-page [data-part="form-card"] {
+    border-radius: var(--radius-panel);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-pop);
+  }
+
+  .home-page :is([data-part="form-sub"], [data-part="form-note"], [data-part="field-optional"]) {
+    color: var(--ink-3);
+  }
+
+  .home-page [data-part="field-label"] {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .home-page [data-part="field-input"] {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: var(--radius-control);
+    border: var(--border-control) solid var(--line);
+    background: var(--field-bg);
+    color: inherit;
+    font-size: 0.9375rem;
+    outline: none;
+    transition:
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out;
+  }
+
+  .home-page [data-part="field-input"]:focus {
+    border-color: var(--app-primary-500);
+    box-shadow: 0 0 0 4px rgb(244 63 94 / 0.15);
+  }
+
+  .home-page [data-part="field-input"][aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+
+  .home-page [data-part="field-error"] {
+    margin-top: 6px;
+    font-size: 0.8125rem;
+    color: var(--danger);
+  }
+
+  .home-page [data-part="option"] {
+    height: 38px;
+    padding: 0 0.875rem;
+    border-radius: var(--radius-control);
+    border: var(--border-control) solid var(--line);
+    background: var(--surface);
+    color: var(--option-ink);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition:
+      border-color 150ms ease-out,
+      background-color 150ms ease-out,
+      color 150ms ease-out;
+  }
+
+  .dark .home-page[data-scheme="auto"] [data-part="option"] {
+    background: var(--field-bg);
+  }
+
+  .home-page [data-part="option"]:hover {
+    border-color: var(--accent-line);
+  }
+
+  .home-page [data-part="option"][aria-pressed="true"] {
+    border-color: var(--accent-text);
+    background: var(--accent-soft);
+    color: var(--accent-soft-ink);
+  }
+
+  /* Two rings when "Ask about this" picks the option, then it stops. */
+  .home-page [data-part="option"][data-flash] {
+    animation: home-option-flash 0.8s ease 2;
+  }
+
+  .home-page [data-part="success-icon"] {
+    background: color-mix(in srgb, var(--success) 12%, transparent);
+    color: var(--success);
+    animation: home-success-pop 0.4s ease-out;
+  }
+
+  .home-page [data-part="success-text"] {
+    color: var(--ink-3);
+  }
+
+  .home-page [data-part="success-summary"] {
+    border-radius: 12px;
+    background: var(--field-bg);
+  }
+
+  .home-page [data-part="success-summary"] dt {
+    color: var(--ink-3);
+  }
+
+  /* ---------- Beyond client work ---------- */
+
+  .home-page [data-part="more-item"] {
+    border: var(--border) solid var(--line);
+    border-radius: var(--radius-tile);
+    background: var(--surface);
+  }
+
+  .home-page a[data-part="more-item"] {
+    transition: border-color 150ms ease-out;
+  }
+
+  .home-page a[data-part="more-item"]:hover {
+    border-color: var(--accent-line);
+  }
+
+  .home-page [data-part="more-source"],
+  .home-page [data-part="more-arrow"] {
+    color: var(--ink-3);
+  }
+
+  .home-page [data-part="more-arrow"] {
+    transition:
+      transform 150ms ease-out,
+      color 150ms ease-out;
+  }
+
+  .home-page a[data-part="more-item"]:hover [data-part="more-arrow"] {
+    transform: translateX(3px);
+    color: var(--accent-text);
+  }
+
+  /* ---------- Footer ---------- */
+
+  .home-page [data-part="footer"] {
+    border-top: var(--border) solid var(--line);
+    color: var(--ink-3);
+  }
+
+  .home-page [data-footer-source] {
+    text-decoration-color: var(--app-muted-400);
+  }
+
+  /* ---------- Phone bar ---------- */
+
+  .home-page [data-part="phone-bar"] {
+    border-radius: 16px;
+    background: var(--inverse-bg);
+    color: var(--inverse-ink);
+    box-shadow: var(--shadow-bar);
+  }
+
+  .dark .home-page[data-scheme="auto"] [data-part="phone-bar"] {
+    border: var(--border) solid var(--app-muted-700);
+    background: var(--app-muted-800);
+  }
+
+  /* ---------- Motion ---------- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-page .btn-primary:hover,
+    .home-page [data-part="work-card"]:hover,
+    .home-page [data-part="work-card"]:hover [data-part="work-image"],
+    .home-page [data-part="work-card"]:hover [data-part="work-case-arrow"],
+    .home-page a[data-part="more-item"]:hover [data-part="more-arrow"] {
+      transform: none;
+    }
+
+    .home-page [data-part="option"][data-flash],
+    .home-page [data-part="success-icon"] {
+      animation: none;
+    }
+  }
+}
+
+@keyframes home-option-flash {
+  50% {
+    box-shadow: 0 0 0 6px rgb(244 63 94 / 0.25);
+  }
+}
+
+@keyframes home-success-pop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* Theme switch: a short cross-fade of the whole page (useHomeTheme). Reduced
+   motion skips the transition in JS; this is the backstop. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
